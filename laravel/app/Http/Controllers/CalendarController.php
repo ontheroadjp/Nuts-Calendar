@@ -10,13 +10,12 @@ use App\Http\Requests;
 class CalendarController extends Controller
 {
     /**
-     * Display a listing of items
+     * Display a calendar of the specific month
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($year, $month)
+    public function index(Calendar $calendar, $year, $month)
     {
-        $items = Calendar::range($year,$month);
-        return $items;
+        return $calendar->fetch($year,$month);
     }
 }

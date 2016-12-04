@@ -10,6 +10,15 @@ class Event extends Model
         'member_id', 'content', 'date'
     ];
 
+    protected $appends = [
+        'editing'
+    ];
+
+    public function getEditingAttribute()
+    {
+        return false;
+    }
+
     public function member()
     {
         return $this->belongsTo(Member::class,'member_id');

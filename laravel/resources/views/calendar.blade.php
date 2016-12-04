@@ -21,7 +21,7 @@
         <div class="form-group form-inline">
 
             <div class="form-group {{ $errors->has('') ? 'has-error' : '' }}">
-                <select class="form-control" v-model="year" @change="this.fetch()">
+                <select class="form-control" v-model="year" @change="this.fetchCalendar()">
                     <option>2015</option>
                     <option>2016</option>
                     <option>2017</option>
@@ -68,12 +68,26 @@
                         <td>@{{ day.date }}</td>
                         <td v-for="members in day.events">
 
-                            <span v-for="event in members">
+                            <span v-for="event in members" v-show="!event.editing" @click="event.editing = true">
 
                                     @{{ event.content }}<br>
 
                             </span>
 
+                            <span v-for="event in members" v-show="event.editing">
+
+                                    <div class="form-group {{ $errors->has('') ? 'has-error' : '' }}">
+                                        <div class="input-group">
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                v-model="event.content"
+                                            >
+                                        </div>
+                                        {!! $errors->first('','<span class="help-block">:message</span>') !!}
+                                    </div>
+
+                            </span>
                         </td>
                     </tr>
                 </tbody>

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Calendar extends Model
@@ -12,40 +13,50 @@ class Calendar extends Model
         'date'
     ];
 
-    public static function range($year, $month)
+    public function fetch($year, $month)
     {
-        $value = "$year-$month";
-        $result = Calendar::with('events')
-            ->where('date', 'LIKE', "%$value%")
+        $calendar = $this->specificMonth($year,$month);
+
+        $members = Member::all()->keyBy('id');
+
+        $calendar = $this->tidyEvents($calendar, $members);
+
+         return [
+             "members" => $members,
+             "days" => $calendar
+         ];
+    }
+
+    public function specificMonth($year,$month)
+    {
+        return Calendar::with('events')
+            ->where('date', 'LIKE', "%$year-$month%")
             ->get();
+    }
 
-        $all_members = Member::all()->keyBy('id');
+    private function tidyEvents(Collection $calendar, Collection $members)
+    {
+        $days = [];
 
-        $modified_result = [
-            'members' => $all_members,
-            'days' => []
-        ];
-
-        for( $n=0; $n < count($result); $n++ ) {
-            $group_by = $result[$n]['events']
+        for( $n=0; $n < count($calendar); $n++ ) {
+            $group_by = $calendar[$n]['events']
                 ->groupBy('member_id');
 
-            $zero_event_member_ids = collect($all_members->keys())
+            $diff = $members
+                ->keys()
                 ->diff($group_by->keys())
                 ->flatten();
 
-            for( $i=0; $i < count($zero_event_member_ids); $i++ ) {
-                $group_by->put($zero_event_member_ids[$i], '');
+            for( $i=0; $i < count($diff); $i++ ) {
+                $group_by->put($diff[$i], array(['editing' => false]));
             }
 
-            $day_collection = collect($result[$n])
+            $days[] = collect($calendar[$n])
                 ->forget('events')
                 ->put('events', $group_by);
-
-            array_push($modified_result['days'], $day_collection);
         }
 
-        return $modified_result;
+        return $days;
     }
 
     public function events()

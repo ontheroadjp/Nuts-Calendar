@@ -18,14 +18,6 @@
 </head>
 <body>
 
-    <div class="jumbotron">
-        <div class="container">
-            <h1>Family Schedule</h1>
-            <p></p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-        </div>
-    </div>
-
     <div class="container">
 
         <div class="row">
@@ -201,7 +193,7 @@
                             type="date"
                             class="form-control"
                         >
-                        <span v-else style="font-size: 1.2em">@{{ event.day }} 日</span>
+                        <span v-else>@{{ event.day }} 日</span>
                         <span v-show="!event.editing">(@{{ event.day_of_week }})</span>
                     </td>
 
@@ -217,7 +209,7 @@
                                     @{{ member.name }}
                                 </option>
                             </select>
-                            <span v-else class="label label-@{{ event.member.color }}" style="font-size: 1em">
+                            <span v-else class="label label-@{{ event.member.color }}">
                                 @{{ event.member.name }}
                             </span>
                             {!! $errors->first('','<span class="help-block">:message</span>') !!}
@@ -231,7 +223,7 @@
                             type="text"
                             class="form-control"
                         >
-                        <span v-else style="font-size: 1.2em">@{{ event.content }}</span>
+                        <span v-else>@{{ event.content }}</span>
                     </td>
 
                     <!-- Buttons in no editing mode -->
