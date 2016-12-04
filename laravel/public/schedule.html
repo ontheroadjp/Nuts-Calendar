@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Family Schedule</title>
+    <link 
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+        crossorigin="anonymous"
+    >
+    <style>
+        .navbar {
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Family Schedule</h1>
+        <p></p>
+        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+    </div>
+</div>
+
+<div class="container">
+    <pre>{{ vm.data-table.data.query | json }}</pre>
+    
+    <h1 class="page-header">Calendar</h1>
+
+    <div class="row">
+        <div class="col-md-12 col-md-offset-0">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <!-- <datalist :items="schedules"></datalist> -->
+                    <datatable :items="schedules"></datatable>
+
+                </div><!-- // .panel-body -->
+            </div><!-- // .panel -->
+
+            <pre>{{ $data | json }}</pre>
+
+        </div><!-- // col-md-12 col-md-offset-0 -->
+    </div><!-- // .row -->
+
+</div><!-- // .container -->
+</body>
+
+<template id="data-list">
+    <div class="form-group list-query">
+        <input
+            v-model="query"
+            type="text"
+            class="form-control"
+            name="search"
+            placeholder="search"
+        >
+    </div>
+                
+    <ul class="list-group">
+        <li class="list-group-item" v-for="item in items | filterBy query">
+            <span class="label label-default">{{ item.writer }}</span>
+            {{ item.plot }}
+        </li>
+    </ul>
+</template>
+
+<template id="data-table">
+    <div class="form-group list-query">
+        <input
+            v-model="query"
+            type="text"
+            class="form-control"
+            name="search"
+            placeholder="search"
+        >
+    </div>
+                
+    <div class="form-group">
+        <button 
+            class="btn btn-primary glyphicon glyphicon-plus-sign" 
+            style="float:right"
+            @click="newItemInsert()"
+        >New</button>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>member_id</th>
+                <th width="50%">content</th>
+                <th width="20%">date</th>
+                <th width="50%" colspan="2">action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in items">
+
+                <td>{{ item.id }}</td>
+
+                <td>
+                    <input
+                        v-if="item.editing || item.insert"
+                        v-model="item.member_id"
+                        type="text"
+                        class="form-control"
+                    >
+                    <span v-else>{{ item.member_id }}</span>
+                </td>
+
+                <td>
+                    <input
+                        v-if="item.editing || item.insert"
+                        v-model="item.content"
+                        type="text"
+                        class="form-control"
+                    >
+                    <span v-else>{{ item.content }}</span>
+                </td>
+
+                <td>
+                    <input
+                        v-if="item.editing || item.insert"
+                        v-model="item.date"
+                        type="text"
+                        class="form-control"
+                    >
+                    <span v-else>{{ item.date }}</span>
+                </td>
+
+                <!-- Buttons in no editing mode -->
+                <td v-if="!item.editing && !item.insert">
+                    <div class="form-group">
+                        <button class="btn btn-success glyphicon glyphicon-pencil" @click="itemEdit(item)"></button>
+                    </div>
+                </td>
+                <td v-if="!item.editing && !item.insert">
+                    <div class="form-group">
+                        <button class="btn btn-danger glyphicon glyphicon-trash" @click="itemDelete(item)"></button>
+                    </div>
+                </td>
+
+                <!-- Buttons in insert mode -->
+                <td v-if="item.insert">
+                    <div class="form-group">
+                        <button class="btn btn-info glyphicon glyphicon-ok" @click="itemInsert(item)"></button>
+                    </div>
+                </td>
+                <td v-if="item.insert">
+                    <div class="form-group">
+                        <button class="btn btn-default glyphicon glyphicon-remove" @click="insertCancel(item)"></button>
+                    </div>
+                </td>
+
+                <!-- Buttons in editing mode -->
+                <td v-if="item.editing">
+                    <div class="form-group">
+                        <button class="btn btn-info glyphicon glyphicon-ok" @click="editUpdate(item)"></button>
+                    </div>
+                </td>
+                <td v-if="item.editing">
+                    <div class="form-group">
+                        <button class="btn btn-default glyphicon glyphicon-remove" @click="editCancel(item)"></button>
+                    </div>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</template>
+
+<script src="//code.jquery.com/jquery-3.1.1.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js"></script>
+<script src="//cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+
+<script>
+    Vue.component('datalist', {
+        template: "#data-list",
+        props: ['items','query']
+    })
+
+    Vue.component('datatable', {
+        template: "#data-table",
+        props: ['items'],
+        data: {
+            query: '',
+            items: []
+        },
+        ready: function() {
+            this.fetchItems();
+        },
+        methods: {
+
+            fetchItems: function() {
+                this.$http({
+                    url: '/schedule',
+                    method: 'GET'
+                }).then( function(response) {
+                    var storiesReady = response.data.map(function(item) {
+                        item.insert = false;
+                        item.editing = false;
+                        return item
+                    })
+                    this.$parent.$set('schedules',storiesReady)
+                }, function(response) {
+
+                });
+            },
+
+            newItemInsert: function() {
+                var new_item = {
+                    plot: "",
+                    upvotes: 0,
+                    writer: "",
+                    insert: true,
+                    editing: false
+                };
+                this.$parent.schedules.unshift(new_item);
+                $("button").prop('disabled', true);
+            },
+
+            insertCancel: function(item) {
+                this.$parent.schedules.shift();
+                $("button").prop('disabled', false);
+                item.insert = false;
+            },
+
+            itemInsert: function(item) {
+                var url = '/schedule/';
+                this.$http({
+                    url: url,
+                    method: 'POST',
+                    body: item
+                }).then( 
+                    function(response) {
+                        $("button").prop('disabled', false);
+                        item.insert = false;
+                        Vue.set(item, 'id', response.data.id);
+                        //this.fetchItems();
+                    }, function(response) {
+                       
+                    }
+                )
+            },
+
+            itemEdit: function(item) {
+                item.editing = true;
+                item.oldContent = item.content;
+                item.oldDate = item.date;
+                item._method = "PUT";
+                $("button").prop('disabled', true);
+            },
+
+            editCancel: function(item) {
+                item.editing = false;
+                item.content = item.oldContent;
+                item.date = item.oldDate;
+                $("button").prop('disabled', false);
+            },
+
+            editUpdate: function(item) {
+                var url = '/schedule/' + item.id;
+                this.$http({
+                    url: url,
+                    method: 'PUT',
+                    body: item
+                }).then( 
+                    function(response) {
+                        item.editing = false;
+                        $("button").prop('disabled', false);
+                    }, function(response) {
+                       
+                    }
+                )
+            },
+
+            itemDelete: function(item) {
+                var url = '/schedule/' + item.id;
+                this.$http({
+                    url: url,
+                    method: 'DELETE',
+                }).then( 
+                    function(response) {
+                        this.$parent.schedules.$remove(item);
+                    }, function(response) {
+                       
+                    }
+                )
+            },
+        }
+    })
+
+
+    var vm = new Vue({
+        el: 'body',
+        data: {
+            search: '',
+            schedules: [],
+        },
+        computed: {
+            
+        },
+        methods: {
+            
+        },
+    })
+</script>
+
+</html>
