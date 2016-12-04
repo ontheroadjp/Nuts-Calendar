@@ -3,7 +3,7 @@
 ## Install
 
 ```bash
-git clonehttps://github.com/nutsllc/Nuts-Calendar.git
+git clone https://github.com/ontheroadjp/Nuts-Calendar.git
 cd Nuts-Calendar/laravel
 touch database/database.SQLite
 php artisan migrate
