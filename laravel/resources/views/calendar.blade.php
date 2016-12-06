@@ -101,7 +101,7 @@
             <div class="form-group">
                 <button
                     class="btn btn-primary"
-                    @click="this.is_insert_mode = !this.is_insert_mode"
+                    @click="this.is_insert_mode = !this.is_insert_mode, this.inserting_cell = ''"
                 >
                     @{{ this.is_insert_mode ? "Insert mode" : "Normal mode" }}
                 </button>
@@ -140,8 +140,19 @@
                     <td
                         class="day-@{{ day_index + 1 }}-@{{ member_index }}"
                         v-for="(member_index, members) in day.events"
-                        @click="insertClick('.day-' + (this.day_index + 1) + '-' + this.member_index)"
+                        @click="insertClick('day-' + (this.day_index + 1) + '-' + this.member_index)"
                     >
+
+                        <template v-if="'day-@{{ day_index + 1 }}-@{{ member_index }}' == this.inserting_cell">
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="New Event here.."
+                                v-focus
+                            >
+                            <button class="glyphicon glyphicon-remove"></button>
+                            <button class="glyphicon glyphicon-upload"></button>
+                        </template>
 
 <!--
 alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
@@ -182,7 +193,7 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                                 </span>
 
                                 <!-- edit form -->
-                                <span v-if="!is_insert_mode && event.editing" >
+                                <template v-if="!is_insert_mode && event.editing" >
                                     <input
                                         type="text"
                                         class="form-control"
@@ -191,15 +202,24 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                                         v-focus
                                     >
                                     <button class="glyphicon glyphicon-upload"></button>
-                                </span>
+                                </template>
 
                             </span><!-- // EDIT MODE -->
 
                         </div><!-- // event -->
 
-                        <div>
-                            <strong>HOGEHOGE</strong>
-                        </div>
+                        <!-- insert new event form -->
+                        <template v-if="'day-' + (this.day_index + 1) + '-' + this.member_index == this.inserting_cell">
+                            <div class="form-inline">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="New Event here.."
+                                    v-focus
+                                >
+                                <button class="glyphicon glyphicon-upload"></button>
+                            </div>
+                        </template>
 
                     </td>
 
@@ -264,28 +284,9 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                 });
             },
 
-            insertClick: function(class_name) {
-                if( this.is_insert_mode && this.inserting_cell == '' ) {
-                    var html = (function () {/*
-                        <div class="form-inline">
-                            <input
-                                type="text"
-                                class="form-control"
-                                placeholder="New Event here.."
-                                v-focus
-                            >
-                            <button class="glyphicon glyphicon-remove"></button>
-                            <button class="glyphicon glyphicon-upload"></button>
-                        </div>
-                     */})
-                     .toString()
-                     .match(/(?:\/\*(?:[\s\S]*?)\*\/)/)
-                     .pop()
-                     .replace(/^\/\*/, "")
-                     .replace(/\*\/$/, "");
-
-                    this.inserting_cell = class_name;
-                    $(class_name).append(html);
+            insertClick: function(cell) {
+                if( this.is_insert_mode ) {
+                    this.inserting_cell = cell;
                 }
             },
 
