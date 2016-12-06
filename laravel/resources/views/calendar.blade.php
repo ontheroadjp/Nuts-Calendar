@@ -2,6 +2,7 @@
 <html lang="ja" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Family Calendar</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
@@ -47,6 +48,10 @@
                 {!! $errors->first('','<span class="help-block">:message</span>') !!}
             </div>月
 
+            <div class="form-group">
+                <button class="btn btn-primary">Add Event</button>
+            </div>
+
         </div><!-- // .fort-group .form-inline -->
 
     </div><!-- // col-md-12 -->
@@ -65,29 +70,38 @@
                 </thead>
                 <tbody>
                     <tr v-for="day in calendar">
-                        <td>@{{ day.date }}</td>
+                        <td @click="day.info['key'] = true,console.log('insert')">@{{ day.date }}</td>
                         <td v-for="members in day.events">
 
-                            <span v-for="event in members" v-show="!event.editing" @click="event.editing = true">
+                            <div v-for="(index, event) in members" class="form-inline" @mouseout="event.is_hover = false">
 
-                                    @{{ event.content }}<br>
+                                <span v-show="!event.editing" @mouseover="event.is_hover = true">
 
-                            </span>
+                                    <span @click="event.editing = true">
+                                        @{{ event.content }}
+                                    </span>
 
-                            <span v-for="event in members" v-show="event.editing">
+                                    <span v-show="event.is_hover">
+                                        <button class=" glyphicon glyphicon-trash" @click="deleteEvent(members, event, index)"></button>
+                                    </span>
 
-                                    <div class="form-group {{ $errors->has('') ? 'has-error' : '' }}">
-                                        <div class="input-group">
-                                            <input
-                                                type="text"
-                                                class="form-control"
-                                                v-model="event.content"
-                                            >
-                                        </div>
-                                        {!! $errors->first('','<span class="help-block">:message</span>') !!}
-                                    </div>
 
-                            </span>
+                                </span>
+
+                                <span v-if="event.editing" >
+                                    <input type="text" class="form-control" @blur="event.editing = false" v-model="event.content" v-focus>
+                                    <button class="glyphicon glyphicon-refresh"></button>
+                                    <!-- <button class="glyphicon glyphicon-remove"></button> -->
+                                </span>
+
+                                <span v-if="day.info['key']" >
+                                    <br><input type="text" class="form-control" @blur="event.editing = false" v-model="event.content">
+                                    <button class="glyphicon glyphicon-refresh"></button>
+                                    <!-- <button class="glyphicon glyphicon-remove"></button> -->
+                                </span>
+
+                            </div>
+
                         </td>
                     </tr>
                 </tbody>
@@ -101,9 +115,20 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js"></script>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script> -->
 <script src="//cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
 <script>
 var now = new Date();
+    Vue.directive('focus', {
+        update: function () {
+            console.log('v-focus update!');
+            var object = this.el;
+            Vue.nextTick(function() {
+                object.focus();
+            });
+        }
+    });
+
     Vue.component('calendar', {
 
         template: "#calendar",
@@ -123,22 +148,46 @@ var now = new Date();
                     url: '/api/calendar/' + this.year + '/' + this.month,
                     method: 'GET'
                 }).then( function(response) {
-                    var calendarReady = response.data.days.map(function(item) {
-                        item.editing = false;
-                        return item;
-                    })
-                    this.calendar = calendarReady;
+                    //var calendarReady = response.data.days.map(function(item) {
+                    //    item.editing = false;
+                    //    return item;
+                    //})
+                    //this.calendar = calendarReady;
+                    this.calendar = response.data.days;
                     this.members = response.data.members;
-                    //this.calendar = response.data;
                 }, function(response) {
 
                 });
+            },
+
+            deleteEvent: function(members, event, index) {
+                var url = '/api/event/' + event.id;
+                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
+                this.$http({
+                    url: url,
+                    method: 'DELETE',
+                }).then(
+                    function(response) {
+                        console.log('success: delete event (id:event.id)');
+                        members.splice(index, 1);
+                    }, function(response) {
+                        alert('error');
+                    }
+                )
+            },
+
+            editCancel: function() {
+                this.is_hover = false;
+                this.editing = false;
             }
         },
 
+        watch: function() {
+
+        },
 
         ready: function() {
-            this.fetchCalendar()
+            this.fetchCalendar();
         }
     })
 
@@ -154,6 +203,10 @@ var now = new Date();
 
         },
     })
+
+//jQuery(function ($) {
+//});
+
 
 </script>
 </html>

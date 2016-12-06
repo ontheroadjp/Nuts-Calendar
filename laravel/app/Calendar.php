@@ -13,6 +13,24 @@ class Calendar extends Model
         'date'
     ];
 
+    protected $appends = [
+        'flags'
+    ];
+
+    public function getFlagsAttribute() {
+        return [
+            'is_saturday' => false,
+            'is_sunday' => false,
+            'is_holiday' => false,
+            'is_insert_mode' => false
+        ];
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class,'date','date');
+    }
+
     public function fetch($year, $month)
     {
         $calendar = $this->specificMonth($year,$month);
@@ -48,7 +66,10 @@ class Calendar extends Model
                 ->flatten();
 
             for( $i=0; $i < count($diff); $i++ ) {
-                $group_by->put($diff[$i], array(['editing' => false]));
+                $group_by->put($diff[$i], array([
+                    'editing' => false,
+                    'is_hover' => false
+                ]));
             }
 
             $days[] = collect($calendar[$n])
@@ -59,8 +80,4 @@ class Calendar extends Model
         return $days;
     }
 
-    public function events()
-    {
-        return $this->hasMany(Event::class,'date','date');
-    }
 }

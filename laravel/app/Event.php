@@ -11,10 +11,15 @@ class Event extends Model
     ];
 
     protected $appends = [
-        'editing'
+        'editing', 'is_hover'
     ];
 
     public function getEditingAttribute()
+    {
+        return false;
+    }
+
+    public function getIsHoverAttribute()
     {
         return false;
     }
@@ -37,6 +42,4 @@ class Event extends Model
         }
         return $item;
     }
-
-
 }

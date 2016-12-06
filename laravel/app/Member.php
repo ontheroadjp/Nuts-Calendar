@@ -10,6 +10,14 @@ class Member extends Model
         'name', 'color'
     ];
 
+    protected $apends = [
+        'show_insert_btn'
+    ];
+
+    public function getShowInsertBtnAttribute() {
+        return false;
+    }
+
     public static function findOrAbort($id){
         if (!$item = Member::find($id)) {
             $error = [
