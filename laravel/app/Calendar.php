@@ -19,10 +19,9 @@ class Calendar extends Model
 
     public function getFlagsAttribute() {
         return [
-            'is_saturday' => false,
-            'is_sunday' => false,
-            'is_holiday' => false,
-            'is_insert_mode' => false
+            'is_saturday' => false
+            , 'is_sunday' => false
+            , 'is_holiday' => false
         ];
     }
 

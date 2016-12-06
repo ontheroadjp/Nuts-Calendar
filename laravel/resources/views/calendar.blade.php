@@ -5,7 +5,50 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Family Calendar</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
+    <style>
+        table.calendar {
+            border-collapse: sepalete;
+            border-spacing: 0;
+        }
+        table.calendar th,
+        table.calendar td {
+            /* text-align: center; */
+            /* border: 1px solid; */
+            border-color: #eee #999 #666 #ccc;
+            vertical-align: middle;
+        }
+        /**
+        table.calendar th {
+            font-weight: bold;
+            background: #ccc;
+            padding: 0.5em;
+        }
+        **/
+        table.calendar td {
+            padding: 0.25em;
+        }
+        table.calendar thead td {
+            /* background: #bbb; */
+            border: 0 none;
+        }
+        table.calendar:hover tbody td {
+            color: #ccc;
+            /* background: #ccc; */
+        }
+        table.calendar:hover tbody tr:hover td {
+            color: #666;
+            /* background: #cef; */
+            background: rgba(145, 235, 250, 0.1);
+        }
+        table.calendar:hover tbody tr:hover th {
+            background: #eee;
+        }
+        table.calendar:hover tbody:hover td:hover {
+            opacity: 1;
+            /* color: #fff; */
+            background: rgba(145, 235, 250, 0.5);
+        }
+    </style>
 <body>
 
 <div class="container">
@@ -21,17 +64,24 @@
 
         <div class="form-group form-inline">
 
-            <div class="form-group {{ $errors->has('') ? 'has-error' : '' }}">
-                <select class="form-control" v-model="year" @change="this.fetchCalendar()">
+            <div class="form-group">
+                <select
+                    class="form-control"
+                    v-model="year"
+                    @change="this.fetchCalendar()"
+                >
                     <option>2015</option>
                     <option>2016</option>
                     <option>2017</option>
                 </select>
-                {!! $errors->first('','<span class="help-block">:message</span>') !!}
             </div>年
 
-            <div class="form-group {{ $errors->has('') ? 'has-error' : '' }}">
-                <select class="form-control" v-model="month" @change="this.fetchCalendar()">
+            <div class="form-group">
+                <select
+                    class="form-control"
+                    v-model="month"
+                    @change="this.fetchCalendar()"
+                >
                     <option>01</option>
                     <option>02</option>
                     <option>03</option>
@@ -45,11 +95,16 @@
                     <option>11</option>
                     <option>12</option>
                 </select>
-                {!! $errors->first('','<span class="help-block">:message</span>') !!}
             </div>月
 
+            <!-- insert mode toggle button -->
             <div class="form-group">
-                <button class="btn btn-primary">Add Event</button>
+                <button
+                    class="btn btn-primary"
+                    @click="this.is_insert_mode = !this.is_insert_mode"
+                >
+                    @{{ this.is_insert_mode ? "Insert mode" : "Normal mode" }}
+                </button>
             </div>
 
         </div><!-- // .fort-group .form-inline -->
@@ -61,50 +116,95 @@
     <div class="col-md-12">
         <div class="panel panel-default">
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th v-for="member in members">@{{ member.name }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="day in calendar">
-                        <td @click="day.info['key'] = true,console.log('insert')">@{{ day.date }}</td>
-                        <td v-for="members in day.events">
+            <!-- table -->
+            <table
+                class="table table-striped"
+                :class="{ calendar: this.is_insert_mode }"
+            >
 
-                            <div v-for="(index, event) in members" class="form-inline" @mouseout="event.is_hover = false">
+            <!-- table header -->
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th v-for="member in members">@{{ member.name }}</th>
+                </tr>
+            </thead>
 
-                                <span v-show="!event.editing" @mouseover="event.is_hover = true">
+            <!-- table body -->
+            <tbody>
+                <tr
+                    class="day-@{{ day_index + 1 }}"
+                    v-for="(day_index, day) in calendar"
+                >
+                    <td>@{{ day.date }}</td>
+                    <td
+                        class="day-@{{ day_index + 1 }}-@{{ member_index }}"
+                        v-for="(member_index, members) in day.events"
+                        @click="insertClick('.day-' + (this.day_index + 1) + '-' + this.member_index)"
+                    >
 
-                                    <span @click="event.editing = true">
-                                        @{{ event.content }}
-                                    </span>
+<!--
+alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
+-->
+                        <div
+                            v-for="(event_index, event) in members"
+                            class="form-inline"
+                            @mouseout="event.is_hover = false"
+                        >
 
-                                    <span v-show="event.is_hover">
-                                        <button class=" glyphicon glyphicon-trash" @click="deleteEvent(members, event, index)"></button>
-                                    </span>
+                            <!-- VIEW MODE -->
+                            <span
+                                v-show="!event.editing"
+                                @mouseover="event.is_hover = true"
+                            >
 
-
+                                <!-- event content -->
+                                <span @click="editClick(event)">
+                                    @{{ event.content }}
                                 </span>
 
-                                <span v-if="event.editing" >
-                                    <input type="text" class="form-control" @blur="event.editing = false" v-model="event.content" v-focus>
-                                    <button class="glyphicon glyphicon-refresh"></button>
-                                    <!-- <button class="glyphicon glyphicon-remove"></button> -->
+                                <!-- trush button -->
+                                <span v-show="event.is_hover && !is_insert_mode">
+                                    <button
+                                        class=" glyphicon glyphicon-trash"
+                                        @click="deleteEvent(members, event, event_index)"
+                                    ></button>
                                 </span>
 
-                                <span v-if="day.info['key']" >
-                                    <br><input type="text" class="form-control" @blur="event.editing = false" v-model="event.content">
-                                    <button class="glyphicon glyphicon-refresh"></button>
-                                    <!-- <button class="glyphicon glyphicon-remove"></button> -->
+                            </span><!-- // VIEW MODE -->
+
+                            <!-- EDIT MODE -->
+                            <span v-show="event.editing">
+
+                                <!-- event content -->
+                                <span v-show="is_insert_mode">
+                                    @{{ event.content }}
                                 </span>
 
-                            </div>
+                                <!-- edit form -->
+                                <span v-if="!is_insert_mode && event.editing" >
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        @blur="event.editing = false"
+                                        v-model="event.content"
+                                        v-focus
+                                    >
+                                    <button class="glyphicon glyphicon-upload"></button>
+                                </span>
 
-                        </td>
-                    </tr>
-                </tbody>
+                            </span><!-- // EDIT MODE -->
+
+                        </div><!-- // event -->
+
+                        <div>
+                            <strong>HOGEHOGE</strong>
+                        </div>
+
+                    </td>
+
+                </tr>
+            </tbody>
             </table>
 
         </div><!-- // .panel -->
@@ -117,8 +217,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js"></script>
 <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script> -->
 <script src="//cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+
 <script>
-var now = new Date();
+    var now = new Date();
+
     Vue.directive('focus', {
         update: function () {
             console.log('v-focus update!');
@@ -138,7 +240,9 @@ var now = new Date();
                 calendar: [],
                 members: [],
                 year: now.getFullYear(),
-                month: now.getMonth() + 1
+                month: now.getMonth() + 1,
+                is_insert_mode: false,
+                inserting_cell: ''
             }
         },
 
@@ -158,6 +262,37 @@ var now = new Date();
                 }, function(response) {
 
                 });
+            },
+
+            insertClick: function(class_name) {
+                if( this.is_insert_mode && this.inserting_cell == '' ) {
+                    var html = (function () {/*
+                        <div class="form-inline">
+                            <input
+                                type="text"
+                                class="form-control"
+                                placeholder="New Event here.."
+                                v-focus
+                            >
+                            <button class="glyphicon glyphicon-remove"></button>
+                            <button class="glyphicon glyphicon-upload"></button>
+                        </div>
+                     */})
+                     .toString()
+                     .match(/(?:\/\*(?:[\s\S]*?)\*\/)/)
+                     .pop()
+                     .replace(/^\/\*/, "")
+                     .replace(/\*\/$/, "");
+
+                    this.inserting_cell = class_name;
+                    $(class_name).append(html);
+                }
+            },
+
+            editClick: function(event) {
+                if( !this.is_insert_mode ) {
+                    event.editing = true;
+                }
             },
 
             deleteEvent: function(members, event, index) {
@@ -203,10 +338,6 @@ var now = new Date();
 
         },
     })
-
-//jQuery(function ($) {
-//});
-
 
 </script>
 </html>
