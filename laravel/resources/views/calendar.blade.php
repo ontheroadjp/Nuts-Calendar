@@ -6,60 +6,32 @@
     <title>Family Calendar</title>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
-        table.calendar {
-            border-collapse: sepalete;
-            border-spacing: 0;
-        }
-        table.calendar th,
-        table.calendar td {
-            /* text-align: center; */
-            /* border: 1px solid; */
-            border-color: #eee #999 #666 #ccc;
-            vertical-align: middle;
-        }
-        /**
-        table.calendar th {
-            font-weight: bold;
-            background: #ccc;
-            padding: 0.5em;
-        }
-        **/
-        table.calendar td {
-            padding: 0.25em;
-        }
-        table.calendar thead td {
-            /* background: #bbb; */
-            border: 0 none;
-        }
-        table.calendar:hover tbody td {
+        table.calendar tbody td {
             color: #ccc;
-            /* background: #ccc; */
+        }
+        table.calendar tbody tr:hover th {
+            background: #eee;
         }
         table.calendar:hover tbody tr:hover td {
             color: #666;
-            /* background: #cef; */
             background: rgba(145, 235, 250, 0.1);
-        }
-        table.calendar:hover tbody tr:hover th {
-            background: #eee;
         }
         table.calendar:hover tbody:hover td:hover {
             opacity: 1;
-            /* color: #fff; */
             background: rgba(145, 235, 250, 0.5);
         }
     </style>
 <body>
-
 <div class="container">
+
     <h1>Family Calendar</h1>
     <calendar></calendar>
-</div><!-- // .container -->
 
+</div><!-- // .container -->
 </body>
 
 <template id="calendar">
-<div class="row">
+<div id="ym-selector" class="row">
     <div class="col-md-12">
 
         <div class="form-group form-inline">
@@ -113,11 +85,28 @@
 </div><!-- // .row -->
 
 <div class="row">
-    <div class="col-md-12">
+
+    <div id="sidebar" class="col-md-3 pc-side-nav">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+                <span style="font-size: 6em;">@{{ month_us[month] }}</span>
+                <!-- <span style="font-size: 3em;">月</span> -->
+            </div><!-- // .panel-body -->
+
+            <div class="panel-body">
+                <span style="float: right; font-size: 2em;">@{{ year }}</span>
+            </div><!-- // .panel-body -->
+
+        </div><!-- // .panel -->
+    </div><!-- // col-md-2 -->
+
+    <div id="main" class="col-md-9">
         <div class="panel panel-default">
 
             <!-- table -->
             <table
+                id="family-calendar"
                 class="table table-striped"
                 :class="{ calendar: this.is_insert_mode }"
             >
@@ -151,12 +140,9 @@
                                 v-focus
                             >
                             <button class="glyphicon glyphicon-remove"></button>
-                            <button class="glyphicon glyphicon-upload"></button>
+                            <button class="glyphicon glyphicon-floppy-disk"></button>
                         </template>
 
-<!--
-alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
--->
                         <div
                             v-for="(event_index, event) in members"
                             class="form-inline"
@@ -187,7 +173,7 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                             <!-- EDIT MODE -->
                             <span v-show="event.editing">
 
-                                <!-- event content -->
+                                <!-- event content for insert mode -->
                                 <span v-show="is_insert_mode">
                                     @{{ event.content }}
                                 </span>
@@ -197,11 +183,10 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                                     <input
                                         type="text"
                                         class="form-control"
-                                        @blur="event.editing = false"
+                                        @blur="this.editUpdate(event)"
                                         v-model="event.content"
                                         v-focus
                                     >
-                                    <button class="glyphicon glyphicon-upload"></button>
                                 </template>
 
                             </span><!-- // EDIT MODE -->
@@ -217,7 +202,7 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                                     placeholder="New Event here.."
                                     v-focus
                                 >
-                                <button class="glyphicon glyphicon-upload"></button>
+                                <button class="glyphicon glyphicon-floppy-disk"></button>
                             </div>
                         </template>
 
@@ -232,11 +217,85 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
 </div><!-- // .row -->
 </template>
 
+<!-- core -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js"></script>
 <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script> -->
 <script src="//cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+<style>
+.pc-side-nav-fixed {
+	top: 2%;
+    width: 21.8%;
+	position: fixed;
+}
+.thead-fixed {
+	top: 2%;
+    width: 100%;
+	position: fixed;
+}
+</style>
+
+<script>
+// PC用のサイドバー固定
+(function(){
+	 $(function(){
+
+         console.log(this);
+
+		 var fix = $('.pc-side-nav'), //固定したいコンテンツ
+		 side = $('#sidebar'), //サイドバーのID
+		 main = $('#main'), //固定する要素を収める範囲
+		 sideTop = side.offset().top;
+		 fixTop = fix.offset().top,
+		 mainTop = main.offset().top,
+		 w = $(window);
+
+         thead = $('thead');
+
+		 var adjust = function(){
+			 fixTop = fix.css('position') === 'static' ? sideTop + fix.position().top : fixTop;
+			 var fixHeight = fix.outerHeight(true),
+			 mainHeight = main.outerHeight(),
+			 winTop = w.scrollTop();
+
+			 if( winTop + fixHeight > mainTop + mainHeight) {
+				fix.removeClass('pc-side-nav-fixed');
+				main.removeClass('col-md-push-3');
+				thead.removeClass('thead-fixed');
+			 } else if(winTop >= fixTop){
+				fix.addClass('pc-side-nav-fixed');
+				main.addClass('col-md-push-3');
+				thead.addClass('thead-fixed');
+			 } else {
+				fix.removeClass('pc-side-nav-fixed');
+				main.removeClass('col-md-push-3');
+				thead.removeClass('thead-fixed');
+			 }
+		 }
+
+		 w.on('scroll', adjust);
+	 });
+})(jQuery);
+
+    //(function(window, $) {
+    //    'use strict';
+    //    $(function() {
+    //        setTimeout(function() {
+    //            $('#sidebar').affix({
+    //                offset: {
+    //                    top: function() {
+    //                        return (this.top = $('header').outerHeight(true));
+    //                    },
+    //                    bottom: function() {
+    //                        return (this.bottom = $('footer').outerHeight(true));
+    //                    }
+    //                }
+    //            })
+    //        }, -50);
+    //    });
+    //})(window, jQuery);
+</script>
 
 <script>
     var now = new Date();
@@ -262,7 +321,21 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                 year: now.getFullYear(),
                 month: now.getMonth() + 1,
                 is_insert_mode: false,
-                inserting_cell: ''
+                inserting_cell: '',
+                month_us: {
+                    '01': 'Jan',
+                    '02': 'Feb',
+                    '03': 'Mar',
+                    '04': 'Apr',
+                    '05': 'May',
+                    '06': 'Jun',
+                    '07': 'Jul',
+                    '08': 'Aug',
+                    '09': 'Sep',
+                    '10': 'Oct',
+                    '11': 'Nov',
+                    '12': 'Dec'
+                }
             }
         },
 
@@ -294,6 +367,24 @@ alert('行:'+this.parentNode.rowIndex+'列:'+this.cellIndex)
                 if( !this.is_insert_mode ) {
                     event.editing = true;
                 }
+            },
+
+            editUpdate: function(event) {
+                var url = '/api/event/' + event.id;
+                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+                this.$http({
+                    url: url,
+                    method: 'PATCH',
+                    body: event
+                }).then(
+                    function(response) {
+                        console.log('updated!');
+                        event.editing = false;
+                        $("button").prop('disabled', false);
+                    }, function(response) {
+                        alert('error');
+                    }
+                )
             },
 
             deleteEvent: function(members, event, index) {
