@@ -11,36 +11,24 @@
 <body>
 <div class="container">
 
-    <nuts-modal v-show="isActive">
-        <div class="card is-fullwidth">
-          <header class="card-header">
-            <p class="card-header-title">
-              Component
-            </p>
-            <a class="card-header-icon">
-              <i class="fa fa-angle-down"></i>
-            </a>
-          </header>
-          <div class="card-content">
-            <div class="content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
-              <br>
-              <small>11:09 PM - 1 Jan 2016</small>
-            </div>
-          </div>
-          <footer class="card-footer">
-            <a class="card-footer-item">Save</a>
-            <a class="card-footer-item">Edit</a>
-            <a class="card-footer-item">Delete</a>
-          </footer>
-        </div>
-    </nuts-modal>
-
     <h1>Family Calendar</h1>
     <div style="font-size: 2.5em;">
         <nuts-ym-field year-from="2015" year-period="6"></nuts-ym-field>
     </div>
 
+    <nuts-alert></nuts-alert>
+
+    <nuts-members-modal name="members-modal" listen="open-members-modal">
+        <nuts-member-tabs></nuts-member-tabs>
+        <a slot="footer" class="card-footer-item">Update</a>
+        <a slot="footer" class="card-footer-item">Delete</a>
+    </nuts-members-modal>
+
+    <nuts-members-modal-button emit="open-members-modal">
+        Add Member
+    </nuts-members-modal-button>
+
+    <!-- Sidebar toggle button -->
     <div class="row" style="margin-bottom: 15px;">
         <div class="col-md-12">
             <div style="float:right;">
@@ -54,6 +42,7 @@
         </div>
     </div>
 
+    <!-- Table mode toggle button -->
     <div class="row" style="margin-bottom: 15px;">
         <div class="col-md-12">
             <div style="float:right;">
@@ -67,10 +56,12 @@
         </div>
     </div>
 
+    <!-- Calendar table -->
     <div class="row">
         <calendar></calendar>
     </div>
 
+    <!-- Sidebar -->
     <nuts-sidebar>
         <nuts-sidebar-toggle-button
             type="btn-primary"
@@ -101,7 +92,7 @@
 
 <!-- jquery & bootstrap -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
 <!-- vue.js -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js"></script>
@@ -111,8 +102,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sidebar/3.3.2/jquery.sidebar.min.js"></script>
 
 <!-- main -->
-<script>
-    var nutsBus = new Vue();
-</script>
 <script src="/js/main.js"></script>
 </html>

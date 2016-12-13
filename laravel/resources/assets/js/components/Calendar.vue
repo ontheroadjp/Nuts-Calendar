@@ -12,11 +12,13 @@
     <!-- table header -->
     <thead>
         <tr>
-            <th>Date</th>
+            <th :style="first_column_width">Date</th>
             <th
-                v-for="member in members"
+                v-for="member in $parent.members"
                 data-toggle="modal"
                 data-target="#nuts-modal"
+                :style="column_width"
+                @click="clickHeader($index + 1)"
             >{{ member.name }}</th>
         </tr>
     </thead>
@@ -25,25 +27,14 @@
     <tbody>
         <tr
             class="day-{{ day_index + 1 }}"
-            v-for="(day_index, day) in calendar"
+            v-for="(day_index, day) in $parent.calendar"
         >
             <td>{{ day.date }}</td>
             <td
                 class="day-{{ day_index + 1 }}-{{ member_index }}"
                 v-for="(member_index, members) in day.events"
-                @click="doInsert('day-' + (this.day_index + 1) + '-' + this.member_index)"
+                @click="this.beInserting('day-' + (this.day_index + 1) + '-' + this.member_index)"
             >
-
-                <template v-if="'day-{{ day_index + 1 }}-{{ member_index }}' == this.inserting_cell">
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="New Event here.."
-                        v-focus
-                    >
-                    <button class="glyphicon glyphicon-remove"></button>
-                    <button class="glyphicon glyphicon-floppy-disk"></button>
-                </template>
 
                 <div
                     v-for="(event_index, event) in members"
@@ -57,14 +48,14 @@
                         @mouseover="event.is_hover = true"
                     >
 
-                        <span @click="doEdit(event)">
+                        <span @click="beEditing(event)">
                             {{ event.content }}
                         </span>
 
                         <span v-show="event.is_hover && !is_insert_mode">
                             <button
                                 class=" glyphicon glyphicon-trash"
-                                @click="deleteEvent(members, event, event_index)"
+                                @click="$root.deleteEvent(members, event, event_index)"
                             ></button>
                         </span>
 
@@ -81,7 +72,8 @@
                             <input
                                 type="text"
                                 class="form-control"
-                                @blur="this.editUpdate(event)"
+                                @blur="$root.editUpdateEvent(event)"
+                                @keyup.enter="$root.editUpdateEvent(event)"
                                 v-model="event.content"
                                 v-focus
                             >
@@ -97,10 +89,12 @@
                         <input
                             type="text"
                             class="form-control"
+                            v-model="new_event_content"
                             placeholder="New Event here.."
+                            @blur="$root.insertEvent(this.day_index,this.member_index)"
+                            @keyup.enter="$root.insertEvent(this.day_index,this.member_index)"
                             v-focus
                         >
-                        <button class="glyphicon glyphicon-floppy-disk"></button>
                     </div>
                 </template><!-- // INSERT MODE -->
 
@@ -115,112 +109,65 @@
 </template>
 
 <script>
-    //var Vue = require('vue');
-    //Vue.use(VueResource); 
     var now = new Date();
     export default {
 
         data() {
             return {
-                calendar: [],
-                members: [],
-                //shared: root_data,
                 year: now.getFullYear(),
                 month: now.getMonth() + 1,
                 is_insert_mode: false,
                 inserting_cell: '',
+                new_event_content: '',
+                first_column_width: {
+                    width: '5%'
+                }
+            }
+        },
+
+        computed: {
+            column_width: function() {
+                var length = Object.keys(this.$parent.members).length;
+                return {
+                    width: (100 - parseInt(this.first_column_width.width)) / length + '%'
+                }
             }
         },
 
         methods: {
 
-            // Fetch
-            fetchCalendar() {
-                this.$http({
-                    url: '/api/calendar/' + this.year + '/' + this.month,
-                    method: 'GET'
-                }).then( function(response) {
-                    //var calendarReady = response.data.days.map(function(item) {
-                    //    item.editing = false;
-                    //    return item;
-                    //})
-                    //this.calendar = calendarReady;
-                    this.calendar = response.data.days;
-                    this.members = response.data.members;
-                }, function(response) {
-
-                });
-            },
-
-            // Insert: click
-            doInsert(cell) {
+            // Insert: select
+            beInserting(cell) {
                 if( this.is_insert_mode ) {
                     this.inserting_cell = cell;
                 }
             },
 
             // Edit: select
-            doEdit(event) {
+            beEditing(event) {
                 if( !this.is_insert_mode ) {
+                    event.oldValue = event.content;
                     event.editing = true;
                 }
             },
 
-            // Edit: update
-            editUpdate(event) {
-                var url = '/api/event/' + event.id;
-                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-                this.$http({
-                    url: url,
-                    method: 'PATCH',
-                    body: event
-                }).then(
-                    function(response) {
-                        console.log('updated!');
-                        event.editing = false;
-                        $("button").prop('disabled', false);
-                    }, function(response) {
-                        alert('error');
-                    }
-                )
-            },
-
-            // Edit: cancel
-            editCancel() {
-                this.is_hover = false;
-                this.editing = false;
-            },
-
-            // Delete
-            deleteEvent(members, event, index) {
-                var url = '/api/event/' + event.id;
-                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
-                this.$http({
-                    url: url,
-                    method: 'DELETE',
-                }).then(
-                    function(response) {
-                        console.log('success: delete event (id:event.id)');
-                        members.splice(index, 1);
-                    }, function(response) {
-                        alert('error');
-                    }
-                )
-            },
-
+            clickHeader(index) {
+                this.$root.$emit('member_tab_selected', index);
+                this.$root.$emit('open-members-modal', index);
+            }
         },
 
         watch: {
             'year': {
                 handler: function(new_val, old_val) {
-                    this.fetchCalendar()
+                    this.$parent.fetchCalendar(this.year, this.month)
                 },
                 deep: true
             },
 
             'month': {
                 handler: function(new_val, old_val) {
-                    this.fetchCalendar()
+                    this.$parent.fetchCalendar(this.year, this.month)
                 },
                 deep: true
             }
@@ -229,20 +176,20 @@
         created() {
             const self = this;
 
-            nutsBus.$on('ym-change', function(year, month) {
-                console.log('nuts-ym-field: ' + year + ':' + month);
+            this.$root.$on('ym-change', function(year, month) {
+                console.log('$on@Calendar - ym-change (' + year + ', ' + month + ')');
                 self.year = year;
                 self.month = month;
             });
 
-            nutsBus.$on('nuts-change-table-mode', function(is_on) {
-                console.log(is_on);
+            this.$root.$on('nuts-change-table-mode', function(is_on) {
+                console.log('$on@Calendar - nuts-change-table-mode (' + is_on + ')');
                 self.is_insert_mode = is_on;
             });
         },
 
         ready() {
-            this.fetchCalendar();
+            this.$parent.fetchCalendar(this.year, this.month);
         }
     }
 </script>

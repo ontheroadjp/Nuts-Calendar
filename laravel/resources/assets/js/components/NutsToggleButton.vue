@@ -45,7 +45,7 @@
         },
         methods: {
             fire() {
-                nutsBus.$emit(this.emit, !this.is_on);
+                this.$root.$emit(this.emit, !this.is_on);
             },
             toggleState() {
                 this.is_on = !this.is_on
@@ -53,7 +53,7 @@
         },
         created() {
             const self = this;
-            nutsBus.$on(this.emit, function() {
+            this.$root.$on(this.emit, function() {
                 console.log('$on@NutsToggleButton: ' + self.emit);
                 self.toggleState();
             });

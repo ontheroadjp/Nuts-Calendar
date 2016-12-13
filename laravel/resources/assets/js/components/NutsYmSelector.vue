@@ -48,12 +48,12 @@
         },
         methods: {
             changeValue() {
-                nutsBus.$emit('ym-change', this.year, this.month);
+                this.$root.$emit('ym-change', this.year, this.month);
             }
         },
         created() {
             const self = this;
-            nutsBus.$on('ym-change', function(year, month) {
+            this.$root.$on('ym-change', function(year, month) {
                 console.log('nuts-ym-field: ' + year + ':' + month);
                 self.year = year;
                 self.month = month;

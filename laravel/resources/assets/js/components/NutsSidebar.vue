@@ -66,24 +66,23 @@
                 $(".nuts-sidebar." + this.position).trigger("sidebar:" + this.action, [{ speed: 200 }]);
 
                 $(".nuts-sidebar." + this.position).on("sidebar:opened", function () {
-                    nutsBus.$emit('nuts-sidebar-opened');
+                    this.$root.$emit('nuts-sidebar-opened');
                 });
 
                 $(".nuts-sidebar." + this.position).on("sidebar:closed", function () {
-                    nutsBus.$emit('nuts-sidebar-closed');
+                    this.$root.$emit('nuts-sidebar-closed');
                 });
             }
         },
         created() {
             const self = this;
-            nutsBus.$on('nuts-sidebar-toggle', function() {
+            this.$root.$on('nuts-sidebar-toggle', function() {
                 console.log('$on@NutsSidebar: nuts-sidebar-toggle');
                 self.toggle()
             });
         },
         ready() {
             var sides = ["left", "top", "right", "bottom"];
-            //for (var i = 0; i < sides.length; ++i) {
             for (var i = 0; i < sides.length; i++) {
                 var cSide = sides[i];
                 $(".nuts-sidebar." + cSide).sidebar({side: cSide});

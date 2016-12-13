@@ -2,9 +2,14 @@
 import calendar from './components/Calendar.vue';
 import nutsSidebar from './components/NutsSidebar.vue';
 import nutsYmSelector from './components/NutsYmSelector.vue';
+import nutsButton from './components/NutsButton.vue';
 import nutsToggleButton from './components/NutsToggleButton.vue';
 import nutsYmField from './components/NutsYmField.vue';
+import nutsAlert from './components/NutsAlert.vue';
 import nutsModal from './components/NutsModal.vue';
+import fcMemberTabs from './components/FcMemberTabs.vue';
+
+
 
 // directives
 //import nutsFocus from './directives/NutsFocus.vue';
@@ -31,9 +36,114 @@ var vm = new Vue({
         'nuts-ym-selector': nutsYmSelector,
         'nuts-table-mode-toggle-button': nutsToggleButton,
         'nuts-ym-field': nutsYmField,
-        'nuts-modal': nutsModal,
+        'nuts-alert': nutsAlert,
+        'nuts-members-modal': nutsModal,
+        'nuts-members-modal-button': nutsButton,
+        'nuts-member-tabs': fcMemberTabs,
     },
-//    directives: {
-//        'focus': nutsFocus,
-//    }
+
+    data: {
+        calendar: [],
+        members: []
+    },
+
+    watch: {
+        'calendar': {
+            handler: function(new_val, old_val) {
+                console.log('fire: calendar_fetched');
+                this.$emit('calendar_fetched', this.year, this.month)
+            },
+            deep: true
+        },
+
+        'members': {
+            handler: function(new_val, old_val) {
+                console.log('fire: members_fetched');
+                this.$emit('members_fetched', this.year, this.month)
+            },
+            deep: true
+        }
+    },
+
+    methods: {
+
+        // Fetch
+        fetchCalendar: function (year, month) {
+            this.$http({
+                url: '/api/calendar/' + year + '/' + month,
+                method: 'GET'
+            }).then( function(response) {
+                //var calendarReady = response.data.days.map(function(item) {
+                //    item.editing = false;
+                //    return item;
+                //})
+                //this.calendar = calendarReady;
+                this.calendar = response.data.days;
+                this.members = response.data.members;
+            }, function(response) {
+
+            });
+        },
+
+        // Insert: Update
+        insertEvent: function (day, id, content) {
+
+            if( this.new_event_content ) {
+                this.calendar[day].events[id].push({
+                    'content': this.new_event_content,
+                    'editing': false,
+                    'is_hover': false
+                });
+
+                this.new_event_content = '';
+                this.$emit('nuts-alert', 'New Event Added!','is-success');
+            }
+
+                this.inserting_cell = '';
+        },
+
+        // Edit: update
+        editUpdateEvent: function(event) {
+            event.editing = false;
+            if(event.content == event.oldValue) {
+                event.oldValue = '';
+                return
+            }
+
+            event.oldValue = '';
+
+            var url = '/api/event/' + event.id;
+            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+            this.$http({
+                url: url,
+                method: 'PATCH',
+                body: event
+            }).then(
+                function(response) {
+                    console.log('updated!');
+                    this.$emit('nuts-alert', 'Updateed!','is-success');
+                }, function(response) {
+                    alert('error');
+                }
+            )
+        },
+
+        // Delete
+        deleteEvent: function(members, event, index) {
+            var url = '/api/event/' + event.id;
+            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
+            this.$http({
+                url: url,
+                method: 'DELETE',
+            }).then(
+                function(response) {
+                    console.log('success: delete event (id:event.id)');
+                    members.splice(index, 1);
+                    this.$emit('nuts-alert', 'Deletes!','is-success');
+                }, function(response) {
+                    alert('error');
+                }
+            )
+        },
+    },
 });
