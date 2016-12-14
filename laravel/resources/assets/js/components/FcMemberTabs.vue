@@ -5,6 +5,9 @@
                 <li v-for="(index, tab) in tabs" :class="{ 'is-active': index == selected_tab }">
                     <a href="#" @click="selectTab(index)">{{ tab.name }}</a>
                 </li>
+                <li :class="{ 'is-active': selected_tab == column_length() + 1 }">
+                    <a href="#" @click="selectTab(column_length() + 1)">New</a>
+                </li>
             </ul>
         </div><!-- // .tabs -->
     
@@ -35,6 +38,49 @@
             </div>
             
         </div><!-- // ./tab-contents -->
+
+        <footer v-if="!is_new_editing" class="card-footer">
+            <a
+                class="card-footer-item"
+                @click="this.$root.$emit('')"
+                v-show="is_value_changed"
+            >Reset</a>
+
+            <!-- <a
+                class="card-footer-item"
+                @click="this.$root.$emit('member-edit-button')"
+                v-show="is_value_changed"
+            >Save</a> -->
+
+            <a
+                class="card-footer-item"
+                @click="editUpdateMember()"
+                v-show="is_value_changed"
+            >Save</a>
+
+            <a
+                class="card-footer-item"
+                @click="this.$root.$emit('member-delete-button')"
+            >Delete</a>
+
+            <a
+                class="card-footer-item"
+                @click="this.$root.$emit('close-members-modal')"
+            >Cancel</a>
+        </footer>
+
+        <footer v-else class="card-footer">
+            <a
+                class="card-footer-item"
+                @click="this.$root.$emit('member-add-button')"
+            >Add</a>
+
+            <a
+                class="card-footer-item"
+                @click="this.$root.$emit('close-members-modal')"
+            >Cancel</a>
+        </footer>
+
     </div>
 </template>
 
@@ -48,37 +94,93 @@
                     name: '',
                     color: ''
                 },
+                old_values: {
+                    name: '',
+                    color: ''
+                },
             }
         },
 
         props: {
             debug: {
-                type: boolean,
+                type: Boolean,
                 default: false
             }
         },
 
+        computed: {
+            is_new_editing: function() {
+                return this.selected_tab == this.column_length() + 1 ? true : false;
+            },
+
+            is_value_changed: function() {
+                return (this.edit_fields.name != this.old_values.name) ||
+                        (this.edit_fields.color != this.old_values.color);
+            }
+        },
+
         methods: {
+            column_length() {
+                return parseInt(Object.keys(this.tabs).length);
+            },
+
             selectTab(index) {
+                if(index == '') index = this.column_length() + 1;
                 this.selected_tab = parseInt(index);
                 this.setFields();
             },
 
             setFields() {
-                //this.edit_fields.name = this.tabs[this.selected_tab].name;
-                this.tabs[this.selected_tab].name != 'New'
-                    ? this.edit_fields.name = this.tabs[this.selected_tab].name
-                    : this.edit_fields.name = '';
-                this.edit_fields.color = this.tabs[this.selected_tab].color;
+                if(this.selected_tab != this.column_length() + 1) {
+                    this.edit_fields.name = this.tabs[this.selected_tab].name;
+                    this.edit_fields.color = this.tabs[this.selected_tab].color;
+                    this.old_values.name = this.edit_fields.name;
+                    this.old_values.color = this.edit_fields.color;
+                } else {
+                    this.edit_fields.name = '';
+                    this.edit_fields.color = '';
+                    this.old_values.name = '';
+                    this.old_values.color = '';
+                }
             },
 
-            addNewMemberTab() {
-                this.tabs[this.column_length() + 1] = { name: 'New', color: '' };
+
+//            addNewMemberTab() {
+//                this.tabs[this.column_length() + 1] = { name: 'New', color: '' };
+//            },
+
+            // Edit: update
+            editUpdateMember: function() {
+
+                var updated_member = {
+                    name: this.edit_fields.name,
+                    color: this.edit_fields.color
+                };
+
+                var url = '/api/member/' + this.selected_tab;
+                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+                this.$http({
+                    url: url,
+                    method: 'PATCH',
+                    body: updated_member
+                }).then(
+                    function(response) {
+                        this.tabs[this.selected_tab].name = this.edit_fields.name;
+                        this.tabs[this.selected_tab].color = this.edit_fields.color;
+
+                        this.$root.fetchData();
+                        this.setFields();
+
+                        console.log('updated!');
+                        this.$root.$emit('nuts-alert', 'Updateed!', 'is-success');
+                    }, function(response) {
+                        this.edit_fields.name = this.tabs[this.selected_tab].name;
+                        this.edit_fields.color = this.tabs[this.selected_tab].color;
+                        this.$root.$emit('nuts-alert', 'failed - update!', 'is-danger');
+                    }
+                )
             },
 
-            column_length() {
-                return parseInt(Object.keys(this.tabs).length);
-            }
         },
 
         created() {
@@ -87,8 +189,8 @@
             this.$root.$on('members_fetched',function() {
                 console.log('$on@NutsTags - members_fetched(' + ')');
                 self.tabs = self.$root.$data.members;
-                self.addNewMemberTab();
-                self.selected_tab == '' ? self.selected_tab = self.column_length() : '';
+//                self.addNewMemberTab();
+                self.selectTab(self.selected_tab)
             });
 
             this.$root.$on('member_tab_selected',function(index) {
@@ -103,7 +205,23 @@
 
             this.$root.$on('members-modal-closed',function() {
                 console.log('$on@NutsTags - members-modal-closed()');
-                self.selectTab(self.column_length());
+                self.selectTab(self.column_length() + 1);
+            });
+
+            this.$root.$on('member-edit-button',function() {
+                if(self.is_value_changed) {
+                    console.log('$on@NutsTags - member-edit-button()');
+                    var member = {
+                        id: self.tabs[self.selected_tab].id,
+                        name: self.edit_fields.name,
+                        color: self.edit_fields.color
+                    }
+                    self.$root.editUpdateMember(member);
+                }
+            });
+
+            this.$root.$on('member-delete-button',function() {
+                console.log('$on@NutsTags - member-delete-button()');
             });
         }
     } 

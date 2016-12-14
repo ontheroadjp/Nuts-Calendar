@@ -91,8 +91,20 @@
                             class="form-control"
                             v-model="new_event_content"
                             placeholder="New Event here.."
-                            @blur="$root.insertEvent(this.day_index,this.member_index)"
-                            @keyup.enter="$root.insertEvent(this.day_index,this.member_index)"
+                            @blur="insertEvent(
+                                this.year, 
+                                this.month, 
+                                this.day_index, 
+                                this.member_index, 
+                                this.new_event_content
+                            )"
+                            @keyup.enter="insertEvent(
+                                this.year, 
+                                this.month, 
+                                this.day_index, 
+                                this.member_index, 
+                                this.new_event_content
+                            )"
                             v-focus
                         >
                     </div>
@@ -131,7 +143,7 @@
                 return {
                     width: (100 - parseInt(this.first_column_width.width)) / length + '%'
                 }
-            }
+            },
         },
 
         methods: {
@@ -141,6 +153,18 @@
                 if( this.is_insert_mode ) {
                     this.inserting_cell = cell;
                 }
+            },
+
+            // Insert: select
+            insertEvent: function (year, month, day_index, id, content) {
+
+
+                if( this.new_event_content ) {
+                    this.$root.insertEvent(year, month, day_index, id, content);
+                    this.new_event_content = '';
+                }
+
+                this.inserting_cell = '';
             },
 
             // Edit: select
@@ -160,14 +184,14 @@
         watch: {
             'year': {
                 handler: function(new_val, old_val) {
-                    this.$parent.fetchCalendar(this.year, this.month)
+                    this.$parent.fetchData(this.year, this.month)
                 },
                 deep: true
             },
 
             'month': {
                 handler: function(new_val, old_val) {
-                    this.$parent.fetchCalendar(this.year, this.month)
+                    this.$parent.fetchData(this.year, this.month)
                 },
                 deep: true
             }
@@ -189,7 +213,7 @@
         },
 
         ready() {
-            this.$parent.fetchCalendar(this.year, this.month);
+            this.$parent.fetchData(this.year, this.month);
         }
     }
 </script>

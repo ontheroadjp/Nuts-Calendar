@@ -80,7 +80,8 @@ class MembersController extends Controller
     {
         $item = Member::findOrAbort($id);
         $item->fill($request->only(
-            Member::getFillable()
+            //Member::getFillable()
+            ['name','color']
         ));
         $item->save();
         return $item;

@@ -68,7 +68,7 @@ var vm = new Vue({
     methods: {
 
         // Fetch
-        fetchCalendar: function (year, month) {
+        fetchData: function (year, month) {
             this.$http({
                 url: '/api/calendar/' + year + '/' + month,
                 method: 'GET'
@@ -85,21 +85,33 @@ var vm = new Vue({
             });
         },
 
+        // -----------------------------------------------------------------------
         // Insert: Update
-        insertEvent: function (day, id, content) {
+        insertEvent: function (year, month, day_index, id, content) {
 
-            if( this.new_event_content ) {
-                this.calendar[day].events[id].push({
-                    'content': this.new_event_content,
-                    'editing': false,
-                    'is_hover': false
-                });
+            var day = day_index + 1
 
-                this.new_event_content = '';
-                this.$emit('nuts-alert', 'New Event Added!','is-success');
-            }
+            var new_item = {
+                'content': content,
+                'member_id': id,
+                'date': year + '-' + month + '-' + ("0" + day).slice(-2)
+            };
 
-                this.inserting_cell = '';
+            var url = '/api/event';
+            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+            this.$http({
+                url: url,
+                method: 'POST',
+                body: new_item
+            }).then(
+                function(response) {
+                    this.calendar[day_index].events[id].push(response.data);
+                    this.$emit('nuts-alert', 'Inserted!','is-success');
+                    console.log('Inserted!');
+                }, function(response) {
+                    alert('error');
+                }
+            )
         },
 
         // Edit: update
@@ -131,6 +143,42 @@ var vm = new Vue({
         // Delete
         deleteEvent: function(members, event, index) {
             var url = '/api/event/' + event.id;
+            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
+            this.$http({
+                url: url,
+                method: 'DELETE',
+            }).then(
+                function(response) {
+                    console.log('success: delete event (id:event.id)');
+                    members.splice(index, 1);
+                    this.$emit('nuts-alert', 'Deletes!','is-success');
+                }, function(response) {
+                    alert('error');
+                }
+            )
+        },
+
+        // -----------------------------------------------------------------------
+        // Insert: Update
+        insertMember: function (day, id, content) {
+
+            if( this.new_event_content ) {
+                this.calendar[day].events[id].push({
+                    'content': this.new_event_content,
+                    'editing': false,
+                    'is_hover': false
+                });
+
+                this.new_event_content = '';
+                this.$emit('nuts-alert', 'New Event Added!','is-success');
+            }
+
+                this.inserting_cell = '';
+        },
+
+        // Delete
+        deleteMember: function(members, event, index) {
+            var url = '/api/member/' + member.id;
             Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
             this.$http({
                 url: url,

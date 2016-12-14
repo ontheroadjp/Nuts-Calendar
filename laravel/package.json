@@ -12,5 +12,8 @@
     "laravel-elixir": "^5.0.0",
     "vue": "^1.0.28",
     "vue-resource": "^1.0.3"
+  },
+  "dependencies": {
+    "css-toggle-switch": "^4.0.2"
   }
 }

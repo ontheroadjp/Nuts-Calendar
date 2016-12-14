@@ -9,13 +9,13 @@
             
                 <slot></slot>
                 
-                <footer class="card-footer">
+                <footer v-show="is_close_btn" class="card-footer">
                     <slot name="footer"></slot>
                     <a 
                         slot="footer" 
                         class="card-footer-item" 
                         @click="isActive = false"
-                    >Close</a>
+                    >{{ close_btn_label }}</a>
                 </footer>
             </div>
         </div>
@@ -45,17 +45,22 @@
                 default: 'nuts-modal',
                 required: true
             },
-            ok_label: {
-                type: String,
-                default: 'Save changes'
+            is_close_btn: {
+                type: Boolean,
+                default: true
             },
-            cancel_label: {
+            close_btn_label: {
                 type: String,
-                default: 'Cancel'
+                default: 'Close'
             },
-            listen: {
-                type: String,
-                default: name
+        },
+
+        computed: {
+            open_event: function() {
+                return 'open-' + this.name
+            },
+            close_event: function() {
+                return 'close-' + this.name
             }
         },
 
@@ -67,9 +72,15 @@
 
         created() {
             const self = this;
-            this.$root.$on(this.listen, function() {
-                console.log('$on@NutsModal: ' + this.listen);
+
+            this.$root.$on(this.open_event, function() {
+                console.log('$on@NutsModal: ' + this.open_event);
                 self.isActive = true;
+            });
+
+            this.$root.$on(this.close_event, function() {
+                console.log('$on@NutsModal: ' + this.close_event);
+                self.isActive = false;
             });
         }
     }

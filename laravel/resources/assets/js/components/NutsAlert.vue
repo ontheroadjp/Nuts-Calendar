@@ -50,7 +50,7 @@
         top: 10%;
         left: 20%;
         right: 20%;
-        z-index: 99;
+        z-index: 99999;
     }
     .fade-enter {
         opacity: 0;

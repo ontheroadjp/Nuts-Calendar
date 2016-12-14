@@ -18,10 +18,8 @@
 
     <nuts-alert></nuts-alert>
 
-    <nuts-members-modal name="members-modal" listen="open-members-modal">
+    <nuts-members-modal name="members-modal" :is_close_btn="false">
         <nuts-member-tabs></nuts-member-tabs>
-        <a slot="footer" class="card-footer-item">Update</a>
-        <a slot="footer" class="card-footer-item">Delete</a>
     </nuts-members-modal>
 
     <nuts-members-modal-button emit="open-members-modal">
