@@ -5,8 +5,8 @@
                 <li v-for="(index, tab) in tabs" :class="{ 'is-active': index == selected_tab }">
                     <a href="#" @click="selectTab(index)">{{ tab.name }}</a>
                 </li>
-                <li :class="{ 'is-active': selected_tab == column_length() + 1 }">
-                    <a href="#" @click="selectTab(column_length() + 1)">New</a>
+                <li :class="{ 'is-active': selected_tab == column_max_key() + 1 }">
+                    <a href="#" @click="selectTab(column_max_key() + 1)">New</a>
                 </li>
             </ul>
         </div><!-- // .tabs -->
@@ -42,15 +42,9 @@
         <footer v-if="!is_new_editing" class="card-footer">
             <a
                 class="card-footer-item"
-                @click="this.$root.$emit('')"
+                @click="resetFields()"
                 v-show="is_value_changed"
             >Reset</a>
-
-            <!-- <a
-                class="card-footer-item"
-                @click="this.$root.$emit('member-edit-button')"
-                v-show="is_value_changed"
-            >Save</a> -->
 
             <a
                 class="card-footer-item"
@@ -60,7 +54,7 @@
 
             <a
                 class="card-footer-item"
-                @click="this.$root.$emit('member-delete-button')"
+                @click="deleteMember()"
             >Delete</a>
 
             <a
@@ -72,7 +66,7 @@
         <footer v-else class="card-footer">
             <a
                 class="card-footer-item"
-                @click="this.$root.$emit('member-add-button')"
+                @click="insertMember()"
             >Add</a>
 
             <a
@@ -110,7 +104,7 @@
 
         computed: {
             is_new_editing: function() {
-                return this.selected_tab == this.column_length() + 1 ? true : false;
+                return this.selected_tab == this.column_max_key() + 1 ? true : false;
             },
 
             is_value_changed: function() {
@@ -120,18 +114,26 @@
         },
 
         methods: {
-            column_length() {
-                return parseInt(Object.keys(this.tabs).length);
+            column_max_key() {
+
+                var keys = Object.keys(this.tabs);
+                keys.map(function(key) {
+                    return parseInt(key);
+                });
+
+                return Math.max.apply(null, keys);
             },
 
             selectTab(index) {
-                if(index == '') index = this.column_length() + 1;
+                console.log(Object.keys(this.tabs));
+                console.log(Math.max(parseInt(Object.keys(this.tabs))));
+                if(index == '') index = this.column_max_key() + 1;
                 this.selected_tab = parseInt(index);
                 this.setFields();
             },
 
             setFields() {
-                if(this.selected_tab != this.column_length() + 1) {
+                if(this.selected_tab != this.column_max_key() + 1) {
                     this.edit_fields.name = this.tabs[this.selected_tab].name;
                     this.edit_fields.color = this.tabs[this.selected_tab].color;
                     this.old_values.name = this.edit_fields.name;
@@ -144,11 +146,43 @@
                 }
             },
 
+            resetFields() {
+                this.edit_fields.name = this.old_values.name;
+                this.edit_fields.color = this.old_values.color;
+            },
 
-//            addNewMemberTab() {
-//                this.tabs[this.column_length() + 1] = { name: 'New', color: '' };
-//            },
+            // -----------------------------------------------------------------------
+            // Insert: Update
+            insertMember: function () {
 
+                var new_member = {
+                    name: this.edit_fields.name,
+                    color: this.edit_fields.color,
+                };
+
+                var url = '/api/member';
+                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+
+                this.$http({
+                    url: url,
+                    method: 'POST',
+                    body: new_member
+                }).then(
+                    function(response) {
+                        this.tabs[this.column_max_key + 1] = response.data;
+
+                        this.$root.fetchData();
+
+                        this.$root.$emit('nuts-alert', 'Success - Add new member!', 'is-success');
+                        console.log('Inserted!');
+
+                    }, function(response) {
+                        this.$root.$emit('nuts-alert', 'failed - add new member!', 'is-danger');
+                    }
+                )
+            },
+
+            // -----------------------------------------------------------------------
             // Edit: update
             editUpdateMember: function() {
 
@@ -159,24 +193,48 @@
 
                 var url = '/api/member/' + this.selected_tab;
                 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+
                 this.$http({
                     url: url,
                     method: 'PATCH',
                     body: updated_member
+
                 }).then(
                     function(response) {
                         this.tabs[this.selected_tab].name = this.edit_fields.name;
                         this.tabs[this.selected_tab].color = this.edit_fields.color;
 
                         this.$root.fetchData();
-                        this.setFields();
 
-                        console.log('updated!');
                         this.$root.$emit('nuts-alert', 'Updateed!', 'is-success');
+                        console.log('updated!');
+
                     }, function(response) {
                         this.edit_fields.name = this.tabs[this.selected_tab].name;
                         this.edit_fields.color = this.tabs[this.selected_tab].color;
                         this.$root.$emit('nuts-alert', 'failed - update!', 'is-danger');
+                    }
+                )
+            },
+
+            // -----------------------------------------------------------------------
+            // Delete
+            deleteMember: function() {
+                var url = '/api/member/' + this.selected_tab;
+                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
+    
+                this.$http({
+                    url: url,
+                    method: 'DELETE',
+                }).then(
+                    function(response) {
+                        delete this.tabs[this.selected_tab];
+
+                        this.$root.$emit('nuts-alert', 'success - delete!', 'is-success');
+                        console.log('success: delete event (id:event.id)');
+
+                    }, function(response) {
+                        this.$root.$emit('nuts-alert', 'failed - delete!', 'is-danger');
                     }
                 )
             },
@@ -189,7 +247,6 @@
             this.$root.$on('members_fetched',function() {
                 console.log('$on@NutsTags - members_fetched(' + ')');
                 self.tabs = self.$root.$data.members;
-//                self.addNewMemberTab();
                 self.selectTab(self.selected_tab)
             });
 
@@ -205,7 +262,7 @@
 
             this.$root.$on('members-modal-closed',function() {
                 console.log('$on@NutsTags - members-modal-closed()');
-                self.selectTab(self.column_length() + 1);
+                self.selectTab(self.column_max_key() + 1);
             });
 
             this.$root.$on('member-edit-button',function() {

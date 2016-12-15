@@ -1,9 +1,10 @@
 <template>
-    <div class="form-group">
-        <button class="btn btn-primary" @click="fire">
-             <slot></slot>
-        </button>
-    </div>
+    <!-- <button class="btn btn-primary" @click="fire">
+         <slot></slot>
+    </button> -->
+    <a class="button" @click="fire">
+         <slot></slot>
+    </a>
 </template>
 
 <script>

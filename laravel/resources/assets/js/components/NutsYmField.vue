@@ -1,4 +1,4 @@
-<template id="nuts-ym-field">
+<template>
     <span v-if="!editing" @click="editing = true">{{ year }} 年 {{ month }} 月</span>
     <span v-else>
         <div class="form-group form-inline">

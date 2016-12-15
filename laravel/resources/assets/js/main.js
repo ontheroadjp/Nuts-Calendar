@@ -28,7 +28,7 @@ Vue.directive('focus', {
 });
 
 var vm = new Vue({
-    el: '.container',
+    el: 'body',
     components: {
         'calendar': calendar,
         'nuts-sidebar': nutsSidebar,
@@ -114,6 +114,7 @@ var vm = new Vue({
             )
         },
 
+        // -----------------------------------------------------------------------
         // Edit: update
         editUpdateEvent: function(event) {
             event.editing = false;
@@ -140,58 +141,28 @@ var vm = new Vue({
             )
         },
 
+        // -----------------------------------------------------------------------
         // Delete
         deleteEvent: function(members, event, index) {
+
             var url = '/api/event/' + event.id;
             Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
+
             this.$http({
                 url: url,
                 method: 'DELETE',
+
             }).then(
                 function(response) {
-                    console.log('success: delete event (id:event.id)');
                     members.splice(index, 1);
                     this.$emit('nuts-alert', 'Deletes!','is-success');
+                    console.log('success: delete event (id:event.id)');
+
                 }, function(response) {
-                    alert('error');
+                    this.$emit('nuts-alert', 'Failed - Deletes!','is-danger');
                 }
             )
         },
 
-        // -----------------------------------------------------------------------
-        // Insert: Update
-        insertMember: function (day, id, content) {
-
-            if( this.new_event_content ) {
-                this.calendar[day].events[id].push({
-                    'content': this.new_event_content,
-                    'editing': false,
-                    'is_hover': false
-                });
-
-                this.new_event_content = '';
-                this.$emit('nuts-alert', 'New Event Added!','is-success');
-            }
-
-                this.inserting_cell = '';
-        },
-
-        // Delete
-        deleteMember: function(members, event, index) {
-            var url = '/api/member/' + member.id;
-            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
-            this.$http({
-                url: url,
-                method: 'DELETE',
-            }).then(
-                function(response) {
-                    console.log('success: delete event (id:event.id)');
-                    members.splice(index, 1);
-                    this.$emit('nuts-alert', 'Deletes!','is-success');
-                }, function(response) {
-                    alert('error');
-                }
-            )
-        },
     },
 });

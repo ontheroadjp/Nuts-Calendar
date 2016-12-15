@@ -1,13 +1,8 @@
 <template id="calendar">
-<div class="row">
-<div class="col-md-12">
-<div class="panel panel-default">
-
-    <!-- table -->
-    <table
-        class="table table-striped"
-        :class="{ calendar: this.is_insert_mode }"
-    >
+<table
+    class="table"
+    :class="{ calendar: this.is_insert_mode }"
+>
 
     <!-- table header -->
     <thead>
@@ -113,11 +108,7 @@
             </td>
         </tr>
     </tbody>
-    </table>
-
-</div><!-- // .panel -->
-</div><!-- // col-md-12 -->
-</div><!-- // .row -->
+</table>
 </template>
 
 <script>
