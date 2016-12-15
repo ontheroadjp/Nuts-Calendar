@@ -7,7 +7,8 @@
     <!-- table header -->
     <thead>
         <tr>
-            <th :style="first_column_width">Date</th>
+            <th :style="date_column_width">Date</th>
+            <th :style="date_column_width"></th>
             <th
                 v-for="member in $parent.members"
                 data-toggle="modal"
@@ -21,10 +22,17 @@
     <!-- table body -->
     <tbody>
         <tr
-            class="day-{{ day_index + 1 }}"
             v-for="(day_index, day) in $parent.calendar"
+            :class="{saturday: getDayIndex(day.date) == 6, sunday: getDayIndex(day.date) == 0}"
         >
-            <td>{{ day.date }}</td>
+            <td class="has-text-left date-styling">{{ getDayString(day.date) }}</td>
+
+            <td>
+                <span :class="[has-text-right, dateStyling, { today: isToday(day.date) }]">
+                    {{ day.date.substr(-2) }}
+                </span>
+            </td>
+
             <td
                 class="day-{{ day_index + 1 }}-{{ member_index }}"
                 v-for="(member_index, members) in day.events"
@@ -122,9 +130,12 @@
                 is_insert_mode: false,
                 inserting_cell: '',
                 new_event_content: '',
-                first_column_width: {
-                    width: '5%'
-                }
+                date_column_width: {
+                    width: '6%'
+                },
+                dateStyling: 'date-styling',
+                hasTextRight: 'has-text-right',
+                todayStyling: 'today'
             }
         },
 
@@ -132,12 +143,36 @@
             column_width: function() {
                 var length = Object.keys(this.$parent.members).length;
                 return {
-                    width: (100 - parseInt(this.first_column_width.width)) / length + '%'
+                    width: (100 - parseInt(this.date_column_width.width)) / length + '%'
                 }
             },
         },
 
         methods: {
+
+            isToday(date_text) {
+                var now = new Date();
+
+                if( parseInt(date_text.substr(0,4)) != now.getFullYear() ) return false;
+                if( parseInt(date_text.substr(5,2)) != now.getMonth() + 1) return false;
+                if( parseInt(date_text.substr(-2)) != now.getDate() ) return false;
+
+                return true;
+            },
+
+            getDayIndex(date_text) {
+                var year = parseInt(date_text.substr(0,4));
+                var month = parseInt(date_text.substr(5,2)) + 1;
+                var date = parseInt(date_text.substr(-2));
+                return new Date(year, month, date).getDay();
+            },
+
+            getDayString(date_text) {
+                var dayList = [
+                    'Sun','Mon','Tue','Wed','Thu','Fri','Sat'
+                ];
+                return dayList[this.getDayIndex(date_text)];
+            },
 
             // Insert: select
             beInserting(cell) {
@@ -201,6 +236,11 @@
                 console.log('$on@Calendar - nuts-change-table-mode (' + is_on + ')');
                 self.is_insert_mode = is_on;
             });
+
+            this.$root.$on('nuts-select-main-menu', function(index) {
+                console.log('$on@Calendar - nuts-change-table-mode (' + index + ')');
+                index == 0 ? self.is_insert_mode = false : self.is_insert_mode = true;
+            });
         },
 
         ready() {
@@ -223,6 +263,22 @@
     table.calendar:hover tbody:hover td:hover {
         opacity: 1;
         background: rgba(145, 235, 250, 0.5);
+    }
+    .date-styling {
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+    .today {
+        background: red;
+        color: #fff;
+        border-radius: 20px;
+        padding: 5px;
+    }
+    .saturday {
+        background: rgba(240, 240, 255, 1);
+    }
+    .sunday {
+        background: rgba(255, 240, 240, 1);
     }
 </style>
 

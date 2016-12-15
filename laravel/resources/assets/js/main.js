@@ -1,10 +1,10 @@
 // components
+import fcHero from './components/FcHero.vue';
 import calendar from './components/Calendar.vue';
 import nutsSidebar from './components/NutsSidebar.vue';
 import nutsYmSelector from './components/NutsYmSelector.vue';
 import nutsButton from './components/NutsButton.vue';
 import nutsToggleButton from './components/NutsToggleButton.vue';
-import nutsYmField from './components/NutsYmField.vue';
 import nutsAlert from './components/NutsAlert.vue';
 import nutsModal from './components/NutsModal.vue';
 import fcMemberTabs from './components/FcMemberTabs.vue';
@@ -30,12 +30,12 @@ Vue.directive('focus', {
 var vm = new Vue({
     el: 'body',
     components: {
+        'fc-hero': fcHero,
         'calendar': calendar,
         'nuts-sidebar': nutsSidebar,
         'nuts-sidebar-toggle-button': nutsToggleButton,
         'nuts-ym-selector': nutsYmSelector,
         'nuts-table-mode-toggle-button': nutsToggleButton,
-        'nuts-ym-field': nutsYmField,
         'nuts-alert': nutsAlert,
         'nuts-members-modal': nutsModal,
         'nuts-members-modal-button': nutsButton,

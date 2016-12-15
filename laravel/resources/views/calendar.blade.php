@@ -19,46 +19,7 @@
 
 @include('partials.navbar');
 
-<section id="signboard" class="hero is-primary" style="margin-top: -2px;">
-    <div class="hero-body">
-        <div class="container">
-
-            <div id="mc_embed_signup" class="columns is-vcentered">
-                <div class="column is-one-third is-left">
-                    <p class="title">Family <strong>Calendar</strong></p>
-                    <p class="subtitle"><small>Manage your task & events in easily, quickly and a fun!</small></p>
-                </div>
-
-                <div class="column">
-                    <span class="is-pulled-right" style="font-size: 1.8em;">
-                        <nuts-ym-field year-from="2015" year-period="6"></nuts-ym-field>
-                    </span>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="hero-foot" style="height: 36px;">
-        <div class="container">
-            <nav class="tabs is-boxed">
-                <ul>
-                    <li class="is-active"><a href="#">Calendar</a></li>
-                    <li><a href="#">Add Event</a></li>
-                    <li><a href="#">Event Search</a></li>
-                </ul>
-
-                <a class="button is-primary is-outlined">
-                    <span class="icon"><i class="fa fa-cog"></i></span>
-                    <span>Settings</span>
-                </a>
-
-            </nav>
-        </div>
-    </div>
-
-</section>
-
+<fc-hero></fc-hero>
 
 <section style="margin: 20px;">
 
@@ -68,19 +29,19 @@
             Add Member
         </nuts-members-modal-button>
 
-        <nuts-table-mode-toggle-button
+        <!-- <nuts-table-mode-toggle-button
             type="btn-info"
             on_label="Normal Mode"
             off_label="Insert Mode"
             emit="nuts-change-table-mode"
-        ></nuts-table-mode-toggle-button>
+        ></nuts-table-mode-toggle-button> -->
 
-        <nuts-sidebar-toggle-button
+        <!-- <nuts-sidebar-toggle-button
             type="btn-primary"
             on_label="Close sidebar"
             off_label="Open Sidebar"
             emit="nuts-sidebar-toggle"
-        ></nuts-sidebar-action-button>
+        ></nuts-sidebar-action-button> -->
 
     </span>
 
