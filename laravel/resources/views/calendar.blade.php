@@ -22,61 +22,10 @@
 
     <fc-hero></fc-hero>
 
-    <section style="margin: 20px;">
-
-    <nuts-search-box></nuts-search-box>
-
-    <nuts-members-modal-button emit="open-members-modal" v-show="!is_searching">
-        Add Member
-    </nuts-members-modal-button>
-
-    <!-- <nuts-table-mode-toggle-button
-        type="btn-info"
-        on_label="Normal Mode"
-        off_label="Insert Mode"
-        emit="nuts-change-table-mode"
-    ></nuts-table-mode-toggle-button> -->
-
-    <!-- <nuts-sidebar-toggle-button
-        type="btn-primary"
-        on_label="Close sidebar"
-        off_label="Open Sidebar"
-        emit="nuts-sidebar-toggle"
-    ></nuts-sidebar-action-button> -->
-
-    </section>
-
-    <!-- Calendar table -->
+    <!-- Main -->
     <section style="margin: 0 20px 20px 20px;">
         <component :is="currentView"></component>
     </section>
-
-
-    <!-- Sidebar -->
-    <!-- <nuts-sidebar>
-        <nuts-sidebar-toggle-button
-            type="btn-primary"
-            on_label="Close sidebar"
-            off_label="Open Sidebar"
-            emit="nuts-sidebar-toggle"
-        ></nuts-sidebar-toggle-button> -->
-
-        <!-- <nuts-ym-selector></nuts-ym-selector> -->
-
-        <!-- insert mode toggle button -->
-        <!-- <div class="row" style="margin-bottom: 15px;">
-            <div class="col-md-12">
-                <div style="float:right;">
-                    <nuts-table-mode-toggle-button
-                        type="btn-info"
-                        on_label="Normal Mode"
-                        off_label="Insert Mode"
-                        emit="nuts-change-table-mode"
-                    ></nuts-table-mode-toggle-button>
-                </div>
-            </div>
-        </div>
-    </nuts-sidebar> -->
 
     <section class="hero is-medium is-light is-bold">
         <div class="hero-body">

@@ -1,7 +1,7 @@
 <template id="calendar">
 <table
     class="table"
-    :class="{ calendar: this.is_insert_mode }"
+    :class="{ calendar: this.isInsertMode }"
 >
 
     <!-- table header -->
@@ -34,13 +34,13 @@
             </td>
 
             <td
-                class="day-{{ day_index + 1 }}-{{ member_index }}"
-                v-for="(member_index, members) in day.events"
-                @click="this.beInserting('day-' + (this.day_index + 1) + '-' + this.member_index)"
+                class="day-{{ day_index + 1 }}-{{ memberColumnIndex }}"
+                v-for="(memberColumnIndex, memberColumn) in day.events"
+                @click="this.beInserting('day-' + (this.day_index + 1) + '-' + this.memberColumnIndex)"
             >
 
                 <div
-                    v-for="(event_index, event) in members"
+                    v-for="(event_index, event) in memberColumn"
                     class="form-inline"
                     @mouseout="event.is_hover = false"
                 >
@@ -56,10 +56,10 @@
                             {{ event.content }}
                         </span>
 
-                        <span v-show="event.is_hover && !is_insert_mode">
+                        <span v-show="event.is_hover && !isInsertMode">
                             <button
-                                class=" glyphicon glyphicon-trash"
-                                @click="$root.deleteEvent(members, event, event_index)"
+                                class="fa fa-trash"
+                                @click="deleteEvent(memberColumn, event, event_index)"
                             ></button>
                         </span>
 
@@ -68,16 +68,16 @@
                     <!-- EDIT MODE -->
                     <span v-show="event.editing">
 
-                        <span v-show="is_insert_mode">
+                        <span v-show="isInsertMode">
                             {{ event.content }}
                         </span>
 
-                        <template v-if="!is_insert_mode && event.editing" >
+                        <template v-if="!isInsertMode && event.editing" >
                             <input
                                 type="text"
                                 class="form-control"
-                                @blur="$root.editUpdateEvent(event)"
-                                @keyup.enter="$root.editUpdateEvent(event)"
+                                @blur="editUpdateEvent(event)"
+                                @keyup.enter="editUpdateEvent(event)"
                                 v-model="event.content"
                                 v-focus
                             >
@@ -88,26 +88,24 @@
                 </div><!-- // event roop -->
 
                 <!-- INSERT MODE -->
-                <template v-if="'day-' + (this.day_index + 1) + '-' + this.member_index == this.inserting_cell">
+                <template v-if="'day-' + (this.day_index + 1) + '-' + this.memberColumnIndex == this.inserting_cell">
                     <div class="form-inline">
                         <input
                             type="text"
                             class="form-control"
                             v-model="new_event_content"
                             placeholder="New Event here.."
-                            @blur="insertEvent(
-                                this.year, 
-                                this.month, 
-                                this.day_index, 
-                                this.member_index, 
-                                this.new_event_content
+                            @blur="letsInsert(
+                                this.day_index + 1, 
+                                this.memberColumnIndex, 
+                                this.new_event_content,
+                                this.memberColumn
                             )"
-                            @keyup.enter="insertEvent(
-                                this.year, 
-                                this.month, 
-                                this.day_index, 
-                                this.member_index, 
-                                this.new_event_content
+                            @keyup.enter="letsInsert(
+                                this.day_index + 1, 
+                                this.memberColumnIndex, 
+                                this.new_event_content,
+                                this.memberColumn
                             )"
                             v-focus
                         >
@@ -122,18 +120,17 @@
 
 <script>
     import dateMixin from '../mixins/date.js'
-    var now = new Date();
+    import eventApi from '../mixins/EventApi.js'
+
     export default {
 
         mixins: [
-            dateMixin
+            eventApi, dateMixin
         ],
 
         data() {
             return {
-                year: now.getFullYear(),
-                month: now.getMonth() + 1,
-                is_insert_mode: false,
+                isInsertMode: false,
                 inserting_cell: '',
                 new_event_content: '',
                 date_column_width: {
@@ -155,20 +152,26 @@
         },
 
         methods: {
-
             // Insert: select
             beInserting(cell) {
-                if( this.is_insert_mode ) {
+                if( this.isInsertMode ) {
                     this.inserting_cell = cell;
                 }
             },
 
-            // Insert: select
-            insertEvent: function (year, month, day_index, id, content) {
+            // Insert: update
+            letsInsert: function (day, member_id, content, memberColumn) {
 
                 if( this.new_event_content ) {
-                    this.$root.insertEvent(year, month, day_index, id, content);
-                    this.new_event_content = '';
+                    var year = this.$parent.currentYear;
+                    var month = this.$parent.currentMonth;
+                    var date = year + '-' + month + '-' + ("0" + day).slice(-2);
+
+                    this.insertEvent(date, member_id, content, memberColumn);
+
+                    this.$nextTick(function() {
+                        this.new_event_content = '';
+                    });
                 }
 
                 this.inserting_cell = '';
@@ -176,56 +179,22 @@
 
             // Edit: select
             beEditing(event) {
-                if( !this.is_insert_mode ) {
+                if( !this.isInsertMode ) {
                     event.oldValue = event.content;
                     event.editing = true;
                 }
             },
 
             clickTableHeader(index) {
-                //this.$root.$emit('table_header_clicked', index);
-                this.$root.$emit('open-members-modal', index);
-            }
-        },
-
-        watch: {
-            'year': {
-                handler: function(new_val, old_val) {
-                    this.$root.fetchData(this.year, this.month)
-                },
-                deep: true
-            },
-
-            'month': {
-                handler: function(new_val, old_val) {
-                    this.$root.fetchData(this.year, this.month)
-                },
-                deep: true
+                this.$parent.$emit('open-members-modal', index);
             }
         },
 
         created() {
             const self = this;
-
-            this.$root.$on('ym-change', function(year, month) {
-                console.log('listen@Calendar - ym-change (' + year + ', ' + month + ')');
-                self.year = year;
-                self.month = month;
-            });
-
-            this.$root.$on('nuts-change-table-mode', function(is_on) {
-                //console.log('listen@Calendar - nuts-change-table-mode (' + is_on + ')');
-                self.is_insert_mode = is_on;
-            });
-
             this.$root.$on('nuts-select-main-menu', function(index) {
-                //console.log('listen@Calendar - nuts-change-table-mode (' + index + ')');
-                index == 0 ? self.is_insert_mode = false : self.is_insert_mode = true;
+                index == 0 ? self.isInsertMode = false : self.isInsertMode = true;
             });
-        },
-
-        ready() {
-            this.$parent.fetchData(this.year, this.month);
         }
     }
 </script>

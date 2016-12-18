@@ -3,7 +3,7 @@
         <table class="table">
             <tbody>
                 <tr v-for="event in events
-                        | filterBy $root.$data.search_query in 'content'
+                        | filterBy $parent.$data.searchQuery in 'content'
                 "
                     :class="{saturday: getDayIndex(event.date) == 6, sunday: getDayIndex(event.date) == 0}"
                     @mouseover="event.is_row_hover = true";
@@ -71,7 +71,7 @@
         ],
 
         created() {
-            this.events = this.$root.events;
+            this.events = this.$parent.events;
         }
     } 
 </script>

@@ -2,7 +2,7 @@
     <div class="control is-grouped is-pulled-right">
 
         <div class="control has-icon">
-            <input v-model="$root.$data.search_query" class="input" type="text" placeholder="Search">
+            <input v-model="$parent.$data.searchQuery" class="input" type="text" placeholder="Search">
             <i class="fa fa-search"></i>
         </div>
 
@@ -17,7 +17,7 @@
     export default {
         methods: {
             clearField() {
-                this.$root.$data.search_query = ''
+                this.$parent.$data.searchQuery = ''
             }
         },
 

@@ -1,18 +1,13 @@
 // components
-import fcHero from './components/FcHero.vue';
-import fcCalendarTable from './components/FcCalendarTable.vue';
-import fcEventList from './components/FcEventList.vue';
-import nutsSidebar from './components/NutsSidebar.vue';
-import nutsYmSelector from './components/NutsYmSelector.vue';
-import nutsSearchBox from './components/NutsSearchBox.vue';
-import nutsButton from './components/NutsButton.vue';
-import nutsToggleButton from './components/NutsToggleButton.vue';
-import nutsAlert from './components/NutsAlert.vue';
-import nutsModal from './components/NutsModal.vue';
-import fcMemberTabs from './components/FcMemberTabs.vue';
+//import nutsSidebar from './nuts-vue-components/NutsSidebar.vue';
+//import nutsYmSelector from './nuts-vue-components/NutsYmSelector.vue';
+//import nutsToggleButton from './nuts-vue-components/NutsToggleButton.vue';
+import nutsAlert from './nuts-vue-components/NutsAlert.vue';
+import nutsModal from './nuts-vue-components/NutsModal.vue';
 
-// directives
-//import nutsFocus from './directives/NutsFocus.vue';
+import fcHero from './components/FcHero.vue';
+import fcCalendar from './components/FcCalendar.vue';
+import fcMemberTabs from './components/FcMemberTabs.vue';
 
 Vue.directive('focus', {
     update: function () {
@@ -28,184 +23,20 @@ window.vm = new Vue({
     el: 'body',
     components: {
         'fc-hero': fcHero,
-        'calendar': fcCalendarTable,
-        'event-list': fcEventList,
-        'nuts-sidebar': nutsSidebar,
-        'nuts-sidebar-toggle-button': nutsToggleButton,
-        'nuts-table-mode-toggle-button': nutsToggleButton,
-        'nuts-ym-selector': nutsYmSelector,
-        'nuts-search-box': nutsSearchBox,
+        'fc-calendar': fcCalendar,
+//        'nuts-sidebar': nutsSidebar,
+//        'nuts-sidebar-toggle-button': nutsToggleButton,
+//        'nuts-table-mode-toggle-button': nutsToggleButton,
+//        'nuts-ym-selector': nutsYmSelector,
         'nuts-alert': nutsAlert,
         'nuts-members-modal': nutsModal,
-        'nuts-members-modal-button': nutsButton,
         'nuts-member-tabs': fcMemberTabs,
-    },
-
-    data: {
-        calendar: [],
-        members: [],
-        events: [],
-        search_query: '',
     },
 
     computed: {
         currentView: function() {
-            return !this.is_searching ? 'calendar' : 'event-list';
-        },
-
-        is_searching: function() {
-            return this.search_query != '' ? true : false;
+            return 'fc-calendar'
         },
     },
 
-    watch: {
-        'calendar': {
-            handler: function(new_val, old_val) {
-                console.log('fire: calendar_fetched');
-                this.$emit('calendar_fetched', this.year, this.month)
-            },
-            deep: true
-        },
-
-        'members': {
-            handler: function(new_val, old_val) {
-                console.log('fire: members_fetched');
-                this.$emit('members_fetched', this.year, this.month)
-            },
-            deep: true
-        },
-    },
-
-    methods: {
-
-        // -----------------------------------------------------------------------
-        // Fetch
-        fetchData: function (year, month) {
-            this.$http({
-                url: '/api/calendar/' + year + '/' + month,
-                method: 'GET'
-
-            }).then( function(response) {
-                this.calendar = response.data.days;
-                this.members = response.data.members;
-                this.fetchEvents(year, month);
-
-            }, function(response) {
-                this.$emit('nuts-alert', 'Failed - Add new event!', 'is-danger');
-            });
-        },
-
-        // -----------------------------------------------------------------------
-        // Fetch events
-        fetchEvents: function(year, month) {
-            this.$http({
-                //url: '/api/event',
-                url: '/api/event/' + year + '/' + month,
-                method: 'GET'
-
-            }).then( function(response) {
-                var storiesReady = response.data.map(function(item) {
-//                    var event_date = new Date(item.date);
-//                    item.year = event_date.getFullYear();
-//                    item.month = event_date.getMonth() + 1;
-//                    item.day = event_date.getDate();
-//                    item.dayIndex = event_date.getDay();
-                    item.is_row_hover = false;
-                    return item;
-                });
-                this.events = storiesReady;
-                this.events.sort(function (a,b) {
-                    if(a.date < b.date) return -1;
-                    if(a.date > b.date) return 1;
-                })
-
-//                this.events = response.data;
-
-            }, function(response) {
-                this.$emit('nuts-alert', 'Failed - Fetch event data!', 'is-danger');
-            });
-        },
-
-        // -----------------------------------------------------------------------
-        // Insert
-        insertEvent: function (year, month, day_index, id, content) {
-
-            var day = day_index + 1
-
-            var new_item = {
-                'content': content,
-                'member_id': id,
-                'date': year + '-' + month + '-' + ("0" + day).slice(-2)
-            };
-
-            var url = '/api/event';
-            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-
-            this.$http({
-                url: url,
-                method: 'POST',
-                body: new_item
-
-            }).then(
-                function(response) {
-                    this.calendar[day_index].events[id].push(response.data);
-                    this.$emit('nuts-alert', 'Inserted!','is-success');
-                    console.log('Inserted!');
-
-            }, function(response) {
-                this.$emit('nuts-alert', 'Failed - Add new event!', 'is-danger');
-            });
-        },
-
-        // -----------------------------------------------------------------------
-        // Edit
-        editUpdateEvent: function(event) {
-            event.editing = false;
-            if(event.content == event.oldValue) {
-                event.oldValue = '';
-                return
-            }
-
-            event.oldValue = '';
-
-            var url = '/api/event/' + event.id;
-            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-
-            this.$http({
-                url: url,
-                method: 'PATCH',
-                body: event
-
-            }).then(
-                function(response) {
-                    console.log('updated!');
-                    this.$emit('nuts-alert', 'Updateed!','is-success');
-
-            }, function(response) {
-                this.$emit('nuts-alert', 'Failed - Update!', 'is-danger');
-            });
-        },
-
-        // -----------------------------------------------------------------------
-        // Delete
-        deleteEvent: function(members, event, index) {
-
-            var url = '/api/event/' + event.id;
-            Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
-
-            this.$http({
-                url: url,
-                method: 'DELETE',
-
-            }).then(
-                function(response) {
-                    members.splice(index, 1);
-                    this.$emit('nuts-alert', 'Deletes!','is-success');
-                    console.log('success: delete event (id:event.id)');
-
-            }, function(response) {
-                this.$emit('nuts-alert', 'Failed - Deletes!', 'is-danger');
-            });
-        },
-    },
 });

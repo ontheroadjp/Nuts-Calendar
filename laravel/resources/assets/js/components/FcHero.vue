@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import nutsYmField from './NutsYmField.vue';
+    import nutsYmField from '../nuts-vue-components/NutsYmField.vue';
     export default {
         components: {
             'nuts-ym-field': nutsYmField,
