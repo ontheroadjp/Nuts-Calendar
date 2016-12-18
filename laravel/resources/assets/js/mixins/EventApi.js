@@ -4,18 +4,12 @@ export default {
         // -----------------------------------------------------------------------
         // Fetch
         fetchData: function (year, month) {
-            this.fetchCalendar(year, month);
-            this.fetchEvents(year, month);
-        },
-
-        fetchCalendar: function (year, month) {
-            console.log('hogehoge');
             this.$http({
                 url: '/api/calendar/' + year + '/' + month,
                 method: 'GET'
 
             }).then( function(response) {
-                this.$root.$emit('api-fetch-calendar', response);
+                this.$root.$emit('api-fetch-data', response);
 
             }, function(response) {
                 this.$root.$emit('nuts-alert', 'Failed - Add new event!', 'is-danger');
@@ -23,23 +17,10 @@ export default {
         },
 
         // -----------------------------------------------------------------------
-        // Fetch events
-        fetchEvents: function(year, month) {
-            this.$http({
-                //url: '/api/event',
-                url: '/api/event/' + year + '/' + month,
-                method: 'GET'
-
-            }).then( function(response) {
-                this.$root.$emit('api-fetch-events', response);
-            }, function(response) {
-                this.$root.$emit('nuts-alert', 'Failed - Fetch event data!', 'is-danger');
-            });
-        },
-
-        // -----------------------------------------------------------------------
         // Insert
         insertEvent: function (date, memberId, content, memberColumn) {
+
+            console.log('insert event');
 
             var newItem = {
                 'date': date,
@@ -69,6 +50,7 @@ export default {
         // Edit
         editUpdateEvent: function(event) {
             event.editing = false;
+
             if(event.content == event.oldValue) {
                 event.oldValue = '';
                 return
@@ -119,5 +101,4 @@ export default {
         }
 
     }
-
 }

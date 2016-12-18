@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Event;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,8 +39,12 @@ class Calendar extends Model
 
         $calendar = $this->tidyEvents($calendar, $members);
 
+        $e = new Event();
+        $events = $e->fetchRange($year, $month);
+
          return [
              "members" => $members,
+             "events" => $events,
              "days" => $calendar
          ];
     }

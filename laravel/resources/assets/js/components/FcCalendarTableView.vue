@@ -1,14 +1,13 @@
 <template id="calendar">
 <table
-    class="table"
-    :class="{ calendar: this.isInsertMode }"
+    :class="[ 'table', { calendar: this.isInsertMode } ]"
 >
 
     <!-- table header -->
     <thead>
         <tr>
-            <th :style="date_column_width">Date</th>
-            <th :style="date_column_width"></th>
+            <th :style="dayColumnWidth">Date</th>
+            <th :style="dayColumnWidth"></th>
             <th
                 v-for="member in $parent.members"
                 data-toggle="modal"
@@ -22,25 +21,39 @@
     <!-- table body -->
     <tbody>
         <tr
-            v-for="(day_index, day) in $parent.calendar"
-            :class="{saturday: getDayIndex(day.date) == 6, sunday: getDayIndex(day.date) == 0}"
+            v-for="(dayIndex, day) in $parent.calendar"
+            :class="{
+                saturday: getDayIndex(day.date) == 6, 
+                sunday: getDayIndex(day.date) == 0
+            }"
         >
-            <td class="has-text-left date-styling">{{ getDayString(day.date) }}</td>
+            <td class="has-text-left date-styling">
+                {{ getDayString(day.date) }}
+            </td>
 
             <td>
-                <span :class="[has-text-right, dateStyling, { today: isToday(day.date) }]">
+                <span :class="[
+                    'has-text-right', 
+                    'date-styling', 
+                    { today: isToday(day.date) }
+                ]">
                     {{ day.date.substr(-2) }}
                 </span>
             </td>
 
             <td
-                class="day-{{ day_index + 1 }}-{{ memberColumnIndex }}"
+                class="day-{{ dayIndex + 1 }}-{{ memberColumnIndex }}"
                 v-for="(memberColumnIndex, memberColumn) in day.events"
-                @click="this.beInserting('day-' + (this.day_index + 1) + '-' + this.memberColumnIndex)"
+                @click="this.beInserting(
+                    'day-' 
+                    + (this.dayIndex + 1) 
+                    + '-' 
+                    + this.memberColumnIndex
+                )"
             >
 
                 <div
-                    v-for="(event_index, event) in memberColumn"
+                    v-for="(eventIndex, event) in memberColumn"
                     class="form-inline"
                     @mouseout="event.is_hover = false"
                 >
@@ -51,60 +64,60 @@
                         @mouseover="event.is_hover = true"
                     >
 
-                    <!-- <span v-if="event.content" class="label label-primary" @click="beEditing(event)"> -->
-                    <span v-if="event.content" @click="beEditing(event)">
+                        <span v-if="event.content" @click="beEditing(event)">
                             {{ event.content }}
                         </span>
 
                         <span v-show="event.is_hover && !isInsertMode">
                             <button
                                 class="fa fa-trash"
-                                @click="deleteEvent(memberColumn, event, event_index)"
+                                @click="deleteEvent(memberColumn, event, eventIndex)"
                             ></button>
                         </span>
 
                     </span><!-- // VIEW MODE -->
 
                     <!-- EDIT MODE -->
-                    <span v-show="event.editing">
+                    <template v-if="event.editing">
+                        <input
+                            type="text"
+                            class="form-control"
+                            @blur="editUpdateEvent(event)"
+                            @keyup.enter="editUpdateEvent(event)"
+                            v-model="event.content"
+                            v-if="!isInsertMode"
+                            v-focus
+                        >
 
-                        <span v-show="isInsertMode">
+                        <span v-else>
                             {{ event.content }}
                         </span>
+                    </template>
 
-                        <template v-if="!isInsertMode && event.editing" >
-                            <input
-                                type="text"
-                                class="form-control"
-                                @blur="editUpdateEvent(event)"
-                                @keyup.enter="editUpdateEvent(event)"
-                                v-model="event.content"
-                                v-focus
-                            >
-                        </template>
-
-                    </span><!-- // EDIT MODE -->
 
                 </div><!-- // event roop -->
 
                 <!-- INSERT MODE -->
-                <template v-if="'day-' + (this.day_index + 1) + '-' + this.memberColumnIndex == this.inserting_cell">
+                <template v-if="
+                    'day-' + (this.dayIndex + 1) + '-' + this.memberColumnIndex == this.insertingCellAddress
+                ">
+
                     <div class="form-inline">
                         <input
                             type="text"
                             class="form-control"
-                            v-model="new_event_content"
+                            v-model="newEventContent"
                             placeholder="New Event here.."
                             @blur="letsInsert(
-                                this.day_index + 1, 
+                                this.dayIndex + 1, 
                                 this.memberColumnIndex, 
-                                this.new_event_content,
+                                this.newEventContent,
                                 this.memberColumn
                             )"
                             @keyup.enter="letsInsert(
-                                this.day_index + 1, 
+                                this.dayIndex + 1, 
                                 this.memberColumnIndex, 
-                                this.new_event_content,
+                                this.newEventContent,
                                 this.memberColumn
                             )"
                             v-focus
@@ -130,15 +143,11 @@
 
         data() {
             return {
-                isInsertMode: false,
-                inserting_cell: '',
-                new_event_content: '',
-                date_column_width: {
+                insertingCellAddress: '',
+                newEventContent: '',
+                dayColumnWidth: {
                     width: '6%'
                 },
-                dateStyling: 'date-styling',
-                hasTextRight: 'has-text-right',
-                todayStyling: 'today',
             }
         },
 
@@ -146,8 +155,12 @@
             column_width: function() {
                 var length = Object.keys(this.$parent.members).length;
                 return {
-                    width: (100 - parseInt(this.date_column_width.width)) / length + '%'
+                    width: (100 - parseInt(this.dayColumnWidth.width)) / length + '%'
                 }
+            },
+
+            isInsertMode: function() {
+                return this.$parent.isInsertMode;
             },
         },
 
@@ -155,26 +168,25 @@
             // Insert: select
             beInserting(cell) {
                 if( this.isInsertMode ) {
-                    this.inserting_cell = cell;
+                    this.insertingCellAddress = cell;
                 }
             },
 
             // Insert: update
             letsInsert: function (day, member_id, content, memberColumn) {
 
-                if( this.new_event_content ) {
-                    var year = this.$parent.currentYear;
-                    var month = this.$parent.currentMonth;
-                    var date = year + '-' + month + '-' + ("0" + day).slice(-2);
+                this.insertingCellAddress = '';
 
-                    this.insertEvent(date, member_id, content, memberColumn);
+                if( ! this.newEventContent ) return
 
-                    this.$nextTick(function() {
-                        this.new_event_content = '';
-                    });
-                }
+                var year = this.$parent.currentYear;
+                var month = this.$parent.currentMonth;
+                var date = year + '-' + month + '-' + ("0" + day).slice(-2);
 
-                this.inserting_cell = '';
+                this.insertEvent(date, member_id, content, memberColumn);
+
+                this.newEventContent = '';
+
             },
 
             // Edit: select
@@ -190,12 +202,6 @@
             }
         },
 
-        created() {
-            const self = this;
-            this.$root.$on('nuts-select-main-menu', function(index) {
-                index == 0 ? self.isInsertMode = false : self.isInsertMode = true;
-            });
-        }
     }
 </script>
 
