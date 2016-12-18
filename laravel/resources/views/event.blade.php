@@ -184,8 +184,6 @@
                         | filterBy search_month in 'month'
                 ">
 
-                    <!-- <td>@{{ event.id }}</td> -->
-
                     <td width="20%">
                         <input
                             v-if="event.editing || event.inserting"

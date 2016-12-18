@@ -50,6 +50,23 @@ class Event extends Model
     }
 
     /**
+     * fetch
+     *
+     * @param mixed $id
+     * @param mixed $year
+     * @param mixed $month
+     * @access public
+     * @return void
+     */
+    public function fetchRange($year, $month)
+    {
+        return Event::with('member')
+            ->where('date', 'LIKE', "%$year-$month%")
+            ->orderBy('date', 'ASC')
+            ->get();
+    }
+
+    /**
      * member
      *
      * @access public

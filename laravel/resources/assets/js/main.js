@@ -1,21 +1,18 @@
 // components
 import fcHero from './components/FcHero.vue';
-import calendar from './components/Calendar.vue';
+import fcCalendarTable from './components/FcCalendarTable.vue';
+import fcEventList from './components/FcEventList.vue';
 import nutsSidebar from './components/NutsSidebar.vue';
 import nutsYmSelector from './components/NutsYmSelector.vue';
+import nutsSearchBox from './components/NutsSearchBox.vue';
 import nutsButton from './components/NutsButton.vue';
 import nutsToggleButton from './components/NutsToggleButton.vue';
 import nutsAlert from './components/NutsAlert.vue';
 import nutsModal from './components/NutsModal.vue';
 import fcMemberTabs from './components/FcMemberTabs.vue';
 
-
-
 // directives
 //import nutsFocus from './directives/NutsFocus.vue';
-
-// Event Bus
-//var nutsBus = new Vue();
 
 Vue.directive('focus', {
     update: function () {
@@ -27,15 +24,17 @@ Vue.directive('focus', {
     }
 });
 
-var vm = new Vue({
+window.vm = new Vue({
     el: 'body',
     components: {
         'fc-hero': fcHero,
-        'calendar': calendar,
+        'calendar': fcCalendarTable,
+        'event-list': fcEventList,
         'nuts-sidebar': nutsSidebar,
         'nuts-sidebar-toggle-button': nutsToggleButton,
-        'nuts-ym-selector': nutsYmSelector,
         'nuts-table-mode-toggle-button': nutsToggleButton,
+        'nuts-ym-selector': nutsYmSelector,
+        'nuts-search-box': nutsSearchBox,
         'nuts-alert': nutsAlert,
         'nuts-members-modal': nutsModal,
         'nuts-members-modal-button': nutsButton,
@@ -44,7 +43,19 @@ var vm = new Vue({
 
     data: {
         calendar: [],
-        members: []
+        members: [],
+        events: [],
+        search_query: '',
+    },
+
+    computed: {
+        currentView: function() {
+            return !this.is_searching ? 'calendar' : 'event-list';
+        },
+
+        is_searching: function() {
+            return this.search_query != '' ? true : false;
+        },
     },
 
     watch: {
@@ -62,31 +73,61 @@ var vm = new Vue({
                 this.$emit('members_fetched', this.year, this.month)
             },
             deep: true
-        }
+        },
     },
 
     methods: {
 
+        // -----------------------------------------------------------------------
         // Fetch
         fetchData: function (year, month) {
             this.$http({
                 url: '/api/calendar/' + year + '/' + month,
                 method: 'GET'
+
             }).then( function(response) {
-                //var calendarReady = response.data.days.map(function(item) {
-                //    item.editing = false;
-                //    return item;
-                //})
-                //this.calendar = calendarReady;
                 this.calendar = response.data.days;
                 this.members = response.data.members;
-            }, function(response) {
+                this.fetchEvents(year, month);
 
+            }, function(response) {
+                this.$emit('nuts-alert', 'Failed - Add new event!', 'is-danger');
             });
         },
 
         // -----------------------------------------------------------------------
-        // Insert: Update
+        // Fetch events
+        fetchEvents: function(year, month) {
+            this.$http({
+                //url: '/api/event',
+                url: '/api/event/' + year + '/' + month,
+                method: 'GET'
+
+            }).then( function(response) {
+                var storiesReady = response.data.map(function(item) {
+//                    var event_date = new Date(item.date);
+//                    item.year = event_date.getFullYear();
+//                    item.month = event_date.getMonth() + 1;
+//                    item.day = event_date.getDate();
+//                    item.dayIndex = event_date.getDay();
+                    item.is_row_hover = false;
+                    return item;
+                });
+                this.events = storiesReady;
+                this.events.sort(function (a,b) {
+                    if(a.date < b.date) return -1;
+                    if(a.date > b.date) return 1;
+                })
+
+//                this.events = response.data;
+
+            }, function(response) {
+                this.$emit('nuts-alert', 'Failed - Fetch event data!', 'is-danger');
+            });
+        },
+
+        // -----------------------------------------------------------------------
+        // Insert
         insertEvent: function (year, month, day_index, id, content) {
 
             var day = day_index + 1
@@ -99,23 +140,25 @@ var vm = new Vue({
 
             var url = '/api/event';
             Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+
             this.$http({
                 url: url,
                 method: 'POST',
                 body: new_item
+
             }).then(
                 function(response) {
                     this.calendar[day_index].events[id].push(response.data);
                     this.$emit('nuts-alert', 'Inserted!','is-success');
                     console.log('Inserted!');
-                }, function(response) {
-                    alert('error');
-                }
-            )
+
+            }, function(response) {
+                this.$emit('nuts-alert', 'Failed - Add new event!', 'is-danger');
+            });
         },
 
         // -----------------------------------------------------------------------
-        // Edit: update
+        // Edit
         editUpdateEvent: function(event) {
             event.editing = false;
             if(event.content == event.oldValue) {
@@ -127,18 +170,20 @@ var vm = new Vue({
 
             var url = '/api/event/' + event.id;
             Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+
             this.$http({
                 url: url,
                 method: 'PATCH',
                 body: event
+
             }).then(
                 function(response) {
                     console.log('updated!');
                     this.$emit('nuts-alert', 'Updateed!','is-success');
-                }, function(response) {
-                    alert('error');
-                }
-            )
+
+            }, function(response) {
+                this.$emit('nuts-alert', 'Failed - Update!', 'is-danger');
+            });
         },
 
         // -----------------------------------------------------------------------
@@ -158,11 +203,9 @@ var vm = new Vue({
                     this.$emit('nuts-alert', 'Deletes!','is-success');
                     console.log('success: delete event (id:event.id)');
 
-                }, function(response) {
-                    this.$emit('nuts-alert', 'Failed - Deletes!','is-danger');
-                }
-            )
+            }, function(response) {
+                this.$emit('nuts-alert', 'Failed - Deletes!', 'is-danger');
+            });
         },
-
     },
 });

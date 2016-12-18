@@ -14,7 +14,7 @@
                 data-toggle="modal"
                 data-target="#nuts-modal"
                 :style="column_width"
-                @click="clickHeader($index + 1)"
+                @click="clickTableHeader($index + 1)"
             >{{ member.name }}</th>
         </tr>
     </thead>
@@ -51,7 +51,8 @@
                         @mouseover="event.is_hover = true"
                     >
 
-                        <span @click="beEditing(event)">
+                    <!-- <span v-if="event.content" class="label label-primary" @click="beEditing(event)"> -->
+                    <span v-if="event.content" @click="beEditing(event)">
                             {{ event.content }}
                         </span>
 
@@ -120,8 +121,13 @@
 </template>
 
 <script>
+    import dateMixin from '../mixins/date.js'
     var now = new Date();
     export default {
+
+        mixins: [
+            dateMixin
+        ],
 
         data() {
             return {
@@ -135,7 +141,7 @@
                 },
                 dateStyling: 'date-styling',
                 hasTextRight: 'has-text-right',
-                todayStyling: 'today'
+                todayStyling: 'today',
             }
         },
 
@@ -150,30 +156,6 @@
 
         methods: {
 
-            isToday(date_text) {
-                var now = new Date();
-
-                if( parseInt(date_text.substr(0,4)) != now.getFullYear() ) return false;
-                if( parseInt(date_text.substr(5,2)) != now.getMonth() + 1) return false;
-                if( parseInt(date_text.substr(-2)) != now.getDate() ) return false;
-
-                return true;
-            },
-
-            getDayIndex(date_text) {
-                var year = parseInt(date_text.substr(0,4));
-                var month = parseInt(date_text.substr(5,2)) + 1;
-                var date = parseInt(date_text.substr(-2));
-                return new Date(year, month, date).getDay();
-            },
-
-            getDayString(date_text) {
-                var dayList = [
-                    'Sun','Mon','Tue','Wed','Thu','Fri','Sat'
-                ];
-                return dayList[this.getDayIndex(date_text)];
-            },
-
             // Insert: select
             beInserting(cell) {
                 if( this.is_insert_mode ) {
@@ -183,7 +165,6 @@
 
             // Insert: select
             insertEvent: function (year, month, day_index, id, content) {
-
 
                 if( this.new_event_content ) {
                     this.$root.insertEvent(year, month, day_index, id, content);
@@ -201,8 +182,8 @@
                 }
             },
 
-            clickHeader(index) {
-                this.$root.$emit('member_tab_selected', index);
+            clickTableHeader(index) {
+                //this.$root.$emit('table_header_clicked', index);
                 this.$root.$emit('open-members-modal', index);
             }
         },
@@ -210,14 +191,14 @@
         watch: {
             'year': {
                 handler: function(new_val, old_val) {
-                    this.$parent.fetchData(this.year, this.month)
+                    this.$root.fetchData(this.year, this.month)
                 },
                 deep: true
             },
 
             'month': {
                 handler: function(new_val, old_val) {
-                    this.$parent.fetchData(this.year, this.month)
+                    this.$root.fetchData(this.year, this.month)
                 },
                 deep: true
             }
@@ -227,18 +208,18 @@
             const self = this;
 
             this.$root.$on('ym-change', function(year, month) {
-                console.log('$on@Calendar - ym-change (' + year + ', ' + month + ')');
+                console.log('listen@Calendar - ym-change (' + year + ', ' + month + ')');
                 self.year = year;
                 self.month = month;
             });
 
             this.$root.$on('nuts-change-table-mode', function(is_on) {
-                console.log('$on@Calendar - nuts-change-table-mode (' + is_on + ')');
+                //console.log('listen@Calendar - nuts-change-table-mode (' + is_on + ')');
                 self.is_insert_mode = is_on;
             });
 
             this.$root.$on('nuts-select-main-menu', function(index) {
-                console.log('$on@Calendar - nuts-change-table-mode (' + index + ')');
+                //console.log('listen@Calendar - nuts-change-table-mode (' + index + ')');
                 index == 0 ? self.is_insert_mode = false : self.is_insert_mode = true;
             });
         },
@@ -264,21 +245,4 @@
         opacity: 1;
         background: rgba(145, 235, 250, 0.5);
     }
-    .date-styling {
-        font-size: 1.4em;
-        font-weight: bold;
-    }
-    .today {
-        background: red;
-        color: #fff;
-        border-radius: 20px;
-        padding: 5px;
-    }
-    .saturday {
-        background: rgba(240, 240, 255, 1);
-    }
-    .sunday {
-        background: rgba(255, 240, 240, 1);
-    }
 </style>
-

@@ -38,4 +38,5 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('event', 'EventsController@store' );
     Route::patch('event/{id}', 'EventsController@update' );
     Route::delete('event/{id}', 'EventsController@destroy' );
+    Route::get('event/{year}/{month}', 'EventsController@indexRange' );
 });

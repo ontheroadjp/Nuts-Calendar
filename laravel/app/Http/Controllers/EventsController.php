@@ -21,6 +21,10 @@ class EventsController extends Controller
         return new JsonResponse($items);
     }
 
+    public function indexRange(Event $event, $year, $month) {
+        return $event->fetchRange($year, $month);
+    }
+
     /**
      * Display the specified Event.
      *

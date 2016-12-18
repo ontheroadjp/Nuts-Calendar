@@ -52,20 +52,17 @@
         data() {
             return {
                 selectedMenu: 0,
-                menus: {
-                    0: {
+                menus: [
+                    {
                         name: 'Calendar',
                         isActive: false
                     },
-                    1: {
+                    {
                         name: 'Add Event',
                         isActive: false
                     },
-                    2: {
-                        name: 'Event Search',
-                        isActive: false
-                    },
-                },
+                ],
+
                 heroStyling: {
                     'margin-top': '-2px',
                 },

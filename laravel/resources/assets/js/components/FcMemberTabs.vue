@@ -20,7 +20,7 @@
                         class="form-control" 
                         type="text" 
                         placeholder="Name is here"
-                        v-model="edit_fields.name"
+                        v-model="fields.name | nameValidator"
                     >
                 </div>
             </div>
@@ -32,14 +32,14 @@
                         class="form-control" 
                         type="text" 
                         placeholder="Color is here"
-                        v-model="edit_fields.color"
+                        v-model="fields.color | colorValidator"
                     >
                 </div>
             </div>
             
         </div><!-- // ./tab-contents -->
 
-        <footer v-if="!is_new_editing" class="card-footer">
+        <footer v-if="!is_new_tab" class="card-footer">
             <a
                 class="card-footer-item"
                 @click="resetFields()"
@@ -49,7 +49,7 @@
             <a
                 class="card-footer-item"
                 @click="editUpdateMember()"
-                v-show="is_value_changed"
+                v-show="is_value_changed && !is_empty"
             >Save</a>
 
             <a
@@ -67,6 +67,7 @@
             <a
                 class="card-footer-item"
                 @click="insertMember()"
+                v-show="is_value_changed && !is_empty"
             >Add</a>
 
             <a
@@ -84,7 +85,7 @@
             return {
                 tabs: '',
                 selected_tab: '',
-                edit_fields: {
+                fields: {
                     name: '',
                     color: ''
                 },
@@ -92,6 +93,10 @@
                     name: '',
                     color: ''
                 },
+                validation: {
+                    name: false,
+                    color: false,
+                }
             }
         },
 
@@ -102,15 +107,36 @@
             }
         },
 
+        filters: {
+            nameValidator: {
+                write: function (val) {
+                    this.validation.name = !!val
+                    return val
+                }
+            },
+
+            colorValidator: {
+                write: function (val) {
+                    this.validation.color = !!val
+                    return val
+                }
+            },
+        },
+
+
         computed: {
-            is_new_editing: function() {
+            is_new_tab: function() {
                 return this.selected_tab == this.column_max_key() + 1 ? true : false;
             },
 
+            is_empty: function() {
+                return (this.fields.name == '') || (this.fields.color == '');
+            },
+
             is_value_changed: function() {
-                return (this.edit_fields.name != this.old_values.name) ||
-                        (this.edit_fields.color != this.old_values.color);
-            }
+                return (this.fields.name != this.old_values.name) ||
+                        (this.fields.color != this.old_values.color);
+            },
         },
 
         methods: {
@@ -134,21 +160,21 @@
 
             setFields() {
                 if(this.selected_tab != this.column_max_key() + 1) {
-                    this.edit_fields.name = this.tabs[this.selected_tab].name;
-                    this.edit_fields.color = this.tabs[this.selected_tab].color;
-                    this.old_values.name = this.edit_fields.name;
-                    this.old_values.color = this.edit_fields.color;
+                    this.fields.name = this.tabs[this.selected_tab].name;
+                    this.fields.color = this.tabs[this.selected_tab].color;
+                    this.old_values.name = this.fields.name;
+                    this.old_values.color = this.fields.color;
                 } else {
-                    this.edit_fields.name = '';
-                    this.edit_fields.color = '';
+                    this.fields.name = '';
+                    this.fields.color = '';
                     this.old_values.name = '';
                     this.old_values.color = '';
                 }
             },
 
             resetFields() {
-                this.edit_fields.name = this.old_values.name;
-                this.edit_fields.color = this.old_values.color;
+                this.fields.name = this.old_values.name;
+                this.fields.color = this.old_values.color;
             },
 
             // -----------------------------------------------------------------------
@@ -156,8 +182,8 @@
             insertMember: function () {
 
                 var new_member = {
-                    name: this.edit_fields.name,
-                    color: this.edit_fields.color,
+                    name: this.fields.name,
+                    color: this.fields.color,
                 };
 
                 var url = '/api/member';
@@ -187,8 +213,8 @@
             editUpdateMember: function() {
 
                 var updated_member = {
-                    name: this.edit_fields.name,
-                    color: this.edit_fields.color
+                    name: this.fields.name,
+                    color: this.fields.color
                 };
 
                 var url = '/api/member/' + this.selected_tab;
@@ -201,8 +227,8 @@
 
                 }).then(
                     function(response) {
-                        this.tabs[this.selected_tab].name = this.edit_fields.name;
-                        this.tabs[this.selected_tab].color = this.edit_fields.color;
+                        this.tabs[this.selected_tab].name = this.fields.name;
+                        this.tabs[this.selected_tab].color = this.fields.color;
 
                         this.$root.fetchData();
 
@@ -210,8 +236,8 @@
                         console.log('updated!');
 
                     }, function(response) {
-                        this.edit_fields.name = this.tabs[this.selected_tab].name;
-                        this.edit_fields.color = this.tabs[this.selected_tab].color;
+                        this.fields.name = this.tabs[this.selected_tab].name;
+                        this.fields.color = this.tabs[this.selected_tab].color;
                         this.$root.$emit('nuts-alert', 'failed - update!', 'is-danger');
                     }
                 )
@@ -250,7 +276,7 @@
                 self.selectTab(self.selected_tab)
             });
 
-            this.$root.$on('member_tab_selected',function(index) {
+            this.$root.$on('open-member-modal',function(index) {
                 console.log('$on@NutsTags - member_tab_opened(' + index + ')');
                 self.selectTab(index);
             });
@@ -270,8 +296,8 @@
                     console.log('$on@NutsTags - member-edit-button()');
                     var member = {
                         id: self.tabs[self.selected_tab].id,
-                        name: self.edit_fields.name,
-                        color: self.edit_fields.color
+                        name: self.fields.name,
+                        color: self.fields.color
                     }
                     self.$root.editUpdateMember(member);
                 }

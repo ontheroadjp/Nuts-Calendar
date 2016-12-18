@@ -2,7 +2,7 @@
     <!-- <button class="btn btn-primary" @click="fire">
          <slot></slot>
     </button> -->
-    <a class="button" @click="fire">
+    <a class="button is-primary is-outlined" @click="fire">
          <slot></slot>
     </a>
 </template>
@@ -13,7 +13,7 @@
             emit: {
                 type: String,
                 default: 'nuts-button'
-            }
+            },
         },
         methods: {
             fire() {
