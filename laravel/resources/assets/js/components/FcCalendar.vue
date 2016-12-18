@@ -1,9 +1,9 @@
 <template>
     <section style="margin: 20px;">
 
-        <nuts-search-box></nuts-search-box>
+        <nuts-search-box v-show="!isInsertMode"></nuts-search-box>
 
-        <nuts-members-modal-button emit="open-members-modal" v-show="!isSearching">
+        <nuts-members-modal-button emit="open-members-modal" v-show="!isSearching && !isInsertMode">
             Add Member
         </nuts-members-modal-button>
 
@@ -20,7 +20,7 @@
     import nutsButton from '../nuts-vue-components/NutsButton.vue';
 
     // mixin
-    import eventApi from '../mixins/eventApi.js';
+    import eventApi from '../mixins/EventApi.js';
 
     export default {
         components: {
@@ -42,6 +42,8 @@
                 calendar: [],
                 members: [],
                 events: [],
+                isInsertMode: false,
+                //insertingCell: '',
                 searchQuery: ''
             }
         },
@@ -73,6 +75,15 @@
                 deep: true
             },
 
+            'events': {
+                handler: function(new_val, old_val) {
+                    console.log('fire: events_fetched');
+                    this.$emit('events_fetched', this.currentYear, this.currentMonth)
+
+                },
+                deep: true
+            },
+
             'currentYear': {
                 handler: function(new_val, old_val) {
                     this.fetchData(this.currentYear, this.currentMonth)
@@ -91,32 +102,28 @@
         created() {
             const self = this;
 
-            // api-fetch-calendar
-            this.$root.$on('api-fetch-calendar', function(response) {
+            // nuts-select-main-menu
+            this.$root.$on('nuts-select-main-menu', function(index) {
+                self.searchQuery = '';
+                index == 0 ? self.isInsertMode = false : self.isInsertMode = true;
+            });
+
+            // api-fetch-data
+            this.$root.$on('api-fetch-data', function(response) {
                 self.calendar = response.data.days;
                 self.members = response.data.members;
-            }),
 
-            // api-fetch-events
-            this.$root.$on('api-fetch-events', function(response) {
-                var storiesReady = response.data.map(function(item) {
+                var modifiedEvents = response.data.events.map(function(item) {
                     item.is_row_hover = false;
                     return item;
                 });
-                self.events = storiesReady;
+                self.events = modifiedEvents;
+
                 self.events.sort(function (a,b) {
                     if(a.date < b.date) return -1;
                     if(a.date > b.date) return 1;
-                })
-            });
-
-//            // api-insert-event
-//            this.$root.$on('api-insert-event', function(response, dayIndex, id) {
-//                console.log('Inserted!');
-//                self.calendar[dayIndex].events[id].push(response.data);
-//                self.$emit('nuts-alert', 'Inserted!','is-success');
-//                console.log('Inserted!');
-//            });
+                });
+            }),
 
             // ym-change
             this.$root.$on('ym-change', function(year, month) {

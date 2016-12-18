@@ -2,7 +2,12 @@
     <div class="control is-grouped is-pulled-right">
 
         <div class="control has-icon">
-            <input v-model="$parent.$data.searchQuery" class="input" type="text" placeholder="Search">
+            <input 
+                class="input" 
+                type="text" 
+                v-model="$parent.searchQuery" 
+                placeholder="Search"
+            >
             <i class="fa fa-search"></i>
         </div>
 

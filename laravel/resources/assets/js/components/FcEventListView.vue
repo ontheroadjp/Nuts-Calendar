@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import dateMixin from '../mixins/date.js';
+    import dateUtilities from '../mixins/DateUtilities.js';
     export default {
         data() {
             return {
@@ -67,7 +67,7 @@
         },
 
         mixins: [
-            dateMixin
+            dateUtilities
         ],
 
         created() {
