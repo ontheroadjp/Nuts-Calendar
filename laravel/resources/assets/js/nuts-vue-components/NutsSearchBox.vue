@@ -20,19 +20,13 @@
 
 <script>
     export default {
+
         methods: {
             clearField() {
-                this.$parent.$data.searchQuery = ''
-            }
+                this.$parent.searchQuery = ''
+            },
         },
 
-        created() {
-            const self = this;
-
-            this.$root.$on('nuts-select-main-menu', function(index) {
-                self.clearField();
-            });
-        },
     }
 </script>
 

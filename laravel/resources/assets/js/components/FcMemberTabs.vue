@@ -1,12 +1,13 @@
 <template>
-    <div>
+    <div class="card" style="width: 70%;">
+
         <div class="tabs is-toggle is-fullwidth">
             <ul>
-                <li v-for="(index, tab) in tabs" :class="{ 'is-active': index == selected_tab }">
-                    <a href="#" @click="selectTab(index)">{{ tab.name }}</a>
+                <li v-for="tab in tabs" :class="{ 'is-active': tab.id == selectedTab }">
+                    <a href="#" @click="selectTab(tab.id)">{{ tab.name }}</a>
                 </li>
-                <li :class="{ 'is-active': selected_tab == column_max_key() + 1 }">
-                    <a href="#" @click="selectTab(column_max_key() + 1)">New</a>
+                <li :class="{ 'is-active': isNewTab }">
+                    <a href="#" @click="selectTab()">New</a>
                 </li>
             </ul>
         </div><!-- // .tabs -->
@@ -20,7 +21,7 @@
                         class="form-control" 
                         type="text" 
                         placeholder="Name is here"
-                        v-model="fields.name | nameValidator"
+                        v-model="fields.name"
                     >
                 </div>
             </div>
@@ -32,46 +33,40 @@
                         class="form-control" 
                         type="text" 
                         placeholder="Color is here"
-                        v-model="fields.color | colorValidator"
+                        v-model="fields.color"
                     >
                 </div>
             </div>
             
         </div><!-- // ./tab-contents -->
 
-        <footer v-if="!is_new_tab" class="card-footer">
-            <a
-                class="card-footer-item"
+        <footer v-if="!isNewTab" class="card-footer">
+            <a class="card-footer-item"
                 @click="resetFields()"
-                v-show="is_value_changed"
+                v-show="isValueChanged"
             >Reset</a>
 
-            <a
-                class="card-footer-item"
+            <a class="card-footer-item"
                 @click="editUpdateMember()"
-                v-show="is_value_changed && !is_empty"
+                v-show="isValueChanged && !isEmpty"
             >Save</a>
 
-            <a
-                class="card-footer-item"
+            <a class="card-footer-item"
                 @click="deleteMember()"
             >Delete</a>
 
-            <a
-                class="card-footer-item"
+            <a class="card-footer-item"
                 @click="this.$root.$emit('close-members-modal')"
             >Cancel</a>
         </footer>
 
         <footer v-else class="card-footer">
-            <a
-                class="card-footer-item"
+            <a class="card-footer-item"
                 @click="insertMember()"
-                v-show="is_value_changed && !is_empty"
+                v-show="isValueChanged && !isEmpty"
             >Add</a>
 
-            <a
-                class="card-footer-item"
+            <a class="card-footer-item"
                 @click="this.$root.$emit('close-members-modal')"
             >Cancel</a>
         </footer>
@@ -84,7 +79,7 @@
         data() {
             return {
                 tabs: '',
-                selected_tab: '',
+                selectedTab: '',
                 fields: {
                     name: '',
                     color: ''
@@ -93,10 +88,10 @@
                     name: '',
                     color: ''
                 },
-                validation: {
-                    name: false,
-                    color: false,
-                }
+                //validation: {
+                //    name: false,
+                //    color: false,
+                //}
             }
         },
 
@@ -107,40 +102,38 @@
             }
         },
 
-        filters: {
-            nameValidator: {
-                write: function (val) {
-                    this.validation.name = !!val
-                    return val
-                }
-            },
-
-            colorValidator: {
-                write: function (val) {
-                    this.validation.color = !!val
-                    return val
-                }
-            },
-        },
+//        filters: {
+//            nameValidator: {
+//                write: function (val) {
+//                    this.validation.name = !!val
+//                    return val
+//                }
+//            },
+//
+//            colorValidator: {
+//                write: function (val) {
+//                    this.validation.color = !!val
+//                    return val
+//                }
+//            },
+//        },
 
 
         computed: {
-            is_new_tab: function() {
-                return this.selected_tab == this.column_max_key() + 1 ? true : false;
+            isNewTab: function() {
+                return this.selectedTab == this.columnMaxKey + 1;
             },
 
-            is_empty: function() {
+            isEmpty: function() {
                 return (this.fields.name == '') || (this.fields.color == '');
             },
 
-            is_value_changed: function() {
+            isValueChanged: function() {
                 return (this.fields.name != this.old_values.name) ||
                         (this.fields.color != this.old_values.color);
             },
-        },
 
-        methods: {
-            column_max_key() {
+            columnMaxKey: function() {
 
                 var keys = Object.keys(this.tabs);
                 keys.map(function(key) {
@@ -149,19 +142,21 @@
 
                 return Math.max.apply(null, keys);
             },
+        },
+
+        methods: {
 
             selectTab(index) {
-                console.log(Object.keys(this.tabs));
-                console.log(Math.max(parseInt(Object.keys(this.tabs))));
-                if(index == '') index = this.column_max_key() + 1;
-                this.selected_tab = parseInt(index);
+                index == null
+                    ? this.selectedTab = this.columnMaxKey + 1 
+                    : this.selectedTab = parseInt(index);
                 this.setFields();
             },
 
             setFields() {
-                if(this.selected_tab != this.column_max_key() + 1) {
-                    this.fields.name = this.tabs[this.selected_tab].name;
-                    this.fields.color = this.tabs[this.selected_tab].color;
+                if(!this.isNewTab) {
+                    this.fields.name = this.tabs[this.selectedTab].name;
+                    this.fields.color = this.tabs[this.selectedTab].color;
                     this.old_values.name = this.fields.name;
                     this.old_values.color = this.fields.color;
                 } else {
@@ -195,7 +190,7 @@
                     body: new_member
                 }).then(
                     function(response) {
-                        this.tabs[this.column_max_key + 1] = response.data;
+                        this.tabs[this.columnMaxKey + 1] = response.data;
 
                         this.$root.fetchData();
 
@@ -217,7 +212,7 @@
                     color: this.fields.color
                 };
 
-                var url = '/api/member/' + this.selected_tab;
+                var url = '/api/member/' + this.selectedTab;
                 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
 
                 this.$http({
@@ -227,8 +222,8 @@
 
                 }).then(
                     function(response) {
-                        this.tabs[this.selected_tab].name = this.fields.name;
-                        this.tabs[this.selected_tab].color = this.fields.color;
+                        this.tabs[this.selectedTab].name = this.fields.name;
+                        this.tabs[this.selectedTab].color = this.fields.color;
 
                         this.$root.fetchData();
 
@@ -236,8 +231,8 @@
                         console.log('updated!');
 
                     }, function(response) {
-                        this.fields.name = this.tabs[this.selected_tab].name;
-                        this.fields.color = this.tabs[this.selected_tab].color;
+                        this.fields.name = this.tabs[this.selectedTab].name;
+                        this.fields.color = this.tabs[this.selectedTab].color;
                         this.$root.$emit('nuts-alert', 'failed - update!', 'is-danger');
                     }
                 )
@@ -246,7 +241,7 @@
             // -----------------------------------------------------------------------
             // Delete
             deleteMember: function() {
-                var url = '/api/member/' + this.selected_tab;
+                var url = '/api/member/' + this.selectedTab;
                 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
     
                 this.$http({
@@ -254,7 +249,7 @@
                     method: 'DELETE',
                 }).then(
                     function(response) {
-                        delete this.tabs[this.selected_tab];
+                        delete this.tabs[this.selectedTab];
 
                         this.$root.$emit('nuts-alert', 'success - delete!', 'is-success');
                         console.log('success: delete event (id:event.id)');
@@ -270,32 +265,27 @@
         created() {
             var self = this;
 
-            this.$root.$on('members_fetched',function() {
-                console.log('$on@NutsTags - members_fetched(' + ')');
-                self.tabs = self.$root.$data.members;
-                self.selectTab(self.selected_tab)
+            this.$root.$on('members_fetched',function(year, month, members) {
+                self.tabs = members;
+                //self.selectTab(self.selectedTab)
             });
 
-            this.$root.$on('open-member-modal',function(index) {
-                console.log('$on@NutsTags - member_tab_opened(' + index + ')');
+            this.$root.$on('open-members-modal',function(index) {
                 self.selectTab(index);
             });
 
-            this.$root.$on('members-modal-opened',function() {
-                console.log('$on@NutsTags - members-modal-opened()');
-                self.setFields();
-            });
+//            this.$root.$on('members-modal-opened',function() {
+//                self.setFields();
+//            });
 
             this.$root.$on('members-modal-closed',function() {
-                console.log('$on@NutsTags - members-modal-closed()');
-                self.selectTab(self.column_max_key() + 1);
+                self.selectTab(self.columnMaxKey + 1);
             });
 
             this.$root.$on('member-edit-button',function() {
-                if(self.is_value_changed) {
-                    console.log('$on@NutsTags - member-edit-button()');
+                if(self.isValueChanged) {
                     var member = {
-                        id: self.tabs[self.selected_tab].id,
+                        id: self.tabs[self.selectedTab].id,
                         name: self.fields.name,
                         color: self.fields.color
                     }

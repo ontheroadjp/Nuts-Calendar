@@ -12,7 +12,7 @@
                 data-toggle="modal"
                 data-target="#nuts-modal"
                 :style="column_width"
-                @click="clickTableHeader($index + 1)"
+                @click="clickTableHeader(member.id)"
             >{{ member.name }}</th>
         </tr>
     </thead>
@@ -195,7 +195,7 @@
             },
 
             clickTableHeader(index) {
-                this.$parent.$emit('open-members-modal', index);
+                this.$root.$emit('open-members-modal', index);
             }
         },
 

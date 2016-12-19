@@ -31,7 +31,7 @@
                     ><a href="#">{{ menu.name }}</a></li>
                 </ul>
 
-                <a class="button is-primary is-outlined">
+                <a class="button is-primary is-outlined" @click="selectSettings()">
                     <span class="icon"><i class="fa fa-cog"></i></span>
                     <span>Settings</span>
                 </a>
@@ -76,7 +76,18 @@
         methods: {
             selectMenu(index) {
                 this.selectedMenu = index;
-                this.$root.$emit('nuts-select-main-menu', index);
+
+                if( index == 0 ) {
+                    this.$root.$emit('main-menu-calendar');
+                } else if( index == 1 ) {
+                    this.$root.$emit('main-menu-add-event');
+                }
+
+            },
+
+            selectSettings() {
+                this.selectedMenu = 99;
+                this.$root.$emit('main-menu-settings', 99);
             }
         }
     } 

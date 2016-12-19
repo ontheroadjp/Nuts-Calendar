@@ -5,19 +5,9 @@
         transition="nuts-modal-fade"
     >
         <div class="modal-background"></div>
-            <div class="card" style="width: 70%;">
             
                 <slot></slot>
                 
-                <footer v-show="is_close_btn" class="card-footer">
-                    <slot name="footer"></slot>
-                    <a 
-                        slot="footer" 
-                        class="card-footer-item" 
-                        @click="isActive = false"
-                    >{{ close_btn_label }}</a>
-                </footer>
-            </div>
         </div>
     </div>
 </template>
@@ -45,21 +35,21 @@
                 default: 'nuts-modal',
                 required: true
             },
-            is_close_btn: {
+            isCloseButton: {
                 type: Boolean,
                 default: true
             },
-            close_btn_label: {
+            closeButtonLabel: {
                 type: String,
                 default: 'Close'
             },
         },
 
         computed: {
-            open_event: function() {
+            defaultOpenEventName: function() {
                 return 'open-' + this.name
             },
-            close_event: function() {
+            defaultCloseEventName: function() {
                 return 'close-' + this.name
             }
         },
@@ -73,13 +63,13 @@
         created() {
             const self = this;
 
-            this.$root.$on(this.open_event, function() {
-                console.log('$on@NutsModal: ' + this.open_event);
+            this.$root.$on(this.defaultOpenEventName, function() {
+                console.log('$on@NutsModal: ' + self.defaultOpenEventName);
                 self.isActive = true;
             });
 
-            this.$root.$on(this.close_event, function() {
-                console.log('$on@NutsModal: ' + this.close_event);
+            this.$root.$on(this.defaultCloseEventName, function() {
+                console.log('$on@NutsModal: ' + self.defaultCloseEventName);
                 self.isActive = false;
             });
         }

@@ -1,5 +1,5 @@
 <template>
-    <h1>Event List</h1>
+    <h2>Event List</h2>
         <table class="table">
             <tbody>
                 <tr v-for="event in events

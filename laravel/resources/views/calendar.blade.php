@@ -14,10 +14,6 @@
 <body>
     <nuts-alert></nuts-alert>
 
-    <nuts-members-modal name="members-modal" :is_close_btn="false">
-        <nuts-member-tabs></nuts-member-tabs>
-    </nuts-members-modal>
-
     @include('partials.navbar')
 
     <fc-hero></fc-hero>

@@ -1,13 +1,9 @@
 // components
-//import nutsSidebar from './nuts-vue-components/NutsSidebar.vue';
-//import nutsYmSelector from './nuts-vue-components/NutsYmSelector.vue';
-//import nutsToggleButton from './nuts-vue-components/NutsToggleButton.vue';
 import nutsAlert from './nuts-vue-components/NutsAlert.vue';
-import nutsModal from './nuts-vue-components/NutsModal.vue';
-
 import fcHero from './components/FcHero.vue';
+
 import fcCalendar from './components/FcCalendar.vue';
-import fcMemberTabs from './components/FcMemberTabs.vue';
+import fcSettings from './components/FcSettings.vue';
 
 Vue.directive('focus', {
     update: function () {
@@ -19,24 +15,42 @@ Vue.directive('focus', {
     }
 });
 
-window.vm = new Vue({
+const vm = new Vue({
     el: 'body',
     components: {
+        'nuts-alert': nutsAlert,
         'fc-hero': fcHero,
         'fc-calendar': fcCalendar,
-//        'nuts-sidebar': nutsSidebar,
-//        'nuts-sidebar-toggle-button': nutsToggleButton,
-//        'nuts-table-mode-toggle-button': nutsToggleButton,
-//        'nuts-ym-selector': nutsYmSelector,
-        'nuts-alert': nutsAlert,
-        'nuts-members-modal': nutsModal,
-        'nuts-member-tabs': fcMemberTabs,
+        'fc-settings': fcSettings,
+    },
+
+    data() {
+        return {
+            mainIndex: 0
+        }
     },
 
     computed: {
         currentView: function() {
-            return 'fc-calendar'
-        },
+            if(this.mainIndex == 0) return 'fc-calendar';
+            if(this.mainIndex == 1) return 'fc-calendar';
+            if(this.mainIndex == 99) return 'fc-settings';
+        }
+
     },
+
+    created() {
+        this.$root.$on('main-menu-calendar', function() {
+            this.mainIndex = 0;
+        });
+
+        this.$root.$on('main-menu-add-event', function(index) {
+            this.mainIndex = 1;
+        });
+
+        this.$root.$on('main-menu-settings', function(index) {
+            this.mainIndex = 99;
+        });
+    }
 
 });
