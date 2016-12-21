@@ -17,8 +17,7 @@
         },
         methods: {
             fire() {
-                console.log(this.emit);
-                this.$root.$emit(this.emit);
+                nutsHub.fire(this.emit);
             }
         }
     } 

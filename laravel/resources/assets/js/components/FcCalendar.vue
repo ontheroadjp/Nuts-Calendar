@@ -19,6 +19,8 @@
 </template>
 
 <script>
+    import nutsHub from '../NutsHub.js';
+
     // componennt
     import fcCalendarTableView from './FcCalendarTableView.vue';
     import fcEventListView from './FcEventListView.vue';
@@ -32,6 +34,7 @@
     import eventApi from '../mixins/EventApi.js';
 
     export default {
+
         components: {
             'table-view': fcCalendarTableView,
             'event-list-view': fcEventListView,
@@ -46,54 +49,43 @@
         ],
 
         data() {
-            var now = new Date();
+
+//            var now = new Date();
             return {
-                currentYear: now.getFullYear(),
-                currentMonth: now.getMonth() + 1,
+//                currentYear: now.getFullYear(),
+//                currentMonth: now.getMonth() + 1,
                 calendar: [],
                 members: [],
                 events: [],
-                isInsertMode: false,
+                //isInsertMode: false,
                 searchQuery: ''
             }
         },
 
         computed: {
+
             currentView: function() {
                 return !this.isSearching ? 'table-view' : 'event-list-view';
+            },
+
+            currentYear: function() {
+                return this.$store.state.currentYear;
+            },
+
+            currentMonth: function() {
+                return this.$store.state.currentMonth;
             },
 
             isSearching: function() {
                 return this.searchQuery != '';
             },
+
+            isInsertMode: function() {
+                return this.$store.state.mainIndex == 1;
+            }
         },
 
         watch: {
-            'calendar': {
-                handler: function(new_val, old_val) {
-                    console.log('fire: calendar_fetched');
-                    this.$root.$emit('calendar_fetched', this.currentYear, this.currentMonth, this.calendar)
-                },
-                deep: true
-            },
-
-            'members': {
-                handler: function(new_val, old_val) {
-                    console.log('fire: members_fetched');
-                    this.$root.$emit('members_fetched', this.currentYear, this.currentMonth, this.members)
-                },
-                deep: true
-            },
-
-            'events': {
-                handler: function(new_val, old_val) {
-                    console.log('fire: events_fetched');
-                    this.$root.$emit('events_fetched', this.currentYear, this.currentMonth, this.events)
-
-                },
-                deep: true
-            },
-
             'currentYear': {
                 handler: function(new_val, old_val) {
                     this.fetchData(this.currentYear, this.currentMonth)
@@ -107,29 +99,76 @@
                 },
                 deep: true
             },
+
+            'calendar': {
+                handler: function(new_val, old_val) {
+                    nutsHub.fire(
+                        'calendar-updated',
+                        {
+                            'year': this.currentYear,
+                            'month': this.currentMonth,
+                            'calendar': this.calendar
+                        },
+                        'FcCalendar.vue'
+                    );
+                },
+                deep: true
+            },
+
+            'members': {
+                handler: function(new_val, old_val) {
+                    nutsHub.fire(
+                        'members-updated',
+                        {
+                            'year': this.currentYear,
+                            'month': this.currentMonth,
+                            'members': this.members
+                        },
+                        'FcCalendar.vue'
+                    );
+                },
+                deep: true
+            },
+
+            'events': {
+                handler: function(new_val, old_val) {
+                    nutsHub.fire(
+                        'events-updated',
+                        {
+                            'year': this.currentYear,
+                            'month': this.currentMonth,
+                            'members': this.events
+                        },
+                        'FcCalendar.vue'
+                    );
+
+                },
+                deep: true
+            },
+
         },
 
         created() {
             const self = this;
 
             // main-menu-calendar
-            this.$root.$on('main-menu-calendar', function() {
-                self.searchQuery = '';
-                self.isInsertMode = false;
-            });
+            //nutsHub.listen('main-menu-calendar', function() {
+            //    self.searchQuery = '';
+            //    //self.isInsertMode = false;
+            //}, 'FcCalendar.vue');
 
             // main-menu-add-event
-            this.$root.$on('main-menu-add-event', function() {
-                self.searchQuery = '';
-                self.isInsertMode = true;
-            });
+            //nutsHub.listen('main-menu-add-event', function() {
+            //    self.searchQuery = '';
+            //    //self.isInsertMode = true;
+            //}, 'FcCalendar.vue');
 
             // api-fetch-data
-            this.$root.$on('api-fetch-data', function(response) {
-                self.calendar = response.data.days;
-                self.members = response.data.members;
+            nutsHub.listen('api-fetch-data', function(Object) {
+                self.calendar = Object.response.data.days;
+                self.members = Object.response.data.members;
 
-                var modifiedEvents = response.data.events.map(function(item) {
+                var modifiedEvents = Object.response.data.events.map(function(item) {
                     item.is_row_hover = false;
                     return item;
                 });
@@ -139,14 +178,13 @@
                     if(a.date < b.date) return -1;
                     if(a.date > b.date) return 1;
                 });
-            }),
+            }, 'FcCalendar.vue')//,
 
             // ym-change
-            this.$root.$on('ym-change', function(year, month) {
-                console.log('listen@Calendar - ym-change (' + year + ', ' + month + ')');
-                self.currentYear = year;
-                self.currentMonth = month;
-            });
+            //nutsHub.listen('ym-change', function(Object) {
+            //    self.currentYear = Object.year;
+            //    self.currentMonth = Object.month;
+            //}, 'FcCalendar.vue')
 
         },
 

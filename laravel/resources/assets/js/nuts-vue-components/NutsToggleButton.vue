@@ -45,7 +45,7 @@
         },
         methods: {
             fire() {
-                this.$root.$emit(this.emit, !this.is_on);
+                nutsHub.fire(this.emit, {state: !this.is_on}, 'NutsToggleButton.vue');
             },
             toggleState() {
                 this.is_on = !this.is_on
@@ -53,10 +53,9 @@
         },
         created() {
             const self = this;
-            this.$root.$on(this.emit, function() {
-                console.log('$on@NutsToggleButton: ' + self.emit);
+            nutsHub.listen(this.emit, function() {
                 self.toggleState();
-            });
+            }, 'NutsToggleButton.vue');
         },
     }
 </script>

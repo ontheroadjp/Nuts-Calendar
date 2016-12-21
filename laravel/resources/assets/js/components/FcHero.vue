@@ -45,6 +45,7 @@
 <script>
     import nutsYmField from '../nuts-vue-components/NutsYmField.vue';
     export default {
+
         components: {
             'nuts-ym-field': nutsYmField,
         },
@@ -77,17 +78,19 @@
             selectMenu(index) {
                 this.selectedMenu = index;
 
-                if( index == 0 ) {
-                    this.$root.$emit('main-menu-calendar');
-                } else if( index == 1 ) {
-                    this.$root.$emit('main-menu-add-event');
-                }
+                this.$store.commit('setMainIndex', index);
+                //if( index == 0 ) {
+                //    nutsHub.fire('main-menu-calendar', {}, 'hero.vue');
+                //} else if( index == 1 ) {
+                //    nutsHub.fire('main-menu-add-event',{}, 'hero.vue');
+                //}
 
             },
 
             selectSettings() {
                 this.selectedMenu = 99;
-                this.$root.$emit('main-menu-settings', 99);
+                this.$store.commit('setMainIndex', 99);
+                //nutsHub.fire('main-menu-settings',{index: 99}, 'hero.vue');
             }
         }
     } 

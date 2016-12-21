@@ -16,14 +16,12 @@
     Vue.transition('nuts-modal-fade', {
         beforeEnter: function (el) {
             event = this.name + '-opened';
-            this.$root.$emit(event);
-            console.log('$emit@NutsModal - ' + this.name + '-opened()');
+            nutsHub.fire(event, 'NutsModal.vue');
         },
 
         afterLeave: function (el) {
             event = this.name + '-closed';
-            this.$root.$emit(event);
-            console.log('$emit@NutsModal - ' + this.name + '-closed()');
+            nutsHub.fire(event, 'NutsModal.vue');
         },
     })
 
@@ -63,15 +61,13 @@
         created() {
             const self = this;
 
-            this.$root.$on(this.defaultOpenEventName, function() {
-                console.log('$on@NutsModal: ' + self.defaultOpenEventName);
+            nutsHub.listen(this.defaultOpenEventName, function() {
                 self.isActive = true;
-            });
+            }, 'NutsModal.vue');
 
-            this.$root.$on(this.defaultCloseEventName, function() {
-                console.log('$on@NutsModal: ' + self.defaultCloseEventName);
+            nutsHub.listen(this.defaultCloseEventName, function() {
                 self.isActive = false;
-            });
+            }, 'NutsModal.vue');
         }
     }
 </script>

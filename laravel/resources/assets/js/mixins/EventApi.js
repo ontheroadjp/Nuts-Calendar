@@ -1,4 +1,11 @@
+import alertMixin from './Alert.js';
+
 export default {
+
+    mixins: [
+        alertMixin
+    ],
+
     methods: {
 
         // -----------------------------------------------------------------------
@@ -9,10 +16,15 @@ export default {
                 method: 'GET'
 
             }).then( function(response) {
-                this.$root.$emit('api-fetch-data', response);
+                nutsHub.fire(
+                    'api-fetch-data', 
+                    {'response': response}, 
+                    'EventApi.vue'
+                );
 
             }, function(response) {
-                this.$root.$emit('nuts-alert', 'Failed - Add new event!', 'is-danger');
+                this.alertDanger('Failed: fetch data!', false, 'EventApi.js');
+
             });
         },
 
@@ -38,10 +50,10 @@ export default {
 
             }).then( function(response) {
                 memberColumn.push(response.data);
-                this.$root.$emit('nuts-alert', 'Inserted!','is-success');
+                this.alertSuccess('Success: inserted!', false, 'EventApi.js');
 
             }, function(response) {
-                this.$root.$emit('nuts-alert', 'Failed - Add new event!', 'is-danger');
+                this.alertDanger('Failed: updated!', false, 'EventApi.js');
 
             });
         },
@@ -67,10 +79,11 @@ export default {
                 body: event
 
             }).then( function(response) {
-                this.$root.$emit('nuts-alert', 'Updateed!','is-success');
+                this.alertSuccess('Success: updated!', false, 'EventApi.js');
 
             }, function(response) {
-                this.$root.$emit('nuts-alert', 'Failed - Update!', 'is-danger');
+                this.alertDanger('Failed: updated!', false, 'EventApi.js');
+
             });
         },
 
@@ -87,10 +100,11 @@ export default {
 
             }).then( function(response) {
                 members.splice(index, 1);
-                this.$root.$emit('nuts-alert', 'Deletes!','is-success');
+                this.alertSuccess('Success: deleted!', false, 'EventApi.js');
 
             }, function(response) {
-                this.$root.$emit('nuts-alert', 'Failed - Deletes!', 'is-danger');
+                this.alertDanger('Failed: deleted!', false, 'EventApi.js');
+
             });
         },
 

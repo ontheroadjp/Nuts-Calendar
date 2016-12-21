@@ -26,19 +26,21 @@
 
         created() {
             const self = this;
-            this.$root.$on('nuts-alert', function(message, level = '', isImportant = false) {
-                self.message = message;
-                self.level = level;
-                self.isImportant = isImportant;
+
+            nutsHub.listen('nuts-alert', function(Object) {
+                self.message = Object.message;
+                self.level = Object.level;
+                self.isImportant = Object.isImportant;
                 self.isActive = true;
-                if(!isImportant) {
+                if(!Object.isImportant) {
                     setTimeout(
                         function() { 
                             self.close();
-                        }, 3000
+                        }, 1500
                     );
                 }
-            });
+            }, 'NutsAlert.vue');
+
         }
     }
 </script>

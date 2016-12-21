@@ -56,7 +56,7 @@
             >Delete</a>
 
             <a class="card-footer-item"
-                @click="this.$root.$emit('close-members-modal')"
+                @click="close"
             >Cancel</a>
         </footer>
 
@@ -67,7 +67,7 @@
             >Add</a>
 
             <a class="card-footer-item"
-                @click="this.$root.$emit('close-members-modal')"
+                @click="close"
             >Cancel</a>
         </footer>
 
@@ -75,7 +75,15 @@
 </template>
 
 <script>
+
+    import alertMixin from '../mixins/Alert.js';
+
     export default {
+
+        mixins: [
+            alertMixin
+        ],
+
         data() {
             return {
                 tabs: '',
@@ -172,6 +180,10 @@
                 this.fields.color = this.old_values.color;
             },
 
+            close() {
+                nutsHub.fire('close-members-modal', {}, 'FcMemberTabs.vue');
+            },
+
             // -----------------------------------------------------------------------
             // Insert: Update
             insertMember: function () {
@@ -194,11 +206,11 @@
 
                         this.$root.fetchData();
 
-                        this.$root.$emit('nuts-alert', 'Success - Add new member!', 'is-success');
-                        console.log('Inserted!');
+                        this.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
 
                     }, function(response) {
-                        this.$root.$emit('nuts-alert', 'failed - add new member!', 'is-danger');
+                        this.alertDanger( 'Failed: add new member!', false, 'FcMemberTabs.vue' );
+
                     }
                 )
             },
@@ -227,13 +239,14 @@
 
                         this.$root.fetchData();
 
-                        this.$root.$emit('nuts-alert', 'Updateed!', 'is-success');
-                        console.log('updated!');
+                        this.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
 
                     }, function(response) {
                         this.fields.name = this.tabs[this.selectedTab].name;
                         this.fields.color = this.tabs[this.selectedTab].color;
-                        this.$root.$emit('nuts-alert', 'failed - update!', 'is-danger');
+
+                        this.alertDanger( 'Failed: member updated!', false, 'FcMemberTabs.vue' );
+
                     }
                 )
             },
@@ -251,11 +264,12 @@
                     function(response) {
                         delete this.tabs[this.selectedTab];
 
-                        this.$root.$emit('nuts-alert', 'success - delete!', 'is-success');
-                        console.log('success: delete event (id:event.id)');
+                        //this.$root.$emit('nuts-alert', 'success - delete!', 'is-success');
+                        this.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
 
                     }, function(response) {
-                        this.$root.$emit('nuts-alert', 'failed - delete!', 'is-danger');
+                        this.alertDanger( 'Failed: member deleted!', false, 'FcMemberTabs.vue' );
+
                     }
                 )
             },
@@ -265,24 +279,20 @@
         created() {
             var self = this;
 
-            this.$root.$on('members_fetched',function(year, month, members) {
-                self.tabs = members;
+            nutsHub.listen('members-updated', function(Object) {
+                self.tabs = Object.members;
                 //self.selectTab(self.selectedTab)
-            });
+            }, 'FcMemberTabs.vue');
 
-            this.$root.$on('open-members-modal',function(index) {
-                self.selectTab(index);
-            });
+            nutsHub.listen('open-members-modal', function(Object) {
+                self.selectTab(Object.index);
+            }, 'FcMemberTabs.vue');
 
-//            this.$root.$on('members-modal-opened',function() {
-//                self.setFields();
-//            });
-
-            this.$root.$on('members-modal-closed',function() {
+            nutsHub.listen('close-members-modal', function() {
                 self.selectTab(self.columnMaxKey + 1);
-            });
+            }, 'FcMemberTabs.vue');
 
-            this.$root.$on('member-edit-button',function() {
+            nutsHub.listen('member-edit-button', function() {
                 if(self.isValueChanged) {
                     var member = {
                         id: self.tabs[self.selectedTab].id,
@@ -291,11 +301,11 @@
                     }
                     self.$root.editUpdateMember(member);
                 }
-            });
+            }, 'FcMemberTabs.vue');
 
-            this.$root.$on('member-delete-button',function() {
-                console.log('$on@NutsTags - member-delete-button()');
-            });
+            nutsHub.listen('member-delete-button', function() {
+                console.log('Nothing to do');
+            }, 'FcMemberTabs.vue');
         }
     } 
 </script>

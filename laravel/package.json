@@ -9,11 +9,12 @@
     "gulp": "^3.9.1",
     "gulp-notify": "^2.2.0",
     "gulp-sass": "^2.3.2",
-    "laravel-elixir": "^5.0.0",
-    "vue": "^1.0.28",
-    "vue-resource": "^1.0.3"
+    "laravel-elixir": "^5.0.0"
   },
   "dependencies": {
-    "css-toggle-switch": "^4.0.2"
+    "css-toggle-switch": "^4.0.2",
+    "vue": "^1.0.28",
+    "vue-resource": "^1.0.3",
+    "vuex": "^0.8.2"
   }
 }

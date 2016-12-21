@@ -79,8 +79,8 @@
                         <input
                             type="text"
                             class="form-control"
-                            @blur="editUpdateEvent(event)"
-                            @keyup.enter="editUpdateEvent(event)"
+                            @blur.prevent="editUpdateEvent(event)"
+                            @keyup.enter.prevent="editUpdateEvent(event)"
                             v-model="event.content"
                             v-if="!isInsertMode"
                             v-focus
@@ -139,6 +139,7 @@
         ],
 
         data() {
+
             return {
                 insertingCellAddress: '',
                 newEventContent: '',
@@ -146,9 +147,11 @@
                     width: '6%'
                 },
             }
+
         },
 
         computed: {
+
             column_width: function() {
                 var length = Object.keys(this.$parent.members).length;
                 return {
@@ -159,9 +162,11 @@
             isInsertMode: function() {
                 return this.$parent.isInsertMode;
             },
+
         },
 
         methods: {
+
             // Insert: select
             beInserting(cell) {
                 if( this.isInsertMode ) {
@@ -195,8 +200,13 @@
             },
 
             clickTableHeader(index) {
-                this.$root.$emit('open-members-modal', index);
+                nutsHub.fire(
+                    'open-members-modal', 
+                    { 'index': index }, 
+                    'FcCalendarView.vue'
+                );
             }
+
         },
 
     }
