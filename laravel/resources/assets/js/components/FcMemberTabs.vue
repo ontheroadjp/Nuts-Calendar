@@ -6,7 +6,7 @@
                 <li v-for="tab in tabs" :class="{ 'is-active': tab.id == selectedTab }">
                     <a href="#" @click="selectTab(tab.id)">{{ tab.name }}</a>
                 </li>
-                <li :class="{ 'is-active': isNewTab }">
+                <li :class="{ 'is-active': isNewTabSelected }">
                     <a href="#" @click="selectTab()">New</a>
                 </li>
             </ul>
@@ -40,15 +40,15 @@
             
         </div><!-- // ./tab-contents -->
 
-        <footer v-if="!isNewTab" class="card-footer">
+        <footer v-if="!isNewTabSelected" class="card-footer">
             <a class="card-footer-item"
                 @click="resetFields()"
-                v-show="isValueChanged"
+                v-show="isFieldsValueChanged"
             >Reset</a>
 
             <a class="card-footer-item"
                 @click="editUpdateMember()"
-                v-show="isValueChanged && !isEmpty"
+                v-show="isFieldsValueChanged && !isFieldsEmpty"
             >Save</a>
 
             <a class="card-footer-item"
@@ -63,7 +63,7 @@
         <footer v-else class="card-footer">
             <a class="card-footer-item"
                 @click="insertMember()"
-                v-show="isValueChanged && !isEmpty"
+                v-show="isFieldsValueChanged && !isFieldsEmpty"
             >Add</a>
 
             <a class="card-footer-item"
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-
+    import VueResource from 'vue-resource';
     import alertMixin from '../mixins/Alert.js';
 
     export default {
@@ -86,64 +86,50 @@
 
         data() {
             return {
-                tabs: '',
-                selectedTab: '',
+
                 fields: {
                     name: '',
                     color: ''
                 },
+
                 old_values: {
                     name: '',
                     color: ''
                 },
-                //validation: {
-                //    name: false,
-                //    color: false,
-                //}
+
             }
         },
-
-        props: {
-            debug: {
-                type: Boolean,
-                default: false
-            }
-        },
-
-//        filters: {
-//            nameValidator: {
-//                write: function (val) {
-//                    this.validation.name = !!val
-//                    return val
-//                }
-//            },
-//
-//            colorValidator: {
-//                write: function (val) {
-//                    this.validation.color = !!val
-//                    return val
-//                }
-//            },
-//        },
-
 
         computed: {
-            isNewTab: function() {
+            tabs: function() {
+                return this.$store.state.members;
+            },
+
+            isActive: function() {
+                return this.$store.state.membersModal.isActive;
+            },
+            
+            selectedTab: function() {
+                return this.$store.state.membersModal.selectedTab;
+            },
+
+            isNewTabSelected: function() {
                 return this.selectedTab == this.columnMaxKey + 1;
             },
 
-            isEmpty: function() {
+            isFieldsEmpty: function() {
                 return (this.fields.name == '') || (this.fields.color == '');
             },
 
-            isValueChanged: function() {
+            isFieldsValueChanged: function() {
                 return (this.fields.name != this.old_values.name) ||
                         (this.fields.color != this.old_values.color);
             },
 
             columnMaxKey: function() {
 
-                var keys = Object.keys(this.tabs);
+                let keys = Object.keys(this.tabs);
+
                 keys.map(function(key) {
                     return parseInt(key);
                 });
@@ -152,17 +138,16 @@
             },
         },
 
-        methods: {
+        watch: {
 
-            selectTab(index) {
-                index == null
-                    ? this.selectedTab = this.columnMaxKey + 1 
-                    : this.selectedTab = parseInt(index);
-                this.setFields();
+            'isActive': function() {
+                if(!this.isActive) {
+                    this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
+                }
             },
 
-            setFields() {
-                if(!this.isNewTab) {
+            'selectedTab': function() {
+                if(this.selectedTab != this.columnMaxKey + 1) {
                     this.fields.name = this.tabs[this.selectedTab].name;
                     this.fields.color = this.tabs[this.selectedTab].color;
                     this.old_values.name = this.fields.name;
@@ -173,6 +158,15 @@
                     this.old_values.name = '';
                     this.old_values.color = '';
                 }
+            }
+        },
+
+        methods: {
+
+            selectTab(index) {
+                index == null
+                    ? this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
+                    : this.$store.commit('setMembersModalSelectedTab', parseInt(index));
             },
 
             resetFields() {
@@ -181,7 +175,7 @@
             },
 
             close() {
-                nutsHub.fire('close-members-modal', {}, 'FcMemberTabs.vue');
+                this.$store.commit('setMembersModalIsActive', false);
             },
 
             // -----------------------------------------------------------------------
@@ -264,7 +258,6 @@
                     function(response) {
                         delete this.tabs[this.selectedTab];
 
-                        //this.$root.$emit('nuts-alert', 'success - delete!', 'is-success');
                         this.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
 
                     }, function(response) {
@@ -279,33 +272,10 @@
         created() {
             var self = this;
 
-            nutsHub.listen('members-updated', function(Object) {
-                self.tabs = Object.members;
-                //self.selectTab(self.selectedTab)
-            }, 'FcMemberTabs.vue');
-
-            nutsHub.listen('open-members-modal', function(Object) {
-                self.selectTab(Object.index);
-            }, 'FcMemberTabs.vue');
-
-            nutsHub.listen('close-members-modal', function() {
-                self.selectTab(self.columnMaxKey + 1);
-            }, 'FcMemberTabs.vue');
-
-            nutsHub.listen('member-edit-button', function() {
-                if(self.isValueChanged) {
-                    var member = {
-                        id: self.tabs[self.selectedTab].id,
-                        name: self.fields.name,
-                        color: self.fields.color
-                    }
-                    self.$root.editUpdateMember(member);
-                }
-            }, 'FcMemberTabs.vue');
-
             nutsHub.listen('member-delete-button', function() {
                 console.log('Nothing to do');
             }, 'FcMemberTabs.vue');
+
         }
     } 
 </script>

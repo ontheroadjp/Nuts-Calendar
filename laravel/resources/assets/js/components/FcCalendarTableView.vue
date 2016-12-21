@@ -8,10 +8,10 @@
             <th :style="dayColumnWidth">Date</th>
             <th :style="dayColumnWidth"></th>
             <th
-                v-for="member in $parent.members"
+                v-for="member in $store.state.members"
                 data-toggle="modal"
                 data-target="#nuts-modal"
-                :style="column_width"
+                :style="columnWidth"
                 @click="clickTableHeader(member.id)"
             >{{ member.name }}</th>
         </tr>
@@ -20,7 +20,7 @@
     <!-- table body -->
     <tbody>
         <tr
-            v-for="(dayIndex, day) in $parent.calendar"
+            v-for="(dayIndex, day) in $store.state.calendar"
             :class="{
                 saturday: getDayIndex(day.date) == 6, 
                 sunday: getDayIndex(day.date) == 0
@@ -152,8 +152,8 @@
 
         computed: {
 
-            column_width: function() {
-                var length = Object.keys(this.$parent.members).length;
+            columnWidth: function() {
+                var length = Object.keys(this.$store.state.members).length;
                 return {
                     width: (100 - parseInt(this.dayColumnWidth.width)) / length + '%'
                 }
@@ -200,11 +200,13 @@
             },
 
             clickTableHeader(index) {
-                nutsHub.fire(
-                    'open-members-modal', 
-                    { 'index': index }, 
-                    'FcCalendarView.vue'
-                );
+//                nutsHub.fire(
+//                    'open-members-modal', 
+//                    { 'index': index }, 
+//                    'FcCalendarView.vue'
+//                );
+                this.$store.commit('setMembersModalIsActive', true);
+                this.$store.commit('setMembersModalSelectedTab', index);
             }
 
         },

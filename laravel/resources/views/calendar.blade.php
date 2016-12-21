@@ -40,9 +40,8 @@
 
 <!-- vue.js -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.28/vue.js"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/0.8.2/vuex.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.1.1/vuex.js"></script>
-<script src="//cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+<!-- <script src="//cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vuex/2.1.1/vuex.js"></script> -->
 
 <!-- sidebar -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sidebar/3.3.2/jquery.sidebar.min.js"></script>

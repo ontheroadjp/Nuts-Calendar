@@ -77,14 +77,7 @@
         methods: {
             selectMenu(index) {
                 this.selectedMenu = index;
-
                 this.$store.commit('setMainIndex', index);
-                //if( index == 0 ) {
-                //    nutsHub.fire('main-menu-calendar', {}, 'hero.vue');
-                //} else if( index == 1 ) {
-                //    nutsHub.fire('main-menu-add-event',{}, 'hero.vue');
-                //}
-
             },
 
             selectSettings() {

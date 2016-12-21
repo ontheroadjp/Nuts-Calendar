@@ -1,10 +1,8 @@
-//import vue from 'vue';
-//import vuex from 'vuex';
-
 // core lib
 import nutsHub from './NutsHub.js';
 window.nutsHub = nutsHub;
 
+// vuex
 import store from './store/index.js'
 
 // components
@@ -23,7 +21,6 @@ Vue.directive('focus', {
     }
 });
 
-
 const vm = new Vue({
 
     el: 'body',
@@ -36,12 +33,6 @@ const vm = new Vue({
         'fc-calendar': fcCalendar,
         'fc-settings': fcSettings,
     },
-
-//    data() {
-//        return {
-//            mainIndex: 0,
-//        }
-//    },
 
     computed: {
 
@@ -56,22 +47,4 @@ const vm = new Vue({
         }
 
     },
-
-    created() {
-        let self = this;
-
-        nutsHub.listen('main-menu-calendar', function() {
-            self.$store.commit('setMainIndex',0);
-        }, 'main.js');
-
-        nutsHub.listen('main-menu-add-event', function() {
-            self.$store.commit('setMainIndex',1);
-        }, 'main.js');
-
-        nutsHub.listen('main-menu-settings', function() {
-            self.$store.commit('setMainIndex',99);
-        }, 'main.js');
-
-    },
-
 });

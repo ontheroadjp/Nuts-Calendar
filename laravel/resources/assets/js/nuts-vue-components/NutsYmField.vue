@@ -51,7 +51,6 @@
                 cancelButtonStyle: {
                     fontSize: '0.6em',
                 },
-                lang: 'en',
                 monthVals: [
                     '01','02','03','04','05','06',
                     '07','08','09','10','11','12'
@@ -80,7 +79,7 @@
             },
 
             yearVals: function() {
-                var start, period, vals = [];
+                let start, period, vals = [];
                 this.yearFrom ? start = this.yearFrom : start = this.currentYear;
                 this.yearPeriod ? period = this.yearPeriod : period = 5;
                 for( var n=0; n < period; n++ ) {

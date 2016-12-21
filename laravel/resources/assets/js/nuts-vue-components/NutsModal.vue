@@ -16,12 +16,12 @@
     Vue.transition('nuts-modal-fade', {
         beforeEnter: function (el) {
             event = this.name + '-opened';
-            nutsHub.fire(event, 'NutsModal.vue');
+            //nutsHub.fire(event, {}, 'NutsModal.vue');
         },
 
         afterLeave: function (el) {
             event = this.name + '-closed';
-            nutsHub.fire(event, 'NutsModal.vue');
+            //nutsHub.fire(event, {}, 'NutsModal.vue');
         },
     })
 
@@ -44,31 +44,37 @@
         },
 
         computed: {
-            defaultOpenEventName: function() {
-                return 'open-' + this.name
+            isActive: function() {
+                return this.$store.state.membersModal.isActive;
             },
-            defaultCloseEventName: function() {
-                return 'close-' + this.name
-            }
+
+//            openEventName: function() {
+//                return 'open-' + this.name
+//            },
+//
+//            closeEventName: function() {
+//                return 'close-' + this.name
+//            }
         },
 
-        data() {
-            return {
-                isActive: false
-            }
-        },
+//        data() {
+//            return {
+//                isActive: false
+//            }
+//        },
 
-        created() {
-            const self = this;
-
-            nutsHub.listen(this.defaultOpenEventName, function() {
-                self.isActive = true;
-            }, 'NutsModal.vue');
-
-            nutsHub.listen(this.defaultCloseEventName, function() {
-                self.isActive = false;
-            }, 'NutsModal.vue');
-        }
+//        created() {
+//            const self = this;
+//
+//            nutsHub.listen(this.openEventName, function() {
+//                self.isActive = true;
+//            }, 'NutsModal.vue');
+//
+//            nutsHub.listen(this.closeEventName, function() {
+//                self.isActive = false;
+//            }, 'NutsModal.vue');
+//
+//        }
     }
 </script>
 

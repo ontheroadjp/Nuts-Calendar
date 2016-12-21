@@ -49,15 +49,7 @@
         ],
 
         data() {
-
-//            var now = new Date();
             return {
-//                currentYear: now.getFullYear(),
-//                currentMonth: now.getMonth() + 1,
-                calendar: [],
-                members: [],
-                events: [],
-                //isInsertMode: false,
                 searchQuery: ''
             }
         },
@@ -151,47 +143,29 @@
         created() {
             const self = this;
 
-            // main-menu-calendar
-            //nutsHub.listen('main-menu-calendar', function() {
-            //    self.searchQuery = '';
-            //    //self.isInsertMode = false;
-            //}, 'FcCalendar.vue');
-
-            // main-menu-add-event
-            //nutsHub.listen('main-menu-add-event', function() {
-            //    self.searchQuery = '';
-            //    //self.isInsertMode = true;
-            //}, 'FcCalendar.vue');
-
             // api-fetch-data
             nutsHub.listen('api-fetch-data', function(Object) {
-                self.calendar = Object.response.data.days;
-                self.members = Object.response.data.members;
+                self.$store.commit('setCalendar', Object.response.data.days );
+                self.$store.commit('setMembers', Object.response.data.members );
 
                 var modifiedEvents = Object.response.data.events.map(function(item) {
                     item.is_row_hover = false;
                     return item;
                 });
+
                 self.events = modifiedEvents;
+                self.$store.commit('setEvents', Object.response.data.events );
 
-                self.events.sort(function (a,b) {
-                    if(a.date < b.date) return -1;
-                    if(a.date > b.date) return 1;
-                });
+//                self.events.sort(function (a,b) {
+//                    if(a.date < b.date) return -1;
+//                    if(a.date > b.date) return 1;
+//                });
             }, 'FcCalendar.vue')//,
-
-            // ym-change
-            //nutsHub.listen('ym-change', function(Object) {
-            //    self.currentYear = Object.year;
-            //    self.currentMonth = Object.month;
-            //}, 'FcCalendar.vue')
-
         },
 
         ready() {
             this.fetchData(this.currentYear, this.currentMonth);
         },
-
 
     }
 </script>

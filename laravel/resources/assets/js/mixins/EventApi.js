@@ -1,3 +1,4 @@
+import VueResource from 'vue-resource';
 import alertMixin from './Alert.js';
 
 export default {
