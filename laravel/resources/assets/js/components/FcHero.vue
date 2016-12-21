@@ -11,7 +11,7 @@
 
                 <div class="column">
                     <span class="is-pulled-right" style="font-size: 1.8em;">
-                        <nuts-ym-field year-from="2015" year-period="6"></nuts-ym-field>
+                        <nuts-ym-field></nuts-ym-field>
                     </span>
                 </div>
 

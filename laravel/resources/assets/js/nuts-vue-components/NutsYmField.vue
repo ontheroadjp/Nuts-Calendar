@@ -33,9 +33,18 @@
 <script>
 
     export default {
-        props: [
-           'yearFrom', 'yearPeriod'
-        ],
+
+        props: {
+            'yearFrom': {
+                type: Number,
+                default: 2015
+            }, 
+            'yearPeriod': {
+                type: Number,
+                default: 5
+            }
+        },
+
         data() {
             return {
                 editing: false,
