@@ -18,7 +18,8 @@ class EventsController extends Controller
     public function index()
     {
         $items = Event::with('member')->get();
-        return new JsonResponse($items);
+        //return new JsonResponse($items);
+        return $items;
     }
 
     public function indexRange(Event $event, $year, $month) {

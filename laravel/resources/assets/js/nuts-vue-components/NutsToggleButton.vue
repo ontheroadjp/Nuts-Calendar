@@ -1,35 +1,25 @@
 <template id="nuts-toggle-button">
         <a v-if="type == null || ''" href="#" @click="fire">
-            {{ is_on ? on_label : off_label }}</a>
+            {{ isOn ? onLabel : offLabel }}</a>
 
-        <button v-if="type == 'btn-primary'" class="btn btn-primary" @click="fire">
-            {{ is_on ? on_label : off_label }}</button>
+        <button v-if="type == 'button'" class="btn btn-primary" @click="fire">
+            {{ isOn ? onLabel : offLabel }}</button>
 
-        <button v-if="type == 'btn-success'" class="btn btn-success" @click="fire">
-            {{ is_on ? on_label : off_label }}</button>
-
-        <button v-if="type == 'btn-info'" class="btn btn-info" @click="fire">
-            {{ is_on ? on_label : off_label }}</button>
-
-        <button v-if="type == 'btn-warning'" class="btn btn-warning" @click="fire">
-            {{ is_on ? on_label : off_label }}</button>
-
-        <button v-if="type == 'btn-danger'" class="btn btn-danger" @click="fire">
-            {{ is_on ? on_label : off_label }}</button>
 </template>
 
 <script>
     export default {
+
         props: {
             type: {
                 type: String,
-                default: ''
+                default: null
             }, 
-            on_label: {
+            onLabel: {
                 type: String,
                 default: 'ON'
             }, 
-            off_label: {
+            offLabel: {
                 type: String,
                 default: 'OFF'
             },
@@ -38,24 +28,31 @@
                 require
             }
         },
+
         data() {
             return {
-                is_on: false
+                isOn: false
             }
         },
+
         methods: {
+
             fire() {
-                nutsHub.fire(this.emit, {state: !this.is_on}, 'NutsToggleButton.vue');
+                nutsHub.fire(this.emit, {state: !this.isOn}, 'NutsToggleButton.vue');
             },
+
             toggleState() {
-                this.is_on = !this.is_on
+                this.isOn = !this.isOn
             },
         },
+
         created() {
             const self = this;
+
             nutsHub.listen(this.emit, function() {
                 self.toggleState();
             }, 'NutsToggleButton.vue');
+
         },
     }
 </script>

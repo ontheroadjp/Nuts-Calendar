@@ -36,6 +36,7 @@ class Calendar extends Model
         $calendar = $this->specificMonth($year,$month);
 
         $members = Member::all()->keyBy('id');
+        //$members = Member::all();
 
         $calendar = $this->tidyEvents($calendar, $members);
 

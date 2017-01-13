@@ -2,11 +2,15 @@
 <section id="signboard" class="hero is-primary" :style="heroStyling">
     <div class="hero-body">
         <div class="container">
-
             <div id="mc_embed_signup" class="columns is-vcentered">
+
                 <div class="column is-one-third is-left">
                     <p class="title">Family <strong>Calendar</strong></p>
-                    <p class="subtitle"><small>Manage your task & events in easily, quickly and a fun!</small></p>
+                    <p class="subtitle">
+                        <small>
+                            Manage your task & events in easily, quickly and a fun!
+                        </small>
+                    </p>
                 </div>
 
                 <div class="column">
@@ -26,9 +30,9 @@
                 <ul>
                     <li 
                         v-for="menu in menus" 
-                        :class="{ 'is-active': $index == selectedMenu }"
+                        :class="{ 'is-active': $index == $store.state.mainIndex }"
                         @click="selectMenu($index)"
-                    ><a href="#">{{ menu.name }}</a></li>
+                    ><a href="#">{{ menu.label }}</a></li>
                 </ul>
 
                 <a class="button is-primary is-outlined" @click="selectSettings()">
@@ -52,14 +56,13 @@
 
         data() {
             return {
-                selectedMenu: 0,
                 menus: [
                     {
-                        name: 'Calendar',
+                        label: 'Calendar',
                         isActive: false
                     },
                     {
-                        name: 'Add Event',
+                        label: 'Add Event',
                         isActive: false
                     },
                 ],
@@ -75,16 +78,15 @@
         },
 
         methods: {
+
             selectMenu(index) {
-                this.selectedMenu = index;
                 this.$store.commit('setMainIndex', index);
             },
 
             selectSettings() {
-                this.selectedMenu = 99;
                 this.$store.commit('setMainIndex', 99);
-                //nutsHub.fire('main-menu-settings',{index: 99}, 'hero.vue');
             }
+
         }
     } 
 </script>

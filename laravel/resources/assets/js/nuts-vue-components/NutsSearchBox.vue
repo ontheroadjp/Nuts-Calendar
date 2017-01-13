@@ -12,7 +12,7 @@
         </div>
 
         <div class="form-group">
-            <a class="button is-primary is-outlined" @click="clearField">Clear</a>
+            <a class="button is-info is-outlined" @click="clearField">Clear</a>
         </div>
 
     </div>

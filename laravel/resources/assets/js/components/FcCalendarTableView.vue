@@ -130,7 +130,7 @@
 
 <script>
     import dateUtilities from '../mixins/DateUtilities.js'
-    import eventApi from '../mixins/EventApi.js'
+    import eventApi from '../api/EventApi.js'
 
     export default {
 
@@ -200,11 +200,6 @@
             },
 
             clickTableHeader(index) {
-//                nutsHub.fire(
-//                    'open-members-modal', 
-//                    { 'index': index }, 
-//                    'FcCalendarView.vue'
-//                );
                 this.$store.commit('setMembersModalIsActive', true);
                 this.$store.commit('setMembersModalSelectedTab', index);
             }

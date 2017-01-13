@@ -1,5 +1,5 @@
 import VueResource from 'vue-resource';
-import alertMixin from './Alert.js';
+import alertMixin from '../mixins/Alert.js';
 
 export default {
 

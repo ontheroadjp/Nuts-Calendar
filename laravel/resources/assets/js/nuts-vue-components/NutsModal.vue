@@ -31,50 +31,23 @@
             name: {
                 type: String,
                 default: 'nuts-modal',
-                required: true
             },
-            isCloseButton: {
-                type: Boolean,
-                default: true
-            },
-            closeButtonLabel: {
-                type: String,
-                default: 'Close'
-            },
+//            isCloseButton: {
+//                type: Boolean,
+//                default: true
+//            },
+//            closeButtonLabel: {
+//                type: String,
+//                default: 'Close'
+//            },
         },
 
         computed: {
             isActive: function() {
                 return this.$store.state.membersModal.isActive;
             },
+        }
 
-//            openEventName: function() {
-//                return 'open-' + this.name
-//            },
-//
-//            closeEventName: function() {
-//                return 'close-' + this.name
-//            }
-        },
-
-//        data() {
-//            return {
-//                isActive: false
-//            }
-//        },
-
-//        created() {
-//            const self = this;
-//
-//            nutsHub.listen(this.openEventName, function() {
-//                self.isActive = true;
-//            }, 'NutsModal.vue');
-//
-//            nutsHub.listen(this.closeEventName, function() {
-//                self.isActive = false;
-//            }, 'NutsModal.vue');
-//
-//        }
     }
 </script>
 

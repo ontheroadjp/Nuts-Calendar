@@ -12,41 +12,57 @@ const state = {
     events: [],
     membersModal: {
         isActive: false,
-        selectedTab: 0
+        selectedTab: 0,
     }
 }
 
 const mutations = {
-    setMainIndex( state, val ) {
-        state.mainIndex = val;
+    setMainIndex( state, index ) {
+        state.mainIndex = index;
     },
 
-    setCurrentYear( state, val ) {
-        state.currentYear = val;
+    setCurrentYear( state, year ) {
+        state.currentYear = year;
     },
 
-    setCurrentMonth( state, val ) {
-        state.currentMonth = val;
+    setCurrentMonth( state, month ) {
+        state.currentMonth = month;
     },
 
-    setCalendar( state, val ) {
-        state.calendar = val;
+    setCalendar( state, calendar ) {
+        state.calendar = calendar;
     },
 
-    setMembers( state, val ) {
-        state.members = val;
+    setMembers( state, members ) {
+        state.members = members;
     },
 
-    setEvents( state, val ) {
-        state.events = val;
+    addMember( state, object ) {
+        Vue.set(state.members, object.key, object.data);
+    },
+
+    deleteMember( state, id ) {
+        Vue.delete(state.members, id);
+    },
+
+    setMemberName( state, newName ) {
+        state.members[state.membersModal.selectedTab].name = newName;
+    },
+
+    setMemberCloro( state, newColor ) {
+        state.members[state.membersModal.selectedTab].color = newColor;
+    },
+
+    setEvents( state, events ) {
+        state.events = events;
     },
 
     setMembersModalIsActive( state, val ) {
         state.membersModal.isActive = val;
     },
 
-    setMembersModalSelectedTab( state, val ) {
-        state.membersModal.selectedTab = val
+    setMembersModalSelectedTab( state, index ) {
+        state.membersModal.selectedTab = index
     }
 }
 

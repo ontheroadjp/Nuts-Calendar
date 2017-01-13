@@ -3,7 +3,7 @@
 
         <div class="tabs is-toggle is-fullwidth">
             <ul>
-                <li v-for="tab in tabs" :class="{ 'is-active': tab.id == selectedTab }">
+                <li v-for="tab in $store.state.members" :class="{ 'is-active': tab.id == selectedTab }">
                     <a href="#" @click="selectTab(tab.id)">{{ tab.name }}</a>
                 </li>
                 <li :class="{ 'is-active': isNewTabSelected }">
@@ -76,12 +76,12 @@
 
 <script>
     import VueResource from 'vue-resource';
-    import alertMixin from '../mixins/Alert.js';
+    import memberApi from '../api/MemberApi.js';
 
     export default {
 
         mixins: [
-            alertMixin
+            memberApi
         ],
 
         data() {
@@ -101,9 +101,9 @@
         },
 
         computed: {
-            tabs: function() {
-                return this.$store.state.members;
-            },
+//            tabs: function() {
+//                return this.$store.state.members;
+//            },
 
             isActive: function() {
                 return this.$store.state.membersModal.isActive;
@@ -128,7 +128,7 @@
 
             columnMaxKey: function() {
 
-                let keys = Object.keys(this.tabs);
+                let keys = Object.keys(this.$store.state.members);
 
                 keys.map(function(key) {
                     return parseInt(key);
@@ -147,9 +147,10 @@
             },
 
             'selectedTab': function() {
+                let tabs = this.$store.state.members;
                 if(this.selectedTab != this.columnMaxKey + 1) {
-                    this.fields.name = this.tabs[this.selectedTab].name;
-                    this.fields.color = this.tabs[this.selectedTab].color;
+                    this.fields.name = tabs[this.selectedTab].name;
+                    this.fields.color = tabs[this.selectedTab].color;
                     this.old_values.name = this.fields.name;
                     this.old_values.color = this.fields.color;
                 } else {
@@ -162,6 +163,10 @@
         },
 
         methods: {
+
+//            addMember() {
+//                this.tabs.push({name: this.fields.name, color: this.fields.color});
+//            },
 
             selectTab(index) {
                 index == null
@@ -178,105 +183,17 @@
                 this.$store.commit('setMembersModalIsActive', false);
             },
 
-            // -----------------------------------------------------------------------
-            // Insert: Update
-            insertMember: function () {
-
-                var new_member = {
-                    name: this.fields.name,
-                    color: this.fields.color,
-                };
-
-                var url = '/api/member';
-                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-
-                this.$http({
-                    url: url,
-                    method: 'POST',
-                    body: new_member
-                }).then(
-                    function(response) {
-                        this.tabs[this.columnMaxKey + 1] = response.data;
-
-                        this.$root.fetchData();
-
-                        this.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
-
-                    }, function(response) {
-                        this.alertDanger( 'Failed: add new member!', false, 'FcMemberTabs.vue' );
-
-                    }
-                )
-            },
-
-            // -----------------------------------------------------------------------
-            // Edit: update
-            editUpdateMember: function() {
-
-                var updated_member = {
-                    name: this.fields.name,
-                    color: this.fields.color
-                };
-
-                var url = '/api/member/' + this.selectedTab;
-                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-
-                this.$http({
-                    url: url,
-                    method: 'PATCH',
-                    body: updated_member
-
-                }).then(
-                    function(response) {
-                        this.tabs[this.selectedTab].name = this.fields.name;
-                        this.tabs[this.selectedTab].color = this.fields.color;
-
-                        this.$root.fetchData();
-
-                        this.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
-
-                    }, function(response) {
-                        this.fields.name = this.tabs[this.selectedTab].name;
-                        this.fields.color = this.tabs[this.selectedTab].color;
-
-                        this.alertDanger( 'Failed: member updated!', false, 'FcMemberTabs.vue' );
-
-                    }
-                )
-            },
-
-            // -----------------------------------------------------------------------
-            // Delete
-            deleteMember: function() {
-                var url = '/api/member/' + this.selectedTab;
-                Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content')
-    
-                this.$http({
-                    url: url,
-                    method: 'DELETE',
-                }).then(
-                    function(response) {
-                        delete this.tabs[this.selectedTab];
-
-                        this.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
-
-                    }, function(response) {
-                        this.alertDanger( 'Failed: member deleted!', false, 'FcMemberTabs.vue' );
-
-                    }
-                )
-            },
-
         },
 
-        created() {
-            var self = this;
+//        created() {
+//            const self = this;
+//
+//            nutsHub.listen('memberUpdateFailed', function(Object) {
+//                self.fields.name = Object.response.data.name;
+//                self.fields.color = Object.response.data.color;
+//            }, 'FcMemberTabs.vue')
+//        }
 
-            nutsHub.listen('member-delete-button', function() {
-                console.log('Nothing to do');
-            }, 'FcMemberTabs.vue');
-
-        }
     } 
 </script>
 

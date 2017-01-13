@@ -1,16 +1,17 @@
 <template>
     <div>
-        <nuts-members-modal name="members-modal" :is_close_btn="false">
+        <nuts-members-modal name="members-modal">
             <nuts-member-tabs></nuts-member-tabs>
         </nuts-members-modal>
 
         <section style="margin: 20px;">
 
-            <nuts-search-box v-show="!isInsertMode"></nuts-search-box>
+            <nuts-members-modal-button 
+                emit="open-members-modal" 
+                v-show="!isSearching && !isInsertMode"
+            >Add New Member</nuts-members-modal-button>
 
-            <nuts-members-modal-button emit="open-members-modal" v-show="!isSearching && !isInsertMode">
-                Add New Member
-            </nuts-members-modal-button>
+            <nuts-search-box v-show="!isInsertMode"></nuts-search-box>
 
             <components :is='currentView'></components>
 
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+    // core
     import nutsHub from '../NutsHub.js';
 
     // componennt
@@ -31,7 +33,7 @@
     import fcMemberTabs from './FcMemberTabs.vue';
 
     // mixin
-    import eventApi from '../mixins/EventApi.js';
+    import eventApi from '../api/EventApi.js';
 
     export default {
 
@@ -141,7 +143,7 @@
         },
 
         created() {
-            const self = this;
+            var self = this;
 
             // api-fetch-data
             nutsHub.listen('api-fetch-data', function(Object) {
