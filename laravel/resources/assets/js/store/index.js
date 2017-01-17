@@ -1,4 +1,7 @@
+//import Vue from 'vue';
 import Vuex from 'vuex';
+
+//Vue.use(Vuex);
 
 const now = new Date();
 
@@ -6,7 +9,7 @@ const state = {
     lang: 'en',
     mainIndex: 0,
     currentYear: now.getFullYear(),
-    currentMonth: now.getMonth() + 1,
+    currentMonth: ("0" + now.getMonth() + 1).slice(-2),
     calendar: [],
     members: [],
     events: [],
@@ -17,6 +20,21 @@ const state = {
 }
 
 const mutations = {
+    fillEventToCalendar( state, key ) {
+        state.calendar.forEach( function(val, index) {
+            Vue.delete( val.events, key);
+        });
+    },
+
+    deleteEventFromColumn( state, key ) {
+        state.calendar.forEach( function(val, index) {
+            Vue.set( val.events, key, [{
+                'editing': false,
+                'is_hover': false
+            }]);
+        });
+    },
+
     setMainIndex( state, index ) {
         state.mainIndex = index;
     },
@@ -49,7 +67,7 @@ const mutations = {
         state.members[state.membersModal.selectedTab].name = newName;
     },
 
-    setMemberCloro( state, newColor ) {
+    setMemberColor( state, newColor ) {
         state.members[state.membersModal.selectedTab].color = newColor;
     },
 
@@ -67,6 +85,7 @@ const mutations = {
 }
 
 export default new Vuex.Store({
+    //strict: true,
     state,
     mutations
 })

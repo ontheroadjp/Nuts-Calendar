@@ -27,7 +27,11 @@ export default {
                 body: new_member
             }).then(
                 function(response) {
-                    this.$store.commit('addMember', {key: this.columnMaxKey + 1, data: response.data});
+                    const key = this.columnMaxKey + 1;
+                    this.$store.commit('addMember', {'key': key, 'data': response.data});
+                    this.$store.commit('setMembersModalSelectedTab', key);
+                    this.$store.commit('fillEventToCalendar', key);
+
                     this.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
 
                 }, function(response) {
@@ -86,6 +90,7 @@ export default {
             }).then(
                 function(response) {
                     this.$store.commit('deleteMember', this.selectedTab);
+                    this.$store.commit('fillEventToCalendar', this.selectedTab);
                     this.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
 
                 }, function(response) {

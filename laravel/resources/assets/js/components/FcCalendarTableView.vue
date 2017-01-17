@@ -36,7 +36,7 @@
                     'date-styling', 
                     { today: isToday(day.date) }
                 ]">
-                    {{ day.date.substr(-2) }}
+                    {{ parseInt(day.date.substr(-2)) }}
                 </span>
             </td>
 
@@ -48,6 +48,7 @@
                     + this.memberColumnIndex
                 )"
             >
+                ({{ memberColumnIndex }})
 
                 <div
                     v-for="(eventIndex, event) in memberColumn"

@@ -45,6 +45,5 @@ const vm = new Vue({
             if(this.mainIndex == 1) return 'fc-calendar';
             if(this.mainIndex == 99) return 'fc-settings';
         }
-
     },
 });

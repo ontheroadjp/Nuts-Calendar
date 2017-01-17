@@ -12,12 +12,23 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('Events', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
+            if(Schema::hasTable('events')) {
+                Schema::drop('events');
+            }
+            $table->engine = 'InnoDB';
+
             $table->increments('id');
-            $table->integer('member_id')->unsigned;
+            $table->integer('member_id')->unsigned();
             $table->string('content');
             $table->date('date');
             $table->timestamps();
+
+            $table
+                ->foreign('member_id')
+                ->references('id')
+                ->on('members')
+                ->onDelete('cascade');
         });
     }
 
@@ -28,6 +39,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Events');
+        Schema::drop('events');
     }
 }

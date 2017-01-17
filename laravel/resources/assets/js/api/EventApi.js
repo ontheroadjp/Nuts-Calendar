@@ -33,8 +33,6 @@ export default {
         // Insert
         insertEvent: function (date, memberId, content, memberColumn) {
 
-            console.log('insert event');
-
             var newItem = {
                 'date': date,
                 'member_id': memberId,

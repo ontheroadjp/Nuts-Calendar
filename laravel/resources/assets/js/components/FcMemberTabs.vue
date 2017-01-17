@@ -1,13 +1,25 @@
 <template>
     <div class="card" style="width: 70%;">
 
+        <div class="panel-heading">
+            Column Settings
+        </div>
+
         <div class="tabs is-toggle is-fullwidth">
             <ul>
                 <li v-for="tab in $store.state.members" :class="{ 'is-active': tab.id == selectedTab }">
-                    <a href="#" @click="selectTab(tab.id)">{{ tab.name }}</a>
+                    <a href="#" @click="selectTab(tab.id)">
+                        <span class="icon is-small">
+                            <i class="fa fa-user"></i>
+                        </span>{{ tab.name }}
+                    </a>
                 </li>
                 <li :class="{ 'is-active': isNewTabSelected }">
-                    <a href="#" @click="selectTab()">New</a>
+                    <a href="#" @click="selectTab()">
+                        <span class="icon is-small">
+                            <i class="fa fa-plus"></i>
+                        </span>Add New Member
+                    </a>
                 </li>
             </ul>
         </div><!-- // .tabs -->
@@ -44,31 +56,40 @@
             <a class="card-footer-item"
                 @click="resetFields()"
                 v-show="isFieldsValueChanged"
-            >Reset</a>
+            >
+                <span class="icon is-small">
+                    <i class="fa fa-undo"></i>
+                </span>Reset</a>
 
             <a class="card-footer-item"
                 @click="editUpdateMember()"
                 v-show="isFieldsValueChanged && !isFieldsEmpty"
-            >Save</a>
+            >
+                <span class="icon is-small">
+                    <i class="fa fa-floppy-o"></i>
+                </span>Save</a>
 
             <a class="card-footer-item"
                 @click="deleteMember()"
-            >Delete</a>
+               ><span class="icon is-small"><i class="fa fa-trash"></i></span>Delete</a>
 
             <a class="card-footer-item"
                 @click="close"
-            >Cancel</a>
+               ><span class="icon is-small"><i class="fa fa-times"></i></span>Close</a>
         </footer>
 
         <footer v-else class="card-footer">
             <a class="card-footer-item"
                 @click="insertMember()"
                 v-show="isFieldsValueChanged && !isFieldsEmpty"
-            >Add</a>
+            >
+                <span class="icon is-small">
+                    <i class="fa fa-floppy-o"></i>
+                </span>Add</a>
 
             <a class="card-footer-item"
                 @click="close"
-            >Cancel</a>
+               ><span class="icon is-small"><i class="fa fa-times"></i></span>Close</a>
         </footer>
 
     </div>

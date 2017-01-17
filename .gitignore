@@ -6,3 +6,5 @@ laravel/node_modules/
 laravel/public/js/
 laravel/public/css/
 laravel/database/database.sqlite
+
+mariadb/

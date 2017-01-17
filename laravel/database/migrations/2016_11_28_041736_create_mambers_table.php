@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -12,11 +13,13 @@ class CreateMambersTable extends Migration
      */
     public function up()
     {
-        Schema::create('Members', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('members', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->increments('id')->unsigned();
             $table->string('name');
             $table->string('color');
             $table->timestamps();
+
         });
     }
 
@@ -27,6 +30,6 @@ class CreateMambersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Members');
+        Schema::drop('members');
     }
 }

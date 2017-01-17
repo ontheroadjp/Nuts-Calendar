@@ -13,6 +13,7 @@ class CreateCalendarTable extends Migration
     public function up()
     {
         Schema::create('calendar', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->date('date')->primarykey();
             $table->timestamps();
         });
