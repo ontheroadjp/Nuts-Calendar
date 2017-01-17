@@ -61,10 +61,10 @@
                         label: 'Calendar',
                         isActive: false
                     },
-                    {
-                        label: 'Add Event',
-                        isActive: false
-                    },
+//                    {
+//                        label: 'Add Event',
+//                        isActive: false
+//                    },
                 ],
 
                 heroStyling: {

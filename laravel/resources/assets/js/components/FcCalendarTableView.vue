@@ -184,6 +184,11 @@
 
         methods: {
 
+            clickTableHeader(index) {
+                this.$store.commit('setMembersModalIsActive', true);
+                this.$store.commit('setMembersModalSelectedTab', index);
+            },
+
             // Insert: select
             beInserting(cell) {
                 if( this.isInsertMode ) {
@@ -215,11 +220,6 @@
                     event.editing = true;
                 }
             },
-
-            clickTableHeader(index) {
-                this.$store.commit('setMembersModalIsActive', true);
-                this.$store.commit('setMembersModalSelectedTab', index);
-            }
 
         },
 

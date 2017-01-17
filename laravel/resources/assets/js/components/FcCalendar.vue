@@ -6,6 +6,11 @@
 
         <section style="margin: 20px;">
 
+            <button
+                class="button is-primary"
+                @click="clickInsertButton"
+            >{{ !isInsertMode ? 'Insert Mode' : 'Normal Mode' }}</button>
+
             <nuts-members-modal-button 
                 emit="open-members-modal" 
                 v-show="!isSearching && !isInsertMode"
@@ -85,7 +90,13 @@
         },
 
         methods: {
-            clickAddMemberButton() {
+            clickInsertButton: function() {
+                this.isInsertMode
+                    ? this.$store.commit('setMainIndex', 0)
+                    : this.$store.commit('setMainIndex', 1);
+            },
+
+            clickAddMemberButton: function() {
                 this.$store.commit('setMembersModalIsActive', true);
                 this.$store.commit('setMembersModalSelectedTab', this.newColumnKey);
             }
