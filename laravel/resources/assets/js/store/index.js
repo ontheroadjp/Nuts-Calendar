@@ -23,6 +23,22 @@ const actions = {
 }
 
 const mutations = {
+//    columnLeftShift( state, key ) {
+//
+//        let index;
+//
+//        index = key;
+//        state.members.splice(index-1, 2, state.members[index], state.members[index-1]);
+//    },
+//
+//    columnRightShift( state, key ) {
+//
+//        let index;
+//
+//        index = key;
+//        state.members.splice(index, 2, state.members[index+1], state.members[index]);
+//    },
+
     fillEventToCalendar( state, key ) {
         state.calendar.forEach( function(val, index) {
             Vue.set( val.events, key, [{
@@ -98,16 +114,6 @@ const getters = {
 
         return Math.max.apply(null, keys) + 1;
     },
-
-//    columnMaxKey: (state, getters) => {
-//        let keys = Object.keys(state.members);
-//
-//        keys.map(function(key) {
-//            return parseInt(key);
-//        });
-//
-//        return Math.max.apply(null, keys);
-//    }
 
 }
 

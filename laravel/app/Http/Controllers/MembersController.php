@@ -25,21 +25,20 @@ class MembersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function indexWith()
-    {
-        //$items = Member::with('events')->get();
-        //return $items;
-
-        $target = "2016-12";
-
-        return Member::with([
-            'events' => function($query) {
-                $target = "2016-12-12";
-                $query->where('date', 'like', "%$target%");
-            }
-        ])->get();
-
-    }
+//    public function indexWith()
+//    {
+//        //$items = Member::with('events')->get();
+//        //return $items;
+//
+//        $target = "2016-12";
+//
+//        return Member::with([
+//            'events' => function($query) {
+//                $target = "2016-12-12";
+//                $query->where('date', 'like', "%$target%");
+//            }
+//        ])->get();
+//    }
 
     /**
      * Display the specified Story.

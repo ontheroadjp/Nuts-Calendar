@@ -27,7 +27,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('calendar/{year}/{month}', 'CalendarController@index' );
 
     Route::get('member', 'MembersController@index' );
-    Route::get('member/tasks', 'MembersController@indexWith' );
+//    Route::get('member/tasks', 'MembersController@indexWith' );
     Route::get('member/{id}', 'MembersController@show' );
     Route::post('member', 'MembersController@store' );
     Route::patch('member/{id}', 'MembersController@update' );

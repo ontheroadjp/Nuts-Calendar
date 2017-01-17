@@ -143,10 +143,6 @@
                         (this.fields.color != this.old_values.color);
             },
 
-//            columnMaxKey: function() {
-//                return this.$store.getters.columnMaxKey;
-//            },
-
             newColumnKey: function() {
                 return this.$store.getters.newColumnKey;
             }

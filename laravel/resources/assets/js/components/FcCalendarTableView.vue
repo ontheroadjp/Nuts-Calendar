@@ -13,7 +13,23 @@
                 data-target="#nuts-modal"
                 :style="columnWidth"
                 @click="clickTableHeader(member.id)"
-            >{{ member.name }}</th>
+                    @mouseover="member.is_hover = true"
+                    @mouseout="member.is_hover = false"
+            >
+                <span>{{ member.name }}</span>
+<!--
+                <span v-show="member.is_hover" class="icon is-small">
+                    <button @click.stop="$store.commit('columnLeftShift', $index)">
+                        <i class="fa fa-caret-left"></i>
+                    </button>
+                </span>
+                <span v-show="member.is_hover" class="icon is-small">
+                    <button @click.stop="$store.commit('columnRightShift', $index)">
+                        <i class="fa fa-caret-right"></i>
+                    </button>
+                </span>
+-->            
+            </th>
         </tr>
     </thead>
 

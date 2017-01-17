@@ -10,11 +10,19 @@ class Member extends Model
         'name', 'color'
     ];
 
-    protected $apends = [
-        'show_insert_btn'
+//    protected $appends = [
+//        'show_insert_btn',
+//    ];
+
+    protected $appends = [
+        'is_hover'
     ];
 
-    public function getShowInsertBtnAttribute() {
+//    public function getShowInsertBtnAttribute() {
+//        return false;
+//    }
+
+    public function getIsHoverAttribute() {
         return false;
     }
 
@@ -36,16 +44,6 @@ class Member extends Model
     {
         return $this->hasMany(Event::class,'member_id','id');
     }
-
-    //public function events($target = null)
-    //{
-    //    if( $target ) {
-    //        return $this->hasMany(Event::class,'member_id','id');
-    //    } else {
-    //        return $this->hasMany(Event::class,'member_id','id')
-    //            ->where('events.date', 'LIKE', "%$target%")
-    //    }
-    //}
 
     public static function getIds()
     {
