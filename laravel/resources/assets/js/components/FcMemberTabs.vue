@@ -135,7 +135,8 @@
             },
 
             isNewTabSelected: function() {
-                return this.selectedTab == this.columnMaxKey + 1;
+//                return this.selectedTab == this.columnMaxKey + 1;
+                return this.selectedTab == this.newColumnKey;
             },
 
             isFieldsEmpty: function() {
@@ -147,29 +148,35 @@
                         (this.fields.color != this.old_values.color);
             },
 
-            columnMaxKey: function() {
+//            columnMaxKey: function() {
+//
+//                let keys = Object.keys(this.$store.state.members);
+//
+//                keys.map(function(key) {
+//                    return parseInt(key);
+//                });
+//
+//                return Math.max.apply(null, keys);
+//            },
 
-                let keys = Object.keys(this.$store.state.members);
-
-                keys.map(function(key) {
-                    return parseInt(key);
-                });
-
-                return Math.max.apply(null, keys);
-            },
+            newColumnKey: function() {
+                return this.$store.getters.newColumnKey;
+            }
         },
 
         watch: {
 
             'isActive': function() {
                 if(!this.isActive) {
-                    this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
+//                    this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
+                    this.$store.commit('setMembersModalSelectedTab', this.newColumnKey) 
                 }
             },
 
             'selectedTab': function() {
                 let tabs = this.$store.state.members;
-                if(this.selectedTab != this.columnMaxKey + 1) {
+//                if(this.selectedTab != this.columnMaxKey + 1) {
+                if(this.selectedTab != this.newColumnKey) {
                     this.fields.name = tabs[this.selectedTab].name;
                     this.fields.color = tabs[this.selectedTab].color;
                     this.old_values.name = this.fields.name;
@@ -191,7 +198,8 @@
 
             selectTab(index) {
                 index == null
-                    ? this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
+//                    ? this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
+                    ? this.$store.commit('setMembersModalSelectedTab', this.newColumnKey) 
                     : this.$store.commit('setMembersModalSelectedTab', parseInt(index));
             },
 

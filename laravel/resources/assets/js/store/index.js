@@ -19,6 +19,9 @@ const state = {
     }
 }
 
+const actions = {
+}
+
 const mutations = {
     fillEventToCalendar( state, key ) {
         state.calendar.forEach( function(val, index) {
@@ -84,8 +87,23 @@ const mutations = {
     }
 }
 
+const getters = {
+    newColumnKey: state => {
+
+        let keys = Object.keys(state.members);
+
+        keys.map(function(key) {
+            return parseInt(key);
+        });
+
+        return Math.max.apply(null, keys) + 1;
+    },
+}
+
 export default new Vuex.Store({
     //strict: true,
     state,
-    mutations
+    actions,
+    mutations,
+    getters
 })

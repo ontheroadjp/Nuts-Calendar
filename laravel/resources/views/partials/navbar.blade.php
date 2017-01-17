@@ -28,13 +28,10 @@
 
     <div class="nav-right nav-menu">
         <a class="nav-item" href="#">
-            Home
+            Dashboard
         </a>
         <a class="nav-item" href="#">
             Documentation
-        </a>
-        <a class="nav-item" href="#">
-            Blog
         </a>
 
         <span class="nav-item">

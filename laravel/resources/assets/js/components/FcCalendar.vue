@@ -9,6 +9,7 @@
             <nuts-members-modal-button 
                 emit="open-members-modal" 
                 v-show="!isSearching && !isInsertMode"
+                @click="clickAddMemberButton()"
             >Add New Member</nuts-members-modal-button>
 
             <nuts-search-box v-show="!isInsertMode"></nuts-search-box>
@@ -76,6 +77,17 @@
 
             isInsertMode: function() {
                 return this.$store.state.mainIndex == 1;
+            },
+
+            newColumnKey: function() {
+                return this.$store.getters.newColumnKey;
+            }
+        },
+
+        methods: {
+            clickAddMemberButton() {
+                this.$store.commit('setMembersModalIsActive', true);
+                this.$store.commit('setMembersModalSelectedTab', this.newColumnKey);
             }
         },
 
