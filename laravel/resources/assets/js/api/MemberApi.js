@@ -27,7 +27,7 @@ export default {
                 body: new_member
             }).then(
                 function(response) {
-                    const key = this.columnMaxKey + 1;
+                    const key = this.newColumnKey;
                     this.$store.commit('addMember', {'key': key, 'data': response.data});
                     this.$store.commit('setMembersModalSelectedTab', key);
                     this.$store.commit('fillEventToCalendar', key);
@@ -67,7 +67,6 @@ export default {
                     this.$store.state.members[id].color = color;
                     this.$store.state.members[id].name = name;
 
-                    //nutsHub.fire('memberUpdateSuccess', { 'response': response }, 'MemberApi.js');
                     this.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
 
                 }, function(response) {
@@ -90,7 +89,7 @@ export default {
             }).then(
                 function(response) {
                     this.$store.commit('deleteMember', this.selectedTab);
-                    this.$store.commit('fillEventToCalendar', this.selectedTab);
+                    this.$store.commit('deleteEventFromColumn', this.selectedTab);
                     this.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
 
                 }, function(response) {

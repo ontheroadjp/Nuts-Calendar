@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li :class="{ 'is-active': isNewTabSelected }">
-                    <a href="#" @click="selectTab()">
+                    <a href="#" @click="selectTab(null)">
                         <span class="icon is-small">
                             <i class="fa fa-plus"></i>
                         </span>Add New Member
@@ -122,10 +122,6 @@
         },
 
         computed: {
-//            tabs: function() {
-//                return this.$store.state.members;
-//            },
-
             isActive: function() {
                 return this.$store.state.membersModal.isActive;
             },
@@ -135,7 +131,6 @@
             },
 
             isNewTabSelected: function() {
-//                return this.selectedTab == this.columnMaxKey + 1;
                 return this.selectedTab == this.newColumnKey;
             },
 
@@ -149,14 +144,7 @@
             },
 
 //            columnMaxKey: function() {
-//
-//                let keys = Object.keys(this.$store.state.members);
-//
-//                keys.map(function(key) {
-//                    return parseInt(key);
-//                });
-//
-//                return Math.max.apply(null, keys);
+//                return this.$store.getters.columnMaxKey;
 //            },
 
             newColumnKey: function() {
@@ -168,14 +156,12 @@
 
             'isActive': function() {
                 if(!this.isActive) {
-//                    this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
                     this.$store.commit('setMembersModalSelectedTab', this.newColumnKey) 
                 }
             },
 
             'selectedTab': function() {
                 let tabs = this.$store.state.members;
-//                if(this.selectedTab != this.columnMaxKey + 1) {
                 if(this.selectedTab != this.newColumnKey) {
                     this.fields.name = tabs[this.selectedTab].name;
                     this.fields.color = tabs[this.selectedTab].color;
@@ -192,13 +178,8 @@
 
         methods: {
 
-//            addMember() {
-//                this.tabs.push({name: this.fields.name, color: this.fields.color});
-//            },
-
             selectTab(index) {
                 index == null
-//                    ? this.$store.commit('setMembersModalSelectedTab', this.columnMaxKey + 1) 
                     ? this.$store.commit('setMembersModalSelectedTab', this.newColumnKey) 
                     : this.$store.commit('setMembersModalSelectedTab', parseInt(index));
             },
@@ -213,16 +194,6 @@
             },
 
         },
-
-//        created() {
-//            const self = this;
-//
-//            nutsHub.listen('memberUpdateFailed', function(Object) {
-//                self.fields.name = Object.response.data.name;
-//                self.fields.color = Object.response.data.color;
-//            }, 'FcMemberTabs.vue')
-//        }
-
     } 
 </script>
 

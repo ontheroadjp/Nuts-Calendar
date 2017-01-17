@@ -25,16 +25,16 @@ const actions = {
 const mutations = {
     fillEventToCalendar( state, key ) {
         state.calendar.forEach( function(val, index) {
-            Vue.delete( val.events, key);
+            Vue.set( val.events, key, [{
+                'editing': false,
+                'is_hover': false
+            }]);
         });
     },
 
     deleteEventFromColumn( state, key ) {
         state.calendar.forEach( function(val, index) {
-            Vue.set( val.events, key, [{
-                'editing': false,
-                'is_hover': false
-            }]);
+            Vue.delete( val.events, key);
         });
     },
 
@@ -88,7 +88,7 @@ const mutations = {
 }
 
 const getters = {
-    newColumnKey: state => {
+    newColumnKey: (state, getters) => {
 
         let keys = Object.keys(state.members);
 
@@ -98,6 +98,17 @@ const getters = {
 
         return Math.max.apply(null, keys) + 1;
     },
+
+//    columnMaxKey: (state, getters) => {
+//        let keys = Object.keys(state.members);
+//
+//        keys.map(function(key) {
+//            return parseInt(key);
+//        });
+//
+//        return Math.max.apply(null, keys);
+//    }
+
 }
 
 export default new Vuex.Store({

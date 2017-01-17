@@ -105,53 +105,6 @@
                 },
                 deep: true
             },
-
-//            'calendar': {
-//                handler: function(new_val, old_val) {
-//                    nutsHub.fire(
-//                        'calendar-updated',
-//                        {
-//                            'year': this.currentYear,
-//                            'month': this.currentMonth,
-//                            'calendar': this.calendar
-//                        },
-//                        'FcCalendar.vue'
-//                    );
-//                },
-//                deep: true
-//            },
-//
-//            'members': {
-//                handler: function(new_val, old_val) {
-//                    nutsHub.fire(
-//                        'members-updated',
-//                        {
-//                            'year': this.currentYear,
-//                            'month': this.currentMonth,
-//                            'members': this.members
-//                        },
-//                        'FcCalendar.vue'
-//                    );
-//                },
-//                deep: true
-//            },
-//
-//            'events': {
-//                handler: function(new_val, old_val) {
-//                    nutsHub.fire(
-//                        'events-updated',
-//                        {
-//                            'year': this.currentYear,
-//                            'month': this.currentMonth,
-//                            'members': this.events
-//                        },
-//                        'FcCalendar.vue'
-//                    );
-//
-//                },
-//                deep: true
-//            },
-
         },
 
         created() {
