@@ -40,3 +40,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::delete('event/{id}', 'EventsController@destroy' );
     Route::get('event/{year}/{month}', 'EventsController@indexRange' );
 });
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
