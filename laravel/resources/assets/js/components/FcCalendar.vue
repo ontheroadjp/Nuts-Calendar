@@ -38,9 +38,6 @@
     import nutsModal from '../nuts-vue-components/NutsModal.vue';
     import fcMemberTabs from './FcMemberTabs.vue';
 
-    // mixin
-    import eventApi from '../api/EventApi.js';
-
     export default {
 
         components: {
@@ -51,10 +48,6 @@
             'nuts-members-modal': nutsModal,
             'nuts-member-tabs': fcMemberTabs,
         },
-
-        mixins: [
-            eventApi
-        ],
 
         data() {
             return {
@@ -125,8 +118,8 @@
 
             // api-fetch-data
             nutsHub.listen('api-fetch-data', function(Object) {
-                self.$store.commit('setCalendar', Object.response.data.days );
-                self.$store.commit('setMembers', Object.response.data.members );
+                self.$store.commit('initCalendar', Object.response.data.days );
+                self.$store.commit('initMembers', Object.response.data.members );
 
                 var modifiedEvents = Object.response.data.events.map(function(item) {
                     item.is_row_hover = false;
@@ -134,7 +127,7 @@
                 });
 
                 self.events = modifiedEvents;
-                self.$store.commit('setEvents', Object.response.data.events );
+                self.$store.commit('initEvents', Object.response.data.events );
 
 //                self.events.sort(function (a,b) {
 //                    if(a.date < b.date) return -1;

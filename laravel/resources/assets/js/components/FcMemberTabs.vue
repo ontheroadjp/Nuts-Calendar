@@ -62,7 +62,10 @@
                 </span>Reset</a>
 
             <a class="card-footer-item"
-                @click="editUpdateMember()"
+               @click="$store.dispatch('editUpdateMember', {
+                    'name': fields.name,
+                    'color': fields.color
+               })"
                 v-show="isFieldsValueChanged && !isFieldsEmpty"
             >
                 <span class="icon is-small">
@@ -70,7 +73,7 @@
                 </span>Save</a>
 
             <a class="card-footer-item"
-                @click="deleteMember()"
+               @click="$store.dispatch('deleteMember')"
                ><span class="icon is-small"><i class="fa fa-trash"></i></span>Delete</a>
 
             <a class="card-footer-item"
@@ -80,7 +83,10 @@
 
         <footer v-else class="card-footer">
             <a class="card-footer-item"
-                @click="insertMember()"
+               @click="$store.dispatch('insertMember',{
+                    'name': fields.name,
+                    'color': fields.color
+               })"
                 v-show="isFieldsValueChanged && !isFieldsEmpty"
             >
                 <span class="icon is-small">
@@ -96,14 +102,14 @@
 </template>
 
 <script>
-    import VueResource from 'vue-resource';
-    import memberApi from '../api/MemberApi.js';
+//    import VueResource from 'vue-resource';
+//    import memberApi from '../api/MemberApi.js';
 
     export default {
 
-        mixins: [
-            memberApi
-        ],
+//        mixins: [
+//            memberApi
+//        ],
 
         data() {
             return {

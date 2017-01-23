@@ -60,6 +60,7 @@ class MembersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'user_calendar_id' => 'required',
             'name' => 'required',
             'color' => 'required'
         ]);
@@ -78,6 +79,8 @@ class MembersController extends Controller
     public function update($id, Request $request)
     {
         $item = Member::findOrAbort($id);
+        if( $item instanceof \Illuminate\Http\JsonResponse ) return $item;
+
         $item->fill($request->only(
             //Member::getFillable()
             ['name','color']

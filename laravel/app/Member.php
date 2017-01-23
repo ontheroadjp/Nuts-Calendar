@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = [
-        'name', 'color'
+        'user_calendar_id', 'name', 'color'
     ];
 
 //    protected $appends = [

@@ -151,12 +151,11 @@
 
 <script>
     import dateUtilities from '../mixins/DateUtilities.js'
-    import eventApi from '../api/EventApi.js'
 
     export default {
 
         mixins: [
-            eventApi, dateUtilities
+            dateUtilities
         ],
 
         data() {

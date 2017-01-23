@@ -46,6 +46,82 @@ const state = {
 // actions
 
 const actions = {
+
+    // -----------------------------------------------------------------------
+    // AJAX: member
+    insertMember: function (context, payload) {
+        
+        const url = '/v1/member';
+        setCsrfToken();
+        
+        axios.post(url, {
+            'user_calendar_id': 1,
+            'name': payload.name,
+            'color': payload.color
+        })
+        .then(function (response) {
+            const key = context.getters.newColumnKey;
+            context.commit('addMember', {'key': key, 'data': response.data});
+            context.commit('setMembersModalSelectedTab', key);
+            context.commit('fillEventToCalendar', key);
+            alertMixin.methods.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
+        })
+        .catch(function (error) {
+            alertMixin.methods.alertDanger( 'Failed: add new member!', false, 'FcMemberTabs.vue' );
+        });
+    },
+
+    editUpdateMember: function(context, payload) {
+
+        const selectedTab = context.state.membersModal.selectedTab;
+        const url = '/v1/member/' + selectedTab;
+        setCsrfToken();
+
+        axios.patch(url, {
+            'name': payload.name,
+            'color': payload.color
+        })
+        .then(function (response) {
+            let id = response.data.id;
+            let color = response.data.color;
+            let name = response.data.name;
+
+//            context.commit('setMemberName', name);
+//            context.commit('setMemberColor', color);
+
+            context.commit('updateMember', {
+                'id': selectedTab,
+                'name': name,
+                'color': color
+            });
+
+            alertMixin.methods.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
+        })
+        .catch(function (error) {
+            //nutsHub.fire('memberUpdateFailed', { 'response': response }, 'MemberApi.js');
+            alertMixin.methods.alertDanger( 'Failed: member updated!', false, 'FcMemberTabs.vue' );
+        });
+    },
+
+    deleteMember: function(context, payload) {
+
+        const selectedTab = context.state.membersModal.selectedTab;
+        const url = '/v1/member/' + selectedTab;
+        setCsrfToken();
+
+        axios.delete(url)
+        .then( function (response) {
+            context.commit('deleteMember', selectedTab);
+            context.commit('deleteEventFromColumn', selectedTab);
+            alertMixin.methods.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
+        })
+        .catch( function (error) {
+            alertMixin.methods.alertDanger( 'Failed: member deleted!', false, 'FcMemberTabs.vue' );
+        });
+    },
+
+    // -----------------------------------------------------------------------
+    // AJAX: event
     fetchData(context) {
         const url = '/v1/calendar/1/' + context.state.currentYear + '/' + context.state.currentMonth;
         axios.get(url)
@@ -66,7 +142,7 @@ const actions = {
                     + context.state.currentMonth + '-'
                     + ("0" + payload.day).slice(-2);
 
-        var url = '/v1/event';
+        const url = '/v1/event';
         setCsrfToken();
 
         axios.post(url, {
@@ -89,7 +165,7 @@ const actions = {
         payload.event.editing = false;
         payload.event.oldValue = '';
 
-        var url = '/v1/event/' + payload.event.id;
+        const url = '/v1/event/' + payload.event.id;
         setCsrfToken();
 
         axios.patch(url, {
@@ -106,7 +182,7 @@ const actions = {
 
     deleteEvent(context, payload) {
 
-        var url = '/v1/event/' + payload.event.id;
+        const url = '/v1/event/' + payload.event.id;
         setCsrfToken();
 
         axios.delete(url)
