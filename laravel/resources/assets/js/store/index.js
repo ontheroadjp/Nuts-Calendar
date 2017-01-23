@@ -63,7 +63,6 @@ const actions = {
             const key = context.getters.newColumnKey;
             context.commit('addMember', {'key': key, 'data': response.data});
             context.commit('setMembersModalSelectedTab', key);
-            context.commit('fillEventToCalendar', key);
             alertMixin.methods.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
         })
         .catch(function (error) {
@@ -72,7 +71,6 @@ const actions = {
     },
 
     editUpdateMember: function(context, payload) {
-
         const selectedTab = context.state.membersModal.selectedTab;
         const url = '/v1/member/' + selectedTab;
         setCsrfToken();
@@ -82,29 +80,19 @@ const actions = {
             'color': payload.color
         })
         .then(function (response) {
-            let id = response.data.id;
-            let color = response.data.color;
-            let name = response.data.name;
-
-//            context.commit('setMemberName', name);
-//            context.commit('setMemberColor', color);
-
             context.commit('updateMember', {
-                'id': selectedTab,
-                'name': name,
-                'color': color
+                'id': response.data.id,
+                'name': response.data.name,
+                'color': response.data.color
             });
-
             alertMixin.methods.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
         })
         .catch(function (error) {
-            //nutsHub.fire('memberUpdateFailed', { 'response': response }, 'MemberApi.js');
             alertMixin.methods.alertDanger( 'Failed: member updated!', false, 'FcMemberTabs.vue' );
         });
     },
 
     deleteMember: function(context, payload) {
-
         const selectedTab = context.state.membersModal.selectedTab;
         const url = '/v1/member/' + selectedTab;
         setCsrfToken();
@@ -112,7 +100,7 @@ const actions = {
         axios.delete(url)
         .then( function (response) {
             context.commit('deleteMember', selectedTab);
-            context.commit('deleteEventFromColumn', selectedTab);
+            //context.commit('deleteEventFromColumn', selectedTab);
             alertMixin.methods.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
         })
         .catch( function (error) {

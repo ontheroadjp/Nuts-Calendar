@@ -2,22 +2,9 @@
 // mutations
 
 export default {
-//    columnLeftShift( state, key ) {
-//
-//        const index;
-//
-//        index = key;
-//        state.members.splice(index-1, 2, state.members[index], state.members[index-1]);
-//    },
-//
-//    columnRightShift( state, key ) {
-//
-//        const index;
-//
-//        index = key;
-//        state.members.splice(index, 2, state.members[index+1], state.members[index]);
-//    },
 
+    // ---------------------------------------------
+    // main
     setMainIndex( state, index ) {
         state.mainIndex = index;
     },
@@ -42,8 +29,15 @@ export default {
         state.members = members;
     },
 
-    addMember( state, object ) {
-        Vue.set(state.members, object.key, object.data);
+    addMember( state, payload ) {
+        Vue.set(state.members, payload.key, payload.data);
+
+        state.calendar.forEach( function(val, index) {
+            Vue.set( val.events, payload.key, [{
+                'editing': false,
+                'is_hover': false
+            }]);
+        });
     },
 
     updateMember( state, member ) {
@@ -53,6 +47,10 @@ export default {
 
     deleteMember( state, id ) {
         Vue.delete(state.members, id);
+
+        state.calendar.forEach( function(val, index) {
+            Vue.delete( val.events, id);
+        });
     },
 
     // ---------------------------------------------
@@ -69,21 +67,6 @@ export default {
     // events
     initEvents( state, events ) {
         state.events = events;
-    },
-
-    fillEventToCalendar( state, key ) {
-        state.calendar.forEach( function(val, index) {
-            Vue.set( val.events, key, [{
-                'editing': false,
-                'is_hover': false
-            }]);
-        });
-    },
-
-    deleteEventFromColumn( state, key ) {
-        state.calendar.forEach( function(val, index) {
-            Vue.delete( val.events, key);
-        });
     },
 
 }
