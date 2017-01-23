@@ -14,7 +14,7 @@
   "dependencies": {
     "css-toggle-switch": "^4.0.2",
     "vue": "^1.0.28",
-    "vue-resource": "^1.0.3",
+    "axios": "^0.15.3",
     "vuex": "^2.1.1"
   }
 }

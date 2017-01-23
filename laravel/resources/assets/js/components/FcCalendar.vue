@@ -105,14 +105,16 @@
         watch: {
             'currentYear': {
                 handler: function(new_val, old_val) {
-                    this.fetchData(this.currentYear, this.currentMonth)
+                    //this.fetchData(this.currentYear, this.currentMonth)
+                    this.$store.dispatch('fetchData');
                 },
                 deep: true
             },
 
             'currentMonth': {
                 handler: function(new_val, old_val) {
-                    this.fetchData(this.currentYear, this.currentMonth)
+                    //this.fetchData(this.currentYear, this.currentMonth)
+                    this.$store.dispatch('fetchData');
                 },
                 deep: true
             },
@@ -142,7 +144,8 @@
         },
 
         ready() {
-            this.fetchData(this.currentYear, this.currentMonth);
+            //this.fetchData(this.currentYear, this.currentMonth);
+            this.$store.dispatch('fetchData');
         },
 
     }

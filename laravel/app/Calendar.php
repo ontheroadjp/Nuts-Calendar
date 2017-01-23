@@ -31,11 +31,11 @@ class Calendar extends Model
         return $this->hasMany(Event::class,'date','date');
     }
 
-    public function fetch($year, $month)
+    public function fetch($userCalendarId, $year, $month)
     {
         $calendar = $this->specificMonth($year,$month);
 
-        $members = Member::all()->keyBy('id');
+        $members = Member::where('user_calendar_id',$userCalendarId)->get()->keyBy('id');
         //$members = Member::all();
 
         $calendar = $this->tidyEvents($calendar, $members);

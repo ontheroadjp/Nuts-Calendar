@@ -23,4 +23,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function userCalendars()
+    {
+        return $this->hasMany(UserCalendar::class,'user_id','id');
+    }
 }

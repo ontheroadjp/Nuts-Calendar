@@ -1,10 +1,8 @@
 <?php
 
-//use App\Member;
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
-class MembersTableSeeder extends Seeder
+class UserCalendarsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +11,6 @@ class MembersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Member::class, 15)->create();
+        factory(App\UserCalendar::class, 5)->create();
     }
 }

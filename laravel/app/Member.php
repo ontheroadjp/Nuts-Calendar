@@ -44,13 +44,4 @@ class Member extends Model
     {
         return $this->hasMany(Event::class,'member_id','id');
     }
-
-    public static function getIds()
-    {
-        $members = Member::get(['id']);
-        for( $n=0; $n < count($members); $n++ ) {
-            $ids[] = $members[$n]->id;
-        }
-        return $ids;
-    }
 }

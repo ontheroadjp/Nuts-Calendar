@@ -85,7 +85,11 @@
                         <span v-show="event.is_hover && !isInsertMode">
                             <button
                                 class="fa fa-trash"
-                                @click="deleteEvent(memberColumn, event, eventIndex)"
+                                @click="$store.dispatch('deleteEvent', {
+                                    'members': memberColumn, 
+                                    'event': event, 
+                                    'index': eventIndex
+                                })"
                             ></button>
                         </span>
 
@@ -96,8 +100,8 @@
                         <input
                             type="text"
                             class="form-control"
-                            @blur.prevent="editUpdateEvent(event)"
-                            @keyup.enter.prevent="editUpdateEvent(event)"
+                            @blur.prevent="$store.dispatch('editUpdateEvent', {'event': event})"
+                            @keyup.enter.prevent="$store.dispatch('editUpdateEvent', {'event':event})"
                             v-model="event.content"
                             v-if="!isInsertMode"
                             v-focus
@@ -207,7 +211,13 @@
                 var month = this.$parent.currentMonth;
                 var date = year + '-' + month + '-' + ("0" + day).slice(-2);
 
-                this.insertEvent(date, member_id, content, memberColumn);
+                //this.insertEvent(date, member_id, content, memberColumn);
+                this.$store.dispatch('insertEvent', {
+                    'day': day,
+                    'member_id': member_id,
+                    'content': content,
+                    'memberColumn': memberColumn
+                });
 
                 this.newEventContent = '';
 
@@ -220,7 +230,6 @@
                     event.editing = true;
                 }
             },
-
         },
 
     }

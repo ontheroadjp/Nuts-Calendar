@@ -11,35 +11,56 @@
 |
 */
 
+function getApiToken() {
+    if( Auth::check() ) {
+        //return Auth::guard('api')->user();
+        return Auth::user()->api_token;
+    }
+}
+
 Route::get('/', function () {
-    return view('welcome');
+    $api_token = getApiToken();
+    return view('welcome', compact('api_token'));
 });
 
 Route::get('/event', function () {
     return view('event');
 });
 
-Route::get('/calendar', function () {
-    return view('calendar');
-});
+Route::group(
+    [
+        'middleware' => ['auth']
+    ], function () {
+        Route::get('/calendar', function () {
+            $api_token = getApiToken();
+            return view('calendar', compact('api_token'));
+        });
+    }
+);
 
-Route::group(['prefix' => 'api'], function () {
-    Route::get('calendar/{year}/{month}', 'CalendarController@index' );
+// API Routings
+Route::group(
+    [
+        'prefix' => 'v1',
+        'middleware' => ['auth']
+    ], function () {
+        //Route::get('calendar/{year}/{month}', 'CalendarController@index' );
+        Route::get('calendar/{userCalendarId}/{year}/{month}', 'CalendarController@index' );
 
-    Route::get('member', 'MembersController@index' );
-//    Route::get('member/tasks', 'MembersController@indexWith' );
-    Route::get('member/{id}', 'MembersController@show' );
-    Route::post('member', 'MembersController@store' );
-    Route::patch('member/{id}', 'MembersController@update' );
-    Route::delete('member/{id}', 'MembersController@destroy' );
+        Route::get('member', 'MembersController@index' );
+        Route::get('member/{id}', 'MembersController@show' );
+        Route::post('member', 'MembersController@store' );
+        Route::patch('member/{id}', 'MembersController@update' );
+        Route::delete('member/{id}', 'MembersController@destroy' );
 
-    Route::get('event', 'EventsController@index' );
-    Route::get('event/{id}', 'EventsController@show' );
-    Route::post('event', 'EventsController@store' );
-    Route::patch('event/{id}', 'EventsController@update' );
-    Route::delete('event/{id}', 'EventsController@destroy' );
-    Route::get('event/{year}/{month}', 'EventsController@indexRange' );
-});
+        Route::get('event', 'EventsController@index' );
+        Route::get('event/{id}', 'EventsController@show' );
+        Route::post('event', 'EventsController@store' );
+        Route::patch('event/{id}', 'EventsController@update' );
+        Route::delete('event/{id}', 'EventsController@destroy' );
+        Route::get('event/{year}/{month}', 'EventsController@indexRange' );
+    }
+);
 
 Route::auth();
 

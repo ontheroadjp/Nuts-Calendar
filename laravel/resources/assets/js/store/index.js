@@ -1,7 +1,30 @@
-//import Vue from 'vue';
+import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
+
+import alertMixin from '../mixins/Alert.js';
+import mutations from './mutations.js';
 
 //Vue.use(Vuex);
+
+//Vue.config.debug = false;
+//Vue.config.silent = true;
+
+// -----------------------------------------------------------------------
+// CSRF Token
+
+function setCsrfToken() {
+    const token = $('meta[name="csrf-token"]').attr('content');
+
+    // for vue-resource
+    //Vue.http.headers.common['X-CSRF-TOKEN'] = token;
+
+    // for axios
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token;
+}
+
+// -----------------------------------------------------------------------
+// state
 
 const now = new Date();
 
@@ -19,89 +42,86 @@ const state = {
     }
 }
 
+// -----------------------------------------------------------------------
+// actions
+
 const actions = {
-}
+    fetchData(context) {
+        const url = '/v1/calendar/1/' + context.state.currentYear + '/' + context.state.currentMonth;
+        axios.get(url)
+            .then(function (response) {
+                nutsHub.fire(
+                    'api-fetch-data', 
+                    {'response': response}, 
+                    'EventApi.vue'
+                )
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
 
-const mutations = {
-//    columnLeftShift( state, key ) {
-//
-//        let index;
-//
-//        index = key;
-//        state.members.splice(index-1, 2, state.members[index], state.members[index-1]);
-//    },
-//
-//    columnRightShift( state, key ) {
-//
-//        let index;
-//
-//        index = key;
-//        state.members.splice(index, 2, state.members[index+1], state.members[index]);
-//    },
+    insertEvent(context, payload) {
+        const date = context.state.currentYear + '-' 
+                    + context.state.currentMonth + '-'
+                    + ("0" + payload.day).slice(-2);
 
-    fillEventToCalendar( state, key ) {
-        state.calendar.forEach( function(val, index) {
-            Vue.set( val.events, key, [{
-                'editing': false,
-                'is_hover': false
-            }]);
+        var url = '/v1/event';
+        setCsrfToken();
+
+        axios.post(url, {
+            'date': date,
+            'member_id': payload.member_id,
+            'content': payload.content
+        })
+        .then(function (response) {
+            payload.memberColumn.push(response.data);
+            alertMixin.methods.alertSuccess('Success: inserted!', false, 'EventApi.js');
+        })
+        .catch(function (error) {
+            alertMixin.methods.alertDanger('Failed: updated!', false, 'EventApi.js');
         });
     },
 
-    deleteEventFromColumn( state, key ) {
-        state.calendar.forEach( function(val, index) {
-            Vue.delete( val.events, key);
+    editUpdateEvent(context, payload) {
+        if(payload.event.content == payload.event.oldValue) return;
+
+        payload.event.editing = false;
+        payload.event.oldValue = '';
+
+        var url = '/v1/event/' + payload.event.id;
+        setCsrfToken();
+
+        axios.patch(url, {
+            'member_id': payload.event.member_id,
+            'content': payload.event.content,
+            'date': payload.event.date
+        }).then(function (response) {
+            alertMixin.methods.alertSuccess('Success: updated!', false, 'EventApi.js');
+        })
+        .catch(function (error) {
+            alertMixin.methods.alertDanger('Failed: updated!', false, 'EventApi.js');
         });
     },
 
-    setMainIndex( state, index ) {
-        state.mainIndex = index;
-    },
+    deleteEvent(context, payload) {
 
-    setCurrentYear( state, year ) {
-        state.currentYear = year;
-    },
+        var url = '/v1/event/' + payload.event.id;
+        setCsrfToken();
 
-    setCurrentMonth( state, month ) {
-        state.currentMonth = month;
+        axios.delete(url)
+        .then(function (response) {
+            payload.members.splice(payload.index, 1);
+            alertMixin.methods.alertSuccess('Success: deleted!', false, 'EventApi.js');
+        })
+        .catch(function (error) {
+            alertMixin.methods.alertDanger('Failed: deleted!', false, 'EventApi.js');
+        });
     },
-
-    setCalendar( state, calendar ) {
-        state.calendar = calendar;
-    },
-
-    setMembers( state, members ) {
-        state.members = members;
-    },
-
-    addMember( state, object ) {
-        Vue.set(state.members, object.key, object.data);
-    },
-
-    deleteMember( state, id ) {
-        Vue.delete(state.members, id);
-    },
-
-    setMemberName( state, newName ) {
-        state.members[state.membersModal.selectedTab].name = newName;
-    },
-
-    setMemberColor( state, newColor ) {
-        state.members[state.membersModal.selectedTab].color = newColor;
-    },
-
-    setEvents( state, events ) {
-        state.events = events;
-    },
-
-    setMembersModalIsActive( state, val ) {
-        state.membersModal.isActive = val;
-    },
-
-    setMembersModalSelectedTab( state, index ) {
-        state.membersModal.selectedTab = index
-    }
 }
+
+// -----------------------------------------------------------------------
+// getters
 
 const getters = {
     newColumnKey: (state, getters) => {
@@ -114,8 +134,10 @@ const getters = {
 
         return Math.max.apply(null, keys) + 1;
     },
-
 }
+
+// -----------------------------------------------------------------------
+// main
 
 export default new Vuex.Store({
     //strict: true,

@@ -15,11 +15,17 @@ class CreateMambersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id')->unsigned();
+            $table->increments('id');
+            $table->integer('user_calendar_id')->unsigned();
             $table->string('name');
             $table->string('color');
             $table->timestamps();
 
+            $table
+                ->foreign('user_calendar_id')
+                ->references('id')
+                ->on('user_calendars')
+                ->onDelete('cascade');
         });
     }
 

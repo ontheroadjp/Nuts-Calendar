@@ -14,8 +14,8 @@ class CalendarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Calendar $calendar, $year, $month)
+    public function index(Calendar $calendar, $userCalendarId, $year, $month)
     {
-        return $calendar->fetch($year,$month);
+        return $calendar->fetch($userCalendarId, $year,$month);
     }
 }

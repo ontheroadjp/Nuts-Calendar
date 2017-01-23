@@ -13,9 +13,6 @@ class CreateEventsTable extends Migration
     public function up()
     {
         Schema::create('events', function (Blueprint $table) {
-            if(Schema::hasTable('events')) {
-                Schema::drop('events');
-            }
             $table->engine = 'InnoDB';
 
             $table->increments('id');
