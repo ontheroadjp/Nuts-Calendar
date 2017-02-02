@@ -29,10 +29,20 @@
 
                 <ul>
                     <li 
-                        v-for="menu in menus" 
-                        :class="{ 'is-active': $index == $store.state.mainIndex }"
-                        @click="selectMenu($index)"
-                    ><a href="#">{{ menu.label }}</a></li>
+                        v-for="uCalendar in userCalendar" 
+                        @click="$store.commit('setCurrentCalendarId', uCalendar.id)"
+                        :class="{'is-active': currentCalendarId == uCalendar.id}"
+                    ><a href="#">
+                        <span class="icon"><i class="fa fa-calendar"></i></span>
+                        {{ uCalendar.name }}
+                    </a></li>
+
+                    <!--
+                    <li><a href="#">
+                        <span class="icon"><i class="fa fa-plus"></i></span>
+                    </a></li>
+                    -->
+
                 </ul>
 
                 <a class="button is-primary is-outlined" @click="selectSettings()">
@@ -48,6 +58,7 @@
 
 <script>
     import nutsYmField from '../nuts-vue-components/NutsYmField.vue';
+
     export default {
 
         components: {
@@ -56,36 +67,37 @@
 
         data() {
             return {
-                menus: [
-                    {
-                        label: 'Calendar',
-                        isActive: false
-                    },
-//                    {
-//                        label: 'Add Event',
-//                        isActive: false
-//                    },
-                ],
-
                 heroStyling: {
                     'margin-top': '-2px',
                 },
 
                 heroFootStyling: {
                     'height': '36px',
-                }
+                },
             }
+        },
+
+        computed: {
+
+            userCalendar: function() {
+                return this.$store.state.userCalendar;
+            },
+
+            currentCalendarId: function() {
+                return this.$store.state.currentCalendarId;
+            },
+
         },
 
         methods: {
 
-            selectMenu(index) {
-                this.$store.commit('setMainIndex', index);
-            },
+//            selectMenu(index) {
+//                this.$store.commit('setMainIndex', index);
+//            },
 
             selectSettings() {
                 this.$store.commit('setMainIndex', 99);
-            }
+            },
 
         }
     } 

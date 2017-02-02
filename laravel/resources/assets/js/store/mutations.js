@@ -10,6 +10,17 @@ export default {
     },
 
     // ---------------------------------------------
+    // user calendar
+
+    initUserCalendar( state, userCalendar ) {
+        state.userCalendar = userCalendar;
+    },
+
+    setCurrentCalendarId( state, id ) {
+        state.currentCalendarId = id;
+    },
+
+    // ---------------------------------------------
     // calendar
     setCurrentYear( state, year ) {
         state.currentYear = year;

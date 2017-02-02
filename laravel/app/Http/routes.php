@@ -11,16 +11,17 @@
 |
 */
 
-function getApiToken() {
-    if( Auth::check() ) {
-        //return Auth::guard('api')->user();
-        return Auth::user()->api_token;
-    }
-}
+//function getApiToken() {
+//    if( Auth::check() ) {
+//        //return Auth::guard('api')->user();
+//        return Auth::user()->api_token;
+//    }
+//}
 
 Route::get('/', function () {
-    $api_token = getApiToken();
-    return view('welcome', compact('api_token'));
+//    $api_token = getApiToken();
+//    return view('welcome', compact('api_token'));
+    return view('welcome');
 });
 
 Route::get('/event', function () {
@@ -32,11 +33,13 @@ Route::group(
         'middleware' => ['auth']
     ], function () {
         Route::get('/calendar', function () {
-            $api_token = getApiToken();
+            //$api_token = getApiToken();
             return view('calendar', compact('api_token'));
         });
     }
 );
+
+        Route::get('v1/usercalendar', 'UserCalendarsController@index' );
 
 // API Routings
 Route::group(
@@ -44,7 +47,7 @@ Route::group(
         'prefix' => 'v1',
         'middleware' => ['auth']
     ], function () {
-        //Route::get('calendar/{year}/{month}', 'CalendarController@index' );
+
         Route::get('calendar/{userCalendarId}/{year}/{month}', 'CalendarController@index' );
 
         Route::get('member', 'MembersController@index' );
@@ -58,7 +61,7 @@ Route::group(
         Route::post('event', 'EventsController@store' );
         Route::patch('event/{id}', 'EventsController@update' );
         Route::delete('event/{id}', 'EventsController@destroy' );
-        Route::get('event/{year}/{month}', 'EventsController@indexRange' );
+        Route::get('event/{userCalendarId}/{year}/{month}', 'EventsController@indexRange' );
     }
 );
 

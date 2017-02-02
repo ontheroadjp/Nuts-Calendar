@@ -19,7 +19,9 @@
 
             <nuts-search-box v-show="!isInsertMode"></nuts-search-box>
 
-            <components :is='currentView'></components>
+            <div class="main-panel">
+                <components :is='currentView'></components>
+            </div>
 
         </section>
     </div>
@@ -61,6 +63,10 @@
                 return !this.isSearching ? 'table-view' : 'event-list-view';
             },
 
+            currentCalendarId: function() {
+                return this.$store.state.currentCalendarId;
+            },
+
             currentYear: function() {
                 return this.$store.state.currentYear;
             },
@@ -96,49 +102,57 @@
         },
 
         watch: {
+            'currentCalendarId': {
+                handler: function(new_val, old_val) {
+                    console.log('watch: currentCalendarId');
+                    this.$store.dispatch('fetchCalendar');
+                },
+                deep: true
+            },
+
             'currentYear': {
                 handler: function(new_val, old_val) {
-                    //this.fetchData(this.currentYear, this.currentMonth)
-                    this.$store.dispatch('fetchData');
+                    console.log('watch: currentYear');
+                    this.$store.dispatch('fetchCalendar');
                 },
                 deep: true
             },
 
             'currentMonth': {
                 handler: function(new_val, old_val) {
-                    //this.fetchData(this.currentYear, this.currentMonth)
-                    this.$store.dispatch('fetchData');
+                    console.log('watch: currentMonth');
+                    this.$store.dispatch('fetchCalendar');
                 },
                 deep: true
             },
         },
 
-        created() {
-            var self = this;
-
-            // api-fetch-data
-            nutsHub.listen('api-fetch-data', function(Object) {
-                self.$store.commit('initCalendar', Object.response.data.days );
-                self.$store.commit('initMembers', Object.response.data.members );
-
-                var modifiedEvents = Object.response.data.events.map(function(item) {
-                    item.is_row_hover = false;
-                    return item;
-                });
-
-                self.events = modifiedEvents;
-                self.$store.commit('initEvents', Object.response.data.events );
-
-//                self.events.sort(function (a,b) {
-//                    if(a.date < b.date) return -1;
-//                    if(a.date > b.date) return 1;
+//        created() {
+//            var self = this;
+//
+//            // fetch-data
+//            nutsHub.listen('fetch-data', function(Object) {
+//                self.$store.commit('initCalendar', Object.response.data.days );
+//                self.$store.commit('initMembers', Object.response.data.members );
+//
+//                var modifiedEvents = Object.response.data.events.map(function(item) {
+//                    item.is_row_hover = false;
+//                    return item;
 //                });
-            }, 'FcCalendar.vue')//,
-        },
+//
+//                self.events = modifiedEvents;
+//                self.$store.commit('initEvents', Object.response.data.events );
+//
+////                self.events.sort(function (a,b) {
+////                    if(a.date < b.date) return -1;
+////                    if(a.date > b.date) return 1;
+////                });
+//            }, 'FcCalendar.vue')//,
+//        },
 
         ready() {
-            //this.fetchData(this.currentYear, this.currentMonth);
-            this.$store.dispatch('fetchData');
+            this.$store.dispatch('fetchUserCalendar');
+            //this.$store.dispatch('fetchData');
         },
 
     }

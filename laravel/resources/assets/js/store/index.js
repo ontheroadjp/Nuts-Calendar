@@ -5,8 +5,6 @@ import axios from 'axios';
 import alertMixin from '../mixins/Alert.js';
 import mutations from './mutations.js';
 
-//Vue.use(Vuex);
-
 //Vue.config.debug = false;
 //Vue.config.silent = true;
 
@@ -31,11 +29,13 @@ const now = new Date();
 const state = {
     lang: 'en',
     mainIndex: 0,
+    userCalendar: [],
+    currentCalendarId: '',
     currentYear: now.getFullYear(),
     currentMonth: ("0" + now.getMonth() + 1).slice(-2),
     calendar: [],
     members: [],
-    events: [],
+    //events: [],
     membersModal: {
         isActive: false,
         selectedTab: 0,
@@ -48,6 +48,51 @@ const state = {
 const actions = {
 
     // -----------------------------------------------------------------------
+    // AJAX: init data
+    fetchUserCalendar(context) {
+        const url = '/v1/usercalendar';
+        axios.get(url)
+            .then(function (response) {
+                context.commit('initUserCalendar', response.data );
+                context.commit('setCurrentCalendarId', response.data[0].id);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    fetchCalendar(context) {
+        const url = '/v1/calendar/' + context.state.currentCalendarId + '/' + context.state.currentYear + '/' + context.state.currentMonth;
+        axios.get(url)
+            .then(function (response) {
+//                nutsHub.fire(
+//                    'fetch-data', 
+//                    {'response': response}, 
+//                    'store.index.js'
+//                )
+
+                context.commit('initCalendar', response.data.days );
+                context.commit('initMembers', response.data.members );
+
+//                var modifiedEvents = response.data.events.map(function(item) {
+//                    item.is_row_hover = false;
+//                    return item;
+//                });
+//
+//                self.events = modifiedEvents;
+//                context.commit('initEvents', response.data.events );
+//
+////                self.events.sort(function (a,b) {
+////                    if(a.date < b.date) return -1;
+////                    if(a.date > b.date) return 1;
+////                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
+
+    // -----------------------------------------------------------------------
     // AJAX: member
     insertMember: function (context, payload) {
         
@@ -55,7 +100,7 @@ const actions = {
         setCsrfToken();
         
         axios.post(url, {
-            'user_calendar_id': 1,
+            'user_calendar_id': context.state.currentCalendarId,
             'name': payload.name,
             'color': payload.color
         })
@@ -110,21 +155,6 @@ const actions = {
 
     // -----------------------------------------------------------------------
     // AJAX: event
-    fetchData(context) {
-        const url = '/v1/calendar/1/' + context.state.currentYear + '/' + context.state.currentMonth;
-        axios.get(url)
-            .then(function (response) {
-                nutsHub.fire(
-                    'api-fetch-data', 
-                    {'response': response}, 
-                    'EventApi.vue'
-                )
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    },
-
     insertEvent(context, payload) {
         const date = context.state.currentYear + '-' 
                     + context.state.currentMonth + '-'
@@ -148,9 +178,12 @@ const actions = {
     },
 
     editUpdateEvent(context, payload) {
-        if(payload.event.content == payload.event.oldValue) return;
 
         payload.event.editing = false;
+        if(payload.event.content == payload.event.oldValue) {
+            payload.event.oldValue = '';
+            return;
+        }
         payload.event.oldValue = '';
 
         const url = '/v1/event/' + payload.event.id;

@@ -53,6 +53,7 @@ class Event extends Model
      * fetch
      *
      * @param mixed $id
+     * @param mixed $members
      * @param mixed $year
      * @param mixed $month
      * @access public

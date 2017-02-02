@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\UserCalendar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -24,8 +25,28 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function userCalendars()
+    protected function userCalendars()
     {
         return $this->hasMany(UserCalendar::class,'user_id','id');
     }
+
+    public static function create(array $attributes = [])
+    {
+        $model = new static($attributes);
+
+        $model->save();
+
+        $model->createUserCalendar($model->id);
+
+        return $model;
+    }
+
+    public static function createUserCalendar($user_id, $name = 'Calendar')
+    {
+        return UserCalendar::create([
+            'user_id' => $user_id,
+            'name' => $name,
+        ]);
+    }
+
 }

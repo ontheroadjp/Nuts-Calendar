@@ -8,6 +8,7 @@ services:
             - DB_CONNECTION=mysql
             - MAIL_HOST=mailcatcher
             - MAIL_PORT=1025
+            - PATH=$PATH:/var/www/laravel/vendor/bin
         volumes:
             - "./laravel:/var/www/laravel"
         ports:
@@ -21,8 +22,14 @@ services:
             - MYSQL_DATABASE=familycal
         volumes:
             - "./mariadb:/var/lib/mysql"
-        ports:
-            - 3306:3306
+
+    mariadb_testing:
+        image: mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=familycal
+        volumes:
+            - "./mariadb_testing:/var/lib/mysql"
 
     mailcatcher:
         image: nutsllc/toybox-mailcatcher:latest

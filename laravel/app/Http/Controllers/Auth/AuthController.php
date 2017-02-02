@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Member;
 use Validator;
+use App\UserCalendar;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -70,4 +74,38 @@ class AuthController extends Controller
             'api_token' => str_random(60),
         ]);
     }
+
+    /**
+     * override register method on Illuminate\Foundation\Auth\RegistersUsers
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $newUser = $this->create($request->all());
+
+//        $userCalendar = UserCalendar::create([
+//            'user_id' => $newUser->id,
+//            'name' => 'first calendar',
+//        ]);
+//
+//        Member::create([
+//        'user_calendar_id' => $userCalendar->id,
+//            'name' => 'member',
+//            'color' => 'primary'
+//        ]);
+
+        Auth::guard($this->getGuard())->login($newUser);
+        return redirect($this->redirectPath());
+    }
+
 }

@@ -1,6 +1,6 @@
 <template id="calendar">
 <table
-    :class="[ 'table', { calendar: this.isInsertMode } ]"
+    :class="[ 'table', 'is-bordered', { calendar: this.isInsertMode } ]"
 >
     <!-- table header -->
     <thead>
@@ -64,7 +64,7 @@
                     + this.memberColumnIndex
                 )"
             >
-                ({{ memberColumnIndex }})
+            <!-- ({{ memberColumnIndex }}) -->
 
                 <div
                     v-for="(eventIndex, event) in memberColumn"
@@ -78,11 +78,23 @@
                         @mouseover="event.is_hover = true"
                     >
 
-                        <span v-if="event.content" @click="beEditing(event)">
+                        <span 
+                            v-if="event.content" 
+                            @click="beEditing(event)" 
+                            class="tag"
+                        >
                             {{ event.content }}
                         </span>
 
                         <span v-show="event.is_hover && !isInsertMode">
+                            <button
+                                class="fa fa-pencil"
+                                @click="$store.dispatch('deleteEvent', {
+                                    'members': memberColumn, 
+                                    'event': event, 
+                                    'index': eventIndex
+                                })"
+                            ></button>
                             <button
                                 class="fa fa-trash"
                                 @click="$store.dispatch('deleteEvent', {
@@ -99,9 +111,9 @@
                     <template v-if="event.editing">
                         <input
                             type="text"
-                            class="form-control"
-                            @blur.prevent="$store.dispatch('editUpdateEvent', {'event': event})"
-                            @keyup.enter.prevent="$store.dispatch('editUpdateEvent', {'event':event})"
+                            class="input"
+                            @blur="$store.dispatch('editUpdateEvent', {'event': event})"
+                            @keyup.enter="$store.dispatch('editUpdateEvent', {'event':event})"
                             v-model="event.content"
                             v-if="!isInsertMode"
                             v-focus
