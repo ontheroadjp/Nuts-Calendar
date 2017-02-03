@@ -22,6 +22,17 @@ function setCsrfToken() {
 }
 
 // -----------------------------------------------------------------------
+// Item
+
+function addItem(members, item) {
+    members.push(item);
+}
+
+function removeItem(memberEvents, itemIndex) {
+    memberEvents.splice(itemIndex, 1);
+}
+
+// -----------------------------------------------------------------------
 // state
 
 const now = new Date();
@@ -65,27 +76,8 @@ const actions = {
         const url = '/v1/calendar/' + context.state.currentCalendarId + '/' + context.state.currentYear + '/' + context.state.currentMonth;
         axios.get(url)
             .then(function (response) {
-//                nutsHub.fire(
-//                    'fetch-data', 
-//                    {'response': response}, 
-//                    'store.index.js'
-//                )
-
                 context.commit('initCalendar', response.data.days );
                 context.commit('initMembers', response.data.members );
-
-//                var modifiedEvents = response.data.events.map(function(item) {
-//                    item.is_row_hover = false;
-//                    return item;
-//                });
-//
-//                self.events = modifiedEvents;
-//                context.commit('initEvents', response.data.events );
-//
-////                self.events.sort(function (a,b) {
-////                    if(a.date < b.date) return -1;
-////                    if(a.date > b.date) return 1;
-////                });
             })
             .catch(function (error) {
                 console.log(error);
@@ -169,7 +161,7 @@ const actions = {
             'content': payload.content
         })
         .then(function (response) {
-            payload.memberColumn.push(response.data);
+            addItem(payload.memberColumn, response.data);
             alertMixin.methods.alertSuccess('Success: inserted!', false, 'EventApi.js');
         })
         .catch(function (error) {
@@ -193,7 +185,8 @@ const actions = {
             'member_id': payload.event.member_id,
             'content': payload.event.content,
             'date': payload.event.date
-        }).then(function (response) {
+        })
+        .then(function (response) {
             alertMixin.methods.alertSuccess('Success: updated!', false, 'EventApi.js');
         })
         .catch(function (error) {
@@ -208,13 +201,31 @@ const actions = {
 
         axios.delete(url)
         .then(function (response) {
-            payload.members.splice(payload.index, 1);
+            removeItem(payload.members, payload.index);
             alertMixin.methods.alertSuccess('Success: deleted!', false, 'EventApi.js');
         })
         .catch(function (error) {
             alertMixin.methods.alertDanger('Failed: deleted!', false, 'EventApi.js');
         });
     },
+
+    // -----------------------------------------------------------------------
+    // DnD: event
+    moveItem(context, payload) {
+        addItem(payload.memberEvents, payload.event);
+        removeItem(payload.draggingItemFrom, payload.itemIndex);
+
+        const y = context.state.currentYear;
+        const m = context.state.currentMonth;
+        const d = payload.day;
+
+        payload.event.date = y + '-' + m + '-' + d;
+        payload.event.member_id = payload.memberId;
+
+        context.dispatch('editUpdateEvent', {'event': payload.event});
+        //context.dispatch('insertEvent', payload);
+        //context.dispatch('deleteEvent', payload);
+    }
 }
 
 // -----------------------------------------------------------------------

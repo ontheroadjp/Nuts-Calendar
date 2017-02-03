@@ -36,7 +36,7 @@ class User extends Authenticatable
 
         $model->save();
 
-        $model->createUserCalendar($model->id);
+        $model->createUserCalendar($model->id, 'First Calendar');
 
         return $model;
     }

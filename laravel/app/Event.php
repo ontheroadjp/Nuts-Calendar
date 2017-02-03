@@ -24,26 +24,14 @@ class Event extends Model
      * @access protected
      */
     protected $appends = [
-        'editing', 'is_hover'
+        'editing', 'is_hover',
     ];
 
-    /**
-     * getEditingAttribute
-     *
-     * @access public
-     * @return void
-     */
     public function getEditingAttribute()
     {
         return false;
     }
 
-    /**
-     * getIsHoverAttribute
-     *
-     * @access public
-     * @return void
-     */
     public function getIsHoverAttribute()
     {
         return false;

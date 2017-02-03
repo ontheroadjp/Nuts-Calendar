@@ -10,28 +10,25 @@ class Member extends Model
         'user_calendar_id', 'name', 'color'
     ];
 
-//    protected $appends = [
-//        'show_insert_btn',
-//    ];
-
     protected $appends = [
         'is_hover'
     ];
 
-//    public function getShowInsertBtnAttribute() {
-//        return false;
-//    }
-
     public function getIsHoverAttribute() {
         return false;
+    }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class,'member_id','id');
     }
 
     public static function findOrAbort($id){
         if (!$item = Member::find($id)) {
             $error = [
                 'error' => [
-                    'code' => 'ERR-NOTFOUND',
                     'http_code' => '404',
+                    'code' => 'ERR-NOTFOUND',
                     'message' => 'Requested Member cannot be found in the database.',
                 ]
             ];
@@ -40,8 +37,4 @@ class Member extends Model
         return $item;
     }
 
-    public function events()
-    {
-        return $this->hasMany(Event::class,'member_id','id');
-    }
 }

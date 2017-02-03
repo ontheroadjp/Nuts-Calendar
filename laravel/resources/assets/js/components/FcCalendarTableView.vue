@@ -13,28 +13,17 @@
                 data-target="#nuts-modal"
                 :style="columnWidth"
                 @click="clickTableHeader(member.id)"
-                    @mouseover="member.is_hover = true"
-                    @mouseout="member.is_hover = false"
+                @mouseover="member.is_hover = true"
+                @mouseout="member.is_hover = false"
             >
                 <span>{{ member.name }}</span>
-<!--
-                <span v-show="member.is_hover" class="icon is-small">
-                    <button @click.stop="$store.commit('columnLeftShift', $index)">
-                        <i class="fa fa-caret-left"></i>
-                    </button>
-                </span>
-                <span v-show="member.is_hover" class="icon is-small">
-                    <button @click.stop="$store.commit('columnRightShift', $index)">
-                        <i class="fa fa-caret-right"></i>
-                    </button>
-                </span>
--->            
             </th>
         </tr>
     </thead>
 
     <!-- table body -->
-    <tbody>
+    <tbody
+    >
         <tr
             v-for="(dayIndex, day) in $store.state.calendar"
             :class="{
@@ -57,17 +46,17 @@
             </td>
 
             <td
-                v-for="(memberColumnIndex, memberColumn) in day.events"
-                @click="this.beInserting(
-                    (this.dayIndex + 1) 
-                    + '-' 
-                    + this.memberColumnIndex
-                )"
+                v-for="(memberEventsIndex, memberEvents) in day.events"
+                :style="[dragItemEnterCell == ((this.dayIndex +1) + '-' + this.memberEventsIndex) ? dragEnter : '']"
+                @click="beInserting((this.dayIndex + 1) + '-' + this.memberEventsIndex)"
+                @dragEnter="handleDragEnter((this.dayIndex +1) + '-' + this.memberEventsIndex)"
+                @dragOver="handleDragOver($event)"
+                @drop="handleDrop($event, memberEvents)"
             >
-            <!-- ({{ memberColumnIndex }}) -->
+            <!-- ({{ memberEventsIndex }}) -->
 
                 <div
-                    v-for="(eventIndex, event) in memberColumn"
+                    v-for="(eventIndex, event) in memberEvents"
                     class="form-inline"
                     @mouseout="event.is_hover = false"
                 >
@@ -76,6 +65,11 @@
                     <span
                         v-show="!event.editing"
                         @mouseover="event.is_hover = true"
+                        style="cursor: move"
+                        :style="[draggingItem == event ? dragStart : '']"
+                        draggable="true"
+                        @dragStart="handleDragStart(event, eventIndex, memberEvents, $event)"
+                        @dragEnd="handleDragEnd()"
                     >
 
                         <span 
@@ -90,7 +84,7 @@
                             <button
                                 class="fa fa-pencil"
                                 @click="$store.dispatch('deleteEvent', {
-                                    'members': memberColumn, 
+                                    'members': memberEvents, 
                                     'event': event, 
                                     'index': eventIndex
                                 })"
@@ -98,7 +92,7 @@
                             <button
                                 class="fa fa-trash"
                                 @click="$store.dispatch('deleteEvent', {
-                                    'members': memberColumn, 
+                                    'members': memberEvents, 
                                     'event': event, 
                                     'index': eventIndex
                                 })"
@@ -128,7 +122,7 @@
 
                 <!-- INSERT MODE -->
                 <template v-if="
-                    (this.dayIndex + 1) + '-' + this.memberColumnIndex == this.insertingCellAddress
+                    (this.dayIndex + 1) + '-' + this.memberEventsIndex == this.insertingCellAddress
                 ">
 
                     <div class="form-inline">
@@ -139,15 +133,15 @@
                             placeholder="New Event here.."
                             @blur="letsInsert(
                                 this.dayIndex + 1, 
-                                this.memberColumnIndex, 
+                                this.memberEventsIndex, 
                                 this.newEventContent,
-                                this.memberColumn
+                                this.memberEvents
                             )"
                             @keyup.enter="letsInsert(
                                 this.dayIndex + 1, 
-                                this.memberColumnIndex, 
+                                this.memberEventsIndex, 
                                 this.newEventContent,
-                                this.memberColumn
+                                this.memberEvents
                             )"
                             v-focus
                         >
@@ -178,6 +172,18 @@
                 dayColumnWidth: {
                     width: '6%'
                 },
+                dragStart: {
+                    opacity: '0.4'
+                },
+                dragEnter: {
+                    border: '3px solid red'
+                },
+
+                draggingItem: '',
+                draggingItemIndex: '',
+                draggingItemFrom: '',
+                dragItemEnterCell: '',
+
             }
 
         },
@@ -199,6 +205,57 @@
 
         methods: {
 
+            handleDragStart(item, itemIndex, memberEvents, e) {
+                this.draggingItem = item;
+                this.draggingItemIndex = itemIndex;
+                this.draggingItemFrom = memberEvents;
+                item.is_hover = false;
+            },
+
+            handleDragEnter(cell) {
+                this.dragItemEnterCell = cell;
+            },
+
+            handleDragOver(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+
+                e.dataTransfer.dropEffect = 'move'
+
+                return false;
+            },
+
+            handleDrop(e, memberEvents) {
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+
+                this.$store.dispatch('moveItem', {
+                    'draggingItemFrom': this.draggingItemFrom,
+                    'memberEvents': memberEvents,
+                    'event': this.draggingItem,
+                    'itemIndex': this.draggingItemIndex,
+                    'day': this.dragItemEnterCell.split('-')[0],
+                    'memberId': this.dragItemEnterCell.split('-')[1],
+                });
+
+                this.initDraggingProperties();
+
+                return false;
+            },
+
+            handleDragEnd() {
+                this.initDraggingProperties();
+            },
+
+            initDraggingProperties() {
+                this.draggingItem = '';
+                this.draggingItemIndex = '';
+                this.draggingItemFrom = '';
+                this.dragItemEnterCell = '';
+            },
+
             clickTableHeader(index) {
                 this.$store.commit('setMembersModalIsActive', true);
                 this.$store.commit('setMembersModalSelectedTab', index);
@@ -212,7 +269,7 @@
             },
 
             // Insert: update
-            letsInsert: function (day, member_id, content, memberColumn) {
+            letsInsert: function (day, member_id, content, memberEvents) {
 
                 this.insertingCellAddress = '';
 
@@ -222,12 +279,12 @@
                 var month = this.$parent.currentMonth;
                 var date = year + '-' + month + '-' + ("0" + day).slice(-2);
 
-                //this.insertEvent(date, member_id, content, memberColumn);
+                //this.insertEvent(date, member_id, content, memberEvents);
                 this.$store.dispatch('insertEvent', {
                     'day': day,
                     'member_id': member_id,
                     'content': content,
-                    'memberColumn': memberColumn
+                    'memberColumn': memberEvents
                 });
 
                 this.newEventContent = '';

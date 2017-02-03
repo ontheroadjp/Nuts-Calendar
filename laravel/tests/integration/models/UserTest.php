@@ -31,7 +31,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_will_create_user_calendar_when_it_was_created()
     {
-        $this->seeInDatabase('user_calendars', ['name' => 'Calendar']);
+        $this->seeInDatabase('user_calendars', ['name' => 'First Calendar']);
     }
 
     /** @test */
@@ -43,7 +43,7 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_should_be_one_user_calendar()
+    public function it_should_have_only_one_user_calendar()
     {
         $userCalendars = $this->user->userCalendars;
         $this->assertEquals(1, $userCalendars->count());

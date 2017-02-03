@@ -85,7 +85,8 @@ class Calendar extends Model
             for( $i=0; $i < count($diff); $i++ ) {
                 $events_group_by->put($diff[$i], array([
                     'editing' => false,
-                    'is_hover' => false
+                    'is_hover' => false,
+                    'is_drag_start' => false
                 ]));
             }
 
