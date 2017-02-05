@@ -1,70 +1,38 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
+//Route::auth();
 
-//function getApiToken() {
-//    if( Auth::check() ) {
-//        //return Auth::guard('api')->user();
-//        return Auth::user()->api_token;
-//    }
-//}
+//Route::get('/', 'PagesController@index');
+//Route::get('/dashboard', 'PagesController@index');
+//Route::get('/calendar/{userCalendarId}', 'PagesController@index');
+//Route::get('/user/settings', 'PagesController@index');
 
-Route::get('/', function () {
-//    $api_token = getApiToken();
-//    return view('welcome', compact('api_token'));
-    return view('welcome');
+Route::group( ['prefix' => 'api/v1'], function() {
+    Route::group( [
+//            'middleware' => ['jwt.auth']
+            'middleware' => ['nuts.api.jwtauth']
+        ], function () {
+
+            // user calendar
+            Route::get('usercalendar', 'UserCalendarsController@index');
+            Route::get('calendar/{userCalendarId}/{year}/{month}', 'CalendarController@index' );
+
+            // members
+            Route::get('member', 'MembersController@index' );
+            Route::get('member/{id}', 'MembersController@show' );
+            Route::post('member', 'MembersController@store' );
+            Route::patch('member/{id}', 'MembersController@update' );
+            Route::delete('member/{id}', 'MembersController@destroy' );
+
+            // items
+            Route::get('item', 'EventsController@index' );
+            Route::get('item/{id}', 'EventsController@show' );
+            Route::post('item', 'EventsController@store' );
+            Route::patch('item/{id}', 'EventsController@update' );
+            Route::delete('item/{id}', 'EventsController@destroy' );
+            Route::get('item/{userCalendarId}/{year}/{month}', 'EventsController@indexRange' );
+        }
+    );
 });
 
-Route::get('/event', function () {
-    return view('event');
-});
 
-Route::group(
-    [
-        'middleware' => ['auth']
-    ], function () {
-        Route::get('/calendar', function () {
-            //$api_token = getApiToken();
-            return view('calendar', compact('api_token'));
-        });
-    }
-);
-
-        Route::get('v1/usercalendar', 'UserCalendarsController@index' );
-
-// API Routings
-Route::group(
-    [
-        'prefix' => 'v1',
-        'middleware' => ['auth']
-    ], function () {
-
-        Route::get('calendar/{userCalendarId}/{year}/{month}', 'CalendarController@index' );
-
-        Route::get('member', 'MembersController@index' );
-        Route::get('member/{id}', 'MembersController@show' );
-        Route::post('member', 'MembersController@store' );
-        Route::patch('member/{id}', 'MembersController@update' );
-        Route::delete('member/{id}', 'MembersController@destroy' );
-
-        Route::get('event', 'EventsController@index' );
-        Route::get('event/{id}', 'EventsController@show' );
-        Route::post('event', 'EventsController@store' );
-        Route::patch('event/{id}', 'EventsController@update' );
-        Route::delete('event/{id}', 'EventsController@destroy' );
-        Route::get('event/{userCalendarId}/{year}/{month}', 'EventsController@indexRange' );
-    }
-);
-
-Route::auth();
-
-Route::get('/home', 'HomeController@index');

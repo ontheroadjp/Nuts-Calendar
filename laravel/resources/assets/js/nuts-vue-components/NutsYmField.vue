@@ -1,33 +1,35 @@
 <template>
-    <span v-if="!editing" @click="editing = true">{{ currentYear }} 年 {{ currentMonth }} 月</span>
-    <span v-else>
-        <div class="form-group form-inline">
-
-            <div class="form-group">
-                <select
-                    class="form-control"
-                    v-model="currentYear"
-                    @change="editing = false"
-                >
-                    <option v-for="val in yearVals">{{ val }}</option>
-                </select>
-            </div>年
-
-            <div class="form-group">
-                <select
-                    class="form-control"
-                    v-model="currentMonth"
-                    @change="editing = false"
-                >
-                    <option v-for="val in monthVals">{{ val }}</option>
-                </select>
-            </div>月
-
-            <span :style="cancelButtonStyle">(</span>
-            <a href="#" @click="editing =false" :style="cancelButtonStyle">x</a>
-            <span :style="cancelButtonStyle">)</span>
-        </div>
-    </span>
+    <div>
+        <span v-if="!editing" @click="editing = true">{{ currentYear }} 年 {{ currentMonth }} 月</span>
+        <span v-else>
+            <div class="form-group form-inline">
+    
+                <div class="form-group">
+                    <select
+                        class="form-control"
+                        v-model="currentYear"
+                        @change="editing = false"
+                    >
+                        <option v-for="val in yearVals">{{ val }}</option>
+                    </select>
+                </div>年
+    
+                <div class="form-group">
+                    <select
+                        class="form-control"
+                        v-model="currentMonth"
+                        @change="editing = false"
+                    >
+                        <option v-for="val in monthVals">{{ val }}</option>
+                    </select>
+                </div>月
+    
+                <span :style="cancelButtonStyle">(</span>
+                <a href="#" @click="editing =false" :style="cancelButtonStyle">x</a>
+                <span :style="cancelButtonStyle">)</span>
+            </div>
+        </span>
+    </div>
 </template>
 
 <script>

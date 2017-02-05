@@ -12,9 +12,11 @@
     "laravel-elixir": "^5.0.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
+    "bulma": "^0.3.1",
     "css-toggle-switch": "^4.0.2",
     "vue": "^1.0.28",
-    "axios": "^0.15.3",
+    "vue-router": "^0.7.13",
     "vuex": "^2.1.1"
   }
 }

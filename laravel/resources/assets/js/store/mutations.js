@@ -4,9 +4,19 @@
 export default {
 
     // ---------------------------------------------
-    // main
-    setMainIndex( state, index ) {
-        state.mainIndex = index;
+    // auth
+
+    login( state, data ) {
+        window.sessionStorage.setItem('token', data.token);
+        window.sessionStorage.setItem('username', data.user.name);
+        state.user.name = data.user.name;
+        state.user.token = data.token;
+    },
+
+    logout( state ) {
+        window.sessionStorage.clear();
+        state.user.name = null;
+        state.user.token = null;
     },
 
     // ---------------------------------------------
@@ -78,6 +88,16 @@ export default {
     // events
     initEvents( state, events ) {
         state.events = events;
+    },
+
+    // ---------------------------------------------
+    // Ajax
+    startFetchCalendar( state ) {
+        state.ajax.loadingCalendarId = state.currentCalendarId;
+    },
+
+    stopFetchCalendar( state ) {
+        state.ajax.loadingCalendarId = '';
     },
 
 }

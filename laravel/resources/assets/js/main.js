@@ -1,49 +1,30 @@
+// vue
+import Vue from 'vue';
+//Vue.config.debug = true;
+//Vue.config.silent = true;
+
+// vue-router
+import VueRouter from 'vue-router';
+import { configRouter } from './router/vue-router-config.js'
+Vue.use(VueRouter);
+
+// axios
+import axios from 'axios';
+axios.defaults.timeout = 2500;
+
 // core lib
 import nutsHub from './NutsHub.js';
 window.nutsHub = nutsHub;
 
-// vuex
-import store from './store/index.js'
+// Application
+import App from './App.vue';
 
-// components
-import nutsAlert from './nuts-vue-components/NutsAlert.vue';
-import fcHero from './components/FcHero.vue';
-import fcCalendar from './components/FcCalendar.vue';
-import fcSettings from './components/FcSettings.vue';
-
-Vue.directive('focus', {
-    update: function () {
-        console.log('v-focus update!');
-        var object = this.el;
-        Vue.nextTick(function() {
-            object.focus();
-        });
-    }
+const router = new VueRouter({
+    history: true,
+    saveScrollPosition: true
 });
 
-const vm = new Vue({
+// vue-router settings
+configRouter(router);
 
-    el: 'body',
-
-    store,
-
-    components: {
-        'nuts-alert': nutsAlert,
-        'fc-hero': fcHero,
-        'fc-calendar': fcCalendar,
-        'fc-settings': fcSettings,
-    },
-
-    computed: {
-
-        mainIndex: function() {
-            return this.$store.state.mainIndex;
-        },
-
-        currentView: function() {
-            if(this.mainIndex == 0) return 'fc-calendar';
-            if(this.mainIndex == 1) return 'fc-calendar';
-            if(this.mainIndex == 99) return 'fc-settings';
-        }
-    },
-});
+router.start(App, '#app');

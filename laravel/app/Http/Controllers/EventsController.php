@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Event;
 use App\Http\Requests;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
@@ -18,7 +16,6 @@ class EventsController extends Controller
     public function index()
     {
         $items = Event::with('member')->get();
-        //return new JsonResponse($items);
         return $items;
     }
 

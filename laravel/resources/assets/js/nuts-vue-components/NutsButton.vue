@@ -1,5 +1,5 @@
 <template>
-    <a class="button is-primary is-outlined" @click="fire">
+    <a class="button is-info is-outlined" @click="fire">
          <slot></slot>
     </a>
 </template>

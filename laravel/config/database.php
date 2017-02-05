@@ -66,7 +66,7 @@ return [
             'engine' => null,
         ],
 
-        'mysql_testing' => [
+        'mariadb_testing' => [
             'driver' => 'mysql',
             'host' => 'mariadb_testing',
             'port' => env('DB_PORT', '3306'),

@@ -1,18 +1,17 @@
 <template>
-    <div class="control is-grouped is-pulled-right">
+    <div class="control is-pulled-right">
 
-        <div class="control has-icon">
+        <div class="control has-icon has-addons">
             <input 
                 class="input" 
                 type="text" 
                 v-model="$parent.searchQuery" 
                 placeholder="Search"
             >
-            <i class="fa fa-search"></i>
-        </div>
-
-        <div class="form-group">
-            <a class="button is-info is-outlined" @click="clearField">Clear</a>
+            <span class="icon">
+                <i class="fa fa-search"></i>
+            </span>
+            <a class="button is-info" @click="clearField">Clear</a>
         </div>
 
     </div>

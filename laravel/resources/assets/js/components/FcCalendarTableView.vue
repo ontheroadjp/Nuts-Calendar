@@ -1,12 +1,10 @@
 <template id="calendar">
-<table
-    :class="[ 'table', 'is-bordered', { calendar: this.isInsertMode } ]"
->
-    <!-- table header -->
-    <thead>
+<div class="panel">
+<table :class="[ 'table', 'is-bordered']">
+
+    <thead v-if="displayTableHeader">
         <tr>
             <th :style="dayColumnWidth">Date</th>
-            <th :style="dayColumnWidth"></th>
             <th
                 v-for="member in $store.state.members"
                 data-toggle="modal"
@@ -21,9 +19,7 @@
         </tr>
     </thead>
 
-    <!-- table body -->
-    <tbody
-    >
+    <tbody v-if="displayTableBody">
         <tr
             v-for="(dayIndex, day) in $store.state.calendar"
             :class="{
@@ -31,146 +27,147 @@
                 sunday: getDayIndex(day.date) == 0
             }"
         >
-            <td class="has-text-left date-styling">
-                {{ getDayString(day.date) }}
-            </td>
+            <td class="date-styling" :style="dayColumnWidth">
 
-            <td>
-                <span :class="[
-                    'has-text-right', 
-                    'date-styling', 
-                    { today: isToday(day.date) }
-                ]">
+                <span>{{ getDayString(day.date) }}</span>
+
+                <span style="width: 32px; text-align: center;" :class="[ 'is-pulled-right', { today: isToday(day.date) } ]">
                     {{ parseInt(day.date.substr(-2)) }}
                 </span>
+
             </td>
 
+            <!-- 
+                NOTE: cellItemsRoopIndex = member_id
+            -->
             <td
-                v-for="(memberEventsIndex, memberEvents) in day.events"
-                :style="[dragItemEnterCell == ((this.dayIndex +1) + '-' + this.memberEventsIndex) ? dragEnter : '']"
-                @click="beInserting((this.dayIndex + 1) + '-' + this.memberEventsIndex)"
-                @dragEnter="handleDragEnter((this.dayIndex +1) + '-' + this.memberEventsIndex)"
+                v-for="(cellItemsRoopIndex, cellItems) in day.events"
+                :style="[columnWidth, dragItemEnterCell == ((dayIndex +1) + '-' + cellItemsRoopIndex) ? dragEnter : '']"
+                @click="beInserting((dayIndex + 1) + '-' + cellItemsRoopIndex)"
+                @dragEnter="handleDragEnter((dayIndex +1) + '-' + cellItemsRoopIndex)"
                 @dragOver="handleDragOver($event)"
-                @drop="handleDrop($event, memberEvents)"
+                @drop="handleDrop($event, cellItems)"
             >
-            <!-- ({{ memberEventsIndex }}) -->
 
+                <!-- ({{ cellItemsRoopIndex }}) -->
+
+                <!-- Show cellItems -->
                 <div
-                    v-for="(eventIndex, event) in memberEvents"
+                    v-for="(itemIndex, item) in cellItems"
                     class="form-inline"
-                    @mouseout="event.is_hover = false"
+                    @mouseout="item.is_hover = false"
                 >
 
-                    <!-- VIEW MODE -->
                     <span
-                        v-show="!event.editing"
-                        @mouseover="event.is_hover = true"
+                        v-show="!item.editing"
                         style="cursor: move"
-                        :style="[draggingItem == event ? dragStart : '']"
+                        :style="[draggingItem == item ? dragStart : '']"
                         draggable="true"
-                        @dragStart="handleDragStart(event, eventIndex, memberEvents, $event)"
+                        @mouseover="item.is_hover = true"
+                        @dragStart="handleDragStart(cellItems, item, itemIndex, $event)"
                         @dragEnd="handleDragEnd()"
                     >
 
+                        <!-- show item content -->
                         <span 
-                            v-if="event.content" 
-                            @click="beEditing(event)" 
-                            class="tag"
+                            v-if="item.content" 
+                            class="item"
+                            @click.stop="beEditing(item)" 
                         >
-                            {{ event.content }}
+                            {{ item.content }}
                         </span>
 
-                        <span v-show="event.is_hover && !isInsertMode">
-                            <button
-                                class="fa fa-pencil"
-                                @click="$store.dispatch('deleteEvent', {
-                                    'members': memberEvents, 
-                                    'event': event, 
-                                    'index': eventIndex
-                                })"
-                            ></button>
+                        <!-- show icons -->
+<!--
+                        <span v-show="item.is_hover">
+                            <button class="fa fa-pencil"></button>
                             <button
                                 class="fa fa-trash"
-                                @click="$store.dispatch('deleteEvent', {
-                                    'members': memberEvents, 
-                                    'event': event, 
-                                    'index': eventIndex
+                                @click="$store.dispatch('deleteItem', {
+                                    'members': cellItems, 
+                                    'event': item, 
+                                    'index': itemIndex
                                 })"
                             ></button>
                         </span>
+-->
+                    </span>
 
-                    </span><!-- // VIEW MODE -->
-
-                    <!-- EDIT MODE -->
-                    <template v-if="event.editing">
+                    <!-- editing -->
+                    <template v-if="item.editing">
                         <input
                             type="text"
                             class="input"
-                            @blur="$store.dispatch('editUpdateEvent', {'event': event})"
-                            @keyup.enter="$store.dispatch('editUpdateEvent', {'event':event})"
-                            v-model="event.content"
-                            v-if="!isInsertMode"
+                            v-model="item.content"
                             v-focus
+                            @blur="$store.dispatch('updateItem', {'item': item})"
+                            @keyup.enter="$store.dispatch('updateItem', {'item':item})"
                         >
-
-                        <span v-else>
-                            {{ event.content }}
-                        </span>
                     </template>
 
-                </div><!-- // event roop -->
+                </div><!-- // Show cellItems -->
 
-                <!-- INSERT MODE -->
-                <template v-if="
-                    (this.dayIndex + 1) + '-' + this.memberEventsIndex == this.insertingCellAddress
-                ">
-
-                    <div class="form-inline">
-                        <input
-                            type="text"
-                            class="form-control"
-                            v-model="newEventContent"
-                            placeholder="New Event here.."
-                            @blur="letsInsert(
-                                this.dayIndex + 1, 
-                                this.memberEventsIndex, 
-                                this.newEventContent,
-                                this.memberEvents
-                            )"
-                            @keyup.enter="letsInsert(
-                                this.dayIndex + 1, 
-                                this.memberEventsIndex, 
-                                this.newEventContent,
-                                this.memberEvents
-                            )"
-                            v-focus
-                        >
-                    </div>
-                </template><!-- // INSERT MODE -->
+                <!-- show an input field -->
+                <template v-if="insertingItemCell == (dayIndex + 1) + '-' + cellItemsRoopIndex">
+                    <input
+                       type="text"
+                       class="input"
+                       placeholder="New Event here.."
+                       v-model="newItemContent"
+                       v-focus
+                       @blur="letsInsert(
+                           dayIndex + 1, 
+                           cellItemsRoopIndex, 
+                           newItemContent,
+                           cellItems
+                       )"
+                       @keyup.enter="letsInsert(
+                           dayIndex + 1, 
+                           cellItemsRoopIndex, 
+                           newItemContent,
+                           cellItems
+                       )"
+                   >
+                </template>
 
             </td>
         </tr>
     </tbody>
 
 </table>
+</div>
 </template>
 
 <script>
+
+    // directives
+    import focus from '../directives/NutsFocus.js';
+
+    // mixins
     import dateUtilities from '../mixins/DateUtilities.js'
 
     export default {
+
+        directives: {
+            focus
+        },
 
         mixins: [
             dateUtilities
         ],
 
+        props: [
+            'name', 'header', 'body'
+        ],
+
         data() {
 
             return {
-                insertingCellAddress: '',
-                newEventContent: '',
+                insertingItemCell: '',
+                newItemContent: '',
                 dayColumnWidth: {
-                    width: '6%'
+                    'width': '10%',
+                    'min-width': '120px'
                 },
                 dragStart: {
                     opacity: '0.4'
@@ -189,6 +186,19 @@
         },
 
         computed: {
+            displayTableHeader: function() {
+                if(this.header == null) return true
+
+                if(this.header == "false") return false
+                return true;
+            },
+
+            displayTableBody: function() {
+                if(this.body == null) return true
+
+                if(this.body == "false") return false
+                return true;
+            },
 
             columnWidth: function() {
                 var length = Object.keys(this.$store.state.members).length;
@@ -197,18 +207,14 @@
                 }
             },
 
-            isInsertMode: function() {
-                return this.$parent.isInsertMode;
-            },
-
         },
 
         methods: {
 
-            handleDragStart(item, itemIndex, memberEvents, e) {
+            handleDragStart(cellItems, item, itemIndex, e) {
+                this.draggingItemFrom = cellItems;
                 this.draggingItem = item;
                 this.draggingItemIndex = itemIndex;
-                this.draggingItemFrom = memberEvents;
                 item.is_hover = false;
             },
 
@@ -226,15 +232,15 @@
                 return false;
             },
 
-            handleDrop(e, memberEvents) {
+            handleDrop(e, cellItems) {
                 if (e.stopPropagation) {
                     e.stopPropagation();
                 }
 
                 this.$store.dispatch('moveItem', {
                     'draggingItemFrom': this.draggingItemFrom,
-                    'memberEvents': memberEvents,
-                    'event': this.draggingItem,
+                    'memberEvents': cellItems,
+                    'item': this.draggingItem,
                     'itemIndex': this.draggingItemIndex,
                     'day': this.dragItemEnterCell.split('-')[0],
                     'memberId': this.dragItemEnterCell.split('-')[1],
@@ -263,40 +269,43 @@
 
             // Insert: select
             beInserting(cell) {
-                if( this.isInsertMode ) {
-                    this.insertingCellAddress = cell;
-                }
+                this.insertingItemCell = cell;
             },
 
             // Insert: update
-            letsInsert: function (day, member_id, content, memberEvents) {
+            letsInsert: function (day, memberId, content, cellItems) {
 
-                this.insertingCellAddress = '';
+                this.insertingItemCell = '';
 
-                if( ! this.newEventContent ) return
+                if( ! this.newItemContent ) return
 
                 var year = this.$parent.currentYear;
                 var month = this.$parent.currentMonth;
                 var date = year + '-' + month + '-' + ("0" + day).slice(-2);
 
-                //this.insertEvent(date, member_id, content, memberEvents);
-                this.$store.dispatch('insertEvent', {
+                this.$store.dispatch('insertItem', {
                     'day': day,
-                    'member_id': member_id,
+                    'memberId': memberId,
                     'content': content,
-                    'memberColumn': memberEvents
+                    'cellItems': cellItems
                 });
 
-                this.newEventContent = '';
+                this.newItemContent = '';
 
             },
 
             // Edit: select
-            beEditing(event) {
-                if( !this.isInsertMode ) {
-                    event.oldValue = event.content;
-                    event.editing = true;
-                }
+            beEditing(item) {
+                item.oldValue = item.content;
+                item.editing = true;
+            },
+
+            deleteItem(cellItems, item, itemIndex) {
+                this.$store.dispatch('deleteItem', {
+                    'cellItems': cellItems, 
+                    'item': item, 
+                    'itemIndex': itemIndex
+                })
             },
         },
 
@@ -318,4 +327,44 @@
         opacity: 1;
         background: rgba(145, 235, 250, 0.5);
     }
+
+    .date-styling {
+        font-size: 1.6em;
+        font-weight: bold;
+    }
+    .today {
+        background: red;
+        color: #fff;
+        border-radius: 20px;
+    }
+    .saturday {
+        background: rgba(240, 240, 255, 1);
+    }
+    .sunday {
+        background: rgba(255, 240, 240, 1);
+    }
+
+    .item {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background-color: rgb(0, 209, 178);
+        border-radius: 5px;
+        color: #023a31;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        font-size: 12px;
+        height: 24px;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        line-height: 16px;
+        padding-left: 10px;
+        padding-right: 10px;
+        vertical-align: top;
+        white-space: nowrap;
+        margin-bottom: 5px;
+    }
+
 </style>

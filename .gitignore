@@ -7,5 +7,7 @@ laravel/public/js/
 laravel/public/css/
 laravel/database/database.sqlite
 
+laravel/nuts/api/vendor
+
 mariadb/
 mariadb_testing/

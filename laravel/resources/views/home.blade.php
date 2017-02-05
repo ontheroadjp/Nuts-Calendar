@@ -2,12 +2,12 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
+    <div class="columns">
+        <div class="column is-10 is-offset-1">
+            <div class="panel">
                 <div class="panel-heading">Dashboard</div>
 
-                <div class="panel-body">
+                <div class="panel-block">
                     You are logged in!
                 </div>
             </div>

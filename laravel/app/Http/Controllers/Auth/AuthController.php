@@ -32,7 +32,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/calendar';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new authentication controller instance.
@@ -75,37 +75,73 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * override register method on Illuminate\Foundation\Auth\RegistersUsers
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function register(Request $request)
-    {
-        $validator = $this->validator($request->all());
+//    /**
+//     * override the method on Illuminate\Foundation\Auth\RegistersUsers
+//     *
+//     * @param  \Illuminate\Http\Request  $request
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function register(Request $request)
+//    {
+//        $validator = $this->validator($request->all());
+//
+//        if ($validator->fails()) {
+//            $this->throwValidationException(
+//                $request, $validator
+//            );
+//        }
+//
+//        $newUser = $this->create($request->all());
+//
+//        Auth::guard($this->getGuard())->login($newUser);
+//
+//        //return redirect($this->redirectPath());
+//        return $this->sendAuthenticatedJsonResponse($user);
+//    }
 
-        if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
+    /**
+     * authenticated
+     *
+     * @param mixed $request
+     * @param mixed $user
+     * @access protected
+     * @return void
+     */
+    protected function authenticated($request, $user)
+    {
+        if (($request->ajax() && ! $request->pjax()) || $request->wantsJson()) {
+            return $this->sendAuthenticatedJsonResponse($user);
         }
 
-        $newUser = $this->create($request->all());
+        return redirect()->intended($this->redirectPath());
+    }
 
-//        $userCalendar = UserCalendar::create([
-//            'user_id' => $newUser->id,
-//            'name' => 'first calendar',
-//        ]);
-//
-//        Member::create([
-//        'user_calendar_id' => $userCalendar->id,
-//            'name' => 'member',
-//            'color' => 'primary'
-//        ]);
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        if (($request->ajax() && ! $request->pjax()) || $request->wantsJson()) {
+            return $this->sendFailedLoginJsonResponse($request);
+        }
 
-        Auth::guard($this->getGuard())->login($newUser);
-        return redirect($this->redirectPath());
+        return parent::sendFailedLoginResponse($request);
+    }
+
+    protected function sendAuthenticatedJsonResponse($user)
+    {
+        return response()->json([
+            'status' => 'OK',
+            'code' => 200,
+            'message' => 'success login',
+            'user' => $user
+        ], 200);
+    }
+
+    protected function sendFailedLoginJsonResponse(Request $request)
+    {
+        return response()->json([
+            'status'  => 'Unauthorixed',
+            'code'    => 401,
+            'message' => $this->getFailedLoginMessage()
+        ], 401);
     }
 
 }
