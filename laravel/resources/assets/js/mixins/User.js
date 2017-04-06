@@ -116,7 +116,7 @@ export default {
             this.errors.authentication = '';
             this.errors.email = '';
             this.errors.password = '';
-            console.log('login()');
+            u.clog('login()');
 
             const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
@@ -173,7 +173,7 @@ export default {
             this.errors.email = '';
             this.errors.password = '';
             this.errors.passwordConfirmation = '';
-            console.log('register()');
+            u.clog('register()');
 
             const inputNameInvalid = this.isNameInvalid();
             const inputEmailInvalid = this.isEmailInvalid();
@@ -216,7 +216,7 @@ export default {
         },
 
         logout: function() {
-            console.log('logout()');
+            u.clog('logout()');
             sessionStorage.clear();
             localStorage.clear();
 
@@ -226,7 +226,7 @@ export default {
 
         sendPasswordMail: function() {
             this.errors.email = '';
-            console.log('sendPasswordMail()');
+            u.clog('sendPasswordMail()');
 
             const inputEmailInvalid = this.isEmailInvalid();
             if(inputEmailInvalid) return;
@@ -239,11 +239,11 @@ export default {
             })
             .then(function(response) {
                 self.passwordMailResult = 'success';
-                console.log('success sent reset password mail');
+                u.clog('success sent reset password mail');
             })
             .catch(function(error) {
                 self.passwordMailResult = 'failed';
-                console.log('error sent reset password mail');
+                u.clog('error sent reset password mail');
             });
         },
 
@@ -251,7 +251,7 @@ export default {
             this.errors.email = '';
             this.errors.password = '';
             this.errors.passwordConfirmation = '';
-            console.log('passwordReset()');
+            u.clog('passwordReset()');
 
             const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
@@ -263,13 +263,13 @@ export default {
 
             const tmp = this.$route.path.replace('/password/reset/', '').split('?');
             const token = tmp[0];
-            console.log('token: ' + token);
+            u.clog('token: ' + token);
 
             const self = this;
             const url = '/api/v1/password/reset';
 
-            console.log('password: ' + this.input.password);
-            console.log('confirmation: ' + this.input.passwordConfirmation);
+            u.clog('password: ' + this.input.password);
+            u.clog('confirmation: ' + this.input.passwordConfirmation);
 
             axios.post(url, {
                 'email': this.input.email,
@@ -279,17 +279,17 @@ export default {
             })
             .then(function(response) {
                 self.passwordResetResult = 'success';
-                console.log('success reset password');
+                u.clog('success reset password');
             })
             .catch(function(error) {
                 self.passwordResetResult = 'failed';
-                console.log('error reset password');
+                u.clog('error reset password');
             });
         },
 
         putSettings() {
             this.errors.name = '';
-            console.log('putSettings()');
+            u.clog('putSettings()');
 
             const inputNameInvalid = this.isNameInvalid();
             if( inputNameInvalid ) return;
@@ -302,11 +302,11 @@ export default {
                 '_method': 'PUT',
             })
             .then(function (response) {
-                console.log('success: putSettings()');
+                u.clog('success: putSettings()');
 //                self.successLogin(response);
             })
             .catch(function (error) {
-                console.log('error: putSettings()');
+                u.clog('error: putSettings()');
 //                if( error.response.status === 401 ) {
 //                    self.errors.authentication = 'Email address or Password is incorrect.';
 //                }
@@ -324,13 +324,13 @@ export default {
         },
 
 //        logout: function() {
-//            console.log('logout()');
+//            u.clog('logout()');
 //            const self = this;
 //            const url = '/api/v1/logout';
 //
 //            axios.get(url)
 //            .then(function (response) {
-//                console.log('logout success');
+//                u.clog('logout success');
 //
 ////                sessionStorage.clear();
 //                localStorage.clear();
@@ -341,13 +341,13 @@ export default {
 //            })
 //            .catch(function (error) {
 //                if (error.response) {
-//                    console.log(error.response.data);
-//                    console.log(error.response.status);
-//                    console.log(error.response.headers);
+//                    u.clog(error.response.data);
+//                    u.clog(error.response.status);
+//                    u.clog(error.response.headers);
 //                } else {
-//                    console.log('Error', error.message);
+//                    u.clog('Error', error.message);
 //                }
-//                console.log(error.config);
+//                u.clog(error.config);
 //            });
 //        },
 

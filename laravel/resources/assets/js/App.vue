@@ -19,7 +19,7 @@
         },
     
         ready() {
-            console.log('ready@app.vue');
+            u.clog('ready@app.vue');
             this.beforRouting();
             //this.afterRouting();
         },
@@ -28,7 +28,7 @@
             beforRouting() {
                 const self = this;
                 this.$route.router.beforeEach(function (transition) {
-                    console.log( '-------- ' + transition.to.path + ' --------' );
+                    u.clog( '-------- ' + transition.to.path + ' --------' );
                     const token = self.getLocalToken();
                     if(! token) {
                         self.handleNoLogedIn(transition);
@@ -41,7 +41,7 @@
             afterRouting() {
                 //const self = this;
                 //this.$route.router.afterEach(function (transition) {
-                //    console.log('afterEach @' + transition.to.path)
+                //    u.clog('afterEach @' + transition.to.path)
                 //});
             },
 
@@ -54,7 +54,7 @@
             },
 
             handleNoLogedIn(transition) {
-                console.log('handleNoLogedIn@app.vue');
+                u.clog('handleNoLogedIn@app.vue');
                 if(transition.to.auth) {
                     transition.redirect('/login');
                 }
@@ -63,28 +63,28 @@
 
             handleAlreadyLogedIn(transition, token) {
                 const self = this;
-                console.log('handleAlreadyLogedIn@app.vue');
+                u.clog('handleAlreadyLogedIn@app.vue');
                 this.checkToken(token)
                     .then(this.validToken)
                     .then(function() {
                         if(transition.to.path == '/login') {
                             transition.redirect('/dashboard');
                         }
-                        console.log('transition.next()');
+                        u.clog('transition.next()');
                         transition.next();
                     })
                     .catch(this.invalidToken);
             },
 
             validToken(response) {
-                console.log('validToken@app.vue: ' + response.status);
+                u.clog('validToken@app.vue: ' + response.status);
 
                 const token = response.data.token;
                 const user = response.data.user;
                 this.$store.commit('login', {'token': token, 'user': user});
 
                 if(localStorage.getItem('rememberMe')) {
-                    console.log('REMEMBER ME - true!!!');
+                    u.clog('REMEMBER ME - true!!!');
                     localStorage.setItem('rememberMe', token);
                     localStorage.setItem('username', user.name);
                 }
@@ -93,7 +93,7 @@
             },
 
             invalidToken(error) {
-                console.log('invalidToken@app.vue: ' + error.message);
+                u.clog('invalidToken@app.vue: ' + error.message);
                 localStorage.clear();
                 this.$store.commit('logout');
                 if(! this.$route.path == '/login') {
@@ -103,7 +103,7 @@
             },
 
             checkToken(token) {
-                console.log('checkToken@app.vue');
+                u.clog('checkToken@app.vue');
                 return new Promise( function(resolve,reject) {
 
                     const self = this;

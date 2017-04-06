@@ -147,7 +147,7 @@
             'currentCalendarId': {
                 handler: function(new_val, old_val) {
                     if( old_val != '' ) {
-                        console.log('watch: currentCalendarId');
+                        u.clog('watch: currentCalendarId');
                         this.$store.dispatch('fetchCalendar', {
                             'route': this.$route
                         });
@@ -158,7 +158,7 @@
 
             'currentYear': {
                 handler: function(new_val, old_val) {
-                    console.log('watch: currentYear');
+                    u.clog('watch: currentYear');
                     this.$store.dispatch('fetchCalendar', {
                         'route': this.$route
                     });
@@ -168,7 +168,7 @@
 
             'currentMonth': {
                 handler: function(new_val, old_val) {
-                    console.log('watch: currentMonth');
+                    u.clog('watch: currentMonth');
                     this.$store.dispatch('fetchCalendar', {
                         'route': this.$route
                     });

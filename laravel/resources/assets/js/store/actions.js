@@ -38,7 +38,7 @@ export default {
         const token = sessionStorage.getItem('token');
 
         if( ! token ) {
-            console.log('no token in sessionStorage@fetchUserCalendar');
+            u.clog('no token in sessionStorage@fetchUserCalendar');
             return;
         }
 
@@ -49,7 +49,7 @@ export default {
                 context.commit('initUserCalendar', response.data );
             })
             .catch(function (error) {
-                console.log('error@fetchUserCalendar: ' + error.response.data.error);
+                u.clog('error@fetchUserCalendar: ' + error.response.data.error);
             });
     },
 
@@ -61,7 +61,7 @@ export default {
         const y = context.state.currentYear;
         const m = context.state.currentMonth;
 
-        console.log(id);
+        u.clog(id);
 
         const url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
         axios.get(url)
@@ -73,7 +73,7 @@ export default {
             })
             .catch(function (error) {
                 context.commit('stopFetchCalendar', context);
-                console.log(error);
+                u.clog(error);
             });
     },
 

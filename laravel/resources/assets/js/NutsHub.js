@@ -17,7 +17,7 @@ export default {
         this.listeners[eventName][listener] = handler;
 
         if( this.debug ) {
-            console.log('regist listener(' + listener + ') for ' + eventName);
+            u.clog('regist listener(' + listener + ') for ' + eventName);
         }
     },
 
@@ -29,14 +29,14 @@ export default {
     fire: function(eventName, args, from) {
         let self = this;
 
-        console.log( '>> fire(' + eventName + ') from ' + from);
+        u.clog( '>> fire(' + eventName + ') from ' + from);
 
         if( this.listeners[eventName] == null ) return;
 
         Object.keys(this.listeners[eventName]).forEach(function(listener) {
 
             if(self.debug) {
-                console.log( '@ listne on ' + listener);
+                u.clog( '@ listne on ' + listener);
             }
 
             this[listener](args);
