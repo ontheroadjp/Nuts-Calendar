@@ -1,4 +1,3 @@
-import axios from 'axios';
 import focus from '../directives/NutsFocus.js';
 import authAlertMixin from '../mixins/AuthAlert.js';
 
@@ -62,7 +61,8 @@ export default {
         },
 
         passwordConfirmationHasError: function() {
-            return this.errors.passwordConfirmation && ! this.input.passwordConfirmation ? true : false;
+            return this.errors.passwordConfirmation && ! this.input.passwordConfirmation 
+                ? true : false;
         },
     },
 
@@ -81,8 +81,8 @@ export default {
                 return true;
             }
 
-            const emailReg = "/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"; 
-            if( ! this.input.email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/) ) {
+            const reg = /^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/;
+            if( ! this.input.email.match(reg) ) {
                 this.errors.email = 'The email format is invalid.';
                 this.input.email = '';
                 return true;
@@ -101,86 +101,102 @@ export default {
 
         isPasswordConfirmationInvalid: function() {
             if( this.input.passwordConfirmation === '' ) {
-                this.errors.passwordConfirmation = 'The password confirmation field is required.';
+                const m = 'The password confirmation field is required.';
+                this.errors.passwordConfirmation = m;
                 return true;
             }
             if( this.input.passwordConfirmation !== this.input.password ) {
-                this.errors.passwordConfirmation = 'This field must be the same as the password field.';
+                const m = 'This field must be the same as the password field.';
+                this.errors.passwordConfirmation = m;
                 this.input.passwordConfirmation = '';
                 return true;
             }
             return false;
         },
 
+        // --------------------------------------------------------------
+
         login: function() {
+            u.clog('login()');
             this.errors.authentication = '';
             this.errors.email = '';
             this.errors.password = '';
-            u.clog('login()');
 
             const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
             if( inputEmailInvalid || inputPasswordInvalid) return;
 
             const self = this;
-            const url = '/api/v1/login';
 
-            axios.post(url, {
+            const url = '/api/v1/login';
+            const params = {
                 'email': this.input.email,
                 'password': this.input.password,
-            })
-            .then(function (response) {
-                self.successLogin(response);
-            })
-            .catch(function (error) {
-                if( error.response.status === 401 || error.response.status === 500) {
-                    self.errors.authentication = 'Email address or Password is incorrect.';
-                }
+            };
 
-                if( error.response.status === 429) {
-                    const min = error.response.data.retryAfter.minuts;
-                    self.errors.authentication = 'Too many login attempts. Try it again after ' + min + ' minuts.';
-                }
-
-                if( error.response.data.email ) {
-                    self.errors.email = error.response.data.email[0];
-                    self.input.email = '';
-                }
-
-                if( error.response.data.password ) {
-                    self.errors.password = error.response.data.password[0];
-                    self.input.password = '';
-                }
-            });
+            http.post( url, params, 
+                this.successLogin(this),
+                this.failedLogin(this)
+            );
         },
 
-        successLogin: function(response) {
-            const token = response.data.token;
-            const username = response.data.user.name;
-            this.$store.commit('login', response.data);
-
-            if( this.input.rememberMe  ) {
-                localStorage.setItem('rememberMe', token);
-            } else {
-                localStorage.clear();
+        successLogin: self => {
+            return response => {
+                self.$route.router.go('/dashboard');
+                const token = response.data.token;
+                const username = response.data.user.name;
+                self.$store.commit('login', response.data);
+    
+                if( self.input.rememberMe  ) {
+                    localStorage.setItem('rememberMe', token);
+                } else {
+                    localStorage.clear();
+                }
+    
+                //self.$route.router.go('/dashboard');
+                self.$route.router.redirect('/dashboard');
             }
-
-            this.$route.router.go('/dashboard');
         },
+
+        failedLogin: self => {
+            return error => { 
+                if( error.response.status === 401 || error.response.status === 500) {
+                    const m = 'Email address or Password is incorrect.';
+                    this.errors.authentication = m;
+                }
+    
+                if( error.response.status === 429) {
+                    const m = 'Too many login attempts. Try it again after ';
+                    const min = error.response.data.retryAfter.minuts;
+                    this.errors.authentication = m + min + ' minuts.';
+                }
+    
+                if( error.response.data.email ) {
+                    this.errors.email = error.response.data.email[0];
+                    this.input.email = '';
+                }
+    
+                if( error.response.data.password ) {
+                    this.errors.password = error.response.data.password[0];
+                    this.input.password = '';
+                }
+            }
+        },
+
+        // --------------------------------------------------------------
 
         register: function() {
+            u.clog('register()');
             this.errors.name = '';
             this.errors.email = '';
             this.errors.password = '';
             this.errors.passwordConfirmation = '';
-            u.clog('register()');
 
             const inputNameInvalid = this.isNameInvalid();
             const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
             const inputPasswordConfirmationInvalid = this.isPasswordConfirmationInvalid();
-            if( 
-                inputNameInvalid 
+            if( inputNameInvalid 
                     || inputPasswordInvalid 
                     || inputPasswordInvalid 
                     || inputPasswordConfirmationInvalid
@@ -188,32 +204,20 @@ export default {
 
             const self = this;
             const url = '/api/v1/register';
-
-            axios.post(url, {
+            const params = {
                 'name': this.input.name,
                 'email': this.input.email,
                 'password': this.input.password,
                 'password_confirmation': this.input.passwordConfirmation,
-            })
-            .then(function (response) {
-                self.successLogin(response);
-            })
-            .catch(function (error) {
-                if( error.response.status === 401 ) {
-                    self.errors.authentication = 'Email address or Password is incorrect.';
-                }
+            };
 
-                if( error.response.data.email ) {
-                    self.errors.email = error.response.data.email[0];
-                    self.input.email = '';
-                }
-
-                if( error.response.data.password ) {
-                    self.errors.password = error.response.data.password[0];
-                    self.input.password = '';
-                }
-            });
+            http.post(url, params, 
+                this.successLogin(this), 
+                this.failedLogin(this)
+            );
         },
+
+        // -----------------------------------------------------
 
         logout: function() {
             u.clog('logout()');
@@ -224,34 +228,48 @@ export default {
             this.$route.router.go('/');
         },
 
+        // -----------------------------------------------------
+
         sendPasswordMail: function() {
-            this.errors.email = '';
             u.clog('sendPasswordMail()');
+            this.errors.email = '';
 
             const inputEmailInvalid = this.isEmailInvalid();
             if(inputEmailInvalid) return;
 
             const self = this;
             const url = '/api/v1/password/email';
-
-            axios.post(url, {
+            const params = {
                 'email': this.input.email
-            })
-            .then(function(response) {
-                self.passwordMailResult = 'success';
-                u.clog('success sent reset password mail');
-            })
-            .catch(function(error) {
-                self.passwordMailResult = 'failed';
-                u.clog('error sent reset password mail');
-            });
+            };
+
+            http.post( url, params, 
+                this.successSendPasswordMail(this), 
+                this.failedSendPasswordMail(this)
+            );
         },
 
+        successSendPasswordMail: self => {
+            return response => {
+                u.clog('success sent reset password mail');
+                self.passwordMailResult = 'success';
+            }
+        },
+
+        failedSendPasswordMail: self => {
+            return error => {
+                u.clog('error sent reset password mail');
+                self.passwordMailResult = 'failed';
+            }
+        },
+
+        // -----------------------------------------------------
+
         passwordReset: function() {
+            u.clog('passwordReset()');
             this.errors.email = '';
             this.errors.password = '';
             this.errors.passwordConfirmation = '';
-            u.clog('passwordReset()');
 
             const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
@@ -267,27 +285,36 @@ export default {
 
             const self = this;
             const url = '/api/v1/password/reset';
-
-            u.clog('password: ' + this.input.password);
-            u.clog('confirmation: ' + this.input.passwordConfirmation);
-
-            axios.post(url, {
+            const params = {
                 'email': this.input.email,
                 'password': this.input.password,
                 'password_confirmation': this.input.passwordConfirmation,
                 'token': token,
-            })
-            .then(function(response) {
-                self.passwordResetResult = 'success';
-                u.clog('success reset password');
-            })
-            .catch(function(error) {
-                self.passwordResetResult = 'failed';
-                u.clog('error reset password');
-            });
+            };
+
+            http.post( url, params, 
+                this.successPasswordReset(this), 
+                this.failedPasswordReset(this)
+            );
         },
 
-        putSettings() {
+        successPasswordReset: self => {
+            return response => {
+                u.clog('success reset password');
+                self.passwordResetResult = 'success';
+            }
+        },
+
+        failedPasswordReset: self => {
+            return error => {
+                u.clog('error reset password');
+                self.passwordResetResult = 'failed';
+            }
+        },
+
+        // -----------------------------------------------------
+
+        putSettings: function() {
             this.errors.name = '';
             u.clog('putSettings()');
 
@@ -296,60 +323,28 @@ export default {
 
             const self = this;
             const url = '/api/v1/me/settings';
-
-            axios.post(url, {
+            const params = {
                 'name': this.input.name,
                 '_method': 'PUT',
-            })
-            .then(function (response) {
-                u.clog('success: putSettings()');
-//                self.successLogin(response);
-            })
-            .catch(function (error) {
-                u.clog('error: putSettings()');
-//                if( error.response.status === 401 ) {
-//                    self.errors.authentication = 'Email address or Password is incorrect.';
-//                }
-//
-//                if( error.response.data.email ) {
-//                    self.errors.email = error.response.data.email[0];
-//                    self.input.email = '';
-//                }
-//
-//                if( error.response.data.password ) {
-//                    self.errors.password = error.response.data.password[0];
-//                    self.input.password = '';
-//                }
-            });
+            };
+            
+            http.post( url, params,
+                this.successPutSettings(this),
+                this.failedPutSettings(this)
+            );
         },
 
-//        logout: function() {
-//            u.clog('logout()');
-//            const self = this;
-//            const url = '/api/v1/logout';
-//
-//            axios.get(url)
-//            .then(function (response) {
-//                u.clog('logout success');
-//
-////                sessionStorage.clear();
-//                localStorage.clear();
-//
-//                self.$store.commit('logout');
-//                self.$route.router.go('/');
-//
-//            })
-//            .catch(function (error) {
-//                if (error.response) {
-//                    u.clog(error.response.data);
-//                    u.clog(error.response.status);
-//                    u.clog(error.response.headers);
-//                } else {
-//                    u.clog('Error', error.message);
-//                }
-//                u.clog(error.config);
-//            });
-//        },
+        successPutSettings: self => {
+            return response => {
+                u.clog('success: putSettings()');
+            }
+        },
+
+        failedPutSettings: self => {
+            return error => {
+                u.clog('error: putSettings()');
+            }
+        },
 
     }
 }

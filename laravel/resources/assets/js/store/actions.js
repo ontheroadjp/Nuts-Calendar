@@ -1,7 +1,7 @@
 // -----------------------------------------------------------------------
 // actions
 
-import axios from 'axios';
+//import axios from 'axios';
 import alertMixin from '../mixins/Alert.js';
 
 // -----------------------------------------------------------------------
@@ -32,7 +32,7 @@ export default {
 
     // -----------------------------------------------------------------------
     // Ajax: init data
-    fetchUserCalendar(context) {
+    fetchUserCalendar: (context) => {
         const url = '/api/v1/usercalendar';
         //const token = context.state.user.token;
         const token = sessionStorage.getItem('token');
@@ -42,15 +42,23 @@ export default {
             return;
         }
 
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
+//        axios.get(url)
+//            .then(function (response) {
+//                context.commit('initUserCalendar', response.data );
+//            })
+//            .catch(function (error) {
+//                u.clog('error@fetchUserCalendar: ' + error.response.data.error);
+//            });
 
-        axios.get(url)
-            .then(function (response) {
+        http.get( url, 
+            response => {
+                u.clog('success@fetchUserCalendar');
                 context.commit('initUserCalendar', response.data );
-            })
-            .catch(function (error) {
+            },
+            error => {
                 u.clog('error@fetchUserCalendar: ' + error.response.data.error);
-            });
+            }
+        );
     },
 
     fetchCalendar(context, payload) {
@@ -64,17 +72,29 @@ export default {
         u.clog(id);
 
         const url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
-        axios.get(url)
-            .then(function (response) {
+//        axios.get(url)
+//            .then(function (response) {
+//                context.commit('initCalendar', response.data.days );
+//                context.commit('initMembers', response.data.members );
+//                context.commit('stopFetchCalendar', context);
+//                context.commit('setCurrentCalendarId', id);
+//            })
+//            .catch(function (error) {
+//                context.commit('stopFetchCalendar', context);
+//                u.clog(error);
+//            });
+        http.get(url,
+            response => {
                 context.commit('initCalendar', response.data.days );
                 context.commit('initMembers', response.data.members );
                 context.commit('stopFetchCalendar', context);
                 context.commit('setCurrentCalendarId', id);
-            })
-            .catch(function (error) {
-                context.commit('stopFetchCalendar', context);
+            },
+            error => {
                 u.clog(error);
-            });
+                context.commit('stopFetchCalendar', context);
+            }
+        );
     },
 
     // -----------------------------------------------------------------------
@@ -83,43 +103,69 @@ export default {
         
         const url = '/api/v1/member';
         setCsrfToken();
-        
-        axios.post(url, {
+        const params = {
             'user_calendar_id': context.state.currentCalendarId,
             'name': payload.name,
             'color': payload.color
-        })
-        .then(function (response) {
-            const key = context.getters.newColumnKey;
-            context.commit('addMember', {'key': key, 'data': response.data});
-            context.commit('setMembersModalSelectedTab', key);
-            alertMixin.methods.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
-        })
-        .catch(function (error) {
-            alertMixin.methods.alertDanger( 'Failed: add new member!', false, 'FcMemberTabs.vue' );
-        });
+        };
+        
+        http.post(url, params,
+            response => {
+                const key = context.getters.newColumnKey;
+                context.commit('addMember', {'key': key, 'data': response.data});
+                context.commit('setMembersModalSelectedTab', key);
+                alertMixin.methods.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
+            },
+            error => {
+                alertMixin.methods.alertDanger( 'Failed: add new member!', false, 'FcMemberTabs.vue' );
+            } 
+        );
+//        .then(function (response) {
+//            const key = context.getters.newColumnKey;
+//            context.commit('addMember', {'key': key, 'data': response.data});
+//            context.commit('setMembersModalSelectedTab', key);
+//            alertMixin.methods.alertSuccess( 'Success: add new member!', false, 'FcMemberTabs.vue' );
+//        })
+//        .catch(function (error) {
+//            alertMixin.methods.alertDanger( 'Failed: add new member!', false, 'FcMemberTabs.vue' );
+//        });
     },
 
     editUpdateMember: function(context, payload) {
         const selectedTab = context.state.membersModal.selectedTab;
         const url = '/api/v1/member/' + selectedTab;
         setCsrfToken();
-
-        axios.patch(url, {
+        const params = {
             'name': payload.name,
             'color': payload.color
-        })
-        .then(function (response) {
-            context.commit('updateMember', {
-                'id': response.data.id,
-                'name': response.data.name,
-                'color': response.data.color
-            });
-            alertMixin.methods.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
-        })
-        .catch(function (error) {
-            alertMixin.methods.alertDanger( 'Failed: member updated!', false, 'FcMemberTabs.vue' );
-        });
+        };
+
+//        axios.patch(url, params)
+//        .then(function (response) {
+//            context.commit('updateMember', {
+//                'id': response.data.id,
+//                'name': response.data.name,
+//                'color': response.data.color
+//            });
+//            alertMixin.methods.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
+//        })
+//        .catch(function (error) {
+//            alertMixin.methods.alertDanger( 'Failed: member updated!', false, 'FcMemberTabs.vue' );
+//        });
+
+        http.patch(url, params,
+            response => {
+                context.commit('updateMember', {
+                    'id': response.data.id,
+                    'name': response.data.name,
+                    'color': response.data.color
+                });
+                alertMixin.methods.alertSuccess( 'Success: member updated!', false, 'FcMemberTabs.vue' );
+            },
+            error => {
+                alertMixin.methods.alertDanger( 'Failed: member updated!', false, 'FcMemberTabs.vue' );
+            }
+        );
     },
 
     deleteMember: function(context, payload) {
@@ -127,15 +173,26 @@ export default {
         const url = '/api/v1/member/' + selectedTab;
         setCsrfToken();
 
-        axios.delete(url)
-        .then( function (response) {
-            context.commit('deleteMember', selectedTab);
-            //context.commit('deleteEventFromColumn', selectedTab);
-            alertMixin.methods.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
-        })
-        .catch( function (error) {
-            alertMixin.methods.alertDanger( 'Failed: member deleted!', false, 'FcMemberTabs.vue' );
-        });
+//        axios.delete(url)
+//        .then( function (response) {
+//            context.commit('deleteMember', selectedTab);
+//            //context.commit('deleteEventFromColumn', selectedTab);
+//            alertMixin.methods.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
+//        })
+//        .catch( function (error) {
+//            alertMixin.methods.alertDanger( 'Failed: member deleted!', false, 'FcMemberTabs.vue' );
+//        });
+
+        http.delete(url,
+            response => {
+                context.commit('deleteMember', selectedTab);
+                //context.commit('deleteEventFromColumn', selectedTab);
+                alertMixin.methods.alertSuccess( 'Success: member deleted!', false, 'FcMemberTabs.vue' );
+            },
+            error => {
+                alertMixin.methods.alertDanger( 'Failed: member deleted!', false, 'FcMemberTabs.vue' );
+            }
+        );
     },
 
     // -----------------------------------------------------------------------
@@ -147,20 +204,22 @@ export default {
 
         const url = '/api/v1/item';
         setCsrfToken();
-
-        axios.post(url, {
+        const params = {
             'date': date,
             'member_id': payload.memberId,
             'content': payload.content
-        })
-        .then(function (response) {
-            const item = response.data;
-            addItem(payload.cellItems, item);
-            alertMixin.methods.alertSuccess('Success: inserted!', false, 'EventApi.js');
-        })
-        .catch(function (error) {
-            alertMixin.methods.alertDanger('Failed: updated!', false, 'EventApi.js');
-        });
+        };
+
+        http.post(url, params,
+            response => {
+                const item = response.data;
+                addItem(payload.cellItems, item);
+                alertMixin.methods.alertSuccess('Success: inserted!', false, 'EventApi.js');
+            },
+            error => {
+                alertMixin.methods.alertDanger('Failed: updated!', false, 'EventApi.js');
+            }
+        );
     },
 
     updateItem(context, payload) {
@@ -174,18 +233,20 @@ export default {
 
         const url = '/api/v1/item/' + payload.item.id;
         setCsrfToken();
-
-        axios.patch(url, {
+        const params = {
             'member_id': payload.item.memberId,
             'content': payload.item.content,
             'date': payload.item.date
-        })
-        .then(function (response) {
-            alertMixin.methods.alertSuccess('Success: updated!', false, 'EventApi.js');
-        })
-        .catch(function (error) {
-            alertMixin.methods.alertDanger('Failed: updated!', false, 'EventApi.js');
-        });
+        };
+
+        http.patch(url, params,
+            response => {
+                alertMixin.methods.alertSuccess('Success: updated!', false, 'EventApi.js');
+            },
+            error => {
+                alertMixin.methods.alertDanger('Failed: updated!', false, 'EventApi.js');
+            }
+        );
     },
 
     deleteItem(context, payload) {
@@ -193,14 +254,15 @@ export default {
         const url = '/api/v1/item/' + payload.item.id;
         setCsrfToken();
 
-        axios.delete(url)
-        .then(function (response) {
-            removeItem(payload.cellItems, payload.itemIndex);
-            alertMixin.methods.alertSuccess('Success: deleted!', false, 'EventApi.js');
-        })
-        .catch(function (error) {
-            alertMixin.methods.alertDanger('Failed: deleted!', false, 'EventApi.js');
-        });
+        http.delete(url,
+            response => {
+                removeItem(payload.cellItems, payload.itemIndex);
+                alertMixin.methods.alertSuccess('Success: deleted!', false, 'EventApi.js');
+            },
+            error => {
+                alertMixin.methods.alertDanger('Failed: deleted!', false, 'EventApi.js');
+            }
+        );
     },
 
     moveItem(context, payload) {
