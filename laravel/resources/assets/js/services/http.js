@@ -46,14 +46,15 @@ export const http = {
         axios.interceptors.request.use( config => {
             const token = jwtToken.getLocalToken();
             if(token) {
-                config.headers.Authorization = `Bearer ${token}`;
+                config.headers.Authorization = 'Bearer ' + token;
             }
             return config
         })
 
         axios.interceptors.response.use( 
             response => {
-                const token = response.headers['Authorization'] || response.data['token']
+                //const token = response.headers['authorization'] || response.data['token']
+                const token = response.headers['authorization'] || response.data['token']
                 if (token) {
                     sessionStorage.setItem('token', token);
 //                    self.$store.commit('login', response.data);

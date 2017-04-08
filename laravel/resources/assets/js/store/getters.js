@@ -11,6 +11,5 @@ export default {
         });
 
         return Math.max.apply(null, keys) + 1;
-    },
-
+    }
 }

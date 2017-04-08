@@ -55,9 +55,9 @@ class JwtAuthServiceProvider extends ServiceProvider
             ], function() {
 
                 // throttle 'throttle: (count), (minets)'
-//                Route::group(['middleware' => 'nuts.api.jsonthrottle:5, 10'], function() {
+                Route::group(['middleware' => 'nuts.api.jsonthrottle:5, 10'], function() {
                     Route::post('login', 'JwtAuthController@postLogin');
-//                });
+                });
 
                 Route::post('register', 'JwtAuthController@postRegister');
                 Route::post('password/email', 'JwtPasswordController@postEmail');
