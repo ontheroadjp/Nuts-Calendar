@@ -62,6 +62,11 @@
                     localStorage.setItem('rememberMe', token);
 //                    localStorage.setItem('username', user.name);
                 }
+
+                if(transition.to.path === '/login') {
+                    transition.redirect('/dashboard');
+                }
+
                 u.clog('transition.next()');
                 transition.next();
 
