@@ -157,6 +157,11 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         /*
+         * Laravel debugbar
+         */
+        Barryvdh\Debugbar\ServiceProvider::class,
+
+        /*
          * JWT Auth
          */
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
@@ -211,12 +216,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        /*
-         * JWT Auth
-         */
+        /* Laravel debugbar */
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+
+        /* JWT Auth */
         'JWTAuth'   => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory'=> Tymon\JWTAuth\Facades\JWTFactory::class,
-
     ],
 
 ];
