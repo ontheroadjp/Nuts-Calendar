@@ -64,7 +64,6 @@ trait JwtAuthJsonResponse
         try {
             $refreshed = JWTAuth::refresh($oldTokenObj);
             $user = JWTAuth::setToken($refreshed)->toUser();
-            //header('Authorization: Bearer ' . $refreshed);
         } catch (JWTException $e) {
             return $this->sendTokenExpiredAndUnrefreshable($e);
         }
