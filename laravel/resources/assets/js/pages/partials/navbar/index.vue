@@ -1,0 +1,83 @@
+<template>
+<section id="headerNav" class="hero {{ theme.primary.class }} is-medium">
+<div class="hero-head">
+<header class="nav navbar-fixed-top" :style="headerStyle">
+
+    <div class="nav-left" style="padding-left: 20px;">
+        <a class="nav-item is-brand" href="/">
+            <img src="/images/bulma-type-white.png" alt="Bulma logo">
+        </a>
+    </div>
+
+    <hamburger-menu></hamburger-menu>
+
+    <div class="nav-right nav-menu">
+
+        <a v-link="{ path: '/' }" class="nav-item">Home</a>
+
+        <template v-if="! $store.state.user.name">
+            <a v-link="{ path: '/login' }" class="nav-item">Login</a>
+            <a v-link="{ path: '/register' }" class="nav-item">Register</a>
+        </template>
+
+        <template v-else>
+            <a  @click="$store.commit('setCurrentCalendarId', 'dashboard')" 
+                v-link="{ path: '/calendar' }" 
+                class="nav-item">Dashboard
+            </a>
+            <user-account-dropdown></user-account-dropdown>
+        </template>
+
+        <theme-changer></theme-changer>
+
+        <span class="nav-item">
+            <a class="button {{ theme.primary.class }} is-inverted" >
+                <span class="icon">
+                    <i class="fa fa-twitter"></i>
+                </span>
+                <span>Tweet</span>
+            </a>
+        </span>
+    
+    </div><!-- // .nav-right .nav-menu -->
+
+</header>
+</div><!-- // .hero-head -->
+</section>
+</template>
+
+<script>
+    import hamburgerMenu from './hamburger-menu.vue';
+    import userAccountDropdown from './user-account-dropdown.vue';
+    import themeChanger from './theme-changer.vue';
+    
+    export default {
+        components: {
+            'hamburgerMenu': hamburgerMenu,
+            'userAccountDropdown': userAccountDropdown,
+            'themeChanger': themeChanger,
+        },
+
+        props: [
+            'height'
+        ],
+
+        computed : {
+            theme : function() {
+                return this.$store.state.app.theme;
+            },
+
+            headerStyle: function() {
+                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
+                    + 'box-shadow: none;';
+            },
+        },
+
+        ready() {
+            const self = this;
+            window.addEventListener('resize', function (event) {
+                self.height = document.getElementById('headerNav').clientHeight;
+            });
+        }
+    }
+</script>

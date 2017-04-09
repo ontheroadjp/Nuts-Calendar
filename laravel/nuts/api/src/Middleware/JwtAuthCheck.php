@@ -2,6 +2,7 @@
 
 namespace Nuts\Api\Middleware;
 
+use Tymon\JWTAuth\Token;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Nuts\Api\Responses\JwtAuthJsonResponse;
 use Tymon\JWTAuth\Middleware\BaseMiddleware;
@@ -20,74 +21,37 @@ class JwtAuthCheck extends BaseMiddleware
      */
     public function handle($request, \Closure $next)
     {
-        // get a token from the http request
         if (! $token = $this->auth->setRequest($request)->getToken()) {
-            return $this->response->json(
-                $this->sendInvalidToken()->getData(true), 400
-            );
+            $json = $this->sendInvalidToken()->getData(true);
+            return $this->returnResponse($json);
         }
 
-        // get a user from the token
         try {
             $user = $this->auth->authenticate($token);
         } catch (TokenExpiredException $e) {
-            return $this->response->json(
-                $this->sendUserWithRefreshedJwtToken($token)->getData(true), 401
-            );
-        } catch (TokenInvalidException $e) {
-            return $this->response->json(
-                $this->sendInvalidToken($e)->getData(true), 400
-            );
+            $json = $this->sendUserWithRefreshedJwtToken($token)->getData(true);
+            return $this->returnResponse($json);
         } catch (JWTException $e) {
-            return $this->response->json(
-                $this->sendTokenAbsent($e)->getData(true), 500
-            );
+            $json = $this->sendTokenAbsent($e)->getData(true);
+            return $this->returnResponse($json);
         }
 
         if (! $user) {
-            return $this->response->json(
-                $this->sendUserNotFound()->getData(true), 404
-            );
+            $json = $this->sendUserNotFound()->getData(true);
+            return $this->returnResponse($json);
         }
 
-        $response = $next($request);
+//        $user = $this->getAuthenticatedUser($token);
+//
+//        if($user instanceOf \Illuminate\Http\JsonResponse ) {
+//            $this->returnResponse($user->getData(true));
+//        }
 
-        //temp
-        $alwaysTokenRefresh = false;
-        if( $alwaysTokenRefresh ) {
-            $refreshed = $this->refreshToken($token);
-            if( ! $refreshed ) {
-                // temp
-                return $this->response->json(
-                    $this->sendTokenAbsent($e)->getData(true), 500
-                );
-            }
-            $this->setAuthorizationHeader($request, $refreshed);
-        }
-
-        //$this->events->fire('tymon.jwt.valid', $user);
-        //$request->merge(['token' => $token]);
-        //$request->merge(['user' => $user]);
-
-        return $response;
+        return $next($request);
     }
 
-    protected function refreshToken(string $oldToken)
+    protected function returnResponse($json)
     {
-        $oldTokenObj = new \Tymon\JWTAuth\Token($oldToken);
-
-        try {
-            //$refreshed = JWTAuth::refresh($oldTokenObj);
-            $refreshed = $this->auth->refresh($oldTokenObj);
-        } catch (JWTException $e) {
-            return false;
-        }
-
-        return $refreshed;
-    }
-
-    protected function setAuthorizationHeader( $response, string $value ='')
-    {
-        return $response->headers->set('Authorization', $refreshed);
+        return $this->response->json($json, $json['code']);
     }
 }

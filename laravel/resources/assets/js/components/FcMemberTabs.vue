@@ -1,5 +1,5 @@
 <template>
-    <div class="card" style="width: 70%;">
+    <div class="card">
 
         <div class="panel-heading">
             Column Settings
@@ -7,7 +7,7 @@
 
         <div class="tabs is-toggle is-fullwidth">
             <ul>
-                <li v-for="tab in $store.state.members" :class="{ 'is-active': tab.id == selectedTab }">
+                <li v-for="tab in $store.state.calendar.data.members" :class="{ 'is-active': tab.id == selectedTab }">
                     <a href="#" @click="selectTab(tab.id)">
                         <span class="icon is-small">
                             <i class="fa fa-user"></i>
@@ -163,7 +163,7 @@
             },
 
             'selectedTab': function() {
-                let tabs = this.$store.state.members;
+                let tabs = this.$store.state.calendar.data.members;
                 if(this.selectedTab != this.newColumnKey) {
                     this.fields.name = tabs[this.selectedTab].name;
                     this.fields.color = tabs[this.selectedTab].color;
@@ -199,7 +199,7 @@
     } 
 </script>
 
-<style>
+<style lang="sass">
 .tab-contents {
     width: 100%;
     margin: 20px;

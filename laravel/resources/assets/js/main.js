@@ -5,32 +5,33 @@ import Vue from 'vue';
 
 // vue-router
 import VueRouter from 'vue-router';
-import { configRouter } from './router/vue-router-config.js';
-Vue.use(VueRouter);
+import { init } from './router/vue-router-config.js';
+//Vue.use(VueRouter);
 
-const router = new VueRouter({
-    history: true,
-    saveScrollPosition: true
-});
-
-configRouter(router);
-
-// http
-import { http } from './services/http.js';
-window.http = http;
-
-// core lib
-import nutsHub from './NutsHub.js';
-window.nutsHub = nutsHub;
-
-// Application
-import App from './App.vue';
+const router = init( 
+    new VueRouter({
+        history: true,
+        saveScrollPosition: true
+    })
+);
 
 // utilities
-import jToken from './utilities/JwtToken.js';
-window.jwtToken = jToken;
+import { utils } from './libs/utils.js';
+window.u = utils;
 
-import debug from './utilities/debug.js';
-window.u = debug;
+// jwt-token
+import { jwtToken } from './libs/jwt-token.js';
+window.jwtToken = jwtToken;
 
+// http
+import { http } from './libs/http.js';
+window.http = http;
+http.init();
+
+// event bus
+import { eventBus } from './libs/event.js';
+window.eventBus = eventBus;
+
+// Application
+import App from './app.vue';
 router.start(App, '#app');

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\RedirectResponse;
+
 namespace Nuts\Api\Test;
 
 trait ApiTestTrait
@@ -12,7 +14,7 @@ trait ApiTestTrait
      * @access protected
      * @return array
      */
-    protected function getHttpJsonResponseAsArray(string $uri = '/', array $parameters = [])
+    protected function getToJson(string $uri = '/', array $parameters = [])
     {
         $paramsString = '';
         $i = 0;
@@ -33,10 +35,11 @@ trait ApiTestTrait
      * @access protected
      * @return array
      */
-    protected function postHttpJsonResponseAsArray($uri = '/', $parameters)
+    protected function postToJson($uri = '/', $parameters)
     {
-        $res = $this->post($uri, $parameters)->response;
-        return json_decode($res->getContent(),true);
+        $servers = ['X-Requested-With' => 'XMLHttpRequest'];
+        $json = $this->post($uri, $parameters, $servers)->response;
+        return json_decode($json->getContent(), true);
     }
 
     protected function assertSendUserWithJwtToken($json, $isRefreshedToken = false)
@@ -44,32 +47,37 @@ trait ApiTestTrait
         $message = SEND_USER_WITH_JWT_TOKEN;
         if($isRefreshedToken) $message = SEND_USER_WITH_REFRESHED_JWT_TOKEN;
 
+        $code = $isRefreshedToken ? '202' : '200';
+
         $this->assertArrayHasKey('status', $json);
         $this->assertArrayHasKey('code', $json);
         $this->assertArrayHasKey('message', $json);
-
-        $this->assertContains('success', $json);
-        $this->assertContains('200', $json);
-        $this->assertContains($message, $json);
-
         $this->assertArrayHasKey('user', $json);
-        $this->assertArrayHasKey('id', $json['user']);
         $this->assertArrayHasKey('name', $json['user']);
         $this->assertArrayHasKey('email', $json['user']);
-        $this->assertArrayHasKey('created_at', $json['user']);
-        $this->assertArrayHasKey('updated_at', $json['user']);
-
         $this->assertArrayHasKey('token', $json);
+
+        $this->assertContains('success', $json);
+        $this->assertContains($code, $json);
+        $this->assertContains($message, $json);
+
+        $this->assertInternalType('string', $json['status']);
+        $this->assertInternalType('int', $json['code']);
+        $this->assertInternalType('string', $json['message']);
+        $this->assertInternalType('array', $json['user']);
+        $this->assertInternalType('string', $json['user']['name']);
+        $this->assertInternalType('string', $json['user']['email']);
+        $this->assertInternalType('string', $json['token']);
     }
 
-    protected function assertSuccess($json, $message)
+    protected function assertSuccess($json, $code, $message)
     {
         $this->assertArrayHasKey('status', $json);
         $this->assertArrayHasKey('code', $json);
         $this->assertArrayHasKey('message', $json);
 
         $this->assertContains('success', $json);
-        $this->assertContains('200', $json);
+        $this->assertEquals(2, floor($json['code'] / 100));
         $this->assertRegExp($message, $json['message']);
     }
 

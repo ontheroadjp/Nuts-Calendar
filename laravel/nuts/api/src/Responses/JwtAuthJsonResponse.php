@@ -12,28 +12,29 @@
 namespace Nuts\Api\Responses;
 
 use JWTAuth;
-use Nuts\Api\Responses\JsonResponse;
+use Tymon\JWTAuth\Token;
+use InvalidArgumentException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 trait JwtAuthJsonResponse
 {
-    use JsonResponse;
 
     /**
-     * Send the JSON response with the user object and jwt token string
+     * Return authenticated user
      *
-     * @param string $token jwt token
-     * @access protected
-     * @return string JSON encoded return value
+     * @param   string $token
+     * @access  protected
+     * @return  App\User|Illuminate\Http\JsonResponse
      */
-    protected function sendUserWithJwtToken(String $token)
+    protected function getAuthenticatedUser($token)
     {
         try {
             $user = JWTAuth::authenticate($token);
         } catch (TokenExpiredException $e) {
-            return $this->sendUserWithRefreshedJwtToken($token);
+            //return $this->sendUserWithRefreshedJwtToken(new Token($token));
+            throw $e;
         } catch (TokenInvalidException $e) {
             return $this->sendInvalidToken($e);
         } catch (JWTException $e) {
@@ -44,7 +45,91 @@ trait JwtAuthJsonResponse
             return $this->sendUserNotFound();
         }
 
-        return $this->sendSuccessJson(SEND_USER_WITH_JWT_TOKEN, [
+        return $user;
+    }
+
+    /**
+     * Return refreshed token
+     *
+     * @param   string|Tymon\JWTAuth\Token $token
+     * @access  protected
+     * @return  string|Illuminate\Http\JsonResponse
+     */
+    protected function refreshToken($token)
+    {
+        if(is_string($token)) {
+            $token = new Token($token);
+        }
+
+        try {
+            $refreshedTokenString = JWTAuth::refresh($token);
+        } catch (JWTException $e) {
+            return $this->sendTokenUnrefreshable($e);
+        }
+
+        return $refreshedTokenString;
+    }
+
+    /**
+     * Send the JSON response
+     *
+     * @param   int     $code HTTP status code
+     * @param   string  $message
+     * @param   array   $extra
+     * @access  protected
+     * @return  Illuminate\Http\JsonResponse
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function sendJson(int $code, string $message = '', array $extra = [])
+    {
+        if(!preg_match('/^([0-9]{3})$/', $code)) {
+            throw new InvalidArgumentException('HTTP status code must be three digits');
+        }
+
+        if(floor((int)$code / 100) == '2') {
+            $status = SUCCESS_STATUS;
+            $message === '' ? $message = SUCCESS_MESSAGE : '';
+        } else {
+            $status = ERROR_STATUS;
+            $message === '' ? $message = ERROR_MESSAGE : '';
+        }
+
+        $contents = [
+            'status' => $status,
+            'code' => $code,
+            'message' => $message
+        ];
+
+        if($extra !== null) $contents = array_merge($contents, $extra);
+
+        return response()->json($contents, $code);
+    }
+
+    /**
+     * Send the JSON response with the user object and jwt token string
+     *
+     * @param string|Tymon\JWTAuth\Token $token jwt token
+     * @access protected
+     * @return Illuminate\Http\JsonResponse
+     */
+    protected function sendUserWithJwtToken($token)
+    {
+        if($token instanceof \Tymon\JWTAuth\Token) {
+            $token = $token->get();
+        }
+
+        try {
+            $user = $this->getAuthenticatedUser($token);
+        } catch (TokenExpiredException $e) {
+            return $this->sendUserWithRefreshedJwtToken($token);
+        }
+
+        if($user instanceof \Illuminate\Http\JsonResponse ) {
+            return $user;
+        }
+
+        return $this->sendJson(200, SEND_USER_WITH_JWT_TOKEN, [
             'user' => $user,
             'token' => $token
         ]);
@@ -53,24 +138,35 @@ trait JwtAuthJsonResponse
     /**
      * Send the Json response with the user object and refreshed token string
      *
-     * @param String $oldToken jwt token which will be refreshed
+     * @param string|Tymon\JWTAuth\Token $oldToken jwt token which will be refreshed
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
-    protected function sendUserWithRefreshedJwtToken(String $oldToken)
+    protected function sendUserWithRefreshedJwtToken($oldToken)
     {
-        $oldTokenObj = new \Tymon\JWTAuth\Token($oldToken);
-
-        try {
-            $refreshed = JWTAuth::refresh($oldTokenObj);
-            $user = JWTAuth::setToken($refreshed)->toUser();
-        } catch (JWTException $e) {
-            return $this->sendTokenExpiredAndUnrefreshable($e);
+        if(is_string($oldToken)) {
+            $oldToken = new Token($oldToken);
         }
 
-        return $this->sendSuccessJson(SEND_USER_WITH_REFRESHED_JWT_TOKEN, [
+        $refreshedTokenString = $this->refreshToken($oldToken);
+        if($refreshedTokenString instanceOf \Illuminate\Http\JsonResponse ) {
+            return $refreshedTokenString;
+        }
+
+        try {
+            $user = $this->getAuthenticatedUser($refreshedTokenString);
+        } catch (JWTException $e) {
+            //return sendTokenExpiredAndUnrefreshable($e);
+            return $this->sendTokenUnrefreshable($e);
+        }
+
+        if($user instanceOf \Illuminate\Http\JsonResponse ) {
+            return $user;
+        }
+
+        return $this->sendJson(202, SEND_USER_WITH_REFRESHED_JWT_TOKEN, [
             'user' => $user,
-            'token' => $refreshed
+            'token' => $refreshedTokenString
         ]);
     }
 
@@ -79,22 +175,22 @@ trait JwtAuthJsonResponse
      *
      * @param \Tymon\JWTAuth\Exceptions\JWTException $e
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
     protected function sendCouldNotCreateToken(JWTException $e = null)
     {
-        return $this->sendErrorJson(COULD_NOT_CREATE_TOKEN, 500);
+        return $this->sendJson(500, COULD_NOT_CREATE_TOKEN);
     }
 
     /**
-     * Send the JSON response w/(code: 401, message: invalid credentials)
+     * Send the JSON response w/(code: 422, message: invalid credentials)
      *
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
     protected function sendInvalidCredentials()
     {
-        return $this->sendErrorJson(INVALID_CREDENTIALS, 401);
+        return $this->sendJson(CODE_INVALID_CREDENTIALS, INVALID_CREDENTIALS);
     }
 
     /**
@@ -102,11 +198,11 @@ trait JwtAuthJsonResponse
      *
      * @param \Tymon\JWTAuth\Exceptions\JWTException $e
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
     protected function sendInvalidToken(TokenInvalidException $e = null)
     {
-        return $this->sendErrorJson(TOKEN_INVALID, 400);
+        return $this->sendJson(400, TOKEN_INVALID);
     }
 
     /**
@@ -114,11 +210,23 @@ trait JwtAuthJsonResponse
      *
      * @param \Tymon\JWTAuth\Exceptions\JWTException $e
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
     protected function sendTokenAbsent(JWTException $e = null)
     {
-        return $this->sendErrorJson(TOKEN_ABSENT, 500);
+        return $this->sendJson(500, TOKEN_ABSENT);
+    }
+
+    /**
+     * Send the JSON response w/(code: 500, message: token unrefreshable)
+     *
+     * @param JWTException $e
+     * @access protected
+     * @return void
+     */
+    protected function sendTokenUnrefreshable(JWTException $e = null)
+    {
+        return $this->sendJson(500, TOKEN_UNREFRESHABLE);
     }
 
     /**
@@ -126,44 +234,57 @@ trait JwtAuthJsonResponse
      *
      * @param \Tymon\JWTAuth\Exceptions\JWTException $e
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
-    protected function sendTokenExpiredAndUnrefreshable(JWTException $e = null)
-    {
-        return $this->sendErrorJson(TOKEN_EXPIRED_AND_UNREFRESHABLE, 500);
-    }
+//    protected function sendTokenExpiredAndUnrefreshable(JWTException $e = null)
+//    {
+//        return $this->sendJson(500, TOKEN_EXPIRED_AND_UNREFRESHABLE);
+//    }
 
     /**
      * Send the JSON response w/(code: 400, message: token not provided)
      *
      * @access protected
-     * @return void
+     * @return Illuminate\Http\JsonResponse
      */
     protected function sendTokenNotProvided()
     {
-        return $this->sendErrorJson(TOKEN_NOT_PROVIDED, 400);
+        return $this->sendJson(400, TOKEN_NOT_PROVIDED);
     }
 
     /**
-     * Send the JSON response w/(code: 500, message: token could not be parsed)
+     * Send the JSON response w/(code: 400, message: token could not be parsed)
      *
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
     protected function sendTokenCouldNotBeParsed()
     {
-        return $this->sendErrorJson(TOKEN_COULD_NOT_BE_PARSED, 400);
+        return $this->sendJson(400, TOKEN_COULD_NOT_BE_PARSED);
     }
 
     /**
-     * Send the JSON response w/(code: 404, message: user not found)
+     * Send the JSON response w/(code: 400, message: user not found)
      *
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
     protected function sendUserNotFound()
     {
-        return $this->sendErrorJson(USER_NOT_FOUND, 404);
+        return $this->sendJson(400, USER_NOT_FOUND);
+    }
+
+    /**
+     * Send the JSON response w/(code: 422)
+     *
+     * @param string $message The message contained in return value
+     * @access protected
+     * @return Illuminate\Http\JsonResponse
+     */
+    protected function sendValidationError(string $message = '')
+    {
+        if( $message == '') $message = VALIDATION_ERROR;
+        return $this->sendJson(422, $message);
     }
 
     /**
@@ -171,11 +292,10 @@ trait JwtAuthJsonResponse
      *
      * @param string $message The message contained in return value
      * @access protected
-     * @return string JSON encoded return value
+     * @return Illuminate\Http\JsonResponse
      */
-    protected function sendValidationError(string $message = '')
-    {
-        if( $message == '') $message = VALIDATION_ERROR;
-        return $this->sendErrorJson($message, 400);
+    protected function sendUserCalendarNotFound(string $message = '') {
+        return $this->sendJson(CODE_USER_CALENDAR_NOT_FOUND, USER_CALENDAR_NOT_FOUND);
     }
+
 }

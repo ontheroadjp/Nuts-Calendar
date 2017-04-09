@@ -21,14 +21,14 @@ Route::group( ['prefix' => 'api/v1'], function() {
             Route::get('member', 'MembersController@index' );
             Route::get('member/{id}', 'MembersController@show' );
             Route::post('member', 'MembersController@store' );
-            Route::patch('member/{id}', 'MembersController@update' );
+//            Route::patch('member/{id}', 'MembersController@update' );
             Route::delete('member/{id}', 'MembersController@destroy' );
 
             // items
             Route::get('item', 'EventsController@index' );
             Route::get('item/{id}', 'EventsController@show' );
             Route::post('item', 'EventsController@store' );
-            Route::patch('item/{id}', 'EventsController@update' );
+            Route::put('item/{id}', 'EventsController@update' ); // modify
             Route::delete('item/{id}', 'EventsController@destroy' );
             Route::get('item/{userCalendarId}/{year}/{month}', 'EventsController@indexRange' );
         }

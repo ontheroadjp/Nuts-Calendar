@@ -2,12 +2,12 @@
 
 namespace Nuts\Api\Middleware;
 
-use Nuts\Api\Responses\JsonResponse;
+use Nuts\Api\Responses\JwtAuthJsonResponse;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
 class JsonThrottleRequests extends ThrottleRequests
 {
-    use JsonResponse;
+    use JwtAuthJsonResponse;
 
     /**
      * Create a 'too many attempts' JSON response.
@@ -28,7 +28,7 @@ class JsonThrottleRequests extends ThrottleRequests
 
         $message = TOO_MANY_LOGIN_ATTEMPTS;
 
-        return $this->sendErrorJson($message, 429, [
+        return $this->sendJson(429, $message, [
             'retryAfter' => [
                 'in_sec' => $retryAfter['in_sec'],
                 'minuts' => $retryAfter['minuts'],

@@ -31,44 +31,54 @@ class JwtAuthServiceProvider extends ServiceProvider
 
     protected function registerRoutes()
     {
+        $this->app['router']->group([
+            'namespace' => 'Nuts\Calendar\Controllers',
+            'prefix' => '/api/v1',
+            'middleware' => 'nuts.api.dev',
+        ], function() {
+            Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
+                Route::put('calendar/{id}', 'UserCalendarsController@update');
+                Route::put('member/{id}', 'MembersController@update');
+            });
+        });
 
         $this->app['router']->group([
             'namespace' => 'Nuts\Api\Controllers',
         ], function() {
-
-            Route::get('/', 'PagesController@getTop');
+            Route::get('/', 'PagesController@index');
             Route::get('/login', 'JwtAuthController@getLogin');
             Route::get('/register', 'JwtAuthController@getRegister');
             Route::get('/password/email', 'JwtPasswordController@getEmail');
             Route::get('/password/reset/{token?}', 'JwtPasswordController@getReset');
 
-//            Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
-                Route::get('/me/settings', 'JwtUserController@getSettings');
-                Route::get('/dashboard', 'PagesController@getDashboard');
-                Route::get('/calendar/{userCalendarId}', 'PagesController@getUserCalendar');
-//            });
-
+            //  do not apply nuts.api.jwtauth
+            //  the access restriction should be handle at cliant side (vue.js)
+            //Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
+                Route::get('/me/settings/{type}', 'JwtUserController@getSettings');
+                Route::get('/calendar', 'PagesController@index');
+                Route::get('/calendar/view', 'PagesController@index');
+                Route::get('/calendar/settings/{type}', 'PagesController@index');
+            //});
 
             Route::group([
                 'prefix' => '/api/v1',
-                'middleware' => 'nuts.api.dev'
+                'middleware' => 'nuts.api.dev',
             ], function() {
-
-                // throttle 'throttle: (count), (minets)'
-                Route::group(['middleware' => 'nuts.api.jsonthrottle:5, 10'], function() {
-                    Route::post('login', 'JwtAuthController@postLogin');
-                });
-
-                Route::post('register', 'JwtAuthController@postRegister');
-                Route::post('password/email', 'JwtPasswordController@postEmail');
+//                Route::group(['middleware' => 'nuts.api.jsonthrottle:5,10'], function() {
+                    Route::post('login', 'JwtAuthController@login');
+//                });
+                Route::post('register', 'JwtAuthController@register');
                 Route::post('password/reset', 'JwtPasswordController@postReset');
+                Route::post('password/email', 'JwtPasswordController@postEmail');
 
                 Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
+                    Route::get('data', 'DataController@index');
                     Route::get('me/{token?}', 'JwtUserController@getMe');
                     Route::put('me/settings', 'JwtUserController@putSettings');
-               });
-
+                    Route::put('me/password', 'JwtUserController@putPasswordChange');
+                });
             });
+
         });
     }
 

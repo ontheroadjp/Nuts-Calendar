@@ -9,14 +9,14 @@
         "phpunit/phpunit": "^5.7"
     },
     "autoload": {
-        "classmap": [
-            "vendor/orchestra/testbench/src/TestCase.php"
-        ],
         "psr-4": {
             "Nuts\\Api\\": "src/"
         }
     },
     "autoload-dev": {
+        "classmap": [
+            "vendor/orchestra/testbench/src/TestCase.php"
+        ],
         "psr-4": {
             "Nuts\\Api\\Test\\": "tests/"
         }

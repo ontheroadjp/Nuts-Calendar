@@ -2,27 +2,38 @@
 
 namespace Nuts\Api\Controllers;
 
+use Hash;
 use JWTAuth;
-//use App\Http\Requests;
 use Illuminate\Http\Request;
-use Nuts\Api\Responses\JwtAuthJsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Nuts\Api\Responses\JwtAuthJsonResponse;
+use Nuts\Api\Requests\UserPasswordChangeRequest;
+use Nuts\Api\Requests\UserAccountSettingsRequest;
 
 class JwtUserController extends BaseController
 {
     use JwtAuthJsonResponse;
 
+//    protected function getToken()
+//    {
+//        if (! $token = JWTAuth::getToken()) {
+//            return $this->sendTokenCouldNotBeParsed();
+//        }
+//
+//        return $token;
+//    }
+
     /**
      * Return User with Jwt token
      *
-     * @param \Illuminate\Http\RequestRequest $request
+     * @param \Illuminate\Http\Request $request
      * @access public
      * @return string JSON encoded return value
      */
     public function getMe(Request $request)
     {
         if (! $token = JWTAuth::getToken()) {
-            return $this->sendInvalidToken();
+            return $this->sendTokenCouldNotBeParsed();
         }
 
         return $this->sendUserWithJwtToken($token->get());
@@ -40,7 +51,7 @@ class JwtUserController extends BaseController
     }
 
     /**
-     * showUserSettingsForm
+     * Show user settings form
      *
      * @access protected
      * @return string HTML
@@ -50,48 +61,54 @@ class JwtUserController extends BaseController
         return view('nutsapi::vue');
     }
 
-//    protected function getUser(string $token)
-//    {
-//        try {
-//            if (! $user = JWTAuth::authenticate($token)) {
-//                return $this->sendUserNotFound();
-//            }
-//        } catch (TokenExpiredException $e) {
-//            return $this->sendUserWithRefreshedJwtToken($token);
-//        } catch (TokenInvalidException $e) {
-//            return $this->sendInvalidToken($e);
-//        } catch (JWTException $e) {
-//            return $this->sendTokenAbsent($e);
-//        }
-//        return $user;
-//    }
-
     /**
      * putSettings
      *
+     * @param \Nuts\Api\UserAccountSettingsRequest $request
      * @access protected
      * @return string JSON encoded return value
      */
-    protected function putSettings(Request $request)
+    protected function putSettings(UserAccountSettingsRequest $request)
     {
-//        if (! $token = JWTAuth::getToken()) {
-//            return $this->sendTokenCouldNotBeParsed();
-//        }
-//
-//        $id = (JWTAuth::authenticate($token))->id;
+        if (! $token = JWTAuth::getToken()) {
+            return $this->sendTokenCouldNotBeParsed();
+        }
 
-        $id = ($request->user)['id'];
+        $id = (JWTAuth::authenticate($token))->id;
         $user = \App\User::find($id);
 
         $user->name = $request->name;
         $user->save();
 
-        return [
-            'id' => $id,
-            'token' => $token,
-            'new_name' => $request->name,
-            'user' => $user
-        ];
+        return $this->sendUserWithJwtToken($token->get());
+    }
+
+    /**
+     * putPasswordChange
+     *
+     * @param UserPasswordChangeRequest $request
+     * @access protected
+     * @return void
+     */
+    protected function putPasswordChange(UserPasswordChangeRequest $request)
+    {
+        if (! $token = JWTAuth::getToken()) {
+            return $this->sendTokenCouldNotBeParsed();
+        }
+
+//        $id = (JWTAuth::authenticate($token))->id;
+//        $user = \App\User::find($id);
+
+        // temp
+        $user = JWTAuth::authenticate($token);
+
+        if(! Hash::check($request->old_password, $user->password)) {
+            return $this->sendValidationError('old password does not match');
+        }
+
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return $this->sendUserWithJwtToken($token);
     }
 }
-

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Event;
+use Nuts\Calendar\Models\Member;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,7 +35,7 @@ class Calendar extends Model
     public function fetch($userCalendarId, $year, $month)
     {
 
-        $members = Member::where('user_calendar_id',$userCalendarId)
+        $members = Member::where('user_calendar_id', $userCalendarId)
                 ->get()
                 ->keyBy('id');
 

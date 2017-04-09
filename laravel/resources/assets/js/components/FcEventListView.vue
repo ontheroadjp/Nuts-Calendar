@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import dateUtilities from '../mixins/DateUtilities.js';
+    import dateUtilities from '../mixins/date-utilities.js';
 
     export default {
 
@@ -79,7 +79,3 @@
 
     } 
 </script>
-
-<style>
-    
-</style>

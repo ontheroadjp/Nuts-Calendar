@@ -159,7 +159,7 @@ return [
         /*
          * Laravel debugbar
          */
-        Barryvdh\Debugbar\ServiceProvider::class,
+        //Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * JWT Auth
@@ -217,7 +217,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         /* Laravel debugbar */
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        //'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
         /* JWT Auth */
         'JWTAuth'   => Tymon\JWTAuth\Facades\JWTAuth::class,

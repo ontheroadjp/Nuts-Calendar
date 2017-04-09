@@ -3,57 +3,154 @@
 
 export default {
 
+    ready( state, val ) {
+        state.app.ready = val
+    },
+
+    // ---------------------------------------------
+    // theme
+
+    setTheme( state, name ) {
+        localStorage.setItem('theme', name);
+        state.app.theme.name = name;
+        switch (name) {
+            case 'koiai':
+//                state.app.theme.background = '#f0f0f1';
+                state.app.theme.primary.class = 'is-koiai';
+                state.app.theme.primary.classInvert = 'is-koiai-invert';
+                state.app.theme.primary.code = '#002e4e';
+                state.app.theme.primary.codeInvert = '#b0bfc8';
+
+                state.app.theme.secondary.class = 'is-koiai-secondary';
+                state.app.theme.secondary.classInvert = 'is-koiai-secondary-invert';
+                state.app.theme.secondary.code = '#1960b7';
+                state.app.theme.secondary.codeInvert = '';
+
+                state.app.theme.accent.code = '';
+                break;
+            case 'nadeshiko':
+//                state.app.theme.background = '#f0f0f1';
+                state.app.theme.primary.class = 'is-nadeshiko';
+                state.app.theme.primary.classInvert = 'is-nadeshiko-invert';
+                state.app.theme.primary.code = '#f6adc6';
+                state.app.theme.primary.codeInvert = '#49343b';
+
+                state.app.theme.secondary.class = 'is-nadeshiko-secondary';
+                state.app.theme.secondary.classInvert = 'is-nadeshiko-secondary-invert';
+                state.app.theme.secondary.code = '#ee6896';
+                state.app.theme.secondary.codeInvert = '';
+
+                state.app.theme.accent.code = '';
+                break;
+            case 'mikan':
+//                state.app.theme.background = '#f0f0f1';
+                state.app.theme.primary.class = 'is-mikan';
+                state.app.theme.primary.classInvert = 'is-mikan-invert';
+                state.app.theme.primary.code = '#f08300';
+                state.app.theme.primary.codeInvert = '#fbdab3';
+
+                state.app.theme.secondary.class = 'is-mikan-secondary';
+                state.app.theme.secondary.classInvert = 'is-mikan-secondary-invert';
+                state.app.theme.secondary.code = '#ffc112';
+                state.app.theme.secondary.codeInvert = '';
+
+                state.app.theme.accent.code = '';
+                break;
+            case 'sumire':
+//                state.app.theme.background = '#f0f0f1';
+                state.app.theme.primary.class = 'is-sumire';
+                state.app.theme.primary.classInvert = 'is-sumire-invert';
+                state.app.theme.primary.code = '#7058a3';
+                state.app.theme.primary.codeInvert = '#cfc7e0';
+
+                state.app.theme.secondary.class = 'is-sumire-secondary';
+                state.app.theme.secondary.classInvert = 'is-sumire-secondary-invert';
+                state.app.theme.secondary.code = '#b688ff';
+                state.app.theme.secondary.codeInvert = '';
+
+                state.app.theme.accent.code = '';
+                break;
+            case 'moegi':
+//                state.app.theme.background = '#f0f0f1';
+                state.app.theme.primary.class = 'is-moegi';
+                state.app.theme.primary.classInvert = 'is-moegi-invert';
+                state.app.theme.primary.code = '#aacf53';
+                state.app.theme.primary.codeInvert = '';
+
+                state.app.theme.secondary.class = 'is-moegi-secondary';
+                state.app.theme.secondary.classInvert = 'is-moegi-secondary-invert';
+                state.app.theme.secondary.code = '#37af05';
+                state.app.theme.secondary.codeInvert = '';
+
+                state.app.theme.accent.code = '';
+                break;
+        }
+    },
+
     // ---------------------------------------------
     // auth
 
-    login( state, data ) {
-        window.sessionStorage.setItem('token', data.token);
-        window.sessionStorage.setItem('username', data.user.name);
-        state.user.name = data.user.name;
-        state.user.token = data.token;
+    login( state, name ) {
+        state.user.name = name;
     },
 
     logout( state ) {
         window.sessionStorage.clear();
         state.user.name = null;
         state.user.token = null;
+        state.calendar.currentId = 'dashboard';
+    },
+
+    username( state, name ) {
+        state.user.name = name;
     },
 
     // ---------------------------------------------
     // user calendar
 
-    initUserCalendar( state, userCalendar ) {
-        state.userCalendar = userCalendar;
+    initUserCalendar( state, userCalendars ) {
+        state.calendar.data.userCalendars = userCalendars;
     },
 
     setCurrentCalendarId( state, id ) {
-        state.currentCalendarId = id;
+        state.calendar.currentId = id;
+        localStorage.setItem('currentCalendarId', id);
     },
 
     // ---------------------------------------------
     // calendar
+
+    initCalendar( state, calendars ) {
+        state.calendar.data.calendars = calendars;
+    },
+
     setCurrentYear( state, year ) {
-        state.currentYear = year;
+        state.calendar.currentYear = year;
     },
 
     setCurrentMonth( state, month ) {
-        state.currentMonth = month;
+        state.calendar.currentMonth = month;
     },
 
-    initCalendar( state, calendar ) {
-        state.calendar = calendar;
+    setCalendarName( state, payload ) {
+        state.calendar.data.userCalendars[payload.id].name = payload.name;
+    },
+
+    setCalendarDescription( state, payload ) {
+        state.calendar.data.userCalendars[payload.id].description = payload.description;
     },
 
     // ---------------------------------------------
     // members
+
     initMembers( state, members ) {
-        state.members = members;
+        state.calendar.data.members = members;
     },
 
     addMember( state, payload ) {
-        Vue.set(state.members, payload.key, payload.data);
+        Vue.set(state.calendar.data.members, payload.key, payload.data);
 
-        state.calendar.forEach( function(val, index) {
+        state.calendar.data.calendars.forEach( function(val, index) {
             Vue.set( val.events, payload.key, [{
                 'editing': false,
                 'is_hover': false
@@ -62,20 +159,21 @@ export default {
     },
 
     updateMember( state, member ) {
-        state.members[member.id].name = member.name;
-        state.members[member.id].color = member.color;
+        state.calendar.data.members[member.id].name = member.name;
+        state.calendar.data.members[member.id].color = member.color;
     },
 
     deleteMember( state, id ) {
-        Vue.delete(state.members, id);
+        Vue.delete(state.calendar.data.members, id);
 
-        state.calendar.forEach( function(val, index) {
+        state.calendar.data.calendars.forEach( function(val, index) {
             Vue.delete( val.events, id);
         });
     },
 
     // ---------------------------------------------
     // members dialog
+
     setMembersModalIsActive( state, val ) {
         state.membersModal.isActive = val;
     },
@@ -84,20 +182,11 @@ export default {
         state.membersModal.selectedTab = index
     },
 
-    // ---------------------------------------------
-    // events
-    initEvents( state, events ) {
-        state.events = events;
-    },
-
-    // ---------------------------------------------
-    // Ajax
-    startFetchCalendar( state ) {
-        state.ajax.loadingCalendarId = state.currentCalendarId;
-    },
-
-    stopFetchCalendar( state ) {
-        state.ajax.loadingCalendarId = '';
-    },
+//    // ---------------------------------------------
+//    // events
+//
+//    initEvents( state, events ) {
+//        state.events = events;
+//    },
 
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Nuts\Calendar\Models\Member;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model

@@ -15,9 +15,11 @@ use JWTAuth;
 use Validator;
 //use App\Http\Requests;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as BaseController;
+use Nuts\Api\Requests\UserRegisterRequest;
+use Nuts\Api\Requests\UserLoginRequest;
 use Nuts\Api\Responses\JwtAuthJsonResponse;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class JwtAuthController extends BaseController
@@ -41,42 +43,15 @@ class JwtAuthController extends BaseController
     }
 
     /**
-     * Validate request parameters
-     *
-     * @param \Illuminate\Http\RequestRequest $request
-     * @access protected
-     * @return void|string
-     */
-    protected function validateLogin(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            $this->loginUsername() => 'required',
-            'password' => 'required|min:6',
-        ]);
-
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    /**
      * Authenticate from email and password
      *
-     * @param \Illuminate\Http\RequestRequest $request
+     * @param \Nuts\Api\Requests\UserLoginRequest $request
      * @access public
      * @return string JSON encoded return value
      */
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
-        if($errorMessages = $this->validateLogin($request))  {
-            return $this->sendValidationError($errorMessages);
-        }
-
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
         $throttles = $this->isUsingThrottlesLoginsTrait();
-
         if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
             return $this->sendLockoutResponse($request);
@@ -85,21 +60,18 @@ class JwtAuthController extends BaseController
         $credentials = $this->getCredentials($request);
         try {
             $token = JWTAuth::attempt($credentials);
-            if ($token) {
-                return $this->sendLoginSuccessResponse($token);
+            if (! $token) {
+                return $this->sendInvalidCredentials();
             }
         } catch (JWTException $e) {
             return $this->sendCouldNotCreateToken($e);
         }
 
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login. Of course, when this user surpasses their maximum number of attempts
-        // they will get locked out.
         if ($throttles && ! $lockedOut) {
             $this->incrementLoginAttempts($request);
         }
 
-        return $this->sendInvalidCredentials();
+        return $this->sendLoginSuccessResponse($token);
     }
 
     /**
@@ -122,10 +94,9 @@ class JwtAuthController extends BaseController
      */
     protected function sendLockoutResponse(Request $request)
     {
-        //var_dump('send lockout response');
         $seconds = $this->secondsRemainingOnLockout($request);
         $message = $this->getLockoutErrorMessage($seconds);
-        return $this->sendErrorJson($message, 429);
+        return $this->sendJson(429, $message);
     }
 
     // -----------------------------------------------------------------
@@ -144,40 +115,24 @@ class JwtAuthController extends BaseController
     }
 
     /**
-     * Validate request parameters for user registration
-     *
-     * @param \Illuminate\Http\RequestRequest $request
-     * @access protected
-     * @return void|string
-     */
-    protected function validateRegister(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    /**
      * regist new user
      *
-     * @param \Illuminate\Http\RequestRequest $request
+     * @param \Nuts\Api\Requests\UserRegisterRequest $request
      * @access public
      * @return string JSON encoded return value
      */
-    public function register(Request $request)
+    public function register(UserRegisterRequest $request)
     {
-        if($errorMessages = $this->validateRegister($request) ) {
-            return $this->sendValidationError($errorMessages);
-        }
+        //Auth::guard($this->getGuard())->login($this->create($request->all()));
+
+        $data = $request->all();
 
         try {
-            $user = \App\User::create($request->all());
+            $user = \App\User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+            ]);
         } catch(\PDOException $e) {
             return $this->failedRegister($e);
         }
@@ -208,6 +163,6 @@ class JwtAuthController extends BaseController
     protected function failedRegister(\PDOException $e)
     {
         $message = $e->getMessage();
-        return $this->sendErrorJson($message, 500);
+        return $this->sendJson(500, $message);
     }
 }

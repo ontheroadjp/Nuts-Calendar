@@ -1,17 +1,16 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
-@import "resources/assets/sass/bootstrap";
+// -------------------------------------------------
+// Vendor
+// -------------------------------------------------
+//@import "resources/assets/sass/bootstrap";
 @import "resources/assets/sass/bulma";
+@import "resources/assets/sass/font-awesome";
 
 // -------------------------------------------------
 // Settings
 // -------------------------------------------------
-$primary-color: $blue;
-$primary-color-lighten: lighten($primary-color, 15%);
-$primary-color-darken: darken($primary-color, 15%);
-
 @import "resources/assets/sass/_variables";
 @import "resources/assets/sass/_main";
 @import "resources/assets/sass/_button";
 @import "resources/assets/sass/_form";
-

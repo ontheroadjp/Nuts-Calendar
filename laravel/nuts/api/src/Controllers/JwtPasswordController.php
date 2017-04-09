@@ -44,13 +44,13 @@ class JwtPasswordController extends Controller
     protected function getSendResetLinkEmailSuccessResponse($response)
     {
         $message = "send reset link email successfully";
-        return $this->sendSuccessJson($message);
+        return $this->sendJson(200, $message);
     }
 
     protected function getSendResetLinkEmailFailureResponse($response)
     {
         $message = "could not send the reset link email";
-        return $this->sendErrorJson($message, 500);
+        return $this->sendJson(500, $message);
     }
 
     // --------------------------------------------------
@@ -60,7 +60,7 @@ class JwtPasswordController extends Controller
     public function showResetForm($request, $token)
     {
         if(is_null($token)) {
-            return $this->sendErrorJson(TOKEN_COULD_NOT_BE_PARSED, 400);
+            return $this->sendJson(400, TOKEN_COULD_NOT_BE_PARSED);
         }
         return view('nutsapi::vue');
     }
@@ -114,12 +114,12 @@ class JwtPasswordController extends Controller
     protected function getResetSuccessResponse($response)
     {
         $message = "password reset successfully";
-        return $this->sendSuccessJson($message);
+        return $this->sendJson(200, $message);
     }
 
     protected function getResetFailureResponse(Request $request, $response)
     {
         $message = "could not reset password";
-        return $this->sendErrorJson($message, 500);
+        return $this->sendJson(500, $message);
     }
 }

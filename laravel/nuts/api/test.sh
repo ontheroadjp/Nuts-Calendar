@@ -1,0 +1,10 @@
+phpunit ./tests/ApiLoginTest.php 
+phpunit ./tests/ApiMeTest.php 
+phpunit ./tests/ApiPasswordTest.php 
+phpunit ./tests/ApiRegisterTest.php 
+phpunit ./tests/DataControllerTest.php 
+phpunit ./tests/DevelopmentTest.php 
+phpunit ./tests/JwtAuthControllerTest.php 
+phpunit ./tests/JwtAuthJsonResponseTest.php 
+phpunit ./tests/JwtUserControllerTest.php 
+phpunit ./tests/unit/JwtAuthJsonResponseTest.php 

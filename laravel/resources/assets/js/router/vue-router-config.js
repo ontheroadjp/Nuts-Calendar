@@ -1,60 +1,124 @@
-import fcRoot from '../pages/FcRoot.vue';
-import fcLogin from '../pages/user/FcLogin.vue';
-import fcRegister from '../pages/user/FcRegister.vue';
-import fcPasswordEmail from '../pages/user/FcPasswordMail.vue';
-import fcPasswordReset from '../pages/user/FcPasswordReset.vue';
-import fcUserAccountSettings from '../pages/user/FcUserAccountSettings.vue';
-import fcDashboard from '../pages/FcDashboard.vue';
-import fcCalendar from '../pages/FcCalendar.vue';
-import fcSettings from '../pages/FcSettings.vue';
+import root from '../pages/root.vue';
+import login from '../pages/user/login.vue';
+import register from '../pages/user/register.vue';
+import passwordEmail from '../pages/user/password-mail.vue';
+import passwordReset from '../pages/user/password-reset.vue';
+import userAccountSettings from '../pages/user/settings/index.vue';
+import calendar from '../pages/calendar/index.vue';
+import tableView from '../pages/calendar/table-view/index.vue';
+import dashboard from '../pages/calendar/dashboard/index.vue';
+import calendarSettings from '../pages/calendar/settings/index.vue';
+//import settingsCalendar from '../pages/calendar/settings/calendar.vue';
+//import settingsMembers from '../pages/calendar/settings/members.vue';
+//import settingsItems from '../pages/calendar/settings/items.vue';
 
-export function configRouter (router) {
+export function init (router) {
+    mapping(router);
+    beforRooting(router);
+    return router;
+}
+
+function mapping(router) {
     router.map({
     
         '/': {
-            component: fcRoot,
-            auth: false
+            component: root,
+            auth: false,
+            footer: false
         },
         
         '/login': {
-            component: fcLogin,
-            auth: false
+            component: login,
+            auth: false,
+            footer: true
         },
         
         '/password/email': {
-            component: fcPasswordEmail,
-            auth: false
+            component: passwordEmail,
+            auth: false,
+            footer: true
         },
         
         '/password/reset/:token': {
-            component: fcPasswordReset,
-            auth: false
+            component: passwordReset,
+            auth: false,
+            footer: true
         },
         
         '/register': {
-            component: fcRegister,
-            auth: false
+            component: register,
+            auth: false,
+            footer: true
         },
         
-        '/me/settings': {
-            component: fcUserAccountSettings,
-            auth: true
+        '/me/settings/:type': {
+            component: userAccountSettings,
+            auth: true,
+            footer: true
         },
         
-        '/dashboard': {
-            component: fcDashboard,
-            auth: true
+        '/calendar': {
+            component: calendar,
+            auth: true,
+            footer: true,
+            subRoutes: {
+                '/': {
+                    component: dashboard,
+                    auth: true,
+                    footer: false,
+                },
+                '/view': {
+                    component: tableView,
+                    auth: true,
+                    footer: false,
+                },
+                '/settings/:type': {
+                    component: calendarSettings,
+                    auth: true,
+                    footer: false,
+                },
+            }
         },
-        
-        '/calendar/:userCalendarId': {
-            component: fcCalendar,
-            auth: true
-        },
-        
-        '/settings': {
-            component: fcSettings,
-            auth: true
-        },
-        
     });
+}
+
+function beforRooting(router){
+    router.beforeEach(function (transition) {
+        u.clog( '------- ' + transition.to.path + ' -------' );
+        const token = jwtToken.getLocalToken();
+        if(! token) {
+            handleNoLogedIn(transition);
+            return;
+        }
+        handleAlreadyLogedIn(transition, token);
+    });
+}
+            
+function handleNoLogedIn(transition) {
+    u.clog('handleNoLogedIn@app.vue');
+    if(transition.to.auth) {
+        transition.redirect('/login');
+    }
+    //this.$store.commit('logout');
+    u.clog('transition.next()');
+    transition.next();
+}
+            
+function handleAlreadyLogedIn(transition, token) {
+    u.clog('handleAlreadyLogedIn@app.vue');
+
+    jwtToken.setLocalToken(token);
+
+    //temp
+//    if(localStorage.getItem('rememberMe')) {
+//        u.clog('REMEMBER ME - true!!!');
+//        localStorage.setItem('rememberMe', token);
+//    }
+
+    if(transition.to.path === '/login') {
+        transition.redirect('/dashboard');
+    }
+
+    u.clog('transition.next()');
+    transition.next();
 }

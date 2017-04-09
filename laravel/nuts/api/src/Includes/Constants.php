@@ -1,40 +1,73 @@
 <?php
 
 /**
- * @condt SUCCESS_STATUS JSON success response status
+ * @condt SUCCESS_STATUS / ERROR JSON success response status
  */
-const SUCCESS_STATUS = "success";
+const SUCCESS_STATUS    = "success";
+const ERROR_STATUS      = "error";
 
-/**
- * @const ERROR_STATUS JSON error response status
- */
-const ERROR_STATUS = "error";
+const SUCCESS_MESSAGE    = "success";
+const ERROR_MESSAGE      = "error";
 
 // JSON success response messages
-const SEND_USER_WITH_JWT_TOKEN = 'send user with jwt token';
-const SEND_USER_WITH_REFRESHED_JWT_TOKEN = 'send user with refreshed jwt token';
+const SEND_USER_WITH_JWT_TOKEN              = 'send user with jwt token';
+const SEND_USER_WITH_REFRESHED_JWT_TOKEN    = 'send user with refreshed jwt token';
 
 // JSON response for the password reset Email
-const SEND_RESET_LINK_EMAIL_SUCCESSFULLY = 'send reset link email successfully';
-const COULD_NOT_SEND_THE_RESET_LINK_EMAIL = 'could not send the reset link email';
+const SEND_RESET_LINK_EMAIL_SUCCESSFULLY    = 'send reset link email successfully';
+const COULD_NOT_SEND_THE_RESET_LINK_EMAIL   = 'could not send the reset link email';
 
 // JSON response for the password reset
-const PASSWORD_RESET_SUCCESSFULLY = 'password reset successfully';
-const COULD_NOT_RESET_PASSWORD = 'could not reset password';
+const PASSWORD_RESET_SUCCESSFULLY           = 'password reset successfully';
+const COULD_NOT_RESET_PASSWORD              = 'could not reset password';
 
 // JSON error Login throttles
-const TOO_MANY_LOGIN_ATTEMPTS = 'Too many login attempts';
+const TOO_MANY_LOGIN_ATTEMPTS               = 'Too many login attempts';
 
 // JSON error response message
-const COULD_NOT_CREATE_TOKEN = 'could not create token';
-const INVALID_CREDENTIALS = 'invalid credentials';
-const TOKEN_INVALID = 'token invalid';
-const TOKEN_ABSENT = 'token absent';
-const TOKEN_EXPIRED_AND_UNREFRESHABLE = 'token expired and unrefreshable';
-const TOKEN_NOT_PROVIDED = 'token not provided';
-const TOKEN_COULD_NOT_BE_PARSED = 'token could not be parsed';
-const USER_NOT_FOUND = 'user not found';
-const VALIDATION_ERROR = 'validation error';
+const COULD_NOT_CREATE_TOKEN                = 'could not create token';
+const INVALID_CREDENTIALS                   = 'invalid credentials';
+const TOKEN_INVALID                         = 'token invalid';
+const TOKEN_ABSENT                          = 'token absent';
+const TOKEN_UNREFRESHABLE                   = 'token unrefreshable';
+const TOKEN_EXPIRED_AND_UNREFRESHABLE       = 'token expired and unrefreshable';
+const TOKEN_NOT_PROVIDED                    = 'token not provided';
+const TOKEN_COULD_NOT_BE_PARSED             = 'token could not be parsed';
+const USER_NOT_FOUND                        = 'user not found';
+const VALIDATION_ERROR                      = 'validation error';
+const USER_CALENDAR_NOT_FOUND               = 'user calendar not found';
+
+// OK(200)
+const CODE_SEND_USER_WITH_JWT_TOKEN             = 200;
+const CODE_SEND_RESET_LINK_EMAIL_SUCCESSFULLY   = 200;
+const CODE_PASSWORD_RESET_SUCCESSFULLY          = 200;
+
+// ACCEPTED(202)
+const CODE_SEND_USER_WITH_REFRESHED_JWT_TOKEN   = 202;
+
+// BAD_REQUEST(400)
+const CODE_COULD_NOT_SEND_THE_RESET_LINK_EMAIL  = 400;
+const CODE_COULD_NOT_RESET_PASSWORD             = 400;
+const CODE_COULD_NOT_CREATE_TOKEN               = 400; // 5xx ??
+const CODE_USER_NOT_FOUND                       = 400;
+const CODE_USER_CALENDAR_NOT_FOUND              = 400;
+
+// Forbidden(403)
+const CODE_TOO_MANY_LOGIN_ATTEMPTS              = 403;
+
+// Not Acceptable(406)
+const CODE_TOKEN_INVALID                        = 406;
+const CODE_TOKEN_ABSENT                         = 406;
+const CODE_TOKEN_UNREFRESHABLE                  = 406;
+const CODE_TOKEN_EXPIRED_AND_UNREFRESHABLE      = 406;
+const CODE_TOKEN_NOT_PROVIDED                   = 406; // same as TOKEN_ABSENT
+const CODE_TOKEN_COULD_NOT_BE_PARSED            = 406;
+
+// Unauthorized(422)
+const CODE_INVALID_CREDENTIALS                  = 422;
+
+// UNPROCESSABLE_ENTITY
+const CODE_VALIDATION_ERROR                     = 422;
 
 // HTTP Status codes (These are in Symfony/Component/HttpFoundation/Response.php)
 //const HTTP_CONTINUE = 100;

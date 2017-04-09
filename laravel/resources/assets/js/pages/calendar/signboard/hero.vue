@@ -1,0 +1,56 @@
+<template>
+<section id="signboard" class="hero" :class="theme.primary.class">
+    <div class="hero-body">
+    <div class="container">
+    
+        <div id="mc_embed_signup" class="columns is-vcentered">
+            <div class="column is-one-third is-left">
+                <p class="title" style="color:{{ theme.secondary.code }}">Nuts <strong>Calendar</strong></p>
+                <p class="subtitle" style="color: #fff">
+                    <small>
+                        Manage your task & events in easily, quickly and a fun!
+                    </small>
+                </p>
+            </div>
+    
+            <div class="column">
+                <span class="is-pulled-right">
+                    <ym-field></ym-field>
+                </span>
+            </div>
+        </div><!-- // #mc_embed_signup -->
+    
+    </div><!-- // .container -->
+    </div><!-- // .hero-body -->
+    
+    <div class="hero-foot">
+        <menu-tabs 
+            :is-loading-calendar-api="isLoadingCalendarApi"
+            :is-tool-Palette-open.sync="isToolPaletteOpen"
+        ></menu-tabs>
+    </div>
+</section>
+</template>
+
+<script>
+    import ymField from './ym-field.vue';
+    import menuTabs from './menu-tabs.vue';
+
+    export default {
+        components: {
+            'menu-tabs': menuTabs,
+            'ym-field': ymField,
+        },
+
+        props: [
+            'isLoadingCalendarApi',
+            'isToolPaletteOpen'
+        ],
+
+        computed: {
+            theme: function() {
+                return this.$store.state.app.theme;
+            },
+        },
+    } 
+</script>

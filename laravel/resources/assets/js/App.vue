@@ -1,79 +1,98 @@
 <template>
     <div>
-        <fc-navbar></fc-navbar>
+        <navbar></navbar>
         <router-view></router-view>
+        <page-footer v-if="$route.footer"></page-footer>
     </div>
 </template>
 
 <script>
+    import navbar from './pages/partials/navbar/index.vue'
+    import pageFooter from './pages/partials/footer/index.vue'
     import store from './store/index.js'
-    import fcNavbar from './components/FcNavbar.vue'
 
     export default {
     
         store,
         
         components: {
-            'fc-navbar': fcNavbar,
+            'navbar': navbar,
+            'page-footer': pageFooter,
         },
     
-        ready() {
-            u.clog('ready@app.vue');
-            http.init();
-
-            this.beforRouting();
-            //this.afterRouting();
+        created() {
+            u.clog('start@app.vue');
+            eventBus.listen('nuts.login.success', this.handleLogin, 'app.vue');
+            this.init();
         },
 
         methods: {
-            beforRouting() {
-                const self = this;
-                this.$route.router.beforeEach(function (transition) {
-                    u.clog( '------- ' + transition.to.path + ' -------' );
-                    const token = jwtToken.getLocalToken();
-                    if(! token) {
-                        self.handleNoLogedIn(transition);
-                        return;
-                    }
-                    self.handleAlreadyLogedIn(transition, token);
-                });
+            init () {
+                this.startApp();
             },
 
-            afterRouting() {
-                //const self = this;
-                //this.$route.router.afterEach(function (transition) {
-                //    u.clog('afterEach @' + transition.to.path)
-                //});
+            startApp() {
+                this.setTheme();
+                this.initToken();
             },
 
-            handleNoLogedIn(transition) {
-                u.clog('handleNoLogedIn@app.vue');
-                if(transition.to.auth) {
-                    transition.redirect('/login');
+            setTheme() {
+                const theme = localStorage.getItem('theme');
+                if(theme) {
+                    this.$store.commit('setTheme', theme);
+                } else {
+                    this.$store.commit('setTheme', 'koiai');
                 }
-                transition.next();
             },
 
-            handleAlreadyLogedIn(transition, token) {
-                u.clog('handleAlreadyLogedIn@app.vue');
-//                this.$store.commit('login', {'token': token, 'user': user});
-                if(localStorage.getItem('rememberMe')) {
-                    u.clog('REMEMBER ME - true!!!');
+            initToken() {
+                const token = jwtToken.getLocalToken();
+                if(token) {
+//                    http.fetch('/api/v1/data')
+                    http.fetchGet('/api/v1/data')
+                        .then(response => this.successInit(response))
+                        .catch(error => this.failedInit(error)); 
+                } else {
+                    u.clog('finish')
+                }
+            },
+
+            successInit(response) {
+                u.clog('success')
+                this.$store.commit('login', response.data.currentuser.name);
+                this.$store.commit('initUserCalendar', response.data.usercalendar );
+                this.$store.commit('initCalendar', response.data.days );
+                this.$store.commit('initMembers', response.data.members );
+//                const calId = localStorage.getItem('currentCalendarId');
+//                if(calId) {
+//                    this.$store.commit('setCurrentCalendarId', calId);
+//                }
+                this.$store.commit('ready', true);
+                eventBus.fire('nuts.app.ready', null, 'App.vue');
+            },
+
+            failedInit(error) {
+                u.clog('failed' + error)
+                this.$store.commit('logout');
+                this.$route.router.go('/login');
+            },
+
+            handleLogin(p) {
+                const token = p.response.data.token;
+                const username = p.response.data.user.name;
+    
+                // temp
+                //if( p.rememberMe ) {
+                if(false) {
                     localStorage.setItem('rememberMe', token);
-//                    localStorage.setItem('username', user.name);
+                } else {
+                    localStorage.clear();
                 }
+    
+                this.init();
 
-                if(transition.to.path === '/login') {
-                    transition.redirect('/dashboard');
-                }
-
-                u.clog('transition.next()');
-                transition.next();
-
+                this.$route.router.go('/calendar');
             },
         }
     }
 </script>
-
-<style>
-</style>

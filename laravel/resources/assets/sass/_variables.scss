@@ -1,10 +1,13 @@
 // -------------------------------------------------
 // Color
 // -------------------------------------------------
+$primary-color: $turquoise;
+$primary-color-lighten: lighten($primary-color, 15%);
+$primary-color-darken: darken($primary-color, 15%);
+
 
 $green : #00d1b2;
 $blue : #36bbe7;
 $gray: #7a7a7a;
 
 $shadow: #dbdbdb;
-
