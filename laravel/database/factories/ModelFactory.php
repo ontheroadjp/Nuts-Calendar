@@ -22,7 +22,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\UserCalendar::class, function (Faker\Generator $faker) {
+$factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Generator $faker) {
     foreach( App\User::all(['id']) as $val ) {
         $userIds[] = $val->id;
     }
@@ -41,12 +41,12 @@ function autoIncrement()
 }
 
 $autoIncrement = autoIncrement();
-$factory->define(App\Member::class, function (Faker\Generator $faker) use ($autoIncrement) {
+$factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) use ($autoIncrement) {
     $autoIncrement->next();
     $colors = ['primary', 'info', 'danger'];
-    $userCalendars = App\UserCalendar::all();
+    $userCalendars = Nuts\Calendar\Models\UserCalendar::all();
 
-    foreach( App\UserCalendar::all(['id']) as $val ) {
+    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
         $userCalendarIds[] = $val->id;
     }
 
@@ -62,9 +62,9 @@ $factory->define(App\Member::class, function (Faker\Generator $faker) use ($auto
 //    //$faker = FakerFactory::create('ja_JP');
 //
 //    $colors = ['primary', 'info', 'danger'];
-//    $userCalendars = App\UserCalendar::all();
+//    $userCalendars = Nuts\Calendar\Models\UserCalendar::all();
 //
-//    foreach( App\UserCalendar::all(['id']) as $val ) {
+//    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
 //        $userCalendarIds[] = $val->id;
 //    }
 //
@@ -95,7 +95,7 @@ $factory->define(App\Event::class, function (Faker\Generator $faker) {
         '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
     ];
 
-    foreach( App\Member::all(['id']) as $val ) {
+    foreach( Nuts\Calendar\Models\Member::all(['id']) as $val ) {
         $memberIds[] = $val->id;
     }
 

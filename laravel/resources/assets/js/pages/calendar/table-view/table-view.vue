@@ -1,9 +1,16 @@
 <template id="calendar">
 <div>
-<edit-item-modal :is-active="editItem.isModalActive">
+<edit-column-modal :is-active="modal.editColumn.isActive">
+    <edit-column-modal-content 
+        :is-active.sync="modal.editColumn.isActive" 
+        :member-id.sync="modal.editColumn.editingColumnId"
+    ></edit-column-modal-content>
+</edit-column-modal>
+
+<edit-item-modal :is-active="modal.editItem.isActive">
     <edit-item-modal-content 
-        :is-active.sync="editItem.isModalActive" 
-        :item.sync="editItem.editingItem"
+        :is-active.sync="modal.editItem.isActive" 
+        :item.sync="modal.editItem.editingItem"
     ></edit-item-modal-content>
 </edit-item-modal>
 
@@ -37,9 +44,18 @@
     <thead v-if="display === '' || display === 'header'">
         <tr>
             <th :style="style.dayColumnWidth">Date</th>
+<!--
             <th v-for="member in $store.state.calendar.data.members"
                 :style="columnWidth"
                 @click="clickTableHeader(member.id)"
+                @mouseover="member.is_hover = true"
+                @mouseout="member.is_hover = false"
+            ><span>{{ member.name }}</span>
+            </th>
+-->
+            <th v-for="member in $store.state.calendar.data.members"
+                :style="columnWidth"
+                @click="openEditColumnModal(member.id)"
                 @mouseover="member.is_hover = true"
                 @mouseout="member.is_hover = false"
             ><span>{{ member.name }}</span>
@@ -143,12 +159,16 @@
     import focus from '../../../directives/form-focus.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import itemApi from '../../../services/item.js'; 
+    import editColumnModalBase from '../../../components/modal.vue';
+    import editColumnModalContent from './modal/editColumnContent.vue';
     import editItemModalBase from '../../../components/modal.vue';
     import editItemModalContent from './modal/editItemContent.vue';
 
     export default {
         components: {
+            'edit-column-modal': editColumnModalBase,
             'edit-item-modal': editItemModalBase,
+            'edit-column-modal-content': editColumnModalContent,
             'edit-item-modal-content': editItemModalContent,
         },
 
@@ -161,9 +181,8 @@
         ],
 
         props: [
-//            'id', 'name', 'display', 'fixed', 'searchQuery', 'internalQuery'
-//            'id', 'display', 'fixed', 'searchQuery', 'internalQuery'
-            'id', 'display', 'fixed', 'filteredCalendar'
+//            'id', 'display', 'fixed', 'filteredCalendar'
+            'id', 'display', 'filteredCalendar'
         ],
 
         data() {
@@ -173,6 +192,17 @@
                         'width': '10%',
                         'min-width': '100px',
                         'max-width': '100px'
+                    },
+                },
+
+                modal: {
+                    editItem: {
+                        isActive: false,
+                        editingItem: null,
+                    },
+                    editColumn: {
+                        isActive: false,
+                        editingColumnId: '',
                     },
                 },
 
@@ -293,12 +323,20 @@
                 this.addItem.cellTo = cell;
             },
 
-            // Edit
+            // modal( column )
+            openEditColumnModal(memberId) {
+                u.clog('openEditColumnModal()');
+                //column.oldValue = column.content;
+                this.modal.editColumn.isActive = true;
+                this.modal.editColumn.editingColumnId = memberId;
+            },
+
+            // modal( item )
             openEditItemModal(item) {
                 u.clog('openEditItemModal()');
                 item.oldValue = item.content;
-                this.editItem.isModalActive = true;
-                this.editItem.editingItem = item;
+                this.modal.editItem.isActive = true;
+                this.modal.editItem.editingItem = item;
             },
         },
     }

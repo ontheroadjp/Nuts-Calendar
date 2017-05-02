@@ -15,22 +15,20 @@
     </div>
 
     <!-- table header -->
-    <div class="main-calendar-panel-header" :class="{sticky: isFixed}">
+    <div id="table-view-header" 
+        :class="['main-calendar-panel-header', {sticky: isFixed}]"
+    >
     <div v-show="isLoadingCalendarApi" class="black-screen"></div>
-        <table-view 
-            display="header" 
-            id="table-view-header"
-        ></table-view>
+        <table-view display="header"></table-view>
     </div>
 
     <!-- table body -->
-    <div class="main-calendar-panel" :class="{'sticky-offset': isFixed}">
+    <div id="table-view-body" 
+        :class="['main-calendar-panel', {'sticky-offset': isFixed}]" 
+        @scroll="onScrollBody()"
+    >
     <div v-show="isLoadingCalendarApi" class="black-screen"></div>
-        <table-view 
-            display="body" 
-            id="table-view-body"
-            :filtered-calendar="filteredCalendar"
-        ></table-view>
+        <table-view display="body" :filtered-calendar="filteredCalendar"></table-view>
     </div>
 
     <!-- jump to the page top button -->
@@ -76,11 +74,9 @@
             filteredCalendar: function () {
                 const self = this;
                 let data = this.$store.state.calendar.data.calendars;
-//                let filterWord = this.searchQuery && this.searchQuery.toLowerCase();
                 let filterWord = this.query.search && this.query.search.toLowerCase();
 
                 if(! filterWord) {
-//                    filterWord = this.internalQuery;
                     filterWord = this.query.internal;
                     if(filterWord) {
                         data = data.filter(function (row) {
@@ -105,9 +101,13 @@
                     signboard: 0,
                     toolPalette: 0
                 },
+                elements: {
+                    tableHeader: '',
+                    tableBody: ''
+                }
             }
         },
-
+        
         methods: {
             updateHeight: function() {
                 this.height.headerNav = document.getElementById('headerNav').clientHeight;
@@ -119,16 +119,9 @@
                 }
             },
 
-            onScrollHeader() {
-                u.clog('onScrollHeader()');
-                window.body.scrollLeft = window.header.scrollLeft;
+            onScrollBody: function() {
+                this.elements.tableHeader.scrollLeft = this.elements.tableBody.scrollLeft;
             },
-
-            onScrollBody() {
-                u.clog('onScrollBody()');
-                window.header.scrollLeft = window.body.scrollLeft;
-            },
-
         },
 
         watch: {
@@ -147,30 +140,31 @@
 
             document.onscroll = function(e) {
                 self.position = document.documentElement.scrollTop || document.body.scrollTop;
-            }
+            };
+
+            this.elements.tableHeader = document.getElementById('table-view-header');
+            this.elements.tableBody = document.getElementById('table-view-body');
         },
     }
 </script>
 
 <style>
+.main-calendar-panel {
+    user-select: none;
+    overflow-y: scroll;
+    position: relative;
+    height: 100%;
+/*    height: 100vh; */
+} 
 .main-calendar-panel-wrapper {
     position: relative;
 }
 .main-calendar-panel-header {
     user-select: none;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
     position: relative;
     height: 36px;
 }
-.main-calendar-panel {
-    user-select: none;
-    overflow-x: auto;
-/*    overflow-y: scroll; */
-    position: relative;
-    height: 100%;
-/*    height: 100vh; */
-} 
 .black-screen {
     background: rgba(217, 217, 217, 0.75);
     position: absolute;
@@ -188,16 +182,16 @@
 .sticky-offset {
     margin-top: 37px;
 }
-    .tool-palette-transition {
-        transition: all .2s ease;
-        height: 40px;
-        padding: 10px;
-        background-color: #eee;
-        overflow: hidden;
-    }
-    .tool-palette-enter, .tool-palette-leave {
-        height: 0;
-        padding: 0 10px;
-        opacity: 0;
-    }
+.tool-palette-transition {
+    transition: all .2s ease;
+    height: 40px;
+    padding: 10px;
+    background-color: #eee;
+    overflow: hidden;
+}
+.tool-palette-enter, .tool-palette-leave {
+    height: 0;
+    padding: 0 10px;
+    opacity: 0;
+}
 </style>

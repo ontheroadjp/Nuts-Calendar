@@ -5,10 +5,10 @@
             <nuts-member-tabs></nuts-member-tabs>
         </nuts-members-modal>
     
-        <hero 
+        <signboard 
             :is-loading-calendar-api="isLoading.calendarApi"
             :is-tool-palette-open.sync="isToolPaletteOpen"
-        ></hero>
+        ></signboard>
     
         <router-view 
             :is-loading-calendar-api="isLoading.calendarApi"
@@ -19,9 +19,7 @@
 </template>
 
 <script>
-
-    // componennt
-    import hero from './signboard/hero.vue';
+    import signboard from './signboard/index.vue';
     import calendarApi from '../../services/calendar.js';
 
     import nutsModal from '../../nuts-vue-components/NutsModal.vue';
@@ -29,7 +27,7 @@
 
     export default {
         components: {
-            'hero': hero,
+            'signboard': signboard,
             'nuts-members-modal': nutsModal,
             'nuts-member-tabs': fcMemberTabs,
         },
@@ -41,20 +39,10 @@
         data() {
             return {
                 isToolPaletteOpen: false,
-                searchQuery: '',
-                dropInTrash: false,
             }
         },
 
         computed: {
-//            tableViewBody: function() {
-//                const components = this.$children.filter(function(item, index){
-//                    if(item.name == 'tableViewBody') 
-//                        return true
-//                });
-//                return components[0];
-//            },
-
             currentCalendarId: function() {
                 return this.$store.state.calendar.currentId;
             },
@@ -96,22 +84,7 @@
                     this.fetchCalendar(this.currentCalendarId);
                 },
                 deep: true
-            },
-        },
-
+            }
+        }
     }
 </script>
-
-<style>
-.trash {
-    background: whitesmoke;
-    position: absolute;
-    right: 0;
-    left: 0;
-    height: 70px;
-    top: 232px;
-    text-align: center;
-    border-radius: 10px;
-    border: 4px dotted;
-}
-</style>

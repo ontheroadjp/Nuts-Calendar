@@ -7,11 +7,6 @@ export default {
                 newItemContent: '',
             },
 
-            editItem: {
-                isModalActive: false,
-                editingItem: null,
-            },
-
             deleteItem: {
                 isDeleting: false,
             },

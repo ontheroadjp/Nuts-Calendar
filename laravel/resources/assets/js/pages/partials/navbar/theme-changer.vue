@@ -8,7 +8,10 @@
                 @change="setTheme()"
                 style="border: none"
             >
-                <option v-for="option in options" value="{{ option.value }}">{{ option.text }}</option>
+                <option 
+                    v-for="theme in themes" 
+                    value="{{ theme.value }}"
+                >{{ theme.text }}</option>
             </select>
         </span>
         </p>
@@ -20,7 +23,7 @@ export default {
     data() {
         const self = this;
         return {
-            options: [
+            thmes: [
                 { value: "koiai", text: "koiai" },
                 { value: "nadeshiko", text: "nadeshiko" },
                 { value: "mikan", text: "mikan" },

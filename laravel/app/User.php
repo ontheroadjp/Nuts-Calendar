@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\UserCalendar;
+use Nuts\Calendar\Models\UserCalendar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable

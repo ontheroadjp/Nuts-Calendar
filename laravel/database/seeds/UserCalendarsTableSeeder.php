@@ -11,6 +11,6 @@ class UserCalendarsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\UserCalendar::class, 15)->create();
+        factory(Nuts\Calendar\Models\UserCalendar::class, 15)->create();
     }
 }
