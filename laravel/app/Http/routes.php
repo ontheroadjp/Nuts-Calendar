@@ -20,7 +20,7 @@ Route::group( ['prefix' => 'api/v1'], function() {
             // members
             Route::get('member', 'MembersController@index' );
             Route::get('member/{id}', 'MembersController@show' );
-            Route::post('member', 'MembersController@store' );
+//            Route::post('member', 'MembersController@store' );
 //            Route::patch('member/{id}', 'MembersController@update' );
             Route::delete('member/{id}', 'MembersController@destroy' );
 

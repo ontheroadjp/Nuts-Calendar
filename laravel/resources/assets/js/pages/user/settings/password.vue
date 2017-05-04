@@ -178,10 +178,7 @@
         transition: all .4s ease;
         z-index: 99999;
     }
-    .result-fade-enter {
-        opacity: 0;
-    }
-    .result-fade-leave {
+    .result-fade-enter .result-fade-leave {
         opacity: 0;
     }
 </style>

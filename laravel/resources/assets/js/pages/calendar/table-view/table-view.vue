@@ -44,22 +44,26 @@
     <thead v-if="display === '' || display === 'header'">
         <tr>
             <th :style="style.dayColumnWidth">Date</th>
+
+            <template v-for="(memberId, member) in filteredColumns">
 <!--
-            <th v-for="member in $store.state.calendar.data.members"
-                :style="columnWidth"
-                @click="clickTableHeader(member.id)"
-                @mouseover="member.is_hover = true"
-                @mouseout="member.is_hover = false"
-            ><span>{{ member.name }}</span>
-            </th>
+                <th v-show="showColumns.indexOf(memberId) > -1"
+                    :style="columnWidth"
+                    @click="clickTableHeader(member.id)"
+                    @mouseover="member.is_hover = true"
+                    @mouseout="member.is_hover = false"
+                    ><span>{{ member.name }}</span>
+                </th>
 -->
-            <th v-for="member in $store.state.calendar.data.members"
-                :style="columnWidth"
-                @click="openEditColumnModal(member.id)"
-                @mouseover="member.is_hover = true"
-                @mouseout="member.is_hover = false"
-            ><span>{{ member.name }}</span>
-            </th>
+                <th v-show="showColumns.indexOf(memberId) > -1"
+                    :style="columnWidth"
+                    @click="openEditColumnModal(member.id)"
+                    @mouseover="member.is_hover = true"
+                    @mouseout="member.is_hover = false"
+                    draggable="true"
+                    ><span>{{ member.name }}({{ memberId }})</span>
+                </th>
+            </template>
         </tr>
     </thead>
 
@@ -80,73 +84,75 @@
 
             <!-- NOTE: cellItemsLoopIndex = member_id -->
             <!-- NOTE: cellItems = items in a cell -->
-            <td v-for="(memberId, cellItems) in day.events"
-                :style="[columnWidth, dragItem.enterCell == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
-                @click="clickToItemInsert((dayIndex + 1) + '-' + memberId)"
-                @dragEnter="handleDragEnter((dayIndex +1) + '-' + memberId)"
-                @dragOver="handleDragOver($event)"
-                @drop="handleDrop($event, cellItems)"
-            >
-
-                <!-- Show cellItems -->
-                <div v-for="(cellItemsIndex, item) in cellItems"
-                    class="form-inline"
-                    @mouseout="item.is_hover = false"
+            <template v-for="(memberId, cellItems) in day.events">
+                <td v-show="showColumns.indexOf(memberId) > -1"
+                    :style="[columnWidth, dragItem.enterCell == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
+                    @click="clickToItemInsert((dayIndex + 1) + '-' + memberId)"
+                    @dragEnter="handleDragEnter((dayIndex +1) + '-' + memberId)"
+                    @dragOver="handleDragOver($event)"
+                    @drop="handleDrop($event, cellItems)"
                 >
-                    <span v-show="!item.editing"
-                        style="cursor: move"
-                        :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
-                        draggable="true"
-                        @mouseover="item.is_hover = true"
-                        @dragStart="handleDragStart(cellItems, item, cellItemsIndex, $event)"
-                        @dragEnd="handleDragEnd()"
+    
+                    <!-- Show cellItems -->
+                    <div v-for="(cellItemsIndex, item) in cellItems"
+                        class="form-inline"
+                        @mouseout="item.is_hover = false"
                     >
-                        <!-- show item content -->
-                        <span v-if="item.content" 
-                            class="item"
-                            @click.stop="openEditItemModal(item)" 
-                        >{{ item.content }}
-                            <span class="icon is-small" 
-                                v-show="(dragItem.isUpdating || deleteItem.isDeleting) && dragItem.draggingItem == item"
-                            >
-                                <i class="fa fa-refresh fa-spin"></i>
+                        <span v-show="!item.editing"
+                            style="cursor: move"
+                            :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
+                            draggable="true"
+                            @mouseover="item.is_hover = true"
+                            @dragStart="handleDragStart(cellItems, item, cellItemsIndex, $event)"
+                            @dragEnd="handleDragEnd()"
+                        >
+                            <!-- show item content -->
+                            <span v-if="item.content" 
+                                class="item"
+                                @click.stop="openEditItemModal(item)" 
+                            >{{ item.content }}
+                                <span class="icon is-small" 
+                                    v-show="(dragItem.isUpdating || deleteItem.isDeleting) && dragItem.draggingItem == item"
+                                >
+                                    <i class="fa fa-refresh fa-spin"></i>
+                                </span>
                             </span>
                         </span>
-                    </span>
-                </div><!-- // Show cellItems -->
-
-                <!-- show an input field -->
-                <template v-if="addItem.cellTo == (dayIndex + 1) + '-' + memberId">
-                    <input type="text"
-                           class="input"
-                           placeholder="New Event here.."
-                           v-model="addItem.newItemContent"
-                           v-focus
-                           style=" border: none;
-                                   box-shadow: none;
-                                   border-bottom: 2px dotted red;
-                                   border-radius: 0px;
-                           "
-                    >
-                    <a  class="button is-small"
-                        v-show="!addItem.isInserting"
-                        @click.stop="insertItem(memberId, dayIndex + 1, cellItems)"
-                        @blur="insertItem(memberId, dayIndex + 1, cellItems)"
-                        >add
-                    </a>
-
-                    <a  class="button is-small" 
-                        v-show="addItem.isInserting"
-                    ><span class="icon is-small">
-                        <i class="fa fa-refresh fa-spin"></i>
-                     </span>
-                    </a>
-
-                    <a class="button is-small" @click.stop="addItem.cellTo = ''">
-                        cancel
-                    </a>
-                </template>
-            </td>
+                    </div><!-- // Show cellItems -->
+    
+                    <!-- show an input field -->
+                    <template v-if="addItem.cellTo == (dayIndex + 1) + '-' + memberId">
+                        <input type="text"
+                               class="input"
+                               placeholder="New Event here.."
+                               v-model="addItem.newItemContent"
+                               v-focus
+                               style=" border: none;
+                                       box-shadow: none;
+                                       border-bottom: 2px dotted red;
+                                       border-radius: 0px;
+                               "
+                        >
+                        <a  class="button is-small"
+                            v-show="!addItem.isInserting"
+                            @click.stop="insertItem(memberId, dayIndex + 1, cellItems)"
+                            @blur="insertItem(memberId, dayIndex + 1, cellItems)"
+                            >add
+                        </a>
+    
+                        <a  class="button is-small" 
+                            v-show="addItem.isInserting"
+                        ><span class="icon is-small">
+                            <i class="fa fa-refresh fa-spin"></i>
+                         </span>
+                        </a>
+    
+                        <a class="button is-small" @click.stop="addItem.cellTo = ''">
+                            cancel
+                        </a>
+                    </template>
+                </td>
+            </template>
         </tr>
     </tbody>
 
@@ -181,8 +187,7 @@
         ],
 
         props: [
-//            'id', 'display', 'fixed', 'filteredCalendar'
-            'id', 'display', 'filteredCalendar'
+            'id', 'display', 'filteredColumns', 'filteredCalendar', 'showColumns'
         ],
 
         data() {
@@ -225,7 +230,8 @@
 
         computed: {
             columnWidth: function() {
-                var length = Object.keys(this.$store.state.calendar.data.members).length;
+                //const length = this.$parent.showColumns.length;
+                const length = this.showColumns.length;
                 return {
                     width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
                     minWidth: '120px',
@@ -394,5 +400,12 @@
         background-color: #ff6060 !important;
         border-color: red !important;
         color: #fff;
+    }
+    .column-fade-transition {
+        transition: all .4s ease;
+        z-index: 99999;
+    }
+    .column-fade-enter .column-fade-leave {
+        opacity: 0;
     }
 </style>

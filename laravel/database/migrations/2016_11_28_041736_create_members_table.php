@@ -20,7 +20,6 @@ class CreateMembersTable extends Migration
             $table->integer('order');
             $table->string('name');
             $table->string('color');
-            $table->boolean('isShow')->default(1);
             $table->timestamps();
 
             $table

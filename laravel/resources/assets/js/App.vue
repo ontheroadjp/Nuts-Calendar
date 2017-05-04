@@ -62,6 +62,13 @@
                 this.$store.commit('login', response.data.currentuser.name);
                 this.$store.commit('initUserCalendar', response.data.usercalendar );
                 this.$store.commit('initCalendar', response.data.days );
+
+                Object.keys(response.data.members).forEach(function(key) {
+                    let val = this[key];
+                    val.isShow = true;
+                    u.clog(key + ':' + val.name + '(order: ' + val.order + ')');
+                },response.data.members);
+
                 this.$store.commit('initMembers', response.data.members );
 //                const calId = localStorage.getItem('currentCalendarId');
 //                if(calId) {

@@ -7,11 +7,11 @@
                 v-model="selectedTheme" 
                 @change="setTheme()"
                 style="border: none"
-            >
-                <option 
+                ><option 
                     v-for="theme in themes" 
                     value="{{ theme.value }}"
-                >{{ theme.text }}</option>
+                    >{{ theme.text }}
+                </option>
             </select>
         </span>
         </p>
@@ -23,7 +23,7 @@ export default {
     data() {
         const self = this;
         return {
-            thmes: [
+            themes: [
                 { value: "koiai", text: "koiai" },
                 { value: "nadeshiko", text: "nadeshiko" },
                 { value: "mikan", text: "mikan" },

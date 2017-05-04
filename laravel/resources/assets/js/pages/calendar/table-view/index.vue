@@ -18,8 +18,13 @@
     <div id="table-view-header" 
         :class="['main-calendar-panel-header', {sticky: isFixed}]"
     >
+
     <div v-show="isLoadingCalendarApi" class="black-screen"></div>
-        <table-view display="header"></table-view>
+        <table-view 
+            display="header" 
+            :filtered-columns="filteredColumns"
+            :show-columns="showColumns"
+        ></table-view>
     </div>
 
     <!-- table body -->
@@ -28,7 +33,11 @@
         @scroll="onScrollBody()"
     >
     <div v-show="isLoadingCalendarApi" class="black-screen"></div>
-        <table-view display="body" :filtered-calendar="filteredCalendar"></table-view>
+        <table-view 
+            display="body" 
+            :filtered-calendar="filteredCalendar" 
+            :show-columns="showColumns"
+        ></table-view>
     </div>
 
     <!-- jump to the page top button -->
@@ -62,6 +71,26 @@
             'isToolPaletteOpen'
         ],
 
+        data() {
+            return {
+                position: 0,
+                showColumns: [],
+                query: {
+                    search: '',
+                    internal: ''
+                },
+                height: {
+                    headerNav: 0,
+                    signboard: 0,
+                    toolPalette: 0
+                },
+                elements: {
+                    tableHeader: '',
+                    tableBody: ''
+                }
+            }
+        },
+        
         computed: {
             isFixed: function() {
                 return this.position > this.fixedHeight;
@@ -71,6 +100,37 @@
                         + this.height.signboard 
                         + this.height.toolPalette;
             },
+
+//            showColumns: function() {
+//                let data = this.$store.state.calendar.data.members;
+//                let result = [];
+//
+//                Object.keys(data).forEach(function(key) {
+//                    let val = this[key];
+//                    if( val.isShow === true) {
+//                        result.push(key);
+//                    }
+//                }, data);
+//
+//                return result;
+//            },
+
+            filteredColumns: function() {
+                const self = this;
+                let data = this.$store.state.calendar.data.members;
+                this.showColumns = [];
+
+                let result = {};
+                Object.keys(data).forEach(function(key) {
+                    let val = this[key];
+                    if( val.isShow === true) {
+                        result[key] = val;
+                        self.showColumns.push(key);
+                    }
+                }, data);
+                return result;
+            },
+
             filteredCalendar: function () {
                 const self = this;
                 let data = this.$store.state.calendar.data.calendars;
@@ -89,25 +149,6 @@
             },
         },
 
-        data() {
-            return {
-                position: 0,
-                query: {
-                    search: '',
-                    internal: ''
-                },
-                height: {
-                    headerNav: 0,
-                    signboard: 0,
-                    toolPalette: 0
-                },
-                elements: {
-                    tableHeader: '',
-                    tableBody: ''
-                }
-            }
-        },
-        
         methods: {
             updateHeight: function() {
                 this.height.headerNav = document.getElementById('headerNav').clientHeight;
@@ -115,7 +156,7 @@
                 this.height.toolPalette = 0;
 
                 if(this.$route.path == '/calendar/view' && this.isToolPaletteOpen) {
-                    this.height.toolPalette = document.getElementById('tool-palette').scrollHeight -2;
+                    this.height.toolPalette = document.getElementById('tool-palette').clientHeight -2;
                 }
             },
 

@@ -33,36 +33,17 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
     ];
 });
 
-function autoIncrement()
-{
-    for ($i = 0; $i < 1000; $i++) {
-        yield $i;
-    }
-}
-
-$autoIncrement = autoIncrement();
-$factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) use ($autoIncrement) {
-    $autoIncrement->next();
-    $colors = ['primary', 'info', 'danger'];
-    $userCalendars = Nuts\Calendar\Models\UserCalendar::all();
-
-    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
-        $userCalendarIds[] = $val->id;
-    }
-
-    return [
-        'name' => $faker->name,
-        'order' => $autoIncrement->current(),
-        'color' => $faker->randomElement($colors),
-        'user_calendar_id' => $faker->randomElement($userCalendarIds),
-    ];
-});
-
-//$factory->define(App\Member::class, function (Faker\Generator $faker) {
-//    //$faker = FakerFactory::create('ja_JP');
+//function autoIncrement()
+//{
+//    for ($i = 0; $i < 1000; $i++) {
+//        yield $i;
+//    }
+//}
 //
+//$autoIncrement = autoIncrement();
+//$factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) use ($autoIncrement) {
+//    $autoIncrement->next();
 //    $colors = ['primary', 'info', 'danger'];
-//    $userCalendars = Nuts\Calendar\Models\UserCalendar::all();
 //
 //    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
 //        $userCalendarIds[] = $val->id;
@@ -70,12 +51,28 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
 //
 //    return [
 //        'name' => $faker->name,
-//        'order' => $faker->randomElement($colors),
+//        'order' => $autoIncrement->current(),
 //        'color' => $faker->randomElement($colors),
 //        'user_calendar_id' => $faker->randomElement($userCalendarIds),
 //    ];
-//
 //});
+
+$factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) {
+    //$faker = FakerFactory::create('ja_JP');
+    $colors = ['primary', 'info', 'danger'];
+
+    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
+        $userCalendarIds[] = $val->id;
+    }
+
+    return [
+        'name' => $faker->name,
+        'order' => $faker->randomElement($colors),
+        'color' => $faker->randomElement($colors),
+        'user_calendar_id' => $faker->randomElement($userCalendarIds),
+    ];
+
+});
 
 $factory->define(App\Event::class, function (Faker\Generator $faker) {
 

@@ -5,7 +5,7 @@
     
         <div id="mc_embed_signup" class="columns is-vcentered">
             <div class="column is-one-third is-left">
-                <p class="title" style="color:{{ theme.secondary.code }}">Nuts <strong>Calendar</strong></p>
+                <p class="title" :style="style.title">Nuts <strong>Calendar</strong></p>
                 <p class="subtitle" style="color: #fff">
                     <small>
                         Manage your task & events in easily, quickly and a fun!
@@ -51,6 +51,14 @@
             theme: function() {
                 return this.$store.state.app.theme;
             },
+
+            style: function() {
+                return {
+                    title: {
+                        'color': this.theme.secondary.code,
+                    }
+                }
+            }
         },
     } 
 </script>

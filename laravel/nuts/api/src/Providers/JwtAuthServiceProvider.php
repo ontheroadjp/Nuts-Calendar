@@ -38,6 +38,7 @@ class JwtAuthServiceProvider extends ServiceProvider
         ], function() {
             Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
                 Route::put('calendar/{id}', 'UserCalendarsController@update');
+                Route::post('member', 'MembersController@store' );
                 Route::put('member/{id}', 'MembersController@update');
             });
         });

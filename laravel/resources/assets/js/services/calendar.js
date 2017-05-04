@@ -39,6 +39,13 @@ export default {
         successFetchCalendar(response) {
             u.clog('success');
             this.$store.commit('initCalendar', response.data.days );
+
+            Object.keys(response.data.members).forEach(function(key) {
+                let val = this[key];
+                val.isShow = true;
+                u.clog(key + ':' + val.name + '(order: ' + val.order + ')');
+            },response.data.members);
+
             this.$store.commit('initMembers', response.data.members );
             this.isLoading.calendarApi = false;
         },

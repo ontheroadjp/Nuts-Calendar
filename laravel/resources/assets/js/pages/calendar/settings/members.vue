@@ -110,7 +110,9 @@
                 selected: '',
                 editingItem: '',
                 input: {
-                    name: ''
+                    name: '',
+                    order: '',
+                    isShow: '',
                 },
                 dnd: {
                     draggingItem: '',

@@ -147,6 +147,10 @@ export default {
         state.calendar.data.members = members;
     },
 
+    setShowMember(state, payload) {
+        state.calendar.data.members[payload.id].isShow = payload.value;
+    },
+
     addMember( state, payload ) {
         Vue.set(state.calendar.data.members, payload.key, payload.data);
 
@@ -160,6 +164,7 @@ export default {
 
     updateMember( state, member ) {
         state.calendar.data.members[member.id].name = member.name;
+        state.calendar.data.members[member.id].order = member.order;
         state.calendar.data.members[member.id].color = member.color;
     },
 

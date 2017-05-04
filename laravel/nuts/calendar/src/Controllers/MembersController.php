@@ -62,6 +62,7 @@ class MembersController extends Controller
         $this->validate($request, [
             'user_calendar_id' => 'required',
             'name' => 'required',
+            'order' => 'required',
             'color' => 'required'
         ]);
 
@@ -83,7 +84,7 @@ class MembersController extends Controller
 
         $item->fill($request->only(
             //Member::getFillable()
-            ['name','color']
+            ['name','order', 'color']
         ));
         $item->save();
         return $item;
