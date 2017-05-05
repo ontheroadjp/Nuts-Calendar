@@ -1,18 +1,9 @@
 <template>
-    <div class="modal is-active" v-show="isActive" transition="modal-fade">
+    <div class="modal is-active" transition="modal-fade">
         <div class="modal-background"></div>
-            <slot></slot>
-        </div>
+        <slot></slot>
     </div>
 </template>
-
-<script>
-export default {
-    props: [
-        'isActive'
-    ]
-}
-</script>
 
 <style>
     .modal-fade-transition {

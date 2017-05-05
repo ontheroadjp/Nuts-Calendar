@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Nuts\Calendar\Controllers;
 
-use Illuminate\Http\Request;
-
-use App\Calendar;
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use Nuts\Calendar\Models\Calendar;
+use App\Http\Controllers\Controller;
 
 class CalendarController extends Controller
 {

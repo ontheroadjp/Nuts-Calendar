@@ -1,7 +1,7 @@
 <?php
 
-use App\Calendar;
 use Illuminate\Database\Seeder;
+use Nuts\Calendar\Models\Calendar;
 
 class CalendarTableSeeder extends Seeder
 {

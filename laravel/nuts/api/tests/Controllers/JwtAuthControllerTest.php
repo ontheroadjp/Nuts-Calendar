@@ -100,7 +100,7 @@ class JwtAuthControllerTest extends TestCase
     /** @test */
     public function routing_to_calendar_view()
     {
-        $this->visit('/calendar/view/xxx')
+        $this->visit('/calendar/view')
             ->see('<div id="app"></div>');
     }
 

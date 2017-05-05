@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace Nuts\Calendar\Models;
 
-use App\Event;
-use Nuts\Calendar\Models\Member;
+//use Nuts\Calendar\Models\Event;
+//use Nuts\Calendar\Models\Member;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,17 +34,15 @@ class Calendar extends Model
 
     public function fetch($userCalendarId, $year, $month)
     {
-
         $members = Member::where('user_calendar_id', $userCalendarId)
                 ->get()
                 ->keyBy('id');
 
-        $calendar = $this->specificMonth($year,$month);
-
+        $calendar = $this->fetchCalendarWithEvents($year,$month);
         $calendar = $this->tidyEvents($calendar, $members);
 
         $e = new Event();
-        $events = $e->fetchRange($year, $month);
+        $events = $e->fetchSpecificMonth($year, $month);
 
          return [
              "members" => $members,
@@ -53,7 +51,7 @@ class Calendar extends Model
          ];
     }
 
-    public function specificMonth($year,$month)
+    public function fetchCalendarWithEvents($year,$month)
     {
         return Calendar::with('events')
             ->where('date', 'LIKE', "%$year-$month%")
@@ -98,5 +96,4 @@ class Calendar extends Model
 
         return $days;
     }
-
 }

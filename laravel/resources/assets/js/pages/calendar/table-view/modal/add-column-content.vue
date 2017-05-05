@@ -7,14 +7,26 @@
         <button class="delete" @click="close()"></button>
     </header>
     <section class="modal-card-body">
+        <div style="padding: 60px; width: 100%;">
 
-        <div class="field">
-            <label class="label">Name</label>
-            <div class="control">
-                <input class="input" type="text" v-model="input.name" placeholder="Name">
+            <div class="field">
+                <label class="label">Name</label>
+                <div class="control has-icon">
+                    <input 
+                        class="nuts-input-textbox" 
+                        type="text" 
+                        style="margin-bottom: 25px;"
+                        v-model="input.name" 
+                        placeholder="{{ nameHasError ? error.name : 'Name' }}"
+                        v-focus
+                    >
+                    <span class="icon is-small" :style="[nameHasError ? style.error : '']">
+                        <i class="fa fa-user"></i>
+                    </span>
+                </div>
             </div>
-        </div>
 
+        </div>
     </section>
     <footer class="modal-card-foot">
         <a class="button {{ theme.primary.class }}" @click="ok()">Save changes</a>
@@ -26,8 +38,13 @@
 
 <script>
 import memberApi from '../../../../services/member.js';
+import focus from '../../../../directives/form-focus.js';
 
 export default {
+    directives: {
+        focus
+    },
+
     props: [
         'isActive', 'memberId'
     ],

@@ -2,6 +2,7 @@
 import Vue from 'vue';
 //Vue.config.debug = true;
 //Vue.config.silent = true;
+Vue.config.productionTip = true;
 
 // vue-router
 import VueRouter from 'vue-router';

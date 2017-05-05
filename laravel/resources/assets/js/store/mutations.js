@@ -1,7 +1,7 @@
-// -----------------------------------------------------------------------
-// mutations
-
 export default {
+
+    // ---------------------------------------------
+    // app
 
     ready( state, val ) {
         state.app.ready = val
@@ -153,7 +153,6 @@ export default {
 
     addMember( state, payload ) {
         Vue.set(state.calendar.data.members, payload.key, payload.data);
-
         state.calendar.data.calendars.forEach( function(val, index) {
             Vue.set( val.events, payload.key, [{
                 'editing': false,
@@ -165,27 +164,25 @@ export default {
     updateMember( state, member ) {
         state.calendar.data.members[member.id].name = member.name;
         state.calendar.data.members[member.id].order = member.order;
-        state.calendar.data.members[member.id].color = member.color;
     },
 
     deleteMember( state, id ) {
         Vue.delete(state.calendar.data.members, id);
-
         state.calendar.data.calendars.forEach( function(val, index) {
             Vue.delete( val.events, id);
         });
     },
 
-    // ---------------------------------------------
-    // members dialog
-
-    setMembersModalIsActive( state, val ) {
-        state.membersModal.isActive = val;
-    },
-
-    setMembersModalSelectedTab( state, index ) {
-        state.membersModal.selectedTab = index
-    },
+//    // ---------------------------------------------
+//    // members dialog
+//
+//    setMembersModalIsActive( state, val ) {
+//        state.membersModal.isActive = val;
+//    },
+//
+//    setMembersModalSelectedTab( state, index ) {
+//        state.membersModal.selectedTab = index
+//    },
 
 //    // ---------------------------------------------
 //    // events

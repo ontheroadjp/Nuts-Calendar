@@ -1,14 +1,5 @@
-/**
- * A fork of https://github.com/phanan/koel.
- * Trigger a function if the user clicks out of the bound element.
- * @type {Object}
- */
-
 import axios from 'axios'
 
-/**
- * Responsible for all HTTP requests.
- */
 export const http = {
     request (method, url, data, successCb = null, errorCb = null) {
         u.clog('http.request');
@@ -91,7 +82,7 @@ export const http = {
      */
     init () {
         u.clog('http initialized');
-        axios.defaults.timeout = 2500;
+        //axios.defaults.timeout = 2500;
         //axios.defaults.baseURL = '/api/v1'
 
         axios.interceptors.request.use( config => {
@@ -120,13 +111,10 @@ export const http = {
                 return Promise.resolve(response)
             }, error => {
                 if (error.response) {
-                    // The request was made, but the server responded with a status code
-                    // that falls out of the range of 2xx
-//                    u.clog(error.response.data);
-//                    u.clog(error.response.status);
-//                    u.clog(error.response.headers);
+                    u.clog(error.response.data);
+                    u.clog(error.response.status);
+                    u.clog(error.response.headers);
                 } else {
-                    // Something happened in setting up the request that triggered an Error
                     u.clog('Error' + error.message);
                 }
 

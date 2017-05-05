@@ -1,20 +1,20 @@
 <template>
-    <span class="{{ class }}">
-        <span :style="{color: color};">{{ message }}</span>
-        <span @click="close()"><i v-show="isImportant" class="fa fa-times-circle"></i></span>
-    </span>
+    <div class="message is-danger" transition="message-fade">
+        <slot></slot>
+    </div>
 </template>
 
-<script>
-export default {
-    props: [
-        'message', 'color', 'isImportant', 'class', 'isShow'
-    ],
-
-    methods: {
-        close: function() {
-            setTimeout( () => this.isShow = false, 1500);
-        },
-    },
-}
-</script>
+<style>
+    .message-fade-transition {
+        transition: all .4s ease;
+        width: 50%;
+        position: fixed;
+        top: 25%;
+        left: 25%;
+        transform: translateY(-50%);
+        z-index: 99;
+    }
+    .message-fade-enter, .message-fade-leave {
+        opacity: 0;
+    }
+</style>

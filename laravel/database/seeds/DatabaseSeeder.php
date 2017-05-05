@@ -2,6 +2,8 @@
 
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Nuts\Calendar\Models\Member;
+use Nuts\Calendar\Models\UserCalendar;
 use Illuminate\Database\Eloquent\Model;
 
 class DatabaseSeeder extends Seeder
@@ -15,39 +17,30 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        // user
         $this->call(UsersTableSeeder::class);
+
+        // user calendar
         $this->call(UserCalendarsTableSeeder::class);
 
+        // member
         $faker = Faker::create('en_US');
-
-        foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
+        foreach( UserCalendar::all(['id']) as $val ) {
             for( $i=1; $i<5; $i++ ) {
-                Nuts\Calendar\Models\Member::create([
+                Member::create([
                     'name' => $faker->name,
                     'order' => $i,
-                    'color' => 'primary',
                     'user_calendar_id' => $val->id,
                 ]);
             }
         }
 
-//        foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
-//            $userCalendarIds[] = $val->id;
-//        }
-//
-//        for($n=0; $n<count($userCalendarIds); $n++){
-//            for( $i=1; $i<5; $i++ ) {
-//                Nuts\Calendar\Models\Member::create([
-//                    'name' => $faker->name,
-//                    'order' => $i,
-//                    'color' => 'primary',
-//                    'user_calendar_id' => $userCalendarIds[$n],
-//                ]);
-//            }
-//        }
-
         //$this->call(MembersTableSeeder::class);
+
+        // event
         $this->call(EventsTableSeeder::class);
+
+        // calendar(date)
         $this->call(CalendarTableSeeder::class);
 
         Model::reguard();

@@ -66,6 +66,8 @@ export default {
         failedInsertItem(error) {
             u.clog('failed');
             this.addItem.isInserting = false;
+            this.addItem.newItemContent = '';
+            this.addItem.cellTo = '';
         },
 
         // Move
@@ -81,33 +83,43 @@ export default {
             payload.item.date = y + '-' + m + '-' + d;
             payload.item.member_id = payload.member_id;
     
-            this.execUpdateItem(payload.item);
+            this.execUpdateItem(payload.item, payload);
         },
 
         // update
-        execUpdateItem(item) {
+        execUpdateItem(item, payload) {
             u.clog('updateItem()');
             const url = '/api/v1/item/' + item.id;
             const params = {
                 'member_id': item.member_id,
                 'content': item.content,
+                'start_time': item.start_time,
+                'end_time': item.end_time,
                 'date': item.date
             };
     
             http.fetchPut(url, params)
-                .then(response => this.successUpdateItem(response))
-                .catch(error => this.failedUpdateItem(error));
+                .then(response => this.successUpdateItem(response, payload))
+                .catch(error => this.failedUpdateItem(error, payload));
         },
     
-        successUpdateItem: function(response) {
+        successUpdateItem: function(response, payload) {
             u.clog('success');
             this.dragItem.isUpdating = false;
             this.initDraggingProperties();
         },
     
-        failedUpdateItem: function(error) {
+        failedUpdateItem: function(error, payload) {
             u.clog('failed');
             this.dragItem.isUpdating = false;
+
+            // reverse item to original position(cell)
+            this.removeItemFromArray(
+                payload.cellItemsTo, 
+                Object.keys(payload.cellItemsTo).length - 1
+            );
+            this.addItemToArray(payload.cellItemsFrom, payload.item);
+
             this.initDraggingProperties();
         },
     

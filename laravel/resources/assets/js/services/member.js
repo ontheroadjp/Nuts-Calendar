@@ -1,12 +1,20 @@
 export default {
+    data() {
+        return {
+            memberService: {
+                isLoading: false,
+            }
+        }
+    },
+
     methods: {
         execInsertMember: function (userCalendarId, payload) {
+            this.memberService.isLoading = true;
             const url = '/api/v1/member';
             const params = {
                 'user_calendar_id': userCalendarId,
                 'name': payload.name,
-                'order': payload.order,
-                'color': 'primary'
+                'order': payload.order
             };
             
             http.fetchPost(url, params)
@@ -22,13 +30,16 @@ export default {
                 'data': response.data
             });
             this.input.name = '';
+            this.memberService.isLoading = false;
         },
 
         failedInsertMember(error) {
             u.clog('failed');
+            this.memberService.isLoading = false;
         },
 
         execUpdateMember: function(id, name) {
+            this.memberService.isLoading = true;
             const url = '/api/v1/member/' + id;
             const data = {
                 'name': name,
@@ -45,14 +56,34 @@ export default {
             this.$store.commit('updateMember', {
                 'id': response.data.id,
                 'name': response.data.name,
-                'order': response.data.order,
-                'color': response.data.color
+                'order': response.data.order
             });
+            this.memberService.isLoading = false;
         },
 
         failedUpdateMember(error) {
             u.clog('failed');
+            this.memberService.isLoading = false;
         },
 
+        execDeleteMember: function(memberId) {
+            this.memberService.isLoading = true;
+            const url = '/api/v1/member/' + memberId;
+    
+            http.fetchDelete(url)
+                .then(response => this.successDeleteMember(response))
+                .catch(error => this.failedDeleteMember(error));
+        },
+
+        successDeleteMember(response) {
+            u.clog('success');
+            this.$store.commit('deleteMember', response.data.id);
+            this.memberService.isLoading = false;
+        },
+
+        failedDeleteMember(error) {
+            u.clog('error');
+            this.memberService.isLoading = false;
+        },
     }
 }

@@ -7,7 +7,9 @@
             <button class="delete" @click="close()"></button>
         </header>
         <section class="modal-card-body">
-            <p>content: {{ content }} </p>
+            <p>content: {{ item !== null ? item.content : ''}} </p>
+            <p>start: {{ item !== null ? item.start_time : ''}} </p>
+            <p>end: {{ item !== null ? item.end_time : ''}} </p>
         </section>
         <footer class="modal-card-foot">
             <a class="button {{ theme.primary.class }}">Save changes</a>
@@ -31,10 +33,6 @@ export default {
     },
 
     computed: {
-        content: function() {
-            return this.item !== null ? this.item.content : '';
-        },
-
         theme: function() {
             return this.$store.state.app.theme;
         }

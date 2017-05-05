@@ -27,12 +27,11 @@ class UserCalendar extends Model
         return $model;
     }
 
-    protected static function createMember($userCalendarId, $name = 'member', $color = 'primary')
+    protected static function createMember($userCalendarId, $name = 'member')
     {
         Member::create([
             'user_calendar_id' => $userCalendarId,
-            'name' => $name,
-            'color' => $color
+            'name' => $name
         ]);
     }
 

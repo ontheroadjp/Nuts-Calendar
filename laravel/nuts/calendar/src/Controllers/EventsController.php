@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Nuts\Calendar\Controllers;
 
-use App\Event;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Nuts\Calendar\Models\Event;
+use App\Http\Controllers\Controller;
 
 class EventsController extends Controller
 {
@@ -19,8 +20,8 @@ class EventsController extends Controller
         return $items;
     }
 
-    public function indexRange(Event $event, $year, $month) {
-        return $event->fetchRange($year, $month);
+    public function indexSpecificMonth(Event $event, $year, $month) {
+        return $event->fetchSpecificMonth($year, $month);
     }
 
     /**
@@ -58,7 +59,7 @@ class EventsController extends Controller
         $item = Event::findOrAbort($id);
         $item->fill($request->only(
             //Event::getFillable()
-            ['member_id','content','date']
+            ['member_id','content','date','start_time', 'end_time']
         ));
         $item->save();
         return $item;

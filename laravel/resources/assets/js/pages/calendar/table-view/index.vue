@@ -19,7 +19,7 @@
         :class="['main-calendar-panel-header', {sticky: isFixed}]"
     >
 
-    <div v-show="isLoadingCalendarApi" class="black-screen"></div>
+        <div v-show="isLoadingCalendarApi" class="black-screen"></div>
         <table-view 
             display="header" 
             :filtered-columns="filteredColumns"
@@ -32,7 +32,16 @@
         :class="['main-calendar-panel', {'sticky-offset': isFixed}]" 
         @scroll="onScrollBody()"
     >
-    <div v-show="isLoadingCalendarApi" class="black-screen"></div>
+        <div v-show="isLoadingCalendarApi" class="black-screen">
+            <div class="has-text-centered" style="
+                position: absolute;
+                top: 5%;
+                left: 50%;
+                transform: translateX(-50%);
+                "><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            </div>
+        </div>
+
         <table-view 
             display="body" 
             :filtered-calendar="filteredCalendar" 
@@ -95,25 +104,12 @@
             isFixed: function() {
                 return this.position > this.fixedHeight;
             },
+
             fixedHeight: function() {
                 return this.height.headerNav 
                         + this.height.signboard 
                         + this.height.toolPalette;
             },
-
-//            showColumns: function() {
-//                let data = this.$store.state.calendar.data.members;
-//                let result = [];
-//
-//                Object.keys(data).forEach(function(key) {
-//                    let val = this[key];
-//                    if( val.isShow === true) {
-//                        result.push(key);
-//                    }
-//                }, data);
-//
-//                return result;
-//            },
 
             filteredColumns: function() {
                 const self = this;

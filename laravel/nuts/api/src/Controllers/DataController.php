@@ -11,8 +11,8 @@
 
 namespace Nuts\Api\Controllers;
 
-use App\Calendar;
 use Nuts\Api\Requests\DataRequest;
+use Nuts\Calendar\Models\Calendar;
 use Nuts\Calendar\Models\UserCalendar;
 use Nuts\Api\Responses\JwtAuthJsonResponse;
 use Illuminate\Routing\Controller as BaseController;

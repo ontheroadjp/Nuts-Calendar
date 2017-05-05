@@ -63,7 +63,6 @@ class MembersController extends Controller
             'user_calendar_id' => 'required',
             'name' => 'required',
             'order' => 'required',
-            'color' => 'required'
         ]);
 
         $item = new Member($request->all());

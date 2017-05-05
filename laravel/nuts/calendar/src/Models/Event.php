@@ -1,13 +1,12 @@
 <?php
 
-namespace App;
+namespace Nuts\Calendar\Models;
 
-use Nuts\Calendar\Models\Member;
+//use Nuts\Calendar\Models\Member;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-
     /**
      * fillable
      *
@@ -15,7 +14,7 @@ class Event extends Model
      * @access protected
      */
     protected $fillable = [
-        'member_id', 'content', 'date'
+        'member_id', 'content', 'date', 'start_time', 'end_time'
     ];
 
     /**
@@ -39,6 +38,17 @@ class Event extends Model
     }
 
     /**
+     * member
+     *
+     * @access public
+     * @return void
+     */
+    public function member()
+    {
+        return $this->belongsTo(Member::class,'member_id');
+    }
+
+    /**
      * fetch
      *
      * @param mixed $id
@@ -48,23 +58,12 @@ class Event extends Model
      * @access public
      * @return void
      */
-    public function fetchRange($year, $month)
+    public function fetchSpecificMonth($year, $month)
     {
         return Event::with('member')
             ->where('date', 'LIKE', "%$year-$month%")
             ->orderBy('date', 'ASC')
             ->get();
-    }
-
-    /**
-     * member
-     *
-     * @access public
-     * @return void
-     */
-    public function member()
-    {
-        return $this->belongsTo(Member::class,'member_id');
     }
 
     /**

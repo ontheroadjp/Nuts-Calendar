@@ -48,7 +48,6 @@
             initToken() {
                 const token = jwtToken.getLocalToken();
                 if(token) {
-//                    http.fetch('/api/v1/data')
                     http.fetchGet('/api/v1/data')
                         .then(response => this.successInit(response))
                         .catch(error => this.failedInit(error)); 

@@ -1,6 +1,6 @@
 <template>
 <div>
-    <add-column-modal :is-active="modal.addColumn.isActive">
+    <add-column-modal v-show="modal.addColumn.isActive">
         <add-column-modal-content 
             :is-active.sync="modal.addColumn.isActive" 
             :member-id.sync="modal.addColumn.addingColumnId"
@@ -57,7 +57,7 @@
 <script>
 import searchBox from './table-search-box.vue';
 import addColumnModalBase from '../../../components/modal.vue';
-import addColumnModalContent from './modal/addColumnContent.vue';
+import addColumnModalContent from './modal/add-column-content.vue';
 
 export default {
     components: {

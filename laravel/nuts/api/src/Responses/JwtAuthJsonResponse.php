@@ -156,7 +156,6 @@ trait JwtAuthJsonResponse
         try {
             $user = $this->getAuthenticatedUser($refreshedTokenString);
         } catch (JWTException $e) {
-            //return sendTokenExpiredAndUnrefreshable($e);
             return $this->sendTokenUnrefreshable($e);
         }
 
@@ -228,18 +227,6 @@ trait JwtAuthJsonResponse
     {
         return $this->sendJson(500, TOKEN_UNREFRESHABLE);
     }
-
-    /**
-     * Send the JSON response w/(code: 500, message: token expired and unrefreshable)
-     *
-     * @param \Tymon\JWTAuth\Exceptions\JWTException $e
-     * @access protected
-     * @return Illuminate\Http\JsonResponse
-     */
-//    protected function sendTokenExpiredAndUnrefreshable(JWTException $e = null)
-//    {
-//        return $this->sendJson(500, TOKEN_EXPIRED_AND_UNREFRESHABLE);
-//    }
 
     /**
      * Send the JSON response w/(code: 400, message: token not provided)

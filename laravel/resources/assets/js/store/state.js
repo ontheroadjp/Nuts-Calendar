@@ -1,6 +1,3 @@
-// -----------------------------------------------------------------------
-// state
-
 const now = new Date();
 
 export default {
@@ -45,10 +42,5 @@ export default {
             members: [],
         },
         isLoading: false,
-    },
-
-    membersModal: {
-        isActive: false,
-        selectedTab: 0,
     },
 }

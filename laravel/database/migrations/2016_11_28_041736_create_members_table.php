@@ -19,7 +19,6 @@ class CreateMembersTable extends Migration
             $table->integer('user_calendar_id')->unsigned();
             $table->integer('order');
             $table->string('name');
-            $table->string('color');
             $table->timestamps();
 
             $table

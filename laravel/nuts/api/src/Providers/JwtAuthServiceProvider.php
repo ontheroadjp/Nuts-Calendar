@@ -31,18 +31,36 @@ class JwtAuthServiceProvider extends ServiceProvider
 
     protected function registerRoutes()
     {
+
+        // -------------------------------------------------------------------
+        // for Nuts\Calendar
         $this->app['router']->group([
             'namespace' => 'Nuts\Calendar\Controllers',
             'prefix' => '/api/v1',
-            'middleware' => 'nuts.api.dev',
+            'middleware' => 'nuts.api.dev'
         ], function() {
             Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
+
+                // calendar(date)
+                Route::get('calendar/{userCalendarId}/{year}/{month}', 'CalendarController@index' );
+
+                // user calendar
                 Route::put('calendar/{id}', 'UserCalendarsController@update');
+
+                // member
                 Route::post('member', 'MembersController@store' );
                 Route::put('member/{id}', 'MembersController@update');
+                Route::delete('member/{id}', 'MembersController@destroy' );
+
+                // item
+                Route::post('item', 'EventsController@store' );
+                Route::put('item/{id}', 'EventsController@update' );
+                Route::delete('item/{id}', 'EventsController@destroy' );
             });
         });
 
+        // -------------------------------------------------------------------
+        // for Nuts\Api
         $this->app['router']->group([
             'namespace' => 'Nuts\Api\Controllers',
         ], function() {
@@ -65,9 +83,9 @@ class JwtAuthServiceProvider extends ServiceProvider
                 'prefix' => '/api/v1',
                 'middleware' => 'nuts.api.dev',
             ], function() {
-//                Route::group(['middleware' => 'nuts.api.jsonthrottle:5,10'], function() {
+                Route::group(['middleware' => 'nuts.api.jsonthrottle:5,10'], function() {
                     Route::post('login', 'JwtAuthController@login');
-//                });
+                });
                 Route::post('register', 'JwtAuthController@register');
                 Route::post('password/reset', 'JwtPasswordController@postReset');
                 Route::post('password/email', 'JwtPasswordController@postEmail');

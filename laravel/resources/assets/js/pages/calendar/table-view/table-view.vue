@@ -1,18 +1,29 @@
 <template id="calendar">
 <div>
-<edit-column-modal :is-active="modal.editColumn.isActive">
-    <edit-column-modal-content 
-        :is-active.sync="modal.editColumn.isActive" 
-        :member-id.sync="modal.editColumn.editingColumnId"
-    ></edit-column-modal-content>
-</edit-column-modal>
+    <div v-if="display === '' || display === 'header'">
+        <delete-column-warning v-show="message.deleteColumnWarning.isActive">
+            <delete-column-warning-content
+                :is-active.sync="message.deleteColumnWarning.isActive"
+                :column-id="message.deleteColumnWarning.columnId"
+            ></delete-column-warning-content>
+        </delete-column-warning>
 
-<edit-item-modal :is-active="modal.editItem.isActive">
-    <edit-item-modal-content 
-        :is-active.sync="modal.editItem.isActive" 
-        :item.sync="modal.editItem.editingItem"
-    ></edit-item-modal-content>
-</edit-item-modal>
+        <edit-column-modal v-show="modal.editColumn.isActive">
+            <edit-column-modal-content 
+                :is-active.sync="modal.editColumn.isActive" 
+                :member-id.sync="modal.editColumn.editingColumnId"
+            ></edit-column-modal-content>
+        </edit-column-modal>
+    </div>
+        
+    <div v-if="display === '' || display === 'body'">
+        <edit-item-modal v-show="modal.editItem.isActive">
+            <edit-item-modal-content 
+                :is-active.sync="modal.editItem.isActive" 
+                :item.sync="modal.editItem.editingItem"
+            ></edit-item-modal-content>
+        </edit-item-modal>
+    </div>
 
 <div  :class="{'trash-entered': dragItem.enterTrash}"
     style="
@@ -46,24 +57,42 @@
             <th :style="style.dayColumnWidth">Date</th>
 
             <template v-for="(memberId, member) in filteredColumns">
-<!--
                 <th v-show="showColumns.indexOf(memberId) > -1"
-                    :style="columnWidth"
-                    @click="clickTableHeader(member.id)"
+                    :style="[{'padding': 0}, columnWidth]"
                     @mouseover="member.is_hover = true"
                     @mouseout="member.is_hover = false"
-                    ><span>{{ member.name }}</span>
+                >
+
+                    <figure>
+                        <div style="padding: 0.5em 0.75em">{{ member.name }}({{ memberId }})</div>
+                        <figcaption>
+                            <p class="has-text-centered" style="margin-top:6px">
+                                <span class="icon" style="margin-right:10px">
+                                    <a><i class="fa fa-pencil" @click.stop="openEditColumnModal(member.id)"></i></a>
+                                </span>
+
+                                <span class="icon" style="margin-left:10px">
+                                    <a @click="deleteColumn(member.id)"><i class="fa fa-trash"></i></a>
+                                </span>
+                            </p>
+                        </figcaption>
+                    </figure>
+
                 </th>
--->
+            </template>
+<!--
+            <template v-for="(memberId, member) in filteredColumns">
                 <th v-show="showColumns.indexOf(memberId) > -1"
                     :style="columnWidth"
                     @click="openEditColumnModal(member.id)"
                     @mouseover="member.is_hover = true"
                     @mouseout="member.is_hover = false"
                     draggable="true"
-                    ><span>{{ member.name }}({{ memberId }})</span>
+                >
+                    <span>{{ member.name }}({{ memberId }})</span>
                 </th>
             </template>
+-->
         </tr>
     </thead>
 
@@ -94,7 +123,7 @@
                 >
     
                     <!-- Show cellItems -->
-                    <div v-for="(cellItemsIndex, item) in cellItems"
+                    <div v-for="(cellItemsIndex, item) in cellItems | orderByStartTime"
                         class="form-inline"
                         @mouseout="item.is_hover = false"
                     >
@@ -110,7 +139,7 @@
                             <span v-if="item.content" 
                                 class="item"
                                 @click.stop="openEditItemModal(item)" 
-                            >{{ item.content }}
+                                >{{{ item.start_time + ' - ' + item.content | itemFormatted }}}
                                 <span class="icon is-small" 
                                     v-show="(dragItem.isUpdating || deleteItem.isDeleting) && dragItem.draggingItem == item"
                                 >
@@ -129,8 +158,8 @@
                                v-focus
                                style=" border: none;
                                        box-shadow: none;
-                                       border-bottom: 2px dotted red;
                                        border-radius: 0px;
+                                       background-color: transparent;
                                "
                         >
                         <a  class="button is-small"
@@ -163,19 +192,25 @@
 
 <script>
     import focus from '../../../directives/form-focus.js';
+    import orderByStartTime from '../../../filters/order-by-start-time.js';
+    import itemFormatted from '../../../filters/item-formatted.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import itemApi from '../../../services/item.js'; 
-    import editColumnModalBase from '../../../components/modal.vue';
-    import editColumnModalContent from './modal/editColumnContent.vue';
-    import editItemModalBase from '../../../components/modal.vue';
-    import editItemModalContent from './modal/editItemContent.vue';
+    import editColumnModal from '../../../components/modal.vue';
+    import editColumnModalContent from './modal/edit-column-content.vue';
+    import editItemModal from '../../../components/modal.vue';
+    import editItemModalContent from './modal/edit-item-content.vue';
+    import deleteColumnWarning from '../../../components/message.vue';
+    import deleteColumnWarningContent from './message/delete-column-warning.vue';
 
     export default {
         components: {
-            'edit-column-modal': editColumnModalBase,
-            'edit-item-modal': editItemModalBase,
+            'edit-column-modal': editColumnModal,
+            'edit-item-modal': editItemModal,
             'edit-column-modal-content': editColumnModalContent,
             'edit-item-modal-content': editItemModalContent,
+            'delete-column-warning': deleteColumnWarning,
+            'delete-column-warning-content': deleteColumnWarningContent,
         },
 
         directives: {
@@ -183,7 +218,7 @@
         },
 
         mixins: [
-            itemApi, dateUtilities
+            itemApi, dateUtilities, orderByStartTime, itemFormatted
         ],
 
         props: [
@@ -209,6 +244,13 @@
                         isActive: false,
                         editingColumnId: '',
                     },
+                },
+
+                message: {
+                    deleteColumnWarning: {
+                        isActive: false,
+                        columnId: '',
+                    }
                 },
 
                 dragItem: {
@@ -318,11 +360,6 @@
 
             // ------------------------------------------------------------------------
 
-            clickTableHeader(index) {
-                this.$store.commit('setMembersModalIsActive', true);
-                this.$store.commit('setMembersModalSelectedTab', index);
-            },
-
             // Insert
             clickToItemInsert(cell) {
                 //this.addItem.isInserting = false;
@@ -335,6 +372,11 @@
                 //column.oldValue = column.content;
                 this.modal.editColumn.isActive = true;
                 this.modal.editColumn.editingColumnId = memberId;
+            },
+
+            deleteColumn(memberId) {
+                this.message.deleteColumnWarning.isActive = true;
+                this.message.deleteColumnWarning.columnId = memberId;
             },
 
             // modal( item )
@@ -408,4 +450,26 @@
     .column-fade-enter .column-fade-leave {
         opacity: 0;
     }
+
+    figure {
+        position: relative;
+        overflow: hidden;
+    }
+
+    figcaption {
+        position: absolute;
+        top: -100%;
+        left: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(240, 240, 240, .8);
+        transition: .3s;
+        opacity: 1;
+    }
+    figure:hover figcaption {
+        top: 0;
+        left: 0;
+    }
+
 </style>

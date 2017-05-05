@@ -75,8 +75,6 @@ class DataControllerTest extends TestCase
 
         $json = $this->getToJson('/api/v1/data');
 
-        var_dump($json);
-
         $this->assertArrayHasKey('status', $json);
         $this->assertArrayHasKey('code', $json);
         $this->assertArrayHasKey('message', $json);

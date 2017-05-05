@@ -5,12 +5,9 @@ import passwordEmail from '../pages/user/password-mail.vue';
 import passwordReset from '../pages/user/password-reset.vue';
 import userAccountSettings from '../pages/user/settings/index.vue';
 import calendar from '../pages/calendar/index.vue';
-import tableView from '../pages/calendar/table-view/index.vue';
 import dashboard from '../pages/calendar/dashboard/index.vue';
+import tableView from '../pages/calendar/table-view/index.vue';
 import calendarSettings from '../pages/calendar/settings/index.vue';
-//import settingsCalendar from '../pages/calendar/settings/calendar.vue';
-//import settingsMembers from '../pages/calendar/settings/members.vue';
-//import settingsItems from '../pages/calendar/settings/items.vue';
 
 export function init (router) {
     mapping(router);
@@ -20,7 +17,6 @@ export function init (router) {
 
 function mapping(router) {
     router.map({
-    
         '/': {
             component: root,
             auth: false,

@@ -1,10 +1,6 @@
 <template>
     <div id="calendar">
     
-        <nuts-members-modal name="members-modal">
-            <nuts-member-tabs></nuts-member-tabs>
-        </nuts-members-modal>
-    
         <signboard 
             :is-loading-calendar-api="isLoading.calendarApi"
             :is-tool-palette-open.sync="isToolPaletteOpen"
@@ -22,14 +18,9 @@
     import signboard from './signboard/index.vue';
     import calendarApi from '../../services/calendar.js';
 
-    import nutsModal from '../../nuts-vue-components/NutsModal.vue';
-    import fcMemberTabs from '../../components/FcMemberTabs.vue';
-
     export default {
         components: {
             'signboard': signboard,
-            'nuts-members-modal': nutsModal,
-            'nuts-member-tabs': fcMemberTabs,
         },
 
         mixins: [
@@ -43,6 +34,10 @@
         },
 
         computed: {
+            appReady: function() {
+                return this.$store.state.app.ready;
+            },
+
             currentCalendarId: function() {
                 return this.$store.state.calendar.currentId;
             },
@@ -54,24 +49,33 @@
             currentMonth: function() {
                 return this.$store.state.calendar.currentMonth;
             },
-
-            newColumnKey: function() {
-                return this.$store.getters.newColumnKey;
-            }
         },
 
         watch: {
+            'appReady': {
+                handler: function(newVal, oldVal) {
+                    if(!oldVal && newVal) {
+                        u.clog('watch: appReady');
+                        this.fetchCalendar(this.currentCalendarId);
+                    }
+                },
+                deep: true
+            },
+
             'currentCalendarId': {
-                handler: function(new_val, old_val) {
-                    if( old_val === '') return;
+                handler: function(newVal, oldVal) {
+                    if( oldVal === '') return;
                     u.clog('watch: currentCalendarId');
-                    this.fetchCalendar(this.currentCalendarId);
+                    if(this.$store.state.app.ready) {
+                        this.fetchCalendar(this.currentCalendarId);
+                    }
                 },
                 deep: true
             },
 
             'currentYear': {
-                handler: function(new_val, old_val) {
+                handler: function(newVal, oldVal) {
+                    if( oldVal === '') return;
                     u.clog('watch: currentYear');
                     this.fetchCalendar(this.currentCalendarId);
                 },
@@ -79,7 +83,8 @@
             },
 
             'currentMonth': {
-                handler: function(new_val, old_val) {
+                handler: function(newVal, oldVal) {
+                    if( oldVal === '') return;
                     u.clog('watch: currentMonth');
                     this.fetchCalendar(this.currentCalendarId);
                 },
