@@ -4,13 +4,15 @@
     <!-- tool palette -->
     <div v-show="isToolPaletteOpen" 
         id="tool-palette" 
-        style="background:#f0f0f0; padding:5px;"
+        style="background:#f0f0f0; padding:5px; overflow: scroll"
         transition="tool-palette"
     >
         <tool-palette 
             :is-open.sync="isToolPaletteOpen"
             :internal-query.sync="query.internal"
             :search-query.sync="query.search"
+            :is-event-show.sync="item.event.isShow"
+            :is-task-show.sync="item.task.isShow"
         ></tool-palette>
     </div>
 
@@ -18,34 +20,24 @@
     <div id="table-view-header" 
         :class="['main-calendar-panel-header', {sticky: isFixed}]"
     >
-
-        <div v-show="isLoadingCalendarApi" class="black-screen"></div>
         <table-view 
-            display="header" 
             :filtered-columns="filteredColumns"
             :show-columns="showColumns"
+            :is-loading-calendar-api="isLoadingCalendarApi"
         ></table-view>
     </div>
 
     <!-- table body -->
     <div id="table-view-body" 
-        :class="['main-calendar-panel', {'sticky-offset': isFixed}]" 
-        @scroll="onScrollBody()"
+         :class="['main-calendar-panel', {'sticky-offset': isFixed}]" 
+         @scroll="onScrollBody()"
     >
-        <div v-show="isLoadingCalendarApi" class="black-screen">
-            <div class="has-text-centered" style="
-                position: absolute;
-                top: 5%;
-                left: 50%;
-                transform: translateX(-50%);
-                "><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-            </div>
-        </div>
-
         <table-view 
-            display="body" 
-            :filtered-calendar="filteredCalendar" 
+            :filtered-body="filteredCalendar" 
             :show-columns="showColumns"
+            :is-event-show="item.event.isShow"
+            :is-task-show="item.task.isShow"
+            :is-loading-calendar-api="isLoadingCalendarApi"
         ></table-view>
     </div>
 
@@ -89,6 +81,14 @@
                     search: '',
                     internal: ''
                 },
+                item: {
+                    event: {
+                        isShow: true
+                    },
+                    task: {
+                        isShow: true
+                    }
+                },
                 height: {
                     headerNav: 0,
                     signboard: 0,
@@ -118,11 +118,11 @@
                 this.showColumns = [];
 
                 let result = {};
-                Object.keys(data).forEach(function(key) {
-                    let val = this[key];
-                    if( val.isShow === true) {
-                        result[key] = val;
-                        self.showColumns.push(key);
+                Object.keys(data).forEach(function(memberId) {
+                    let member = this[memberId];
+                    if( member.isShow === true) {
+                        result[memberId] = member;
+                        self.showColumns.push(memberId);
                     }
                 }, data);
                 return result;
@@ -133,16 +133,21 @@
                 get() {
                     const self = this;
                     let data = this.$store.state.calendar.data.calendars;
-                    let filterWord = this.query.search && this.query.search.toLowerCase();
+                    let searchQuery = this.query.search.toLowerCase();
+                    let internalQuery = this.query.internal;
     
-                    // filter by day of the week index
-                    if(! filterWord) {
-                        filterWord = this.query.internal;
-                        if(filterWord) {
-                            data = data.slice().filter(function (row) {
-                                return self.getDayIndex(row['date']) == filterWord;
-                            });
-                        }
+                    // filter by search words
+                    if(searchQuery) {
+                        data = data.slice().filter( day => {
+                            return this.getItemContentsAsString(day).indexOf(searchQuery) > -1;
+                        });
+                    }
+
+                    // filter by day of the week
+                    if(internalQuery) {
+                        data = data.slice().filter( row => {
+                            return this.getDayIndex(row['date']) == internalQuery;
+                        });
                     }
     
                     // sort cell items
@@ -160,28 +165,19 @@
         },
 
         methods: {
-//            orderByStartTime: function(value) {
-//                if(value.length === 0) return value;
-//                return value.slice().sort((a, b) => {
-//    
-//                    if( a.start_time === undefined || a.start_time === null ) return -1;
-//                    if( b.start_time === undefined || b.start_time === null ) return 1;
-//    
-//                    const aArr = a.start_time.split(':');
-//                    const bArr = b.start_time.split(':');
-//    
-//                    // sort by hour
-//                    if (parseInt(aArr[0]) < parseInt(bArr[0])) return -1;
-//                    if (parseInt(aArr[0]) > parseInt(bArr[0])) return 1;
-//    
-//                    // sort by minits
-//                    if (parseInt(aArr[1]) < parseInt(bArr[1])) return -1;
-//                    if (parseInt(aArr[1]) > parseInt(bArr[1])) return 1;
-//    
-//                    // the same value
-//                    return 0;
-//                });
-//            },
+            getItemContentsAsString: function(day) {
+                let result = '';
+                let columns = day.items;
+                const memberIds = Object.keys(columns);
+
+                memberIds.forEach(function(id) {
+                    const cellItems = columns[id];
+                    cellItems.forEach(function(item) {
+                        result += item.content.toLowerCase() + ' ';
+                    });
+                });
+                return result;
+            },
 
             updateHeight: function() {
                 this.height.headerNav = document.getElementById('headerNav').clientHeight;
@@ -238,13 +234,6 @@
     overflow: hidden;
     position: relative;
     height: 36px;
-}
-.black-screen {
-    background: rgba(217, 217, 217, 0.75);
-    position: absolute;
-    min-height: 100%;
-    min-width: 100%;
-    z-index: 999;
 }
 .sticky {
     position: fixed;

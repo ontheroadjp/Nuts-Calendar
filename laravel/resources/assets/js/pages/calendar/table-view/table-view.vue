@@ -1,6 +1,21 @@
 <template id="calendar">
 <div>
-    <div v-if="display === '' || display === 'header'">
+    <div v-show="isLoadingCalendarApi" class="black-screen">
+<!--
+        <div v-if="display === '' || display === 'body'" 
+-->
+        <div v-if="filteredBody" 
+            class="has-text-centered" 
+            style="
+                position: absolute;
+                top: 5%;
+                left: 50%;
+                transform: translateX(-50%);
+            "><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        </div>
+    </div>
+
+    <div v-if="filteredColumns">
         <delete-column-warning v-show="message.deleteColumnWarning.isActive">
             <delete-column-warning-content
                 :is-active.sync="message.deleteColumnWarning.isActive"
@@ -16,7 +31,7 @@
         </edit-column-modal>
     </div>
         
-    <div v-if="display === '' || display === 'body'">
+    <div v-if="filteredBody">
         <edit-item-modal v-show="editItem.isActive">
             <edit-item-modal-content 
                 :is-active.sync="editItem.isActive" 
@@ -25,7 +40,7 @@
         </edit-item-modal>
     </div>
 
-<div  :class="{'trash-entered': dragItem.enterTrash}"
+<div :class="{'trash-entered': dragItem.enterTrash}"
     style="
         position: fixed;
         top: 60px;
@@ -49,15 +64,15 @@
     </span>
 </div>
 
-<div class="panel">
+<div class="panel" :style="isLoadingCalendarApi ? 'height: 100vh' : ''">
 <table id="{{ id }}" class="table is-bordered">
 
-    <thead v-if="display === '' || display === 'header'">
+    <thead v-if="filteredColumns">
         <tr>
             <th :style="style.dayColumnWidth">Date</th>
 
             <template v-for="(memberId, member) in filteredColumns">
-                <th v-show="showColumns.indexOf(memberId) > -1"
+                <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[{'padding': 0}, columnWidth]"
                     @mouseover="member.is_hover = true"
                     @mouseout="member.is_hover = false"
@@ -83,8 +98,8 @@
         </tr>
     </thead>
 
-    <tbody v-if="display === '' || display === 'body'">
-        <tr v-for="(dayIndex, day) in filteredCalendar"
+    <tbody v-if="filteredBody">
+        <tr v-for="(dayIndex, day) in filteredBody"
             :class="{
                 saturday: getDayIndex(day.date) == 6, 
                 sunday: getDayIndex(day.date) == 0
@@ -101,7 +116,7 @@
             <!-- NOTE: cellItemsLoopIndex = member_id -->
             <!-- NOTE: cellItems = items in a cell -->
             <template v-for="(memberId, cellItems) in day.items">
-                <td v-show="showColumns.indexOf(memberId) > -1"
+                <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[columnWidth, dragItem.enterCell == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
                     @click="clickToItemInsert((dayIndex + 1) + '-' + memberId)"
                     @dragEnter="handleDragEnter((dayIndex +1) + '-' + memberId)"
@@ -122,28 +137,35 @@
                             @dragEnd="handleDragEnd()"
                         >
                             <!-- show item content -->
-                            <span
-                                class="item"
-                                @click.stop="openEditItemModal(item)" 
-                            >
-                                {{ //'(' + item.type_id + ')' }}
-
-                                <template v-if="item.type_id === 1">
-                                    {{{ item.start_time + ' - ' + item.content | itemFormatted }}}
-                                </template>
-    
-                                <template v-if="item.type_id === 2">
-                                    <input type="checkbox"> {{ item.content }}
-                                </template>
-
-                                <span class="icon is-small" 
-                                    v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
-                                >
-                                    <i class="fa fa-refresh fa-spin"></i>
+                            <template v-if="isEventShow && item.type_id === 1">
+                                <span class="item is-event" @click.stop="openEditItemModal(item)">
+                                    <strong v-show="item.start_time" style="margin-right: 8px">
+                                        {{ item.start_time | timeFormatter }}
+                                    </strong> {{ item.content }}
+                                    <span class="icon is-small" 
+                                        v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
+                                    >
+                                        <i class="fa fa-refresh fa-spin"></i>
+                                    </span>
                                 </span>
-                            </span>
+                            </template>
+
+                            <template v-if="isTaskShow && item.type_id === 2">
+                                <span class="item is-task">
+                                    <input type="checkbox" style="margin-right: 8px" @click.stop=""> 
+                                    <span @click.stop="openEditItemModal(item)">
+                                        {{ item.content }}
+                                    </span>
+                                    <span class="icon is-small" 
+                                        v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
+                                    >
+                                        <i class="fa fa-refresh fa-spin"></i>
+                                    </span>
+                                </span>
+                            </template>
+
                         </span>
-                    </div>
+                    </div><!-- // v-for -->
 
                     <!-- show an input field -->
                     <template v-if="addItem.cellTo == (dayIndex + 1) + '-' + memberId">
@@ -157,23 +179,32 @@
                                        border-radius: 0px;
                                        background-color: transparent;
                                "
-                        >
+                        />
                         <a  class="button is-small"
                             v-show="!addItem.isLoading"
-                            @click.stop="insertItem(memberId, dayIndex + 1, cellItems)"
-                            @blur="insertItem(memberId, dayIndex + 1, cellItems)"
-                            >add
+                            @click.stop="insertEvent(memberId, dayIndex + 1, cellItems)"
+                            @blur="insertEvent(memberId, dayIndex + 1, cellItems)"
+                            >Event
+                        </a>
+    
+                        <a  class="button is-small"
+                            v-show="!addItem.isLoading"
+                            @click.stop="insertTask(memberId, dayIndex + 1, cellItems)"
+                            @blur="insertTask(memberId, dayIndex + 1, cellItems)"
+                            >Task
                         </a>
     
                         <a  class="button is-small" 
                             v-show="addItem.isLoading"
-                        ><span class="icon is-small">
-                            <i class="fa fa-refresh fa-spin"></i>
-                         </span>
+                            ><span class="icon is-small">
+                                <i class="fa fa-refresh fa-spin"></i>
+                             </span>
                         </a>
     
-                        <a class="button is-small" @click.stop="addItem.cellTo = ''">
-                            cancel
+                        <a  class="button is-small" 
+                            v-show="!addItem.isLoading"
+                            @click.stop="resetAddItemFields()" 
+                            >cancel
                         </a>
                     </template>
                 </td>
@@ -188,8 +219,7 @@
 
 <script>
     import focus from '../../../directives/form-focus.js';
-    //import orderByStartTime from '../../../filters/order-by-start-time.js';
-    import itemFormatted from '../../../filters/item-formatted.js';
+    import timeFormatter from '../../../filters/time-formatter.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import itemService from '../../../services/item.js'; 
     import dndService from '../../../services/table-item-dnd.js';
@@ -215,20 +245,54 @@
         },
 
         mixins: [
-            itemService, dndService, dateUtilities, itemFormatted
+            itemService, dndService, dateUtilities, timeFormatter
         ],
 
-        props: [
-            'id', 'display', 'filteredColumns', 'filteredCalendar', 'showColumns'
-        ],
+        props: {
+            id: {
+                type: String,
+                required: false,
+                twoWay: false
+            }, 
+            filteredColumns: {
+                type: Object,
+                required: false,
+                twoWay: false
+            }, 
+            filteredBody: {
+                type: Array,
+                required: false,
+                twoWay: false
+            }, 
+            showColumns: {
+                type: Array,
+                required: false,
+                twoWay: false
+            }, 
+            isEventShow: {
+                type: Boolean,
+                required: false,
+                twoWay: false
+            }, 
+            isTaskShow: {
+                type: Boolean,
+                required: false,
+                twoWay: false
+            },
+            isLoadingCalendarApi: {
+                type: Boolean,
+                required: false,
+                twoWay: false
+            }
+        },
 
         data() {
             return {
                 style: {
                     dayColumnWidth: {
-                        'width': '10%',
-                        'min-width': '100px',
-                        'max-width': '100px'
+                        'width': '8%',
+                        'min-width': '90px',
+                        'max-width': '90px'
                     },
                 },
 
@@ -245,39 +309,26 @@
                         columnId: '',
                     }
                 },
-
-//                dragItem: {
-//                    isLoading: false,
-//                    draggingItem: '',
-//                    enterCell: '',
-//                    enterTrash: false,
-//                    cellItemsFrom: '',
-//                    cellItemsIndex: '',
-//                    isDropped: false,
-//                    style: {
-//                        dragStart: {
-//                            opacity: '0.4'
-//                        }
-//                    }
-//                },
             }
         },
 
         computed: {
             columnWidth: function() {
-                //const length = this.$parent.showColumns.length;
-                const length = this.showColumns.length;
+                //const length = this.showColumns.length;
+                let length = 0;
+                if(this.showColumns) {
+                    length = this.showColumns.length;
+                } else if(this.filteredColumns) {
+                    length = Object.keys(this.filteredColumns).length;
+                } else {
+                    length = Object.keys(this.filteredBody[0].items).length;
+                }
+
                 return {
                     width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
-                    minWidth: '120px',
+                    minWidth: '170px',
                 }
             },
-
-//            dragEnter: function() {
-//                return { 
-//                    border: '2px solid ' + this.theme.secondary.code,
-//                }
-//            },
 
             theme: function() {
                 return this.$store.state.app.theme;
@@ -291,72 +342,6 @@
                 this.editItem.isActive = true;
                 this.editItem.editingItem = item;
             },
-
-//            handleDragStart(cellItems, item, cellItemsIndex, e) {
-//                this.dragItem.cellItemsFrom = cellItems;
-//                this.dragItem.draggingItem = item;
-//                this.dragItem.cellItemsIndex = cellItemsIndex;
-//                item.is_hover = false;
-//            },
-//
-//            handleDragEnter(cell) {
-//                this.dragItem.enterCell = cell;
-//            },
-//
-//            handleDragOver(e) {
-//                if (e.preventDefault) {
-//                    e.preventDefault();
-//                }
-//
-//                e.dataTransfer.dropEffect = 'move'
-//
-//                return false;
-//            },
-//
-//            handleDrop(e, cellItems) {
-//                u.clog('handleDrop()');
-//                this.dragItem.isLoading = true;
-//                this.dragItem.isDropped = true;
-//                if (e.stopPropagation) {
-//                    e.stopPropagation();
-//                }
-//
-//                this.moveItem({
-//                    'cellItemsFrom': this.dragItem.cellItemsFrom,
-//                    'cellItemsTo': cellItems,
-//                    'item': this.dragItem.draggingItem,
-//                    'cellItemsIndex': this.dragItem.cellItemsIndex,
-//                    'day': this.dragItem.enterCell.split('-')[0],
-//                    'member_id': this.dragItem.enterCell.split('-')[1],
-//                });
-//            },
-//
-//            handleDropInTrash(e) {
-//                u.clog('handleDropInTrash()');
-//                this.deleteItem.isLoading = true;
-//                this.dragItem.isDropped = true;
-//                if (e.stopPropagation) {
-//                    e.stopPropagation();
-//                }
-//
-//                this.removeItem(
-//                    this.dragItem.cellItemsFrom, 
-//                    this.dragItem.draggingItem, 
-//                    this.dragItem.cellItemsIndex
-//                );
-//            },
-//
-//            handleDragEnd() {
-//                this.initDraggingProperties();
-//            },
-//
-//            initDraggingProperties() {
-//                this.dragItem.draggingItem = '';
-//                this.dragItem.cellItemsIndex = '';
-//                this.dragItem.cellItemsFrom = '';
-//                this.dragItem.enterCell = '';
-//                this.dragItem.isDropped = false;
-//            },
 
             // ------------------------------------------------------------------------
 
@@ -384,6 +369,14 @@
 </script>
 
 <style lang="sass">
+    .black-screen {
+        background: rgba(217, 217, 217, 0.75);
+        position: absolute;
+        min-height: 100%;
+        min-width: 100%;
+        z-index: 999;
+    }
+
     table.calendar tbody td {
         color: #ccc;
     }
@@ -416,10 +409,7 @@
     }
     .item {
         align-items: center;
-        background-color: rgba(0, 209, 178, 0.3);
-        border: 1px solid rgb(0, 209, 178);
         border-radius: 3px;
-        color: #023a31;
         display: -webkit-inline-box;
         display: -ms-inline-flexbox;
         display: inline-flex;
@@ -430,6 +420,16 @@
         vertical-align: top;
         margin-bottom: 5px;
         line-height: 2em;
+        &.is-event {
+            background-color: rgba(0, 209, 178, 0.3);
+            border: 1px solid rgb(0, 209, 178);
+            color: #023a31;
+        }
+        &.is-task {
+            background-color: rgb(240, 240, 240);
+            border: 1px solid #dbdbdb;
+            color: #363636;
+        }
     }
     .trash-entered {
         background-color: #ff6060 !important;
@@ -464,5 +464,8 @@
         top: 0;
         left: 0;
     }
+
+
+
 
 </style>

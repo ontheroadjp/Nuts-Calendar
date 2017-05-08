@@ -1,56 +1,81 @@
 <template>
 <div>
-    <add-column-modal v-show="modal.addColumn.isActive">
-        <add-column-modal-content 
-            :is-active.sync="modal.addColumn.isActive" 
-            :member-id.sync="modal.addColumn.addingColumnId"
-        ></add-column-modal-content>
-    </add-column-modal>
-    
-    <div class="level">
-    
-        <div class="level-left" style="margin-left:10px">
-            <span class="level-item">
-                <button class="button" @click="setInternalQuery('')" style="margin-right:15px">All</button>
-                <button class="button" @click="setInternalQuery('0')" style="background-color:#fff0f0">Sun</button>
-                <button class="button" @click="setInternalQuery('1')">Mon</button>
-                <button class="button" @click="setInternalQuery('2')">Tue</button>
-                <button class="button" @click="setInternalQuery('3')">Wed</button>
-                <button class="button" @click="setInternalQuery('4')">Thu</button>
-                <button class="button" @click="setInternalQuery('5')">Fri</button>
-                <button class="button" @click="setInternalQuery('6')" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
-                <span class="column-buttons">
-                    <template v-for="(memberId, member) in $store.state.calendar.data.members">
-                        <a  :class="['button', !member.isShow ? 'column-hide' : '']" 
-                            @click="toggleShowColumn(memberId, !member.isShow)"
-                            ><i class="fa fa-user"></i>
-                        </a>
-                    </template>
-                    <span class="icon is-small">
-                        <a class="button" @click="clickNewColumn()">
-                            <i class="fa fa-user"></i>Add
-                        </a>
-                    </span>
-                </span>
+<add-column-modal v-show="modal.addColumn.isActive">
+    <add-column-modal-content 
+        :is-active.sync="modal.addColumn.isActive" 
+        :member-id.sync="modal.addColumn.addingColumnId"
+    ></add-column-modal-content>
+</add-column-modal>
+
+<span class="level" style="white-space: nowrap">
+    <span class="level-left">
+        <span class="select">
+            <select v-model="selected">
+                <option value="date" selected>Date</option>
+                <option value="member">Member</option>
+                <option value="item">Item</option>
+            </select>
+        </span>
+
+        <span v-show="selected === 'date'" style="margin-left:10px">
+            <button class="button" @click="setInternalQuery('')" style="margin-right:8px">All</button>
+            <button class="button" @click="setInternalQuery('0')" style="background-color:#fff0f0">Sun</button>
+            <button class="button" @click="setInternalQuery('1')">Mon</button>
+            <button class="button" @click="setInternalQuery('2')">Tue</button>
+            <button class="button" @click="setInternalQuery('3')">Wed</button>
+            <button class="button" @click="setInternalQuery('4')">Thu</button>
+            <button class="button" @click="setInternalQuery('5')">Fri</button>
+            <button class="button" @click="setInternalQuery('6')" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
+        </span>
+
+        <span v-show="selected === 'member'" style="margin-left:10px">
+            <template v-for="(memberId, member) in $store.state.calendar.data.members">
+                <button  :class="['button', { 'is-off': !member.isShow }]" 
+                    @click="toggleShowColumn(memberId, !member.isShow)"
+                    >
+                    <i v-show="member.isShow" class="fa fa-user"></i>
+                    <i v-show="!member.isShow" class="fa fa-user-times"></i>
+                </button>
+            </template>
+            <span class="icon is-small">
+                <button class="button" @click="clickNewColumn()">
+                    <i class="fa fa-user"></i>Add
+                </button>
             </span>
-        </div><!-- // .level-left -->
-    
-        <div class="level-right" style="margin-right:10px">
-            <span class="level-item">
-                <search-box :search-query.sync="searchQuery"></search-box>
+        </span>
+
+        <span v-show="selected === 'item'" style="margin-left:10px">
+            <button :class="['button', { 'is-off': !isEventShow }]" 
+                    @click="isEventShow = !isEventShow"
+                    >
+                    <i v-show="isEventShow" class="fa fa-bell-o"></i>
+                    <i v-show="!isEventShow" class="fa fa-bell-slash-o"></i>
+                    Event
+            </button>
+
+            <button :class="['button', { 'is-off': !isTaskShow }]" 
+                    @click="isTaskShow = !isTaskShow"
+                    >
+                    <i v-show="isTaskShow" class="fa fa-bell-o"></i>
+                    <i v-show="!isTaskShow" class="fa fa-bell-slash-o"></i>
+                    Task
+            </button>
+        </span>
+
+    </span><!-- // .level-left -->
+
+    <span class="level-right">
+        <span class="level-item" style="margin-right:10px">
+            <search-box :search-query.sync="searchQuery"></search-box>
+        </span>
+            <span class="level-item icon is-small" 
+                  style="cursor:pointer"
+                  @click="isOpen = !isOpen"
+                  ><i class="fa fa-times-circle"></i>
             </span>
-            <span class="level-item">
-                <span 
-                    class="icon is-small" 
-                    style="cursor:pointer"
-                    @click="isOpen = !isOpen"
-                >
-                    <i class="fa fa-times-circle"></i>
-                </span>
-            </span>
-        </div><!-- // .level-right -->
-    
-    </div><!-- // .level -->
+    </span>
+
+</span><!-- // .level -->
 </div>
 </template>
 
@@ -67,11 +92,12 @@ export default {
     },
 
     props: [
-        'isOpen', 'internalQuery', 'searchQuery'
+        'isOpen', 'internalQuery', 'searchQuery', 'isEventShow', 'isTaskShow'
     ],
 
     data() {
         return {
+            selected: 'day',
             modal: {
                 addColumn: {
                     isActive: false,
@@ -106,7 +132,7 @@ export default {
 }
 </script>
 <style>
-.button.column-hide {
-    background-color: #f0f0f0;
-}
+    .button.is-off {
+        background-color: #f0f0f0;
+    }
 </style>

@@ -44,7 +44,15 @@ export default {
         },
 
         // insert
-        insertItem: function (memberId, day, cellItems) {
+        insertEvent: function (memberId, day, cellItems) {
+            this.insertItem(memberId, day, cellItems, 1);
+        },
+
+        insertTask: function (memberId, day, cellItems) {
+            this.insertItem(memberId, day, cellItems, 2);
+        },
+
+        insertItem: function (memberId, day, cellItems, type_id) {
             u.clog('insertItem()');
             if( ! this.addItem.newItemContent ) {
                 return;
@@ -55,9 +63,10 @@ export default {
                         + ("0" + day).slice(-2);
 
             this.execInsertItem({
-                'memberId': memberId,
-                'date': date,
                 'cellItems': cellItems,
+                'date': date,
+                'type_id': type_id,
+                'memberId': memberId,
                 'content': this.addItem.newItemContent
             });
         },
@@ -66,6 +75,7 @@ export default {
             const url = '/api/v1/item';
             const params = {
                 'date': payload.date,
+                'type_id': payload.type_id,
                 'member_id': payload.memberId,
                 'content': payload.content,
                 'start_time': null,
@@ -79,15 +89,16 @@ export default {
 
         successInsertItem(response, cellItems) {
             u.clog('success');
-            this.addItem.isLoading = false;
-            const item = response.data;
-            this.addItemToArray(cellItems, item);
-            this.addItem.newItemContent = '';
-            this.addItem.cellTo = '';
+            this.addItemToArray(cellItems, response.data);
+            this.resetAddItemFields();
         },
 
         failedInsertItem(error) {
             u.clog('failed');
+            this.resetAddItemFields();
+        },
+
+        resetAddItemFields() {
             this.addItem.isLoading = false;
             this.addItem.newItemContent = '';
             this.addItem.cellTo = '';

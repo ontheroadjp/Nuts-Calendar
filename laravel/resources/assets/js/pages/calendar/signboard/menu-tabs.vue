@@ -26,6 +26,10 @@
                 <i v-if="isLoadingCalendarApi && currentCalendarId === uCalendar.id" class="fa fa-refresh fa-spin"></i>
             </span>
                 {{ uCalendar.name }}
+            <span class="icon is-small" v-show="currentCalendarId == uCalendar.id && ! isLoadingCalendarApi">
+                <i class="fa fa-navicon" @click="toggleToolPalet()"></i>
+            </span>
+<!--
             <span class="icon is-small">
                 <i  v-show="currentCalendarId == uCalendar.id
                             && $route.path == '/calendar/view'" 
@@ -37,10 +41,10 @@
                     class="fa fa-chevron-circle-down fa-rotate-90"
                 ></i>
             </span>
+-->
         </a>
 
-        <ul 
-            id="tabs-dropdown-menu" 
+        <ul id="tabs-dropdown-menu" 
             v-show="isDropdownOpen && currentCalendarId == uCalendar.id"
         >
             <li>
@@ -85,7 +89,7 @@
                     <span>Item Settings</span>
                 </a>
             </li>
-        </ul>
+        </ul><!-- // #tabs-dropdown-menu -->
 
     </li>
 
@@ -98,8 +102,6 @@
         </a>
     </li>
 </ul>
-
-
 </nav>
 </div><!-- // container -->
 </template>
