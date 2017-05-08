@@ -64,6 +64,7 @@
     import tableView from './table-view.vue';
     import toolPalette from './table-tool-palette.vue';
     import dateUtilities from '../../../mixins/date-utilities.js';
+    import orderByStartTime from '../../../mixins/order-by-start-time.js';
     
     export default {
         components: {
@@ -72,7 +73,7 @@
         },
 
         mixins: [
-            dateUtilities
+            dateUtilities, orderByStartTime
         ],
 
         props: [
@@ -127,25 +128,61 @@
                 return result;
             },
 
-            filteredCalendar: function () {
-                const self = this;
-                let data = this.$store.state.calendar.data.calendars;
-                let filterWord = this.query.search && this.query.search.toLowerCase();
-
-                if(! filterWord) {
-                    filterWord = this.query.internal;
-                    if(filterWord) {
-                        data = data.filter(function (row) {
-                            return self.getDayIndex(row['date']) == filterWord;
-                        });
+            filteredCalendar: {
+                cash: true,
+                get() {
+                    const self = this;
+                    let data = this.$store.state.calendar.data.calendars;
+                    let filterWord = this.query.search && this.query.search.toLowerCase();
+    
+                    // filter by day of the week index
+                    if(! filterWord) {
+                        filterWord = this.query.internal;
+                        if(filterWord) {
+                            data = data.slice().filter(function (row) {
+                                return self.getDayIndex(row['date']) == filterWord;
+                            });
+                        }
                     }
+    
+                    // sort cell items
+                    data.forEach(function(day) {
+                        let columns = day.items;
+                        const memberIds = Object.keys(columns);
+                        memberIds.forEach(function(id) {
+                            columns[id] = self.sortCellItems(columns[id]);
+                        });
+                    });
+    
                     return data;
                 }
-                return data;
             },
         },
 
         methods: {
+//            orderByStartTime: function(value) {
+//                if(value.length === 0) return value;
+//                return value.slice().sort((a, b) => {
+//    
+//                    if( a.start_time === undefined || a.start_time === null ) return -1;
+//                    if( b.start_time === undefined || b.start_time === null ) return 1;
+//    
+//                    const aArr = a.start_time.split(':');
+//                    const bArr = b.start_time.split(':');
+//    
+//                    // sort by hour
+//                    if (parseInt(aArr[0]) < parseInt(bArr[0])) return -1;
+//                    if (parseInt(aArr[0]) > parseInt(bArr[0])) return 1;
+//    
+//                    // sort by minits
+//                    if (parseInt(aArr[1]) < parseInt(bArr[1])) return -1;
+//                    if (parseInt(aArr[1]) > parseInt(bArr[1])) return 1;
+//    
+//                    // the same value
+//                    return 0;
+//                });
+//            },
+
             updateHeight: function() {
                 this.height.headerNav = document.getElementById('headerNav').clientHeight;
                 this.height.signboard = document.getElementById('signboard').clientHeight;

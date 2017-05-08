@@ -2,7 +2,7 @@
 
 namespace Nuts\Calendar\Models;
 
-//use Nuts\Calendar\Models\Event;
+//use Nuts\Calendar\Models\Item;
 //use Nuts\Calendar\Models\Member;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -27,9 +27,9 @@ class Calendar extends Model
         ];
     }
 
-    public function events()
+    public function items()
     {
-        return $this->hasMany(Event::class,'date','date');
+        return $this->hasMany(Item::class,'date','date');
     }
 
     public function fetch($userCalendarId, $year, $month)
@@ -38,60 +38,61 @@ class Calendar extends Model
                 ->get()
                 ->keyBy('id');
 
-        $calendar = $this->fetchCalendarWithEvents($year,$month);
-        $calendar = $this->tidyEvents($calendar, $members);
+        $calendar = $this->fetchCalendarWithItems($year,$month);
+        $calendar = $this->tidyItems($calendar, $members);
 
-        $e = new Event();
-        $events = $e->fetchSpecificMonth($year, $month);
+        $item = new Item();
+        $items = $item->fetchSpecificMonth($year, $month);
 
          return [
              "members" => $members,
-             "events" => $events,
+             "items" => $items,
              "days" => $calendar
          ];
     }
 
-    public function fetchCalendarWithEvents($year,$month)
+    public function fetchCalendarWithItems($year,$month)
     {
-        return Calendar::with('events')
+        return Calendar::with('items')
             ->where('date', 'LIKE', "%$year-$month%")
             ->get();
     }
 
-    private function tidyEvents(Collection $calendar, Collection $members)
+    private function tidyItems(Collection $calendar, Collection $members)
     {
         $days = [];
 
         for( $n=0; $n < count($calendar); $n++ ) {
 
-            // gather events into array key by member_id
-            $events_group_by = $calendar[$n]['events']
+            // gather items into array key by member_id
+            $items_group_by = $calendar[$n]['items']
                 ->groupBy('member_id');
 
-            // remove events(key = member_id) which doesn't exist in $members
-            $events_group_by = collect(
+            // remove items(key = member_id) which doesn't exist in $members
+            $items_group_by = collect(
                 array_intersect_key(
-                    $events_group_by->toArray(),
+                    $items_group_by->toArray(),
                     $members->toArray()
                 )
             );
 
             $diff = $members
                 ->keys()
-                ->diff($events_group_by->keys())
+                ->diff($items_group_by->keys())
                 ->flatten();
 
             for( $i=0; $i < count($diff); $i++ ) {
-                $events_group_by->put($diff[$i], array([
-                    'editing' => false,
-                    'is_hover' => false,
-                    'is_drag_start' => false
-                ]));
+                $items_group_by->put($diff[$i], []);
+//                $items_group_by->put($diff[$i], array([
+//                    'editing' => false,
+//                    'is_hover' => false,
+//                    'is_drag_start' => false
+//                ]));
             }
 
             $days[] = collect($calendar[$n])
-                ->forget('events')
-                ->put('events', $events_group_by);
+                ->forget('items')
+                ->put('items', $items_group_by);
         }
 
         return $days;

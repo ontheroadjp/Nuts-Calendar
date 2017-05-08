@@ -2,7 +2,7 @@ export default {
     filters: {
         itemFormatted: function(value) {
             const strArr = value.split(' ');
-            if( strArr[0] === 'null' ) {
+            if(strArr[0] === 'null') {
                 return strArr[2];
             }
             

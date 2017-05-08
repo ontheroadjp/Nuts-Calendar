@@ -1,14 +1,25 @@
+import orderByStartTime from '../mixins/order-by-start-time.js';
+
 export default {
+    mixins: [
+        orderByStartTime
+    ],
+
     data() {
         return {
             addItem: {
-                isInserting: false,
+                isLoading: false,
                 cellTo: '',
                 newItemContent: '',
             },
 
+            editItem: {
+                isActive: false,
+                editingItem: null,
+            },
+
             deleteItem: {
-                isDeleting: false,
+                isLoading: false,
             },
         }
     },
@@ -19,7 +30,17 @@ export default {
         },
 
         removeItemFromArray: function(cellItems, itemIndex) {
+//            u.clog('BEFORE: removeItemFromArray('+ cellItems + ', ' + itemIndex + ')');
+//            cellItems.forEach( function(value) {
+//                u.clog(value.start_time);
+//            });
+
             cellItems.splice(itemIndex, 1);
+
+//            u.clog('AFTER: cellItems: ' + cellItems);
+//            cellItems.forEach( function(value) {
+//                u.clog(value.start_time);
+//            });
         },
 
         // insert
@@ -28,7 +49,7 @@ export default {
             if( ! this.addItem.newItemContent ) {
                 return;
             }
-            this.addItem.isInserting = true;
+            this.addItem.isLoading = true;
             const date = this.$store.state.calendar.currentYear + '-' 
                         + this.$store.state.calendar.currentMonth + '-'
                         + ("0" + day).slice(-2);
@@ -46,7 +67,9 @@ export default {
             const params = {
                 'date': payload.date,
                 'member_id': payload.memberId,
-                'content': payload.content
+                'content': payload.content,
+                'start_time': null,
+                'end_time': null
             };
     
             http.fetchPost(url, params)
@@ -56,7 +79,7 @@ export default {
 
         successInsertItem(response, cellItems) {
             u.clog('success');
-            this.addItem.isInserting = false;
+            this.addItem.isLoading = false;
             const item = response.data;
             this.addItemToArray(cellItems, item);
             this.addItem.newItemContent = '';
@@ -65,7 +88,7 @@ export default {
 
         failedInsertItem(error) {
             u.clog('failed');
-            this.addItem.isInserting = false;
+            this.addItem.isLoading = false;
             this.addItem.newItemContent = '';
             this.addItem.cellTo = '';
         },
@@ -73,8 +96,8 @@ export default {
         // Move
         moveItem(payload) {
             u.clog('moveItem()');
-            this.addItemToArray(payload.cellItemsTo, payload.item);
             this.removeItemFromArray(payload.cellItemsFrom, payload.cellItemsIndex);
+            this.addItemToArray(payload.cellItemsTo, payload.item);
     
             const y = this.$store.state.calendar.currentYear;
             const m = this.$store.state.calendar.currentMonth;
@@ -105,13 +128,16 @@ export default {
     
         successUpdateItem: function(response, payload) {
             u.clog('success');
-            this.dragItem.isUpdating = false;
+            this.dragItem.isLoading = false;
+//            const dayIndex = parseInt(payload.day) - 1;
+//            let items = this.$store.state.calendar.data.calendars[dayIndex].items[payload.member_id];
+//            items = this.sortByStartTime(items);
             this.initDraggingProperties();
         },
     
         failedUpdateItem: function(error, payload) {
             u.clog('failed');
-            this.dragItem.isUpdating = false;
+            this.dragItem.isLoading = false;
 
             // reverse item to original position(cell)
             this.removeItemFromArray(

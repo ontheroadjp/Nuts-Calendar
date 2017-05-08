@@ -73,7 +73,7 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
 
 });
 
-$factory->define(Nuts\Calendar\Models\Event::class, function (Faker\Generator $faker) {
+$factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $faker) {
 
     //$faker = FakerFactory::create('ja_JP');
 
@@ -92,6 +92,10 @@ $factory->define(Nuts\Calendar\Models\Event::class, function (Faker\Generator $f
         '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
     ];
 
+    $randomDate = $year[array_rand($year)]
+        ."-".$month[array_rand($month)]
+        ."-".$day[array_rand($day)];
+
     $hour = [
         '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',
         '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'
@@ -101,19 +105,20 @@ $factory->define(Nuts\Calendar\Models\Event::class, function (Faker\Generator $f
         '00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'
     ];
 
+    $randomTime = $hour[array_rand($hour)]
+        .":".$minits[array_rand($minits)];
+
     foreach( Nuts\Calendar\Models\Member::all(['id']) as $val ) {
         $memberIds[] = $val->id;
     }
 
-    $randomDate = $year[array_rand($year)]
-        ."-".$month[array_rand($month)]
-        ."-".$day[array_rand($day)];
-
-    $randomTime = $hour[array_rand($hour)]
-        .":".$minits[array_rand($minits)];
+    foreach( Nuts\Calendar\Models\ItemType::all(['id']) as $val ) {
+        $itemTypeIds[] = $val->id;
+    }
 
     return [
         'member_id' => $faker->randomElement($memberIds),
+        'type_id' => $faker->randomElement($itemTypeIds),
         'content'=> $faker->sentence(),
         'date' => $randomDate,
         'start_time' => $randomTime

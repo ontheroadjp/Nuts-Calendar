@@ -5,7 +5,7 @@ namespace Nuts\Calendar\Models;
 //use Nuts\Calendar\Models\Member;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Item extends Model
 {
     /**
      * fillable
@@ -14,7 +14,7 @@ class Event extends Model
      * @access protected
      */
     protected $fillable = [
-        'member_id', 'content', 'date', 'start_time', 'end_time'
+        'member_id', 'content', 'date', 'start_time', 'end_time', 'is_done'
     ];
 
     /**
@@ -60,7 +60,7 @@ class Event extends Model
      */
     public function fetchSpecificMonth($year, $month)
     {
-        return Event::with('member')
+        return Item::with('member')
             ->where('date', 'LIKE', "%$year-$month%")
             ->orderBy('date', 'ASC')
             ->get();
@@ -75,7 +75,7 @@ class Event extends Model
      * @return void
      */
     public static function findOrAbort($id){
-        if (!$item = Event::find($id)) {
+        if (!$item = Item::find($id)) {
             $error = [
                 'error' => [
                     'code' => 'ERR-NOTFOUND',

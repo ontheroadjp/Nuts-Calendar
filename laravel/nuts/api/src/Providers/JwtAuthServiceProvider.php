@@ -53,9 +53,9 @@ class JwtAuthServiceProvider extends ServiceProvider
                 Route::delete('member/{id}', 'MembersController@destroy' );
 
                 // item
-                Route::post('item', 'EventsController@store' );
-                Route::put('item/{id}', 'EventsController@update' );
-                Route::delete('item/{id}', 'EventsController@destroy' );
+                Route::post('item', 'ItemsController@store' );
+                Route::put('item/{id}', 'ItemsController@update' );
+                Route::delete('item/{id}', 'ItemsController@destroy' );
             });
         });
 

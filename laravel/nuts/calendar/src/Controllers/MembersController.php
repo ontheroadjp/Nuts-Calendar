@@ -27,13 +27,13 @@ class MembersController extends Controller
      */
 //    public function indexWith()
 //    {
-//        //$items = Member::with('events')->get();
+//        //$items = Member::with('items')->get();
 //        //return $items;
 //
 //        $target = "2016-12";
 //
 //        return Member::with([
-//            'events' => function($query) {
+//            'items' => function($query) {
 //                $target = "2016-12-12";
 //                $query->where('date', 'like', "%$target%");
 //            }

@@ -18,9 +18,9 @@ class Member extends Model
         return false;
     }
 
-    public function events()
+    public function items()
     {
-        return $this->hasMany(Event::class,'member_id','id')->orderBy('order', 'asc');
+        return $this->hasMany(Item::class,'member_id','id')->orderBy('order', 'asc');
     }
 
     public static function findOrAbort($id){

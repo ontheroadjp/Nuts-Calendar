@@ -4,10 +4,10 @@ namespace Nuts\Calendar\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Nuts\Calendar\Models\Event;
+use Nuts\Calendar\Models\Item;
 use App\Http\Controllers\Controller;
 
-class EventsController extends Controller
+class ItemsController extends Controller
 {
     /**
      * Display a listing of items
@@ -16,49 +16,49 @@ class EventsController extends Controller
      */
     public function index()
     {
-        $items = Event::with('member')->get();
+        $items = Item::with('member')->get();
         return $items;
     }
 
-    public function indexSpecificMonth(Event $event, $year, $month) {
-        return $event->fetchSpecificMonth($year, $month);
+    public function indexSpecificMonth(Item $item, $year, $month) {
+        return $item->fetchSpecificMonth($year, $month);
     }
 
     /**
-     * Display the specified Event.
+     * Display the specified Item.
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return Event::findOrAbort($id);
+        return Item::findOrAbort($id);
     }
 
     /**
-     * Store a newly created Event in storage.
+     * Store a newly created Item in storage.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $item = new Event($request->all());
+        $item = new Item($request->all());
         $item->save();
         return $item;
     }
 
     /**
-     * Update the specified Event in storage.
+     * Update the specified Item in storage.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function update($id, Request $request)
     {
-        $item = Event::findOrAbort($id);
+        $item = Item::findOrAbort($id);
         $item->fill($request->only(
-            //Event::getFillable()
+            //Item::getFillable()
             ['member_id','content','date','start_time', 'end_time']
         ));
         $item->save();
@@ -66,7 +66,7 @@ class EventsController extends Controller
     }
 
     /**
-     * Remove the specified Event from storage.
+     * Remove the specified Item from storage.
      *
      * @param int $id
      *
@@ -74,7 +74,7 @@ class EventsController extends Controller
      */
     public function destroy($id)
     {
-        $item = Event::findOrAbort($id);
+        $item = Item::findOrAbort($id);
         $item->delete();
 
         return \Response::json([

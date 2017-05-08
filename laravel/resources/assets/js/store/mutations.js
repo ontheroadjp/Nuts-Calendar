@@ -154,7 +154,7 @@ export default {
     addMember( state, payload ) {
         Vue.set(state.calendar.data.members, payload.key, payload.data);
         state.calendar.data.calendars.forEach( function(val, index) {
-            Vue.set( val.events, payload.key, [{
+            Vue.set( val.items, payload.key, [{
                 'editing': false,
                 'is_hover': false
             }]);
@@ -169,7 +169,7 @@ export default {
     deleteMember( state, id ) {
         Vue.delete(state.calendar.data.members, id);
         state.calendar.data.calendars.forEach( function(val, index) {
-            Vue.delete( val.events, id);
+            Vue.delete( val.items, id);
         });
     },
 
@@ -185,10 +185,10 @@ export default {
 //    },
 
 //    // ---------------------------------------------
-//    // events
+//    // items
 //
-//    initEvents( state, events ) {
-//        state.events = events;
+//    initItems( state, items ) {
+//        state.items = items;
 //    },
 
 }

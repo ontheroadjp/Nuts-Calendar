@@ -17,10 +17,10 @@
     </div>
         
     <div v-if="display === '' || display === 'body'">
-        <edit-item-modal v-show="modal.editItem.isActive">
+        <edit-item-modal v-show="editItem.isActive">
             <edit-item-modal-content 
-                :is-active.sync="modal.editItem.isActive" 
-                :item.sync="modal.editItem.editingItem"
+                :is-active.sync="editItem.isActive" 
+                :item.sync="editItem.editingItem"
             ></edit-item-modal-content>
         </edit-item-modal>
     </div>
@@ -80,19 +80,6 @@
 
                 </th>
             </template>
-<!--
-            <template v-for="(memberId, member) in filteredColumns">
-                <th v-show="showColumns.indexOf(memberId) > -1"
-                    :style="columnWidth"
-                    @click="openEditColumnModal(member.id)"
-                    @mouseover="member.is_hover = true"
-                    @mouseout="member.is_hover = false"
-                    draggable="true"
-                >
-                    <span>{{ member.name }}({{ memberId }})</span>
-                </th>
-            </template>
--->
         </tr>
     </thead>
 
@@ -113,7 +100,7 @@
 
             <!-- NOTE: cellItemsLoopIndex = member_id -->
             <!-- NOTE: cellItems = items in a cell -->
-            <template v-for="(memberId, cellItems) in day.events">
+            <template v-for="(memberId, cellItems) in day.items">
                 <td v-show="showColumns.indexOf(memberId) > -1"
                     :style="[columnWidth, dragItem.enterCell == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
                     @click="clickToItemInsert((dayIndex + 1) + '-' + memberId)"
@@ -121,10 +108,9 @@
                     @dragOver="handleDragOver($event)"
                     @drop="handleDrop($event, cellItems)"
                 >
-    
+
                     <!-- Show cellItems -->
-                    <div v-for="(cellItemsIndex, item) in cellItems | orderByStartTime"
-                        class="form-inline"
+                    <div v-for="(cellItemsIndex, item) in cellItems"
                         @mouseout="item.is_hover = false"
                     >
                         <span v-show="!item.editing"
@@ -136,19 +122,29 @@
                             @dragEnd="handleDragEnd()"
                         >
                             <!-- show item content -->
-                            <span v-if="item.content" 
+                            <span
                                 class="item"
                                 @click.stop="openEditItemModal(item)" 
-                                >{{{ item.start_time + ' - ' + item.content | itemFormatted }}}
+                            >
+                                {{ //'(' + item.type_id + ')' }}
+
+                                <template v-if="item.type_id === 1">
+                                    {{{ item.start_time + ' - ' + item.content | itemFormatted }}}
+                                </template>
+    
+                                <template v-if="item.type_id === 2">
+                                    <input type="checkbox"> {{ item.content }}
+                                </template>
+
                                 <span class="icon is-small" 
-                                    v-show="(dragItem.isUpdating || deleteItem.isDeleting) && dragItem.draggingItem == item"
+                                    v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
                                 >
                                     <i class="fa fa-refresh fa-spin"></i>
                                 </span>
                             </span>
                         </span>
-                    </div><!-- // Show cellItems -->
-    
+                    </div>
+
                     <!-- show an input field -->
                     <template v-if="addItem.cellTo == (dayIndex + 1) + '-' + memberId">
                         <input type="text"
@@ -163,14 +159,14 @@
                                "
                         >
                         <a  class="button is-small"
-                            v-show="!addItem.isInserting"
+                            v-show="!addItem.isLoading"
                             @click.stop="insertItem(memberId, dayIndex + 1, cellItems)"
                             @blur="insertItem(memberId, dayIndex + 1, cellItems)"
                             >add
                         </a>
     
                         <a  class="button is-small" 
-                            v-show="addItem.isInserting"
+                            v-show="addItem.isLoading"
                         ><span class="icon is-small">
                             <i class="fa fa-refresh fa-spin"></i>
                          </span>
@@ -192,10 +188,11 @@
 
 <script>
     import focus from '../../../directives/form-focus.js';
-    import orderByStartTime from '../../../filters/order-by-start-time.js';
+    //import orderByStartTime from '../../../filters/order-by-start-time.js';
     import itemFormatted from '../../../filters/item-formatted.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
-    import itemApi from '../../../services/item.js'; 
+    import itemService from '../../../services/item.js'; 
+    import dndService from '../../../services/table-item-dnd.js';
     import editColumnModal from '../../../components/modal.vue';
     import editColumnModalContent from './modal/edit-column-content.vue';
     import editItemModal from '../../../components/modal.vue';
@@ -218,7 +215,7 @@
         },
 
         mixins: [
-            itemApi, dateUtilities, orderByStartTime, itemFormatted
+            itemService, dndService, dateUtilities, itemFormatted
         ],
 
         props: [
@@ -236,10 +233,6 @@
                 },
 
                 modal: {
-                    editItem: {
-                        isActive: false,
-                        editingItem: null,
-                    },
                     editColumn: {
                         isActive: false,
                         editingColumnId: '',
@@ -253,20 +246,20 @@
                     }
                 },
 
-                dragItem: {
-                    isUpdating: false,
-                    draggingItem: '',
-                    enterCell: '',
-                    enterTrash: false,
-                    cellItemsFrom: '',
-                    cellItemsIndex: '',
-                    isDropped: false,
-                    style: {
-                        dragStart: {
-                            opacity: '0.4'
-                        }
-                    }
-                },
+//                dragItem: {
+//                    isLoading: false,
+//                    draggingItem: '',
+//                    enterCell: '',
+//                    enterTrash: false,
+//                    cellItemsFrom: '',
+//                    cellItemsIndex: '',
+//                    isDropped: false,
+//                    style: {
+//                        dragStart: {
+//                            opacity: '0.4'
+//                        }
+//                    }
+//                },
             }
         },
 
@@ -280,11 +273,11 @@
                 }
             },
 
-            dragEnter: function() {
-                return { 
-                    border: '2px solid ' + this.theme.secondary.code,
-                }
-            },
+//            dragEnter: function() {
+//                return { 
+//                    border: '2px solid ' + this.theme.secondary.code,
+//                }
+//            },
 
             theme: function() {
                 return this.$store.state.app.theme;
@@ -292,77 +285,84 @@
         },
 
         methods: {
-            handleDragStart(cellItems, item, cellItemsIndex, e) {
-                this.dragItem.cellItemsFrom = cellItems;
-                this.dragItem.draggingItem = item;
-                this.dragItem.cellItemsIndex = cellItemsIndex;
-                item.is_hover = false;
+            openEditItemModal(item) {
+                u.clog('openEditItemModal()');
+                item.oldValue = item.content;
+                this.editItem.isActive = true;
+                this.editItem.editingItem = item;
             },
 
-            handleDragEnter(cell) {
-                this.dragItem.enterCell = cell;
-            },
-
-            handleDragOver(e) {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
-
-                e.dataTransfer.dropEffect = 'move'
-
-                return false;
-            },
-
-            handleDrop(e, cellItems) {
-                u.clog('handleDrop()');
-                this.dragItem.isUpdating = true;
-                this.dragItem.isDropped = true;
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
-
-                this.moveItem({
-                    'cellItemsFrom': this.dragItem.cellItemsFrom,
-                    'cellItemsTo': cellItems,
-                    'item': this.dragItem.draggingItem,
-                    'cellItemsIndex': this.dragItem.cellItemsIndex,
-                    'day': this.dragItem.enterCell.split('-')[0],
-                    'member_id': this.dragItem.enterCell.split('-')[1],
-                });
-            },
-
-            handleDropInTrash(e) {
-                u.clog('handleDropInTrash()');
-                this.deleteItem.isDeleting = true;
-                this.dragItem.isDropped = true;
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
-
-                this.removeItem(
-                    this.dragItem.cellItemsFrom, 
-                    this.dragItem.draggingItem, 
-                    this.dragItem.cellItemsIndex
-                );
-            },
-
-            handleDragEnd() {
-                this.initDraggingProperties();
-            },
-
-            initDraggingProperties() {
-                this.dragItem.draggingItem = '';
-                this.dragItem.cellItemsIndex = '';
-                this.dragItem.cellItemsFrom = '';
-                this.dragItem.enterCell = '';
-                this.dragItem.isDropped = false;
-            },
+//            handleDragStart(cellItems, item, cellItemsIndex, e) {
+//                this.dragItem.cellItemsFrom = cellItems;
+//                this.dragItem.draggingItem = item;
+//                this.dragItem.cellItemsIndex = cellItemsIndex;
+//                item.is_hover = false;
+//            },
+//
+//            handleDragEnter(cell) {
+//                this.dragItem.enterCell = cell;
+//            },
+//
+//            handleDragOver(e) {
+//                if (e.preventDefault) {
+//                    e.preventDefault();
+//                }
+//
+//                e.dataTransfer.dropEffect = 'move'
+//
+//                return false;
+//            },
+//
+//            handleDrop(e, cellItems) {
+//                u.clog('handleDrop()');
+//                this.dragItem.isLoading = true;
+//                this.dragItem.isDropped = true;
+//                if (e.stopPropagation) {
+//                    e.stopPropagation();
+//                }
+//
+//                this.moveItem({
+//                    'cellItemsFrom': this.dragItem.cellItemsFrom,
+//                    'cellItemsTo': cellItems,
+//                    'item': this.dragItem.draggingItem,
+//                    'cellItemsIndex': this.dragItem.cellItemsIndex,
+//                    'day': this.dragItem.enterCell.split('-')[0],
+//                    'member_id': this.dragItem.enterCell.split('-')[1],
+//                });
+//            },
+//
+//            handleDropInTrash(e) {
+//                u.clog('handleDropInTrash()');
+//                this.deleteItem.isLoading = true;
+//                this.dragItem.isDropped = true;
+//                if (e.stopPropagation) {
+//                    e.stopPropagation();
+//                }
+//
+//                this.removeItem(
+//                    this.dragItem.cellItemsFrom, 
+//                    this.dragItem.draggingItem, 
+//                    this.dragItem.cellItemsIndex
+//                );
+//            },
+//
+//            handleDragEnd() {
+//                this.initDraggingProperties();
+//            },
+//
+//            initDraggingProperties() {
+//                this.dragItem.draggingItem = '';
+//                this.dragItem.cellItemsIndex = '';
+//                this.dragItem.cellItemsFrom = '';
+//                this.dragItem.enterCell = '';
+//                this.dragItem.isDropped = false;
+//            },
 
             // ------------------------------------------------------------------------
 
             // Insert
             clickToItemInsert(cell) {
-                //this.addItem.isInserting = false;
+                //this.addItem.isLoading = false;
                 this.addItem.cellTo = cell;
             },
 
@@ -379,13 +379,6 @@
                 this.message.deleteColumnWarning.columnId = memberId;
             },
 
-            // modal( item )
-            openEditItemModal(item) {
-                u.clog('openEditItemModal()');
-                item.oldValue = item.content;
-                this.modal.editItem.isActive = true;
-                this.modal.editItem.editingItem = item;
-            },
         },
     }
 </script>

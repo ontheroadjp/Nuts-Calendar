@@ -33,13 +33,14 @@ class DataController extends BaseController
             return $this->sendUserCalendarNotFound();
         }
 
-        $currentCalendarId = $userCalendarKeys[0];
-
-        $year = '2017';
-        $month = '04';
-
-        $cal = new Calendar();
-        $calendar = $cal->fetch($currentCalendarId, $year, $month); // 5382
+        // calendar
+//        $currentCalendarId = $userCalendarKeys[0];
+//
+//        $year = '2017';
+//        $month = '04';
+//
+//        $cal = new Calendar();
+//        $calendar = $cal->fetch($currentCalendarId, $year, $month); // 5382
 
         return response()->json([
             'status' => 'success',
@@ -47,10 +48,10 @@ class DataController extends BaseController
             'message' => 'application data',
             'currentuser' => auth()->user(),
             'usercalendar' => $userCalendars,
-            'currentCalendarId' =>  $currentCalendarId,
-            'days' => $calendar['days'],
-            'members' => $calendar['members'],
-            'events' => $calendar['events'],
+//            'currentCalendarId' =>  $currentCalendarId,
+//            'days' => $calendar['days'],
+//            'members' => $calendar['members'],
+//            'items' => $calendar['items'],
         ]);
     }
 }
