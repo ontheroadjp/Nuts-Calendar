@@ -59,22 +59,24 @@ export default {
     },
 }
 </script>
-<style lang="sass">
-@import '../../../../sass/app.scss';
+<style lang="sass" scoped>
+/* @import '../../../../sass/app.scss'; */
 
-div.card.is-koiai.is-clickable:hover {
-    border: 1px solid rgba(25, 96, 182, 0.5);
-}
-div.card.is-nadeshiko.is-clickable:hover {
-    border: 1px solid rgba(239, 113, 156, 0.4);;
-}
-div.card.is-mikan.is-clickable:hover {
-    border: 1px solid rgba(240, 131, 0, 0.4);
-}
-div.card.is-sumire.is-clickable:hover {
-    border: 1px solid rgba(112, 88, 163, 0.5);;
-}
-div.card.is-moegi.is-clickable:hover {
-    border: 1px solid rgba(170, 207, 83, 0.5);
+div.card {
+    &.is-koiai.is-clickable:hover {
+        border: 1px solid rgba(25, 96, 182, 0.5);
+    }
+    &.is-nadeshiko.is-clickable:hover {
+        border: 1px solid rgba(239, 113, 156, 0.4);;
+    }
+    &.is-mikan.is-clickable:hover {
+        border: 1px solid rgba(240, 131, 0, 0.4);
+    }
+    &.is-sumire.is-clickable:hover {
+        border: 1px solid rgba(112, 88, 163, 0.5);;
+    }
+    &.is-moegi.is-clickable:hover {
+        border: 1px solid rgba(170, 207, 83, 0.5);
+    }
 }
 </style>

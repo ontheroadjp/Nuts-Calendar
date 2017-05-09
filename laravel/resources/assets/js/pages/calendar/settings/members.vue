@@ -227,10 +227,10 @@
 
     }
 </script>
-<style lang='sass'>
-.drop-area {
-    padding:5px 0
-}
+<style lang='sass' scoped>
+    .drop-area {
+        padding:5px 0
+    }
 
     .members-dnd-fade-transition {
         transition: all .8s ease;

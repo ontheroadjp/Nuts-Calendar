@@ -18,10 +18,6 @@ export default {
         },
 
         getDayIndex(dateText) {
-//            const year = parseInt(dateText.substr(0,4));
-//            const month = parseInt(dateText.substr(5,2));
-//            const date = parseInt(dateText.substr(-2));
-//            return new Date(year + '/' + month + '/' + date).getDay();
             return this.getDateObject(dateText).getDay();
         },
 

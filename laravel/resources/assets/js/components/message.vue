@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .message-fade-transition {
         transition: all .4s ease;
         width: 50%;

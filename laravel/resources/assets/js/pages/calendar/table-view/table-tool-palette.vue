@@ -131,7 +131,8 @@ export default {
     }
 }
 </script>
-<style>
+
+<style lang="sass" scoped>
     .button.is-off {
         background-color: #f0f0f0;
     }

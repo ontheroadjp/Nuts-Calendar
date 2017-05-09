@@ -29,7 +29,7 @@
 
     <!-- table body -->
     <div id="table-view-body" 
-         :class="['main-calendar-panel', {'sticky-offset': isFixed}]" 
+         :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]" 
          @scroll="onScrollBody()"
     >
         <table-view 
@@ -218,33 +218,33 @@
     }
 </script>
 
-<style>
-.main-calendar-panel {
-    user-select: none;
-    overflow-y: scroll;
-    position: relative;
-    height: 100%;
-/*    height: 100vh; */
-} 
+<style lang="sass" scoped>
 .main-calendar-panel-wrapper {
     position: relative;
+    & .main-calendar-panel-header {
+        user-select: none;
+        overflow: hidden;
+        position: relative;
+        height: 36px;
+        &.sticky {
+            position: fixed;
+            background: red;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+    }
+    & .main-calendar-panel-body {
+        user-select: none;
+        overflow-y: scroll;
+        position: relative;
+        height: 100%;
+        &.sticky-offset {
+            margin-top: 37px;
+        }
+    } 
 }
-.main-calendar-panel-header {
-    user-select: none;
-    overflow: hidden;
-    position: relative;
-    height: 36px;
-}
-.sticky {
-    position: fixed;
-    background: red;
-    top: 0;
-    width: 100%;
-    z-index: 99;
-}
-.sticky-offset {
-    margin-top: 37px;
-}
+
 .tool-palette-transition {
     transition: all .2s ease;
     height: 40px;

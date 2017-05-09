@@ -1,9 +1,6 @@
 <template id="calendar">
 <div>
     <div v-show="isLoadingCalendarApi" class="black-screen">
-<!--
-        <div v-if="display === '' || display === 'body'" 
--->
         <div v-if="filteredBody" 
             class="has-text-centered" 
             style="
@@ -70,29 +67,27 @@
     <thead v-if="filteredColumns">
         <tr>
             <th :style="style.dayColumnWidth">Date</th>
-
             <template v-for="(memberId, member) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[{'padding': 0}, columnWidth]"
-                    @mouseover="member.is_hover = true"
-                    @mouseout="member.is_hover = false"
                 >
-
-                    <figure>
-                        <div style="padding: 0.5em 0.75em">{{ member.name }}({{ memberId }})</div>
-                        <figcaption>
-                            <p class="has-text-centered" style="margin-top:6px">
-                                <span class="icon" style="margin-right:10px">
-                                    <a><i class="fa fa-pencil" @click.stop="openEditColumnModal(member.id)"></i></a>
-                                </span>
-
-                                <span class="icon" style="margin-left:10px">
-                                    <a @click="deleteColumn(member.id)"><i class="fa fa-trash"></i></a>
-                                </span>
-                            </p>
-                        </figcaption>
-                    </figure>
-
+                    <header-shutter 
+                        :text="member.name + '(' + member.id + ')'"
+                        :text-style="{ 'padding': '0.5em 0.75em' }"
+                        :shutter-style="{ 'padding': '2px' }"
+                    >
+                        <a class="button" @click.stop="editColumn(member.id)">
+                            <span class="icon is-small">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                        </a>
+                    
+                        <a class="button" @click="deleteColumn(member.id)">
+                            <span class="icon is-small">
+                                <i class="fa fa-trash"></i>
+                            </span>
+                        </a>
+                    </header-shutter>
                 </th>
             </template>
         </tr>
@@ -138,7 +133,7 @@
                         >
                             <!-- show item content -->
                             <template v-if="isEventShow && item.type_id === 1">
-                                <span class="item is-event" @click.stop="openEditItemModal(item)">
+                                <span class="item is-event" @click.stop="editItem(item)">
                                     <strong v-show="item.start_time" style="margin-right: 8px">
                                         {{ item.start_time | timeFormatter }}
                                     </strong> {{ item.content }}
@@ -153,7 +148,7 @@
                             <template v-if="isTaskShow && item.type_id === 2">
                                 <span class="item is-task">
                                     <input type="checkbox" style="margin-right: 8px" @click.stop=""> 
-                                    <span @click.stop="openEditItemModal(item)">
+                                    <span @click.stop="editItem(item)">
                                         {{ item.content }}
                                     </span>
                                     <span class="icon is-small" 
@@ -171,7 +166,7 @@
                     <template v-if="addItem.cellTo == (dayIndex + 1) + '-' + memberId">
                         <input type="text"
                                class="input"
-                               placeholder="New Event here.."
+                               placeholder="Content here.."
                                v-model="addItem.newItemContent"
                                v-focus
                                style=" border: none;
@@ -221,6 +216,7 @@
     import focus from '../../../directives/form-focus.js';
     import timeFormatter from '../../../filters/time-formatter.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
+    import headerShutter from '../../../components/shutter.vue';
     import itemService from '../../../services/item.js'; 
     import dndService from '../../../services/table-item-dnd.js';
     import editColumnModal from '../../../components/modal.vue';
@@ -238,6 +234,7 @@
             'edit-item-modal-content': editItemModalContent,
             'delete-column-warning': deleteColumnWarning,
             'delete-column-warning-content': deleteColumnWarningContent,
+            'header-shutter': headerShutter,
         },
 
         directives: {
@@ -336,8 +333,8 @@
         },
 
         methods: {
-            openEditItemModal(item) {
-                u.clog('openEditItemModal()');
+            editItem(item) {
+                u.clog('editItem()');
                 item.oldValue = item.content;
                 this.editItem.isActive = true;
                 this.editItem.editingItem = item;
@@ -345,21 +342,23 @@
 
             // ------------------------------------------------------------------------
 
-            // Insert
+            // Insert item
             clickToItemInsert(cell) {
                 //this.addItem.isLoading = false;
                 this.addItem.cellTo = cell;
             },
 
-            // modal( column )
-            openEditColumnModal(memberId) {
-                u.clog('openEditColumnModal()');
+            // edit column (open modal)
+            editColumn(memberId) {
+                u.clog('editColumn()');
                 //column.oldValue = column.content;
                 this.modal.editColumn.isActive = true;
                 this.modal.editColumn.editingColumnId = memberId;
             },
 
+            // delete column (open warning message)
             deleteColumn(memberId) {
+                u.clog('deleteColumn()');
                 this.message.deleteColumnWarning.isActive = true;
                 this.message.deleteColumnWarning.columnId = memberId;
             },
@@ -368,7 +367,7 @@
     }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
     .black-screen {
         background: rgba(217, 217, 217, 0.75);
         position: absolute;
@@ -377,6 +376,27 @@
         z-index: 999;
     }
 
+    table.calendar {
+        & tbody {
+            & td {
+                color: #ccc;
+            }
+            & tr:hover th {
+                background-color: #eee;
+            }
+        }
+        &:hover tbody {
+            & tr:hover td {
+                color: #666;
+                background-color: rgba(145, 235, 250, 0.1);
+            }
+            &:hover td:hover {
+                opacity: 1;
+                background-color: rgba(145, 235, 250, 0.5);
+            }
+        }
+    }
+/*
     table.calendar tbody td {
         color: #ccc;
     }
@@ -391,7 +411,7 @@
         opacity: 1;
         background-color: rgba(145, 235, 250, 0.5);
     }
-
+*/
     .date-styling {
         font-size: 1.0em;
         font-weight: bold;
@@ -443,29 +463,4 @@
     .column-fade-enter .column-fade-leave {
         opacity: 0;
     }
-
-    figure {
-        position: relative;
-        overflow: hidden;
-    }
-
-    figcaption {
-        position: absolute;
-        top: -100%;
-        left: 0;
-        z-index: 2;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(240, 240, 240, .8);
-        transition: .3s;
-        opacity: 1;
-    }
-    figure:hover figcaption {
-        top: 0;
-        left: 0;
-    }
-
-
-
-
 </style>

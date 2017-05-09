@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .modal-fade-transition {
         transition: all .4s ease;
     }

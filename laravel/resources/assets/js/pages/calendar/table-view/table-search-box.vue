@@ -37,6 +37,5 @@ export default {
             return this.$store.state.app.theme;
         },
     }
-
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
     <div id="calendar">
-    
         <signboard 
             :is-loading-calendar-api="isLoading.calendarApi"
             :is-tool-palette-open.sync="isToolPaletteOpen"
@@ -10,7 +9,6 @@
             :is-loading-calendar-api="isLoading.calendarApi"
             :is-tool-palette-open.sync="isToolPaletteOpen"
         ></router-view>
-    
     </div>
 </template>
 
