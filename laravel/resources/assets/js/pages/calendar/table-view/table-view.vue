@@ -101,13 +101,20 @@
             }"
         >
             <td class="date-styling" :style="style.dayColumnWidth">
+                <span style="font-family: Consolas, 'Courier New', Courier, Monaco, monospace;">
+                    {{ getDateAndDay(day.date) }}
+                </span>
+            </td>
+
+<!--
+            <td class="date-styling" :style="style.dayColumnWidth">
                 <span>{{ getDayString(day.date) }}</span>
                 <span style="width: 32px; text-align: center;" 
                     :class="[ 'is-pulled-right', { today: isToday(day.date) } ]"
                 >{{ parseInt(day.date.substr(-2)) }}
                 </span>
             </td>
-
+-->
             <!-- NOTE: cellItemsLoopIndex = member_id -->
             <!-- NOTE: cellItems = items in a cell -->
             <template v-for="(memberId, cellItems) in day.items">

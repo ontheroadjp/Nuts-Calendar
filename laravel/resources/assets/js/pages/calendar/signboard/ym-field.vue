@@ -2,7 +2,11 @@
 <div>
     <template v-if="!editing">
         <span @click="editing = true" style="font-size: 1.8em; color: #fff">
+<!--
             {{ currentYear }} 年 {{ currentMonth }} 月
+-->
+            {{ getYearAndMonth(currentYear + '-' + currentMonth + '-01') }}
+
         </span>
     </template>
 
@@ -34,7 +38,13 @@
 </template>
 
 <script>
+import dateUtilities from '../../../mixins/date-utilities.js';
+
 export default {
+    mixins: [
+        dateUtilities,
+    ],
+
     props: {
         'yearFrom': {
             type: Number,

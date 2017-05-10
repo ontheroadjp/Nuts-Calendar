@@ -195,7 +195,7 @@
         },
 
         watch: {
-            isToolPaletteOpen: function() {
+            'isToolPaletteOpen': function() {
                 this.updateHeight();
             }
         },
