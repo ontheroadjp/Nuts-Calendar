@@ -15,7 +15,7 @@
                     <select v-model="memberId">
                         <option 
                             v-for="member in members" 
-                            value="{{ member.id }}"
+                            :value="member.id"
                         >{{ member.name }}
                         </option>
                     </select>
@@ -55,7 +55,7 @@
 
     </section>
     <footer class="modal-card-foot">
-        <a class="button {{ theme.primary.class }}" @click="ok()">Save changes</a>
+        <a :class="['button', theme.primary.class]" @click="ok()">Save changes</a>
         <a class="button" @click="close()">Cancel</a>
     </footer>
 </div><!-- // .modal-card -->

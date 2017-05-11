@@ -17,7 +17,7 @@
                         type="text" 
                         style="margin-bottom: 25px;"
                         v-model="input.name" 
-                        placeholder="{{ nameHasError ? error.name : 'Name' }}"
+                        :placeholder="nameHasError ? error.name : 'Name'"
                         v-focus
                     >
                     <span class="icon is-small" :style="[nameHasError ? style.error : '']">
@@ -29,7 +29,7 @@
         </div>
     </section>
     <footer class="modal-card-foot">
-        <a class="button {{ theme.primary.class }}" @click="ok()">Save changes</a>
+        <a :class="['button', theme.primary.class]" @click="ok()">Save changes</a>
         <a class="button" @click="close()">Cancel</a>
     </footer>
 </div><!-- // .modal-card -->
@@ -84,7 +84,8 @@ export default {
         },
 
         close: function() {
-            this.isActive = false;
+            this.$emit('update:isActive', false);
+            //this.isActive = false;
             this.column = null;
         },
     },

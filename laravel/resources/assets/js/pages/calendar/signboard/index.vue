@@ -26,7 +26,6 @@
     <div class="hero-foot">
         <menu-tabs 
             :is-loading-calendar-api="isLoadingCalendarApi"
-            :is-tool-Palette-open.sync="isToolPaletteOpen"
         ></menu-tabs>
     </div>
 </section>
@@ -44,7 +43,6 @@
 
         props: [
             'isLoadingCalendarApi',
-            'isToolPaletteOpen'
         ],
 
         computed: {

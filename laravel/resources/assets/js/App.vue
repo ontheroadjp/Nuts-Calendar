@@ -23,11 +23,11 @@
         created() {
             u.clog('start@app.vue');
             eventBus.listen('nuts.login.success', this.handleLogin, 'app.vue');
-            this.init();
+            this.initApp();
         },
 
         methods: {
-            init () {
+            initApp () {
                 this.startApp();
             },
 
@@ -76,7 +76,7 @@
             failedInit(error) {
                 u.clog('failed' + error)
                 this.$store.commit('logout');
-                this.$route.router.go('/login');
+                this.$router.push('/login');
             },
 
             handleLogin(p) {
@@ -91,9 +91,9 @@
                     localStorage.clear();
                 }
     
-                this.init();
+                this.initApp();
 
-                this.$route.router.go('/calendar');
+                this.$router.push('/calendar');
             },
         }
     }

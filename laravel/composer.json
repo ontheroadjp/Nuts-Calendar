@@ -25,7 +25,8 @@
             "App\\": "app/",
             "Nuts\\Api\\": "nuts/api/src",
             "Nuts\\Calendar\\": "nuts/calendar/src"
-        }
+        },
+        "files": ["app/mix.php"]
     },
     "autoload-dev": {
         "classmap": [

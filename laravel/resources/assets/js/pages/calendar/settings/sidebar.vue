@@ -3,43 +3,45 @@
     <div class="panel" style="background: white">
         <p class="panel-heading" :style="panelHeader">Settings</p>
 
-        <a  v-link="{path: '/calendar/settings/calendar'}" 
-            class="panel-block"
-            :class="[selected == 'calendar' ? 'is-active' : '' ]"
-            style="line-height: 1.8em"
-            @click="selected = 'calendar'"
+        <router-link
+           to="/calendar/settings/calendar" 
+           class="panel-block"
+           :class="[selected == 'calendar' ? 'is-active' : '' ]"
+           style="line-height: 1.8em"
+           @click="selected = 'calendar'"
         >
             <span class="panel-icon">
                 <i class="fa fa-calendar-o"></i>
             </span>Calendar settings
-        </a>
+        </router-link>
 
-        <a  v-link="{path: '/calendar/settings/members'}" 
-            class="panel-block"
-            :class="[selected == 'members' ? 'is-active' : '' ]"
+        <router-link
+            to="/calendar/settings/members" 
+            :class="['panel-block', selected == 'members' ? 'is-active' : '' ]"
             style="line-height: 1.8em"
             @click="selected = 'members'"
         >
             <span class="panel-icon">
                 <i class="fa fa-user"></i>
             </span>Member settings
-        </a>
+        </router-link>
 
-        <a  v-link="{path: '/calendar/settings/items'}"
-            class="panel-block"
-            :class="[selected == 'items' ? 'is-active' : '' ]"
+        <router-link
+            to="/calendar/settings/items"
+            :class="['panel-block', selected == 'items' ? 'is-active' : '' ]"
             style="line-height: 1.8em"
             @click="selected = 'items'"
         >
             <span class="panel-icon">
                 <i class="fa fa-id-card-o"></i>
             </span>Item settings
-        </a>
+        </router-link>
     </div>
 
     <div class="panel" style="background: white">
         <p class="panel-heading" :style="panelHeader">Link</p>
-        <a  v-link="{path: '/calendar'}" 
+        <router-link
+            to="/calendar" 
             class="panel-block"
             style="line-height: 1.8em"
             @click=""
@@ -47,8 +49,9 @@
             <span class="panel-icon">
                 <i class="fa fa-dashboard"></i>
             </span>Go to the Dashboard
-        </a>
-        <a  v-link="" 
+        </router-link>
+        <router-link
+            to="" 
             class="panel-block"
             style="line-height: 1.8em"
             @click=""
@@ -56,7 +59,7 @@
             <span class="panel-icon">
                 <i class="fa fa-calendar"></i>
             </span>Show calendar
-        </a>
+        </router-link>
     </div>
 
 </aside>

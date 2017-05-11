@@ -12,7 +12,7 @@
                 <i class="fa fa-search"></i>
             </span>
             <a 
-                class="button {{ theme.secondary.class }} is-outlined" 
+                :class="['button', theme.secondary.class, 'is-outlined']" 
                 @click="clearField"
             >Clear</a>
         </div>
@@ -28,7 +28,8 @@ export default {
 
     methods: {
         clearField() {
-            this.searchQuery = ''
+            this.$emit('update:searchQuery', '');
+            //this.searchQuery = ''
         },
     },
 

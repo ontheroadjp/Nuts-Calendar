@@ -12,7 +12,7 @@
             <p>end: {{ item !== null ? item.end_time : ''}} </p>
         </section>
         <footer class="modal-card-foot">
-            <a class="button {{ theme.primary.class }}">Save changes</a>
+            <a :class="['button', theme.primary.class]">Save changes</a>
             <a class="button" @click="close()">Cancel</a>
         </footer>
     </div>

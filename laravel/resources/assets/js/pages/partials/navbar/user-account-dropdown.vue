@@ -10,11 +10,8 @@
 
     <ul class="dropdown-menu" v-show="isMenuOpen">
         <li>
-            <a v-link="{path: '/me/settings/general'}" :style="menuItemStyle" @click="toggle">
-                <span class="icon is-small">
-                    <i class="fa fa-user"></i>
-                </span>
-                <span>Account Settings</span>
+            <a :style="menuItemStyle" @click="toggle">
+                <router-link to="/me/settings/general">Account settings</router-link>
             </a>
         </li>
         <li>
@@ -76,8 +73,10 @@
     }
 </script>
 
-<style lang="sass">
-@import '../../../../sass/app.scss';
+<style lang="scss">
+/* @import '../../../../sass/app.scss'; */
+/* @import 'resources/assets/sass/app.scss'; */
+
 /** 
  * A fork of https://github.com/twbs/bootstrap.
  */
@@ -109,7 +108,8 @@
         clear: both;
         font-weight: normal;
         line-height: 1.428571429;
-        color: $primary-color;
+/*        color: $primary-color; */
+        color: white;
         white-space: nowrap;
     }
 

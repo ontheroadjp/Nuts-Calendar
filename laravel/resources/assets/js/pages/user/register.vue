@@ -12,7 +12,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="text" 
-                    placeholder="{{ nameHasError ? errors.name : 'Name' }}"
+                    :placeholder="nameHasError ? errors.name : 'Name'"
                     style="margin-bottom: 25px;"
                     v-model="input.name"
                     v-focus
@@ -28,7 +28,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="email" 
-                    placeholder="{{ emailHasError ? errors.email : 'E-Mail Address' }}"
+                    :placeholder="emailHasError ? errors.email : 'E-Mail Address'"
                     style="margin-bottom: 25px;"
                     v-model="input.email"
                 >
@@ -43,7 +43,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    placeholder="{{ passwordHasError ? errors.password : 'Password' }}"
+                    :placeholder="passwordHasError ? errors.password : 'Password'"
                     style="margin-bottom: 20px;"
                     v-model="input.password"
                 >
@@ -58,7 +58,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    placeholder="{{ passwordConfirmationHasError ? errors.passwordConfirmation : 'Password ( Confirm )' }}"
+                    :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : 'Password ( Confirm )'"
                     style="margin-bottom: 20px;"
                     v-model="input.passwordConfirmation"
                 >
@@ -69,10 +69,9 @@
         </div>
 
         <p class="control is-horizontal is-pulled-right">
-            <a 
-                class="btn btn-link" 
-                v-link="{path: '/login'}"
-            >Login Form</a>
+            <a class="btn btn-link">
+                <router-link to="/login">Login Form</router-link>
+            </a>
         </p>
 
         <div class="is-clearfix" style="margin-bottom: 25px"></div>
@@ -80,9 +79,8 @@
         <p style="text-align: center;">
             <button 
                 type="submit"
-                class="button" 
-                :class="theme.secondary.class"
-                style="width: 100%; color: {{theme.primary.codeInvert}}" 
+                :class="['button', theme.secondary.class]"
+                style="width: 100%; color: #fff" 
                 @click.prevent="register()"
             >Register</button>
         </p>

@@ -2,15 +2,12 @@
 <div class="container" style="width: 100%; height: 100vh">
 <div class="row">
 <div class="col-md-8 col-md-offset-2">
-
     <result-view 
         v-if="passwordResetResult !== ''"
         :status="passwordResetResult"
     ></result-view>
 
     <div class="panel" style="margin-top: 120px;" v-else>
-        <!-- <p class="panel-heading">Login</p> -->
-        <!-- <div class="panel-block"> -->
         <div style="
             padding: 60px;
             width: 100%;
@@ -23,7 +20,7 @@
                     <input 
                         class="nuts-input-textbox is-medium" 
                         type="email" 
-                        placeholder="{{ emailHasError ? errors.email : 'E-Mail Address' }}"
+                        :placeholder="emailHasError ? errors.email : 'E-Mail Address'"
                         style="margin-bottom: 25px;"
                         v-model="input.email"
                         v-focus
@@ -39,7 +36,7 @@
                     <input 
                         class="nuts-input-textbox is-medium" 
                         type="password" 
-                        placeholder="{{ passwordHasError ? errors.password : 'New Password' }}"
+                        :placeholder="passwordHasError ? errors.password : 'New Password'"
                         style="margin-bottom: 20px;"
                         v-model="input.password"
                     >
@@ -54,7 +51,7 @@
                     <input 
                         class="nuts-input-textbox is-medium" 
                         type="password" 
-                        placeholder="{{ passwordConfirmationHasError ? errors.passwordConfirmation : 'New Password ( Confirm )' }}"
+                        :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : 'New Password ( Confirm )'"
                         style="margin-bottom: 20px;"
                         v-model="input.passwordConfirmation"
                     >
@@ -77,7 +74,6 @@
 
         </div>
     </div><!-- // .panel -->
-
 </div><!-- // .col-x -->
 </div><!-- // .row -->
 </div><!-- // .container -->

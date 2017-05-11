@@ -1,20 +1,21 @@
 // vue
 import Vue from 'vue';
-//Vue.config.debug = true;
 //Vue.config.silent = true;
-Vue.config.productionTip = true;
+Vue.config.productionTip = false;
 
 // vue-router
 import VueRouter from 'vue-router';
-import { init } from './router/vue-router-config.js';
-//Vue.use(VueRouter);
-
+import { init, routes } from './router/vue-router-config.js';
 const router = init( 
     new VueRouter({
-        history: true,
-        saveScrollPosition: true
+        routes,
+        mode: 'history',
+        scrollBehavior: function (to, from, savedPosition) {
+            return savedPosition || { x: 0, y: 0 }
+        },
     })
 );
+Vue.use(VueRouter);
 
 // utilities
 import { utils } from './libs/utils.js';
@@ -35,4 +36,8 @@ window.eventBus = eventBus;
 
 // Application
 import App from './app.vue';
-router.start(App, '#app');
+
+new Vue({
+    router,
+    render(h) { return h(App) },
+}).$mount('#app');

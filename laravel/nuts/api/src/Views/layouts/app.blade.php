@@ -14,7 +14,7 @@
     <style>
         body { font-family: 'Lato'; background: #f0f0f1; }
     </style>
-    <link href="{{ elixir('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -23,7 +23,8 @@
     @yield('content')
 
     <!-- JavaScripts -->
-    <!-- <script src="/js/all.js"></script> -->
-    <script src="{{ elixir('js/all.js') }}"></script>
+    <script src="{{ mix('js/manifest.js') }}"></script>
+    <script src="{{ mix('js/vendor.js') }}"></script>
+    <script src="{{ mix('js/main.js') }}"></script>
 </body>
 </html>

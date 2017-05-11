@@ -42,5 +42,8 @@ export default {
             members: [],
         },
         isLoading: false,
+        ui: {
+            isToolPalette: false
+        }
     },
 }

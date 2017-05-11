@@ -2,19 +2,19 @@
 <div class="main-calendar-panel-wrapper">
 
     <!-- tool palette -->
-    <div v-show="isToolPaletteOpen" 
-        id="tool-palette" 
-        style="background:#f0f0f0; padding:5px; overflow: scroll"
-        transition="tool-palette"
-    >
-        <tool-palette 
-            :is-open.sync="isToolPaletteOpen"
-            :internal-query.sync="query.internal"
-            :search-query.sync="query.search"
-            :is-event-show.sync="item.event.isShow"
-            :is-task-show.sync="item.task.isShow"
-        ></tool-palette>
-    </div>
+    <transition name="tool-palette">
+        <div v-show="isToolPaletteOpen" 
+            id="tool-palette" 
+            style="background:#f0f0f0; padding:5px; overflow: scroll"
+        >
+            <tool-palette 
+                :internal-query.sync="query.internal"
+                :search-query.sync="query.search"
+                :is-event-show.sync="item.event.isShow"
+                :is-task-show.sync="item.task.isShow"
+            ></tool-palette>
+        </div>
+    </transition>
 
     <!-- table header -->
     <div id="table-view-header" 
@@ -70,7 +70,6 @@
 
         props: [
             'isLoadingCalendarApi',
-            'isToolPaletteOpen'
         ],
 
         data() {
@@ -102,6 +101,10 @@
         },
         
         computed: {
+            isToolPaletteOpen: function() {
+                return this.$store.state.calendar.ui.isToolPalette;
+            },
+
             isFixed: function() {
                 return this.position > this.fixedHeight;
             },
@@ -180,13 +183,15 @@
             },
 
             updateHeight: function() {
-                this.height.headerNav = document.getElementById('headerNav').clientHeight;
-                this.height.signboard = document.getElementById('signboard').clientHeight;
-                this.height.toolPalette = 0;
-
-                if(this.$route.path == '/calendar/view' && this.isToolPaletteOpen) {
-                    this.height.toolPalette = document.getElementById('tool-palette').clientHeight -2;
-                }
+                this.$nextTick( () => {
+                    this.height.headerNav = document.getElementById('headerNav').clientHeight;
+                    this.height.signboard = document.getElementById('signboard').clientHeight;
+                    this.height.toolPalette = 0;
+    
+                    if(this.$router.path == '/calendar/view' && this.isToolPaletteOpen) {
+                        this.height.toolPalette = document.getElementById('tool-palette').clientHeight -2;
+                    }
+                });
             },
 
             onScrollBody: function() {
@@ -200,7 +205,7 @@
             }
         },
 
-        ready() {
+        created() {
             this.updateHeight();
 
             const self = this;
@@ -218,7 +223,7 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 .main-calendar-panel-wrapper {
     position: relative;
     & .main-calendar-panel-header {
@@ -245,14 +250,14 @@
     } 
 }
 
-.tool-palette-transition {
+.tool-palette-enter-active, .tool-palette-leave-active {
     transition: all .2s ease;
     height: 40px;
     padding: 10px;
     background-color: #eee;
     overflow: hidden;
 }
-.tool-palette-enter, .tool-palette-leave {
+.tool-palette-enter, .tool-palette-leave-to {
     height: 0;
     padding: 0 10px;
     opacity: 0;

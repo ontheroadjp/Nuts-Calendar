@@ -2,12 +2,10 @@
     <div id="calendar">
         <signboard 
             :is-loading-calendar-api="isLoading.calendarApi"
-            :is-tool-palette-open.sync="isToolPaletteOpen"
         ></signboard>
     
         <router-view 
             :is-loading-calendar-api="isLoading.calendarApi"
-            :is-tool-palette-open.sync="isToolPaletteOpen"
         ></router-view>
     </div>
 </template>
@@ -17,6 +15,7 @@
     import calendarApi from '../../services/calendar.js';
 
     export default {
+        name: 'calendar-root',
         components: {
             'signboard': signboard,
         },
@@ -24,12 +23,6 @@
         mixins: [
             calendarApi,
         ],
-
-        data() {
-            return {
-                isToolPaletteOpen: false,
-            }
-        },
 
         computed: {
             appReady: function() {

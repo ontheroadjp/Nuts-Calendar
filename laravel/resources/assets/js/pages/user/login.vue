@@ -22,7 +22,7 @@
                     <input 
                         class="nuts-input-textbox" 
                         type="email" 
-                        placeholder="{{ emailHasError ? error.email : 'E-Mail Address' }}"
+                        :placeholder="emailHasError ? error.email : 'E-Mail Address'"
                         style="margin-bottom: 25px;"
                         v-model="input.email"
                         v-focus
@@ -38,7 +38,7 @@
                     <input 
                         class="nuts-input-textbox" 
                         type="password" 
-                        placeholder="{{ passwordHasError ? error.password : 'Password' }}"
+                        :placeholder="passwordHasError ? error.password : 'Password'"
                         style="margin-bottom: 20px;"
                         v-model="input.password"
                     >
@@ -59,10 +59,9 @@
             </p>
 
             <p class="control is-horizontal is-pulled-right">
-                <a 
-                    class="btn btn-link" 
-                    v-link="{path: '/password/email'}"
-                >Forgot Your Password?</a>
+                <a class="btn btn-link">
+                    <router-link to="/password/email">Forgot Your Password ?</router-link>
+                </a>
             </p>
 
             <div class="is-clearfix" style="margin-bottom: 25px"></div>
@@ -70,9 +69,8 @@
             <p style="text-align: center;">
                 <button 
                     type="submit"
-                    class="button" 
-                    :class="theme.secondary.class"
-                    style="width: 100%" 
+                    :class="['button', theme.secondary.class]"
+                    style="width: 100%; color: #fff" 
                     @click.prevent="login()"
                 >Login</button>
             </p>

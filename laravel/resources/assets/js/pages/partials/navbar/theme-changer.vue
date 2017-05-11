@@ -9,7 +9,7 @@
                 style="border: none"
                 ><option 
                     v-for="theme in themes" 
-                    value="{{ theme.value }}"
+                    :value="theme.value"
                     >{{ theme.text }}
                 </option>
             </select>
@@ -54,7 +54,7 @@ export default {
         }
     },
 
-    ready() {
+    mounted() {
         this.selectedTheme = this.$store.state.app.theme.name;
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <span class="{{ class }}">
+    <span :class="class">
         <span :style="{color: color};">{{ message }}</span>
         <span @click="close()"><i v-show="isImportant" class="fa fa-times-circle"></i></span>
     </span>

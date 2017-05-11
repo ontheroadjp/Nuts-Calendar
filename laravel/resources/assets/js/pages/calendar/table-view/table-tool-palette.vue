@@ -3,7 +3,7 @@
 <add-column-modal v-show="modal.addColumn.isActive">
     <add-column-modal-content 
         :is-active.sync="modal.addColumn.isActive" 
-        :member-id.sync="modal.addColumn.addingColumnId"
+        :member-id="modal.addColumn.addingColumnId"
     ></add-column-modal-content>
 </add-column-modal>
 
@@ -46,7 +46,7 @@
 
         <span v-show="selected === 'item'" style="margin-left:10px">
             <button :class="['button', { 'is-off': !isEventShow }]" 
-                    @click="isEventShow = !isEventShow"
+                    @click="$emit('update:isEventShow', !isEventShow)"
                     >
                     <i v-show="isEventShow" class="fa fa-bell-o"></i>
                     <i v-show="!isEventShow" class="fa fa-bell-slash-o"></i>
@@ -54,7 +54,7 @@
             </button>
 
             <button :class="['button', { 'is-off': !isTaskShow }]" 
-                    @click="isTaskShow = !isTaskShow"
+                    @click="$emit('update:isTaskShow', !isTaskShow)"
                     >
                     <i v-show="isTaskShow" class="fa fa-bell-o"></i>
                     <i v-show="!isTaskShow" class="fa fa-bell-slash-o"></i>
@@ -70,7 +70,7 @@
         </span>
             <span class="level-item icon is-small" 
                   style="cursor:pointer"
-                  @click="isOpen = !isOpen"
+                  @click="$emit('update:isOpen', !isOpen)"
                   ><i class="fa fa-times-circle"></i>
             </span>
     </span>
@@ -85,6 +85,7 @@ import addColumnModalBase from '../../../components/modal.vue';
 import addColumnModalContent from './modal/add-column-content.vue';
 
 export default {
+    name: 'calendar-tool-palett',
     components: {
         'search-box': searchBox,
         'add-column-modal': addColumnModalBase,
@@ -92,7 +93,7 @@ export default {
     },
 
     props: [
-        'isOpen', 'internalQuery', 'searchQuery', 'isEventShow', 'isTaskShow'
+        'internalQuery', 'searchQuery', 'isEventShow', 'isTaskShow'
     ],
 
     data() {
@@ -108,8 +109,8 @@ export default {
 
     methods: {
         setInternalQuery(val) {
-            this.internalQuery = '';
-            this.internalQuery = val;
+            this.$emit('update:internalQuery', val);
+            //this.internalQuery = val;
         },
 
         clickNewColumn() {
@@ -132,7 +133,7 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
     .button.is-off {
         background-color: #f0f0f0;
     }

@@ -7,6 +7,13 @@ export default {
         }
     },
 
+    computed: {
+        // temp
+        nameHasError: function() {
+            return false;
+        }
+    },
+
     methods: {
         execInsertMember: function (userCalendarId, payload) {
             this.memberService.isLoading = true;

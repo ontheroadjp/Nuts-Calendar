@@ -10,97 +10,140 @@ import tableView from '../pages/calendar/table-view/index.vue';
 import calendarSettings from '../pages/calendar/settings/index.vue';
 
 export function init (router) {
-    mapping(router);
+//    mapping(router);
     beforRooting(router);
     return router;
 }
 
-function mapping(router) {
-    router.map({
-        '/': {
-            component: root,
-            auth: false,
-            footer: false
-        },
-        
-        '/login': {
-            component: login,
-            auth: false,
-            footer: true
-        },
-        
-        '/password/email': {
-            component: passwordEmail,
-            auth: false,
-            footer: true
-        },
-        
-        '/password/reset/:token': {
-            component: passwordReset,
-            auth: false,
-            footer: true
-        },
-        
-        '/register': {
-            component: register,
-            auth: false,
-            footer: true
-        },
-        
-        '/me/settings/:type': {
-            component: userAccountSettings,
-            auth: true,
-            footer: true
-        },
-        
-        '/calendar': {
-            component: calendar,
-            auth: true,
-            footer: true,
-            subRoutes: {
-                '/': {
-                    component: dashboard,
-                    auth: true,
-                    footer: false,
-                },
-                '/view': {
-                    component: tableView,
-                    auth: true,
-                    footer: false,
-                },
-                '/settings/:type': {
-                    component: calendarSettings,
-                    auth: true,
-                    footer: false,
-                },
-            }
-        },
-    });
-}
+export const routes = [
+    {
+        path: '/',
+        component: root,
+        auth: false,
+        footer: false
+    },
+    
+    {
+        path: '/login',
+        component: login,
+        auth: false,
+        footer: true
+    },
+
+    { 
+        path: '/password/email',
+        component: passwordEmail,
+        auth: false,
+        footer: true
+    },
+    
+    {
+        path: '/password/reset/:token',
+        component: passwordReset,
+        auth: false,
+        footer: true
+    },
+
+    { 
+        path: '/register',
+        component: register,
+        auth: false,
+        footer: true
+    },
+
+    { 
+        path: '/me/settings/:type',
+        component: userAccountSettings,
+        auth: true,
+        footer: true
+    },
+
+    { 
+        path: '/calendar',
+        component: calendar,
+        auth: true,
+        footer: true,
+        children: [
+            {
+                path: '',
+                component: dashboard,
+                auth: true,
+                footer: false,
+            },
+            {
+                path: 'view',
+                component: tableView,
+                auth: true,
+                footer: false,
+            },
+            {
+                path: 'settings/:type',
+                component: calendarSettings,
+                auth: true,
+                footer: false,
+            },
+        ]
+    },
+];
+
 
 function beforRooting(router){
-    router.beforeEach(function (transition) {
-        u.clog( '------- ' + transition.to.path + ' -------' );
+//    router.beforeEach(function (transition) {
+//        u.clog( '------- ' + transition.to.path + ' -------' );
+//        const token = jwtToken.getLocalToken();
+//        if(! token) {
+//            handleNoLogedIn(transition);
+//            return;
+//        }
+//        handleAlreadyLogedIn(transition, token);
+//    });
+    router.beforeEach(function (to, from, next) {
+        u.clog( '------- ' + to.path + ' -------' );
         const token = jwtToken.getLocalToken();
         if(! token) {
-            handleNoLogedIn(transition);
+            handleNoLogedIn(to, from, next);
             return;
         }
-        handleAlreadyLogedIn(transition, token);
+        handleAlreadyLogedIn(to, from, next, token);
     });
 }
             
-function handleNoLogedIn(transition) {
+function handleNoLogedIn(to, from, next) {
+//    u.clog('handleNoLogedIn@app.vue');
+//    if(transition.to.auth) {
+//        transition.redirect('/login');
+//    }
+//    //this.$store.commit('logout');
+//    u.clog('transition.next()');
+//    transition.next();
+
     u.clog('handleNoLogedIn@app.vue');
-    if(transition.to.auth) {
-        transition.redirect('/login');
+    if(to.matched.some(record => record.meta.auth)) {
+        next({path: '/login'});
     }
     //this.$store.commit('logout');
-    u.clog('transition.next()');
-    transition.next();
+    u.clog('next()');
+    next();
 }
             
-function handleAlreadyLogedIn(transition, token) {
+function handleAlreadyLogedIn(to, from, next, token) {
+//    u.clog('handleAlreadyLogedIn@app.vue');
+//
+//    jwtToken.setLocalToken(token);
+//
+//    //temp
+////    if(localStorage.getItem('rememberMe')) {
+////        u.clog('REMEMBER ME - true!!!');
+////        localStorage.setItem('rememberMe', token);
+////    }
+//
+//    if(transition.to.path === '/login') {
+//        transition.redirect('/dashboard');
+//    }
+//
+//    u.clog('transition.next()');
+//    transition.next();
+
     u.clog('handleAlreadyLogedIn@app.vue');
 
     jwtToken.setLocalToken(token);
@@ -111,10 +154,10 @@ function handleAlreadyLogedIn(transition, token) {
 //        localStorage.setItem('rememberMe', token);
 //    }
 
-    if(transition.to.path === '/login') {
-        transition.redirect('/dashboard');
+    if(to.path === '/login') {
+        return next({path: '/dashboard'});
     }
 
-    u.clog('transition.next()');
-    transition.next();
+    u.clog('next()');
+    next();
 }

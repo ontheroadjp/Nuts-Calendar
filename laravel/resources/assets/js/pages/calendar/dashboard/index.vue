@@ -5,31 +5,33 @@
 <template v-for="uCalendar in userCalendars">
 <div class="column is-4">
 
-    <a  class="title is-4" 
-        v-link="{path: '/calendar/view'}"
-        @click="clickUserCalendar(uCalendar.id)"
+    <router-link
+        to="/calendar/view"
+        class="title is-4" 
     >
-        <div class="card is-clickable {{ theme.primary.class }}" style="height:120px">
-        <div class="card-content">
-        <div class="media">
-
-            <div class="media-left">
-                <span class="icon">
-                    <i class="fa fa-calendar"></i>
-                </span>
-            </div>
-
-            <div class="media-content">
-                <p>{{ uCalendar.name }}</p>
-                <p class="subtitle is-6">
-                    {{ uCalendar.description }}
-                </p>
-            </div>
-
-        </div><!-- // .media -->
-        </div><!-- // .card-content -->
-        </div><!-- // .card -->
-    </a>
+        <a @click="clickUserCalendar(uCalendar.id)">
+            <div :class="['card', 'is-clickable', theme.primary.class]" style="height:120px">
+            <div class="card-content">
+            <div class="media">
+    
+                <div class="media-left">
+                    <span class="icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </div>
+    
+                <div class="media-content">
+                    <p>{{ uCalendar.name }}</p>
+                    <p class="subtitle is-6">
+                        {{ uCalendar.description }}
+                    </p>
+                </div>
+    
+            </div><!-- // .media -->
+            </div><!-- // .card-content -->
+            </div><!-- // .card -->
+        </a>
+    </router-link>
 
 </div><!-- // .column is-xx -->
 </template>
@@ -59,8 +61,7 @@ export default {
     },
 }
 </script>
-<style lang="sass" scoped>
-/* @import '../../../../sass/app.scss'; */
+<style lang="scss" scoped>
 
 div.card {
     &.is-koiai.is-clickable:hover {

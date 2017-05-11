@@ -6,11 +6,11 @@
         text-align: center;
     ">
         <span>
-            <i class="fa fa-3x fa-btn {{ icon }}"></i> 
+            <i :class="['fa', 'fa-3x', 'fa-btn', icon]"></i> 
             <span style="font-size: 36px; margin-left: 20px;">{{ message }}</span>
         </span>
         <p v-if="status === 'success'">
-            <a v-link="{ path: '/login' }">Login</a>
+            <router-link to="/login">Login</router-link>
         </p>
     </div>
 </div>

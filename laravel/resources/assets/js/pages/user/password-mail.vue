@@ -17,7 +17,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="email" 
-                    placeholder="{{ emailHasError ? errors.email : 'E-Mail Address' }}"
+                    :placeholder="emailHasError ? errors.email : 'E-Mail Address'"
                     style="margin-bottom: 25px;"
                     v-model="input.email"
                     v-focus
@@ -31,10 +31,9 @@
         <div class="is-clearfix" style="margin-bottom: 25px"></div>
 
         <p class="control is-horizontal is-pulled-right">
-            <a 
-                class="btn btn-link" 
-                v-link="{path: '/login'}"
-            >Login Form</a>
+            <a class="btn btn-link">
+                <router-link to="/login">Login Form</router-link>
+            </a>
         </p>
 
         <div class="is-clearfix" style="margin-bottom: 25px"></div>
@@ -42,9 +41,8 @@
         <p style="text-align: center;">
             <button 
                 type="submit"
-                class="button is-nuts-primary" 
-                :class="theme.secondary.class"
-                style="width: 100%"
+                :class="['button', theme.secondary.class]"
+                style="width: 100%; color: #fff"
                 @click.prevent="sendPasswordMail()"
             >
                 <span class="icon is-small">

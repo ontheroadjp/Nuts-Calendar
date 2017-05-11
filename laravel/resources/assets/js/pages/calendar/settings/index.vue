@@ -72,7 +72,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.selected = this.$route.params.type;
         },
 

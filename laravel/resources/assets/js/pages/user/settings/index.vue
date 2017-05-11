@@ -1,42 +1,38 @@
 <template>
-<hero title="Account settings" subtitle="Primary subtitle"></hero>
-<div style="width: 100%; height: 100vh; background: #fff;">
-
-    <div class="tabs is-boxed">
-        <ul>
-            <li :class="{'is-active': selected == 'general'}">
-                <a  v-link="{ path: '/me/settings/general' }" 
-                    @click="selected = 'general'"
-                >General infomation</a>
-            </li>
-
-            <li :class="{'is-active': selected == 'theme'}">
-                <a  v-link="{ path: '/me/settings/theme' }" 
-                    @click="selected = 'theme'"
-                >Theme settings</a>
-            </li>
-
-            <li :class="{'is-active': selected == 'password'}">
-                <a  v-link="{ path: '/me/settings/password' }" 
-                    @click="selected = 'password'"
-                >Password change</a>
-            </li>
-        </ul>
-    </div>
+<div>
+    <hero title="Account settings" subtitle="Primary subtitle"></hero>
+    <div style="width: 100%; height: 100vh; background: #fff;">
     
-    <div class="pain" v-show="selected == 'general'">
-        <general-pane></general-pane>
-    </div>
-
-    <div class="pain" v-show="selected == 'theme'">
-        <theme-pane></theme-pane>
-    </div>
-
-    <div class="pain" v-show="selected == 'password'">
-        <password-pane></password-pane>
-    </div>
-
-</div><!-- // .container -->
+        <div class="tabs is-boxed">
+            <ul>
+                <li :class="{'is-active': selected == 'general'}">
+                    <router-link to="/me/settings/general">General infomation</router-link>
+                </li>
+    
+                <li :class="{'is-active': selected == 'theme'}">
+                    <router-link to="/me/settings/theme">Theme settings</router-link>
+                </li>
+    
+                <li :class="{'is-active': selected == 'password'}">
+                    <router-link to="/me/settings/password">Password change</router-link>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="pain" v-if="selected == 'general'">
+            <general-pane></general-pane>
+        </div>
+    
+        <div class="pain" v-else-if="selected == 'theme'">
+            <theme-pane></theme-pane>
+        </div>
+    
+        <div class="pain" v-else-if="selected == 'password'">
+            <password-pane></password-pane>
+        </div>
+    
+    </div><!-- // .container -->
+</div>
 </template>
 
 <script>
@@ -65,7 +61,7 @@ export default {
         }
     },
 
-    ready() {
+    mounted() {
         this.selected = this.$route.params.type;
     },
 
@@ -77,17 +73,12 @@ export default {
 }
 </script>
 
-<style lang='sass'>
-/*
-    .result-fade-transition {
-        transition: all .4s ease;
-        z-index: 99999;
-    }
-    .result-fade-enter {
-        opacity: 0;
-    }
-    .result-fade-leave {
-        opacity: 0;
-    }
-*/
+<style lang='scss'>
+.result-fade-enter-active .result-fade-leave-active {
+    transition: all .4s ease;
+    z-index: 99999;
+}
+.result-fade-enter .result-fade-leave-to {
+    opacity: 0;
+}
 </style>

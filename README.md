@@ -5,9 +5,8 @@
 ```bash
 git clone https://github.com/ontheroadjp/Nuts-Calendar.git
 cd Nuts-Calendar/laravel
-touch database/database.SQLite
-php artisan migrate
-php artisan db:seed
+composer update
+npm install
 ```
 
 ## Start Docker
@@ -17,12 +16,13 @@ cd Nuts-Calendar
 docker-compose up -d
 ```
 
-## Access
+## DB migration
 
-### WEB UI
+in laravel container
 
-``http://localhost:8080/calendar``
+```bash
+php artisan migrate
+php artisan db:seed
+```
 
-### API endpoint
-
-``http://localhost:8080/api/calendar/2016/11``
+visit ``http://localhost:8080``

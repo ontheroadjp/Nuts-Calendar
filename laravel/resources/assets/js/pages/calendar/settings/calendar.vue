@@ -25,7 +25,7 @@
                     class="nuts-input-textbox is-medium" 
                     type="text" 
                     style="margin-bottom:3.5em"
-                    placeholder="{{ emailHasError ? error.email : 'Calendar name' }}"
+                    :placeholder="emailHasError ? error.email : 'Calendar name'"
                     v-model="input.name"
                     v-focus
                 >
@@ -42,7 +42,7 @@
                     class="nuts-input-textbox is-medium" 
                     type="text" 
                     style="margin-bottom:3.5em"
-                    placeholder="{{ passwordHasError ? error.password : 'description' }}"
+                    :placeholder="passwordHasError ? error.password : 'description'"
                     v-model="input.description"
                 >
                 <span class="icon is-small" :style="[passwordHasError ? style.error : '']">
@@ -96,7 +96,7 @@
             },
         },
 
-        ready() {
+        mounted() {
             const self = this;
             if(! this.$store.state.app.ready ) {
                 eventBus.listen('nuts.app.ready', function() {

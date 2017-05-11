@@ -1,8 +1,10 @@
 <template>
-    <div v-show="isActive" transition="alert-fade" class="notification {{ type }}">
-        <button v-show="isImportant" class="delete" @click="close"></button>
-        {{ message }}
-    </div> 
+    <transition>
+        <div v-show="isActive" :class="'notification' + type">
+            <button v-show="isImportant" class="delete" @click="close"></button>
+            {{ message }}
+        </div> 
+    </transition>
 </template>
 
 <script>
@@ -22,7 +24,7 @@
 </script>
 
 <style lang="sass">
-    .alert-fade-transition {
+    .alert-fade-enter-active, .alert-fade.leave-active {
         transition: all .4s ease;
         position: fixed;
         top: 10%;
@@ -30,7 +32,7 @@
         right: 20%;
         z-index: 99999;
     }
-    .alert-fade-enter, .alert-fade.leave {
+    .alert-fade-enter, .alert-fade.leave-to {
         opacity: 0;
     }
 </style>

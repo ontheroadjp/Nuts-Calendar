@@ -1,5 +1,5 @@
 <template>
-    <section class="hero {{ theme.primary.class }} is-fullheight">
+    <section :class="['hero', theme.primary.class, 'is-fullheight']">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">Nuts <strong>Calendar</strong></h1>

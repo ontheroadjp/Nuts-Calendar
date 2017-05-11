@@ -1,5 +1,5 @@
 <template>
-    <section class="hero {{ theme.primary.class }}">
+    <section :class="['hero', theme.primary.class]">
         <div class="hero-body">
             <div class="container">
                 <h1 class="title">{{ title }}</h1>

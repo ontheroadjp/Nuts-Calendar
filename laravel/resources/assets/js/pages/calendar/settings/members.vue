@@ -4,15 +4,15 @@
 <div class="column">
     
     <div class="box">
-        <button class="button is-outlined {{ theme.primary.class }}">Add New Member</button>
+        <button :class="['button', 'is-outlined', theme.primary.class]">Add New Member</button>
     </div>
 
     <div class="box" style="padding: 60px">
 
-    <template v-for="(index, member) in members">
+    <template v-for="(member, index) in members">
 
         <div 
-            id="order-{{member.order}}"
+            :id="'order-' + member.order"
             class="box" 
             style="position:relative; cursor:move; margin-bottom:0px;"
             :style="[dnd.draggingItem === member ? dnd.style.dragStart : '']"
@@ -40,7 +40,7 @@
                         class="nuts-input-textbox is-small" 
                         type="text" 
                         style="width: 60%"
-                        placeholder="{{ nameHasError ? error.name : 'Name' }}"
+                        :placeholder="nameHasError ? error.name : 'Name'"
                         v-model="input.name"
                         v-focus
                     >
@@ -50,7 +50,7 @@
                 </div>
 
                 <button 
-                    class="button {{ theme.secondary.class }}" 
+                    :class="['button', theme.secondary.class]" 
                     style="position:absolute; right:100px; top:24px;"
                     @click="updateMember(member)"
                 >
@@ -74,18 +74,19 @@
         </div><!-- // .box -->
  
         <div 
-            id="droparea-{{index}}"
+            :id="'droparea-' + index"
             class="drop-area"
             @dragEnter="handleDragEnter(member, index)"
         ></div>
 
-        <div 
-            v-show="dnd.dropAreaIndex === index"
-            @dragOver="handleDragOver($event)"
-            @dragLeave="handleDragLeave()"
-            @drop="handleDrop($event, member)"
-            transition="members-dnd-fade" 
-        >index: {{index}}</div>
+        <transition name="members-dnd-fade">
+            <div 
+                v-show="dnd.dropAreaIndex === index"
+                @dragOver="handleDragOver($event)"
+                @dragLeave="handleDragLeave()"
+                @drop="handleDrop($event, member)"
+            >index: {{index}}</div>
+        </transition>
 
     </template><!-- // v-for -->
 
@@ -219,7 +220,7 @@
 
         },
 
-        ready() {
+        mounted() {
             const keys = Object.keys(this.members);
             u.clog('key: ' + keys[0]);
             this.selected = keys[0];
@@ -227,12 +228,12 @@
 
     }
 </script>
-<style lang='sass' scoped>
+<style lang='scss' scoped>
     .drop-area {
         padding:5px 0
     }
 
-    .members-dnd-fade-transition {
+    .members-dnd-fade-enter-active .members-dnd-fade-leave-active {
         transition: all .8s ease;
         z-index: 99999;
         padding: 20px 0;
@@ -240,11 +241,7 @@
         border-radius: 5px;
         margin-bottom: 10px;
     }
-    .members-dnd-fade-enter {
-        padding: 0;
-        opacity: 0;
-    }
-    .members-dnd-fade-leave {
+    .members-dnd-fade-enter .members-dnd-fade-leave-to {
         padding: 0;
         opacity: 0;
     }

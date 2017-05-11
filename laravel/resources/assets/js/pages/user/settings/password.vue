@@ -23,9 +23,10 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    placeholder="{{ oldPasswordHasError ? error.oldPassword : 'Current Password' }}"
+                    :placeholder="oldPasswordHasError ? error.oldPassword : 'Current Password'"
                     style="margin-bottom: 20px;"
                     v-model="input.oldPassword"
+                    v-focus
                 >
                 <span class="icon" :style="[oldPasswordHasError ? style.error : '']">
                     <i class="fa fa-lock"></i>
@@ -39,7 +40,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    placeholder="{{ newPasswordHasError ? error.newPassword : 'New Password' }}"
+                    :placeholder="newPasswordHasError ? error.newPassword : 'New Password'"
                     style="margin-bottom: 20px;"
                     v-model="input.newPassword"
                 >
@@ -55,11 +56,11 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    placeholder="{{ newPasswordConfirmeHasError ? error.newPasswordConfirme : 'New Password ( Confirme )' }}"
+                    :placeholder="newPasswordConfirmationHasError ? error.newPasswordConfirme : 'New Password ( Confirme )'"
                     style="margin-bottom: 20px;"
                     v-model="input.newPasswordConfirmation"
                 >
-                <span class="icon" :style="[newPasswordConfirmeHasError ? style.error : '']">
+                <span class="icon" :style="[newPasswordConfirmationHasError ? style.error : '']">
                     <i class="fa fa-lock"></i>
                 </span>
             </p>
@@ -100,7 +101,6 @@
 <script>
     import userApi from '../../../services/user.js';
     import passwordChangeResultMessage from '../../../components/message.vue';
-    import focus from '../../../directives/form-focus.js';
 
     export default {
         components: {
@@ -111,10 +111,6 @@
             userApi,
         ],
     
-        directives: {
-            focus
-        },
-
         data() {
             return {
                 isLoading: false,
@@ -174,11 +170,13 @@
 </script>
 
 <style>
-    .result-fade-transition {
+/*
+    .result-fade-enter-active, .result-fade-leave-active {
         transition: all .4s ease;
         z-index: 99999;
     }
-    .result-fade-enter .result-fade-leave {
+    .result-fade-enter, .result-fade-leave-to {
         opacity: 0;
     }
+*/
 </style>

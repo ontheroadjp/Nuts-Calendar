@@ -128,14 +128,11 @@
 </script>
 
 <style>
-    .result-fade-transition {
+    .result-fade-enter-active .result-fade-leave-active {
         transition: all .4s ease;
         z-index: 99999;
     }
-    .result-fade-enter {
-        opacity: 0;
-    }
-    .result-fade-leave {
+    .result-fade-enter, .result-fade-leave-to {
         opacity: 0;
     }
 </style>

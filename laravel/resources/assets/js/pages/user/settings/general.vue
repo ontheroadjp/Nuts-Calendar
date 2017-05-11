@@ -23,12 +23,12 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="text" 
-                    placeholder="{{ nameHasError ? error.name : 'Name' }}"
+                    :placeholder="nameHasError ? error.name : 'Name'"
                     style="margin-bottom: 25px;"
                     v-model="input.name"
                     v-focus
                 >
-                <span class="icon" :style="[namelHasError ? style.error : '']">
+                <span class="icon" :style="[nameHasError ? style.error : '']">
                     <i class="fa fa-user"></i>
                 </span>
             </p>
@@ -69,7 +69,6 @@
 <script>
     import userApi from '../../../services/user.js';
     import accountResultMessage from '../../../components/message.vue';
-    import focus from '../../../directives/form-focus.js';
 
     export default {
         components: {
@@ -80,10 +79,6 @@
             userApi,
         ],
     
-        directives: {
-            focus
-        },
-
         data() {
             return {
                 isLoading: false,
@@ -136,7 +131,7 @@
             },
         },
 
-        ready() {
+        mounted() {
             const self = this;
             if(! this.$store.state.app.ready ) {
                 eventBus.listen('nuts.app.ready', function() {

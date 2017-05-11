@@ -141,6 +141,13 @@ export default {
     },
 
     // ---------------------------------------------
+    // calendar (ui)
+
+    toggleTableToolPalette(state, val) {
+        state.calendar.ui.isToolPalette = val;
+    },
+
+    // ---------------------------------------------
     // members
 
     initMembers( state, members ) {

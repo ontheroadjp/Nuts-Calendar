@@ -5,21 +5,20 @@
 
     <!-- DASHBOARD -->
     <li :class="{ 'is-active': currentCalendarId === 'dashboard' }">
-        <a v-link="{path: '/calendar'}" @click="changeCalendar('dashboard')">
+        <router-link to="/calendar" @click="changeCalendar('dashboard')">
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
             </span>
             <span>Dashboard</span>
-        </a>
+        </router-link>
     </li>
 
     <!-- USER CALENDARS -->
     <li v-for="uCalendar in userCalendars" 
         :class="{'is-active': currentCalendarId == uCalendar.id}"
-        v-link="'/calendar/view'" 
-        
+        @click="changeCalendar(uCalendar.id)"
     >
-        <a @click="changeCalendar(uCalendar.id)">
+        <router-link to="/calendar/view">
             <span class="icon is-small">
                 <i v-if="! isLoadingCalendarApi" class="fa fa-calendar"></i>
                 <i v-if="isLoadingCalendarApi && currentCalendarId !== uCalendar.id" class="fa fa-calendar"></i>
@@ -42,8 +41,8 @@
                 ></i>
             </span>
 -->
-        </a>
-
+        </router-link>
+<!--
         <ul id="tabs-dropdown-menu" 
             v-show="isDropdownOpen && currentCalendarId == uCalendar.id"
         >
@@ -57,7 +56,7 @@
                 </a>
             </li>
             <li>
-                <a  v-link="{path: '/calendar/settings/calendar'}" 
+                <router-link to="/calendar/settings/calendar"
                     :style="menuItemStyle"
                     @click="changeCalendar(uCalendar.id)"
                 >
@@ -65,10 +64,10 @@
                         <i class="fa fa-calendar-o"></i>
                     </span>
                     <span>Calendar Settings</span>
-                </a>
+                </router-link>
             </li>
             <li>
-                <a  v-link="{path: '/calendar/settings/members'}" 
+                <router-link to="/calendar/settings/members" 
                     :style="menuItemStyle"
                     @click="changeCalendar(uCalendar.id)"
                 >
@@ -76,10 +75,10 @@
                         <i class="fa fa-user"></i>
                     </span>
                     <span>Member Settings</span>
-                </a>
+                </router-link>
             </li>
             <li>
-                <a  v-link="{path: '/calendar/settings/items'}" 
+                <router-link to="/calendar/settings/items" 
                     :style="menuItemStyle"
                     @click="changeCalendar(uCalendar.id)"
                 >
@@ -87,19 +86,20 @@
                         <i class="fa fa-id-card-o"></i>
                     </span>
                     <span>Item Settings</span>
-                </a>
+                </router-link>
             </li>
-        </ul><!-- // #tabs-dropdown-menu -->
+        </ul>
 
     </li>
+-->
 
     <li :class="">
-        <a v-link="{path: '/calendar/settings/' + currentCalendarId}">
+        <router-link to="'/calendar/settings/' + currentCalendarId}">
             <span class="icon is-small">
                 <i class="fa fa-plus"></i>
             </span>
             <span>Create new one</span>
-        </a>
+        </router-link>
     </li>
 </ul>
 </nav>
@@ -117,7 +117,7 @@ export default {
 
     props: [
         'isLoadingCalendarApi',
-        'isToolPaletteOpen'
+//        'isToolPaletteOpen'
     ],
 
     data() {
@@ -146,6 +146,10 @@ export default {
         calendar: function() {
             return this.userCalendars[this.currentCalendarId];
         },
+
+        isToolPaletteOpen: function() {
+            return this.$store.state.calendar.ui.isToolPalette;
+        }
     },
 
     methods: {
@@ -181,7 +185,7 @@ export default {
         },
 
         toggleToolPalet() {
-            this.isToolPaletteOpen = !this.isToolPaletteOpen;
+            this.$store.commit('toggleTableToolPalette', !this.isToolPaletteOpen); 
         },
     },
 
@@ -194,8 +198,8 @@ export default {
 
 }
 </script>
-<style lang="sass">
-    @import '../../../../sass/app.scss';
+<style lang="scss">
+/*    @import '../../../../sass/app.scss'; */
 
     /** A fork of https://github.com/twbs/bootstrap.  */
     #tabs-dropdown-menu {
@@ -223,7 +227,8 @@ export default {
             clear: both;
             font-weight: normal;
             line-height: 1.428571429;
-            color: $primary-color;
+/*            color: $primary-color; */
+            color: white;
             white-space: nowrap;
         }
     

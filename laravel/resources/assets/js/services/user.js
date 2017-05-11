@@ -1,8 +1,10 @@
-import focus from '../directives/form-focus.js';
-
 export default {
     directives: {
-        focus
+        focus: {
+            inserted: function(el) {
+                el.focus();
+            }
+        }
     },
 
     data() {
@@ -43,20 +45,38 @@ export default {
 
     computed: {
         nameHasError: function() {
-            return this.error.name && ! this.input.name ? true : false;
+            return this.error.name 
+                && ! this.input.name ? true : false;
         },
 
         emailHasError: function() {
-            return this.error.email && ! this.input.email ? true : false;
+            return this.error.email 
+                && ! this.input.email ? true : false;
         },
 
         passwordHasError: function() {
-            return this.error.password && ! this.input.password ? true : false;
+            return this.error.password 
+                && ! this.input.password ? true : false;
         },
 
         passwordConfirmationHasError: function() {
-            return this.error.passwordConfirmation && ! this.input.passwordConfirmation 
-                ? true : false;
+            return this.error.passwordConfirmation 
+                && ! this.input.passwordConfirmation ? true : false;
+        },
+
+        newPasswordHasError: function() {
+            return this.error.newPassword 
+                && ! this.input.newPassword ? true : false;
+        },
+
+        oldPasswordHasError: function() {
+            return this.error.oldPassword 
+                && ! this.input.oldPassword ? true : false;
+        },
+
+        newPasswordConfirmationHasError: function() {
+            return this.error.newPasswordConfirmation 
+                && ! this.input.newPasswordConfirmation ? true : false;
         },
     },
 
@@ -206,7 +226,7 @@ export default {
             localStorage.removeItem('token');
 
             this.$store.commit('logout');
-            this.$route.router.go('/');
+            this.$router.push('/');
         },
 
         // -----------------------------------------------------

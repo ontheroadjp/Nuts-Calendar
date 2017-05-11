@@ -1,11 +1,13 @@
 <template>
-    <div class="message is-danger" transition="message-fade">
-        <slot></slot>
-    </div>
+    <transition>
+        <div class="message is-danger">
+            <slot></slot>
+        </div>
+    </transition>
 </template>
 
 <style scoped>
-    .message-fade-transition {
+    .message-fade-enter-active, .message-fade-leave-active {
         transition: all .4s ease;
         width: 50%;
         position: fixed;
@@ -14,7 +16,7 @@
         transform: translateY(-50%);
         z-index: 99;
     }
-    .message-fade-enter, .message-fade-leave {
+    .message-fade-enter, .message-fade-leave-to {
         opacity: 0;
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-<section id="headerNav" class="hero {{ theme.primary.class }} is-medium">
+<section id="headerNav" :class="['hero', theme.primary.class, 'is-medium']">
 <div class="hero-head">
 <header class="nav navbar-fixed-top" :style="headerStyle">
 
@@ -13,25 +13,28 @@
 
     <div class="nav-right nav-menu">
 
-        <a v-link="{ path: '/' }" class="nav-item">Home</a>
+        <router-link to="/" class="nav-item">Home</router-link>
 
         <template v-if="! $store.state.user.name">
-            <a v-link="{ path: '/login' }" class="nav-item">Login</a>
-            <a v-link="{ path: '/register' }" class="nav-item">Register</a>
+            <router-link to="/login" class="nav-item">Login</router-link>
+            <router-link to="/register" class="nav-item">Register</router-link>
         </template>
 
         <template v-else>
-            <a  @click="$store.commit('setCurrentCalendarId', 'dashboard')" 
-                v-link="{ path: '/calendar' }" 
-                class="nav-item">Dashboard
-            </a>
+            <router-link 
+                to="/calendar"
+                class="nav-item"
+                @click="$store.commit('setCurrentCalendarId', 'dashboard')"
+                >Dashboard
+            </router-link>
+
             <user-account-dropdown></user-account-dropdown>
         </template>
 
         <theme-changer></theme-changer>
 
         <span class="nav-item">
-            <a class="button {{ theme.primary.class }} is-inverted" >
+            <a :class="['button', theme.primary.class, 'is-inverted']" >
                 <span class="icon">
                     <i class="fa fa-twitter"></i>
                 </span>
@@ -52,6 +55,7 @@
     import themeChanger from './theme-changer.vue';
     
     export default {
+        name: 'navbar-index',
         components: {
             'hamburgerMenu': hamburgerMenu,
             'userAccountDropdown': userAccountDropdown,
@@ -73,10 +77,11 @@
             },
         },
 
-        ready() {
+        mounted() {
             const self = this;
             window.addEventListener('resize', function (event) {
-                self.height = document.getElementById('headerNav').clientHeight;
+                const height = document.getElementById('headerNav').clientHeight;
+                self.$emit('update:height', height);
             });
         }
     }

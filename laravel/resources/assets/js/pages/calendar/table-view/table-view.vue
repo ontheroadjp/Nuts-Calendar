@@ -51,9 +51,9 @@
         background: rgba(240, 240, 240, 0.8);
     " 
     v-show="dragItem.draggingItem && ! dragItem.isDropped" 
-    @dragEnter="dragItem.enterTrash = true"
-    @dragOver="handleDragOver($event)"
-    @dragLeave="dragItem.enterTrash = false"
+    @dragenter="dragItem.enterTrash = true"
+    @dragover="handleDragOver($event)"
+    @dragleave="dragItem.enterTrash = false"
     @drop="handleDropInTrash($event)"
 >
     <span class="icon is-large">
@@ -62,12 +62,12 @@
 </div>
 
 <div class="panel" :style="isLoadingCalendarApi ? 'height: 100vh' : ''">
-<table id="{{ id }}" class="table is-bordered">
+<table :id="id" class="table is-bordered">
 
     <thead v-if="filteredColumns">
         <tr>
             <th :style="style.dayColumnWidth">Date</th>
-            <template v-for="(memberId, member) in filteredColumns">
+            <template v-for="(member, memberId) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[{'padding': 0}, columnWidth]"
                 >
@@ -94,7 +94,7 @@
     </thead>
 
     <tbody v-if="filteredBody">
-        <tr v-for="(dayIndex, day) in filteredBody"
+        <tr v-for="(day, dayIndex) in filteredBody"
             :class="{
                 saturday: getDayIndex(day.date) == 6, 
                 sunday: getDayIndex(day.date) == 0
@@ -117,17 +117,17 @@
 -->
             <!-- NOTE: cellItemsLoopIndex = member_id -->
             <!-- NOTE: cellItems = items in a cell -->
-            <template v-for="(memberId, cellItems) in day.items">
+            <template v-for="(cellItems, memberId) in day.items">
                 <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[columnWidth, dragItem.enterCell == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
                     @click="clickToItemInsert((dayIndex + 1) + '-' + memberId)"
-                    @dragEnter="handleDragEnter((dayIndex +1) + '-' + memberId)"
-                    @dragOver="handleDragOver($event)"
+                    @dragenter="handleDragEnter((dayIndex +1) + '-' + memberId)"
+                    @dragover="handleDragOver($event)"
                     @drop="handleDrop($event, cellItems)"
                 >
 
                     <!-- Show cellItems -->
-                    <div v-for="(cellItemsIndex, item) in cellItems"
+                    <div v-for="(item, cellItemsIndex) in cellItems"
                         @mouseout="item.is_hover = false"
                     >
                         <span v-show="!item.editing"
@@ -135,8 +135,8 @@
                             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
                             draggable="true"
                             @mouseover="item.is_hover = true"
-                            @dragStart="handleDragStart(cellItems, item, cellItemsIndex, $event)"
-                            @dragEnd="handleDragEnd()"
+                            @dragstart="handleDragStart(cellItems, item, cellItemsIndex, $event)"
+                            @dragend="handleDragEnd()"
                         >
                             <!-- show item content -->
                             <template v-if="isEventShow && item.type_id === 1">
@@ -220,7 +220,7 @@
 </template>
 
 <script>
-    import focus from '../../../directives/form-focus.js';
+//    import focus from '../../../directives/form-focus.js';
     import timeFormatter from '../../../filters/time-formatter.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import headerShutter from '../../../components/shutter.vue';
@@ -234,6 +234,7 @@
     import deleteColumnWarningContent from './message/delete-column-warning.vue';
 
     export default {
+        name: 'table-view-content',
         components: {
             'edit-column-modal': editColumnModal,
             'edit-item-modal': editItemModal,
@@ -244,9 +245,9 @@
             'header-shutter': headerShutter,
         },
 
-        directives: {
-            focus
-        },
+//        directives: {
+//            focus
+//        },
 
         mixins: [
             itemService, dndService, dateUtilities, timeFormatter
@@ -374,7 +375,7 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
     .black-screen {
         background: rgba(217, 217, 217, 0.75);
         position: absolute;
@@ -463,11 +464,11 @@
         border-color: red !important;
         color: #fff;
     }
-    .column-fade-transition {
+    .column-fade-enter-active .column-fade-leave-active {
         transition: all .4s ease;
         z-index: 99999;
     }
-    .column-fade-enter .column-fade-leave {
+    .column-fade-enter .column-fade-leave-to {
         opacity: 0;
     }
 </style>

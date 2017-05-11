@@ -50,7 +50,7 @@ export default {
         }
     },
 
-    ready() {
+    mounted() {
         const locale = ['en', 'ja'];
         locale.forEach( (val, index) => {
             const l = moment.locale(val);
