@@ -1,8 +1,22 @@
 export default {
+    directives: {
+        focus: {
+            inserted: function(el) {
+                el.focus();
+            },
+        }
+    },
+
     data() {
         return {
             memberService: {
                 isLoading: false,
+            },
+
+            input: {
+                name: '',
+                order: '',
+                isShow: false,
             }
         }
     },
@@ -15,13 +29,13 @@ export default {
     },
 
     methods: {
-        execInsertMember: function (userCalendarId, payload) {
+        execInsertMember: function (userCalendarId, name, order) {
             this.memberService.isLoading = true;
             const url = '/api/v1/member';
             const params = {
                 'user_calendar_id': userCalendarId,
-                'name': payload.name,
-                'order': payload.order
+                'name': name,
+                'order': order
             };
             
             http.fetchPost(url, params)

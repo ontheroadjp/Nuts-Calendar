@@ -56,45 +56,45 @@ export default {
             const l = moment.locale(val);
             const p = 'moment().startOf(\'week\')';
 
-            u.clog('['+val+'] ----------------------------------');
-
-            u.clog('moment(): ' + moment() );
-            u.clog('moment.months(): ' + moment.months());
-            u.clog('moment.months(3): ' + moment.months(3) );
-            u.clog(p+'.format(\'YYYY-MM-DD\'): ' + moment().startOf('week').format('YYYY-MM-DD') );
-            u.clog(p+'.isToday: '  + moment().startOf('week').isSame(moment(new Date())) );
-
-            u.clog('moment().format(\'LT\')'   + moment().format('LT') );
-            u.clog('moment().format(\'LTS\')'  + moment().format('LTS') );
-            u.clog('moment().format(\'L\')'    + moment().format('L') );
-            u.clog('moment().format(\'l\')'    + moment().format('l') );
-            u.clog('moment().format(\'LL\')'   + moment().format('LL') );
-            u.clog('moment().format(\'ll\')'   + moment().format('ll') );
-            u.clog('moment().format(\'LLL\')'  + moment().format('LLL') );
-            u.clog('moment().format(\'lll\')'  + moment().format('lll') );
-            u.clog('moment().format(\'LLLL\')' + moment().format('LLLL') );
-            u.clog('moment().format(\'llll\')' + moment().format('llll') );
-
-            u.clog(p+'.year(): '   + moment().startOf('week').year() );
-            u.clog(p+'.month(): '  + moment().startOf('week').month() );
-            u.clog(p+'.date(): '   + moment().startOf('week').date() );
-            u.clog(p+'.day(): '    + moment().startOf('week').day() );
-
-            u.clog(p+'.format(\'Y\'): '     + moment().startOf('week').format('Y') );
-            u.clog(p+'.format(\'YY\'): '     + moment().startOf('week').format('YY') );
-
-            u.clog(p+'.format(\'M\'): '     + moment().startOf('week').format('M') );
-            u.clog(p+'.format(\'MM\'): '     + moment().startOf('week').format('MM') );
-            u.clog(p+'.format(\'MMM\'): '     + moment().startOf('week').format('MMM') );
-
-            u.clog(p+'.format(\'D\'): '     + moment().startOf('week').format('D') );
-            u.clog(p+'.format(\'DD\'): '     + moment().startOf('week').format('DD') );
-            u.clog(p+'.format(\'Do\'): '    + moment().startOf('week').format('Do') );
-
-            u.clog(p+'.format(\'d\'): '     + moment().startOf('week').format('d') );
-            u.clog(p+'.format(\'dd\'): '    + moment().startOf('week').format('dd') );
-            u.clog(p+'.format(\'ddd\'): '   + moment().startOf('week').format('ddd') );
-            u.clog(p+'.format(\'dddd\'): '  + moment().startOf('week').format('dddd') );
+//            u.clog('['+val+'] ----------------------------------');
+//
+//            u.clog('moment(): ' + moment() );
+//            u.clog('moment.months(): ' + moment.months());
+//            u.clog('moment.months(3): ' + moment.months(3) );
+//            u.clog(p+'.format(\'YYYY-MM-DD\'): ' + moment().startOf('week').format('YYYY-MM-DD') );
+//            u.clog(p+'.isToday: '  + moment().startOf('week').isSame(moment(new Date())) );
+//
+//            u.clog('moment().format(\'LT\')'   + moment().format('LT') );
+//            u.clog('moment().format(\'LTS\')'  + moment().format('LTS') );
+//            u.clog('moment().format(\'L\')'    + moment().format('L') );
+//            u.clog('moment().format(\'l\')'    + moment().format('l') );
+//            u.clog('moment().format(\'LL\')'   + moment().format('LL') );
+//            u.clog('moment().format(\'ll\')'   + moment().format('ll') );
+//            u.clog('moment().format(\'LLL\')'  + moment().format('LLL') );
+//            u.clog('moment().format(\'lll\')'  + moment().format('lll') );
+//            u.clog('moment().format(\'LLLL\')' + moment().format('LLLL') );
+//            u.clog('moment().format(\'llll\')' + moment().format('llll') );
+//
+//            u.clog(p+'.year(): '   + moment().startOf('week').year() );
+//            u.clog(p+'.month(): '  + moment().startOf('week').month() );
+//            u.clog(p+'.date(): '   + moment().startOf('week').date() );
+//            u.clog(p+'.day(): '    + moment().startOf('week').day() );
+//
+//            u.clog(p+'.format(\'Y\'): '     + moment().startOf('week').format('Y') );
+//            u.clog(p+'.format(\'YY\'): '     + moment().startOf('week').format('YY') );
+//
+//            u.clog(p+'.format(\'M\'): '     + moment().startOf('week').format('M') );
+//            u.clog(p+'.format(\'MM\'): '     + moment().startOf('week').format('MM') );
+//            u.clog(p+'.format(\'MMM\'): '     + moment().startOf('week').format('MMM') );
+//
+//            u.clog(p+'.format(\'D\'): '     + moment().startOf('week').format('D') );
+//            u.clog(p+'.format(\'DD\'): '     + moment().startOf('week').format('DD') );
+//            u.clog(p+'.format(\'Do\'): '    + moment().startOf('week').format('Do') );
+//
+//            u.clog(p+'.format(\'d\'): '     + moment().startOf('week').format('d') );
+//            u.clog(p+'.format(\'dd\'): '    + moment().startOf('week').format('dd') );
+//            u.clog(p+'.format(\'ddd\'): '   + moment().startOf('week').format('ddd') );
+//            u.clog(p+'.format(\'dddd\'): '  + moment().startOf('week').format('dddd') );
         });
         moment.locale(this.lang);
     }

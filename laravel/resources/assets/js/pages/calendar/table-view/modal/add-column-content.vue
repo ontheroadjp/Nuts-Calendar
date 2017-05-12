@@ -37,66 +37,36 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import memberApi from '../../../../services/member.js';
-import focus from '../../../../directives/form-focus.js';
 
 export default {
-    directives: {
-        focus
-    },
-
-    props: [
-        'isActive', 'memberId'
-    ],
-
     mixins: [
         memberApi
     ],
 
-    data() {
-        return {
-            input: {
-                name: '',
-                isShow: false,
-                order: '',
-            }
-        }
-    },
-
     computed: {
-        members: function() {
-            return this.$store.state.calendar.data.members;
-        },
-
-        theme: function() {
-            return this.$store.state.app.theme;
-        }
+        ...mapState({
+            currentCalendarId: state => state.calendar.currentId,
+            members: state => state.calendar.data.members,
+            theme: state => state.app.theme,
+        }),
     },
 
     methods: {
         ok: function() {
-            const payload = {
-                name: this.input.name,
-                order: Object.keys(this.members).length + 1,
-            }
-            this.execInsertMember(this.$store.state.calendar.currentId, payload);
+            const name = this.input.name;
+            const order = Object.keys(this.members).length + 1;
+            this.execInsertMember(this.currentCalendarId, name, order);
             this.close();
         },
 
         close: function() {
-            this.$emit('update:isActive', false);
-            //this.isActive = false;
-            this.column = null;
+            this.$store.commit('toggleColumnInserting', {
+                isInserting: false,
+                insertingColumnId: null
+            });
         },
-    },
-
-    watch: {
-        'memberId': function(oldVal, newVal) {
-            if(oldVal == '') return;
-            this.input.name = this.members[this.memberId].name;
-            this.input.isShow = this.members[this.memberId].isShow;
-            this.input.order = this.members[this.memberId].order;
-        }
     },
 }
 </script>

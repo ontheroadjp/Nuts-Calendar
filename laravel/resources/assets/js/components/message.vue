@@ -7,7 +7,7 @@
 </template>
 
 <style scoped>
-    .message-fade-enter-active, .message-fade-leave-active {
+    .message-fade-enter-active .message-fade-leave-active {
         transition: all .4s ease;
         width: 50%;
         position: fixed;
@@ -16,7 +16,7 @@
         transform: translateY(-50%);
         z-index: 99;
     }
-    .message-fade-enter, .message-fade-leave-to {
+    .message-fade-enter .message-fade-leave-to {
         opacity: 0;
     }
 </style>

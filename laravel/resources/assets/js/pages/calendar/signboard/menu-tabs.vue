@@ -20,12 +20,12 @@
     >
         <router-link to="/calendar/view">
             <span class="icon is-small">
-                <i v-if="! isLoadingCalendarApi" class="fa fa-calendar"></i>
-                <i v-if="isLoadingCalendarApi && currentCalendarId !== uCalendar.id" class="fa fa-calendar"></i>
-                <i v-if="isLoadingCalendarApi && currentCalendarId === uCalendar.id" class="fa fa-refresh fa-spin"></i>
+                <i v-if="! calendarServiceIsLoading" class="fa fa-calendar"></i>
+                <i v-if="calendarServiceIsLoading && currentCalendarId !== uCalendar.id" class="fa fa-calendar"></i>
+                <i v-if="calendarServiceIsLoading && currentCalendarId === uCalendar.id" class="fa fa-refresh fa-spin"></i>
             </span>
                 {{ uCalendar.name }}
-            <span class="icon is-small" v-show="currentCalendarId == uCalendar.id && ! isLoadingCalendarApi">
+            <span class="icon is-small" v-show="currentCalendarId == uCalendar.id && ! calendarServiceIsLoading">
                 <i class="fa fa-navicon" @click="toggleToolPalet()"></i>
             </span>
 <!--
@@ -107,49 +107,29 @@
 </template>
 
 <script>
-//import calendarService from '../../services/calendar.js';
+import { mapState } from 'vuex';
 
 export default {
 
-//    mixins: [
-//        calendarService
-//    ],
-
     props: [
-        'isLoadingCalendarApi',
-//        'isToolPaletteOpen'
+        'calendarServiceIsLoading',
     ],
 
-    data() {
-        return {
-            isDropdownOpen: false,
-        }
-    },
-
     computed: {
-        theme: function() {
-            return this.$store.state.app.theme;
-        },
+        ...mapState({
+            userCalendars: state => state.calendar.data.userCalendars,
+            currentCalendarId: state => state.calendar.currentId,
+            isToolPaletteOpen: state => state.calendar.behavior.toolPalette.isActive,
+            theme: state => state.app.theme,
+        }),
 
         menuItemStyle: function() {
             return 'color: ' + this.theme.primary.code;
         },
 
-        userCalendars: function() {
-            return this.$store.state.calendar.data.userCalendars;
-        },
-
-        currentCalendarId: function() {
-            return this.$store.state.calendar.currentId;
-        },
-
         calendar: function() {
             return this.userCalendars[this.currentCalendarId];
         },
-
-        isToolPaletteOpen: function() {
-            return this.$store.state.calendar.ui.isToolPalette;
-        }
     },
 
     methods: {
@@ -164,25 +144,25 @@ export default {
             this.toggle();
         },
 
-        toggle: function() {
-            u.clog('toggle');
-            if (this.isDropdownOpen) {
-                return this.hide()
-            }
-            return this.show()
-        },
-
-        show: function() {
-            u.clog('show');
-            this.isDropdownOpen = true;
-            setTimeout(() => document.addEventListener('click', this.hide), 0);
-        },
-
-        hide: function() {
-            u.clog('hide');
-            this.isDropdownOpen = false;
-            document.removeEventListener('click', this.hide);
-        },
+//        toggle: function() {
+//            u.clog('toggle');
+//            if (this.isDropdownOpen) {
+//                return this.hide()
+//            }
+//            return this.show()
+//        },
+//
+//        show: function() {
+//            u.clog('show');
+//            this.isDropdownOpen = true;
+//            setTimeout(() => document.addEventListener('click', this.hide), 0);
+//        },
+//
+//        hide: function() {
+//            u.clog('hide');
+//            this.isDropdownOpen = false;
+//            document.removeEventListener('click', this.hide);
+//        },
 
         toggleToolPalet() {
             this.$store.commit('toggleTableToolPalette', !this.isToolPaletteOpen); 

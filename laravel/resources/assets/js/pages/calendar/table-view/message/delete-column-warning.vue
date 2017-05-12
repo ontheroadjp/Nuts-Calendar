@@ -17,21 +17,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import memberService from '../../../../services/member.js'
 
 export default {
-    props: [
-        'isActive', 'columnId'
-    ],
+//    props: [
+//        'isActive', 'columnId'
+//    ],
 
     mixins: [
         memberService
     ],
 
     computed: {
-        members: function() {
-            return this.$store.state.calendar.data.members;
-        }
+        ...mapState({
+            members: state => state.calendar.data.members,
+            columnId: state => state.calendar.behavior.column.deletingColumnId,
+        })
+//        members: function() {
+//            return this.$store.state.calendar.data.members;
+//        }
     },
 
     methods: {
@@ -41,7 +46,12 @@ export default {
         },
 
         close: function() {
-            this.isActive = false;
+//            this.isActive = false;
+            const payload = {
+                isDeleting: false,
+                deletingColumnId: null
+            }
+            this.$store.commit('toggleColumnDeleting', payload);
         },
     },
 }

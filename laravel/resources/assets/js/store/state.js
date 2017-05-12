@@ -41,9 +41,41 @@ export default {
             calendars: [],
             members: [],
         },
+
         isLoading: false,
-        ui: {
-            isToolPalette: false
-        }
-    },
+
+        behavior: {
+
+            showColumns: [],
+            isEventItemShow: true,
+            isTaskItemShow: true,
+
+            query: {
+                search: '',
+                internal: ''
+            },
+
+            toolPalette: {
+                isActive: false,
+            },
+
+            column: {
+                isInserting: false,
+                isEditing: false,
+                isDeleting: false,
+                insertingColumnId: null,
+                editingColumnId: null,
+                deletingColumnId: null
+            },
+
+            item: {
+                isInserting: false,
+                isEditing: false,
+                isDeleting: false,
+                insertingCellTo: null,
+                editingItem: null,
+                deletingItem: null,
+            }
+        },
+    }
 }

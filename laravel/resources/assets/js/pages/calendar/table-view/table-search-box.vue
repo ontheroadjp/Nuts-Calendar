@@ -11,8 +11,7 @@
             <span class="icon is-small">
                 <i class="fa fa-search"></i>
             </span>
-            <a 
-                :class="['button', theme.secondary.class, 'is-outlined']" 
+            <a :class="['button', theme.secondary.class, 'is-outlined']" 
                 @click="clearField"
             >Clear</a>
         </div>
@@ -21,21 +20,31 @@
 </template>
 
 <script>
-export default {
-    props: [
-        'searchQuery'
-    ],
+import { mapState } from 'vuex';
 
+export default {
     methods: {
         clearField() {
-            this.$emit('update:searchQuery', '');
-            //this.searchQuery = ''
+            this.$store.commit('setSearchQuery', '');
         },
     },
 
     computed: {
-        theme: function() {
-            return this.$store.state.app.theme;
+        ...mapState({
+            theme: state => state.app.theme,
+        }),
+
+//        ...mapMutations({
+//            setQuery: (state, val) => state.commit('setSearchQuery', val),
+//        }),
+
+        searchQuery: {
+            get() {
+                return this.$store.state.calendar.behavior.query.search;
+            },
+            set(val) {
+                this.$store.commit('setSearchQuery', val);
+            }
         },
     }
 }

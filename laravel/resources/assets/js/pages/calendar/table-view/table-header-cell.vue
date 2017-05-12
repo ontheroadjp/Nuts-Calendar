@@ -1,0 +1,82 @@
+<template>
+<div>
+    <edit-column-modal v-if="isColumnEditing">
+        <edit-column-modal-content></edit-column-modal-content>
+    </edit-column-modal>
+
+    <delete-column-warning v-if="isColumnDeleting">
+        <delete-column-warning-content></delete-column-warning-content>
+    </delete-column-warning>
+
+    <header-shutter 
+        :text="member.name + '(' + member.id + ')'"
+        :text-style="{ 'padding': '0.5em 0.75em' }"
+        :shutter-style="{ 'padding': '2px' }"
+        >
+        
+        <a class="button" @click.stop="editColumn(member.id)">
+            <span class="icon is-small">
+                <i class="fa fa-pencil"></i>
+            </span>
+        </a>
+    
+        <a class="button" @click="deleteColumn(member.id)">
+            <span class="icon is-small">
+                <i class="fa fa-trash"></i>
+            </span>
+        </a>
+    </header-shutter>
+</div>
+</template>
+
+<script>
+import { mapState } from 'vuex';
+import editColumnModal from '../../../components/modal.vue';
+import editColumnModalContent from './modal/edit-column-content.vue';
+import deleteColumnWarning from '../../../components/message.vue';
+import deleteColumnWarningContent from './message/delete-column-warning.vue';
+import headerShutter from '../../../components/shutter.vue';
+
+export default {
+    name: 'header-cell',
+
+    components: {
+        'edit-column-modal': editColumnModal,
+        'edit-column-modal-content': editColumnModalContent,
+        'delete-column-warning': deleteColumnWarning,
+        'delete-column-warning-content': deleteColumnWarningContent,
+        'header-shutter': headerShutter,
+    },
+
+    props: [
+        'member'
+    ],
+
+    computed: {
+        ...mapState({
+            isColumnEditing: state => state.calendar.behavior.column.isEditing,
+            isColumnDeleting: state => state.calendar.behavior.column.isDeleting,
+        })
+    },
+
+    methods: {
+        editColumn(memberId) {
+            u.clog('editColumn()');
+            const payload = {
+                isEditing: !this.isColumnEditing,
+                editingColumnId: memberId
+            };
+            this.$store.commit('toggleColumnEditing', payload);
+        },
+
+        deleteColumn(memberId) {
+            u.clog('deleteColumn()');
+            const payload = {
+                isDeleting: !this.isColumnDeleting,
+                deletingColumnId: memberId
+            };
+            this.$store.commit('toggleColumnDeleting', payload);
+        },
+    }
+}
+</script>

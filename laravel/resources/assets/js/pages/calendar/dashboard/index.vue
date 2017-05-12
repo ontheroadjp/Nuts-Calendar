@@ -41,17 +41,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
 
     computed: {
-        userCalendars: function() {
-            return this.$store.state.calendar.data.userCalendars;
-        },
-
-        theme: function() {
-            return this.$store.state.app.theme;
-        }
+        ...mapState({
+            userCalendars: state => state.calendar.data.userCalendars,
+            theme: state => state.app.theme
+        }),
     },
+
+//    computed: {
+//        userCalendars: function() {
+//            return this.$store.state.calendar.data.userCalendars;
+//        },
+//
+//        theme: function() {
+//            return this.$store.state.app.theme;
+//        }
+//    },
 
     methods: {
         clickUserCalendar: function(id) {

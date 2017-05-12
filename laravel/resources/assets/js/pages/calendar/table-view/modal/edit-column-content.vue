@@ -44,7 +44,7 @@
             <div class="control">
                 <span class="select">
                     <select v-model="input.order">
-                        <option v-for="member in $store.state.calendar.data.members">
+                        <option v-for="member in members">
                         {{ member.order }}
                         </option>
                     </select>
@@ -63,35 +63,32 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import memberApi from '../../../../services/member.js';
 
 export default {
-    props: [
-        'isActive', 'memberId'
-    ],
+    name: 'edit-column-modal-content',
+//    props: [
+//        'isActive', 'memberId'
+//    ],
 
     mixins: [
         memberApi
     ],
 
-    data() {
-        return {
-            input: {
-                name: '',
-                isShow: false,
-                order: '',
-            }
-        }
-    },
-
     computed: {
-        members: function() {
-            return this.$store.state.calendar.data.members;
-        },
-
-        theme: function() {
-            return this.$store.state.app.theme;
-        }
+        ...mapState({
+            members: state => state.calendar.data.members,
+            memberId: state => state.calendar.behavior.column.editingColumnId,
+            theme: state => state.app.theme,
+        }),
+//        members: function() {
+//            return this.$store.state.calendar.data.members;
+//        },
+//
+//        theme: function() {
+//            return this.$store.state.app.theme;
+//        }
     },
 
     methods: {
@@ -101,18 +98,26 @@ export default {
         },
 
         close: function() {
-            this.isActive = false;
-            this.column = null;
+//            this.isActive = false;
+//            this.column = null;
+
+            this.input.name = '';
+            this.input.order = '';
+
+            const payload = {
+                isEditing: false,
+                editingColumnId: null
+            }
+            this.$store.commit('toggleColumnEditing', payload);
         },
     },
 
-    watch: {
-        'memberId': function(oldVal, newVal) {
-            if(oldVal == '') return;
-            this.input.name = this.members[this.memberId].name;
-            this.input.isShow = this.members[this.memberId].isShow;
-            this.input.order = this.members[this.memberId].order;
-        }
-    },
+//    watch: {
+//        'memberId': function(oldVal, newVal) {
+//            if(oldVal == '') return;
+//            this.input.name = this.members[this.memberId].name;
+//            this.input.order = this.members[this.memberId].order;
+//        }
+//    },
 }
 </script>

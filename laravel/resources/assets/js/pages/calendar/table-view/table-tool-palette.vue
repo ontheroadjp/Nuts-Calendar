@@ -1,10 +1,9 @@
 <template>
-<div>
-<add-column-modal v-show="modal.addColumn.isActive">
-    <add-column-modal-content 
-        :is-active.sync="modal.addColumn.isActive" 
-        :member-id="modal.addColumn.addingColumnId"
-    ></add-column-modal-content>
+<div id="tool-palette"
+    style="background:#f0f0f0; padding:5px; overflow: scroll"
+    >
+<add-column-modal v-if="isColumnInserting">
+    <add-column-modal-content></add-column-modal-content>
 </add-column-modal>
 
 <span class="level" style="white-space: nowrap">
@@ -29,12 +28,13 @@
         </span>
 
         <span v-show="selected === 'member'" style="margin-left:10px">
-            <template v-for="(memberId, member) in $store.state.calendar.data.members">
-                <button  :class="['button', { 'is-off': !member.isShow }]" 
-                    @click="toggleShowColumn(memberId, !member.isShow)"
+            <template v-for="(member, memberId) in members">
+                <button  :class="['button', {'is-off': !member.isShow}]" 
+                    @click="toggleShowColumns(memberId, !member.isShow)"
                     >
                     <i v-show="member.isShow" class="fa fa-user"></i>
                     <i v-show="!member.isShow" class="fa fa-user-times"></i>
+                    ({{ memberId }})
                 </button>
             </template>
             <span class="icon is-small">
@@ -45,19 +45,19 @@
         </span>
 
         <span v-show="selected === 'item'" style="margin-left:10px">
-            <button :class="['button', { 'is-off': !isEventShow }]" 
-                    @click="$emit('update:isEventShow', !isEventShow)"
+            <button :class="['button', { 'is-off': !isEventItemShow }]" 
+                    @click="$store.commit('toggleIsEventItemShow', !isEventItemShow)"
                     >
-                    <i v-show="isEventShow" class="fa fa-bell-o"></i>
-                    <i v-show="!isEventShow" class="fa fa-bell-slash-o"></i>
+                    <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
+                    <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
                     Event
             </button>
 
-            <button :class="['button', { 'is-off': !isTaskShow }]" 
-                    @click="$emit('update:isTaskShow', !isTaskShow)"
+            <button :class="['button', { 'is-off': !isTaskItemShow }]" 
+                    @click="$store.commit('toggleIsTaskItemShow', !isTaskItemShow)"
                     >
-                    <i v-show="isTaskShow" class="fa fa-bell-o"></i>
-                    <i v-show="!isTaskShow" class="fa fa-bell-slash-o"></i>
+                    <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
+                    <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
                     Task
             </button>
         </span>
@@ -66,13 +66,13 @@
 
     <span class="level-right">
         <span class="level-item" style="margin-right:10px">
-            <search-box :search-query.sync="searchQuery"></search-box>
+            <search-box></search-box>
         </span>
-            <span class="level-item icon is-small" 
-                  style="cursor:pointer"
-                  @click="$emit('update:isOpen', !isOpen)"
-                  ><i class="fa fa-times-circle"></i>
-            </span>
+        <span class="level-item icon is-small" 
+              style="cursor:pointer; margin: 0 10px"
+              @click="close()"
+              ><i class="fa fa-times-circle"></i>
+        </span>
     </span>
 
 </span><!-- // .level -->
@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import searchBox from './table-search-box.vue';
 import addColumnModalBase from '../../../components/modal.vue';
 import addColumnModalContent from './modal/add-column-content.vue';
@@ -92,44 +93,56 @@ export default {
         'add-column-modal-content': addColumnModalContent,
     },
 
-    props: [
-        'internalQuery', 'searchQuery', 'isEventShow', 'isTaskShow'
-    ],
-
     data() {
         return {
-            selected: 'day',
-            modal: {
-                addColumn: {
-                    isActive: false,
-                }
-            }
+            selected: 'date',
+        }
+    },
+
+    computed: {
+        ...mapState({
+            isToolPaletteOpen: state => state.calendar.behavior.toolPalette.isActive,
+            searchQuery: state => state.calendar.behavior.query.search,
+            internalQuery: state => state.calendar.behavior.query.internal,
+            members: state => state.calendar.data.members,
+            isColumnInserting: state => state.calendar.behavior.column.isInserting,
+            isEventItemShow: state => state.calendar.behavior.isEventItemShow,
+            isTaskItemShow: state => state.calendar.behavior.isTaskItemShow,
+            theme: state => state.app.theme,
+        }),
+
+        showColumns: function() {
+            return this.$store.getters.showMembers;
+        },
+
+        theme: function() {
+            return this.$store.state.app.theme;
         }
     },
 
     methods: {
         setInternalQuery(val) {
-            this.$emit('update:internalQuery', val);
-            //this.internalQuery = val;
+            this.$store.commit('setInternalQuery', val);
         },
 
         clickNewColumn() {
-            this.modal.addColumn.isActive = !this.modal.addColumn.isActive;
+            this.$store.commit('toggleColumnInserting', {
+                isInserting: !this.isColumnInserting,
+                insertingColumnId: null
+            });
         },
 
-        toggleShowColumn(id, value) {
-            if(this.$parent.showColumns.length === 1 && value === false) { 
+        toggleShowColumns(id, val) {
+            if(this.showColumns.length === 1 && val === false) { 
                 return; 
             }
-            this.$store.commit('setShowMember', { 'id': id, 'value': value });
+            this.$store.commit('setMemberStatusIsShow', { 'id': id, 'val': val });
+        },
+
+        close() {
+            this.$store.commit('toggleTableToolPalette', !this.isToolPaletteOpen);
         }
     },
-
-    computed: {
-        theme: function() {
-            return this.$store.state.app.theme;
-        }
-    }
 }
 </script>
 

@@ -25,13 +25,14 @@
     
     <div class="hero-foot">
         <menu-tabs 
-            :is-loading-calendar-api="isLoadingCalendarApi"
+            :calendar-service-is-loading="calendarServiceIsLoading"
         ></menu-tabs>
     </div>
 </section>
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     import ymField from './ym-field.vue';
     import menuTabs from './menu-tabs.vue';
 
@@ -42,13 +43,13 @@
         },
 
         props: [
-            'isLoadingCalendarApi',
+            'calendarServiceIsLoading',
         ],
 
         computed: {
-            theme: function() {
-                return this.$store.state.app.theme;
-            },
+            ...mapState({
+                theme: state => state.app.theme,
+            }),
 
             style: function() {
                 return {

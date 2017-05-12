@@ -1,93 +1,35 @@
 <template id="calendar">
 <div>
-    <div v-show="isLoadingCalendarApi" class="black-screen">
-        <div v-if="filteredBody" 
-            class="has-text-centered" 
-            style="
-                position: absolute;
-                top: 5%;
-                left: 50%;
-                transform: translateX(-50%);
-            "><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+    <black-screen v-if="isBlackScreenShow">
+        <div v-show="filteredBody" class="has-text-centered black-screen-loading">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
         </div>
+    </black-screen>
+
+    <edit-item-modal v-if="filteredBody && isItemEditing">
+        <edit-item-modal-content v-show="isItemEditing"></edit-item-modal-content>
+    </edit-item-modal>
+
+    <div :class="['trash', { 'trash-entered': dragItem.enterTrash } ]"
+        v-show="dragItem.draggingItem && ! dragItem.isDropped" 
+        @dragenter="dragItem.enterTrash = true"
+        @dragover="handleDragOver($event)"
+        @dragleave="dragItem.enterTrash = false"
+        @drop.stop="handleDropInTrash($event)"
+        ><span class="icon is-large">
+            <i class="fa fa-trash"></i>
+        </span>
     </div>
 
-    <div v-if="filteredColumns">
-        <delete-column-warning v-show="message.deleteColumnWarning.isActive">
-            <delete-column-warning-content
-                :is-active.sync="message.deleteColumnWarning.isActive"
-                :column-id="message.deleteColumnWarning.columnId"
-            ></delete-column-warning-content>
-        </delete-column-warning>
-
-        <edit-column-modal v-show="modal.editColumn.isActive">
-            <edit-column-modal-content 
-                :is-active.sync="modal.editColumn.isActive" 
-                :member-id.sync="modal.editColumn.editingColumnId"
-            ></edit-column-modal-content>
-        </edit-column-modal>
-    </div>
-        
-    <div v-if="filteredBody">
-        <edit-item-modal v-show="editItem.isActive">
-            <edit-item-modal-content 
-                :is-active.sync="editItem.isActive" 
-                :item.sync="editItem.editingItem"
-            ></edit-item-modal-content>
-        </edit-item-modal>
-    </div>
-
-<div :class="{'trash-entered': dragItem.enterTrash}"
-    style="
-        position: fixed;
-        top: 60px;
-        right: 60px;
-        width: 150px;
-        height: 150px;
-        padding: 50px;
-        border: 2px dotted #bdbdbd;
-        border-radius: 4px;
-        z-index: 999999;
-        background: rgba(240, 240, 240, 0.8);
-    " 
-    v-show="dragItem.draggingItem && ! dragItem.isDropped" 
-    @dragenter="dragItem.enterTrash = true"
-    @dragover="handleDragOver($event)"
-    @dragleave="dragItem.enterTrash = false"
-    @drop="handleDropInTrash($event)"
->
-    <span class="icon is-large">
-        <i class="fa fa-trash"></i>
-    </span>
-</div>
-
-<div class="panel" :style="isLoadingCalendarApi ? 'height: 100vh' : ''">
-<table :id="id" class="table is-bordered">
-
+    <div class="panel" :style="isBlackScreenShow ? 'height: 100vh' : ''">
+    <table class="table is-bordered">
     <thead v-if="filteredColumns">
         <tr>
             <th :style="style.dayColumnWidth">Date</th>
             <template v-for="(member, memberId) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[{'padding': 0}, columnWidth]"
-                >
-                    <header-shutter 
-                        :text="member.name + '(' + member.id + ')'"
-                        :text-style="{ 'padding': '0.5em 0.75em' }"
-                        :shutter-style="{ 'padding': '2px' }"
-                    >
-                        <a class="button" @click.stop="editColumn(member.id)">
-                            <span class="icon is-small">
-                                <i class="fa fa-pencil"></i>
-                            </span>
-                        </a>
-                    
-                        <a class="button" @click="deleteColumn(member.id)">
-                            <span class="icon is-small">
-                                <i class="fa fa-trash"></i>
-                            </span>
-                        </a>
-                    </header-shutter>
+                    ><header-cell :member="member"></header-cell>
                 </th>
             </template>
         </tr>
@@ -99,196 +41,115 @@
                 saturday: getDayIndex(day.date) == 6, 
                 sunday: getDayIndex(day.date) == 0
             }"
-        >
+            >
+
             <td class="date-styling" :style="style.dayColumnWidth">
                 <span style="font-family: Consolas, 'Courier New', Courier, Monaco, monospace;">
+                    <!-- // temp :class="[ 'is-pulled-right', { today: isToday(day.date) } ]" -->
                     {{ getDateAndDay(day.date) }}
                 </span>
             </td>
 
-<!--
-            <td class="date-styling" :style="style.dayColumnWidth">
-                <span>{{ getDayString(day.date) }}</span>
-                <span style="width: 32px; text-align: center;" 
-                    :class="[ 'is-pulled-right', { today: isToday(day.date) } ]"
-                >{{ parseInt(day.date.substr(-2)) }}
-                </span>
-            </td>
--->
-            <!-- NOTE: cellItemsLoopIndex = member_id -->
-            <!-- NOTE: cellItems = items in a cell -->
             <template v-for="(cellItems, memberId) in day.items">
                 <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[columnWidth, dragItem.enterCell == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
                     @click="clickToItemInsert((dayIndex + 1) + '-' + memberId)"
                     @dragenter="handleDragEnter((dayIndex +1) + '-' + memberId)"
                     @dragover="handleDragOver($event)"
-                    @drop="handleDrop($event, cellItems)"
-                >
+                    @drop.stop="handleDrop($event, cellItems)"
+                    >
 
                     <!-- Show cellItems -->
                     <div v-for="(item, cellItemsIndex) in cellItems"
-                        @mouseout="item.is_hover = false"
-                    >
-                        <span v-show="!item.editing"
-                            style="cursor: move"
-                            :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
-                            draggable="true"
-                            @mouseover="item.is_hover = true"
-                            @dragstart="handleDragStart(cellItems, item, cellItemsIndex, $event)"
-                            @dragend="handleDragEnd()"
+                        style="cursor: move"
+                        :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
+                        draggable="true"
+                        @dragstart="handleDragStart(
+                            (dayIndex +1) + '-' + memberId,
+                            cellItems, 
+                            item, 
+                            cellItemsIndex, 
+                            $event
+                        )"
+                        @dragend="handleDragEnd()"
                         >
-                            <!-- show item content -->
-                            <template v-if="isEventShow && item.type_id === 1">
-                                <span class="item is-event" @click.stop="editItem(item)">
-                                    <strong v-show="item.start_time" style="margin-right: 8px">
-                                        {{ item.start_time | timeFormatter }}
-                                    </strong> {{ item.content }}
-                                    <span class="icon is-small" 
-                                        v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
-                                    >
-                                        <i class="fa fa-refresh fa-spin"></i>
-                                    </span>
+                        
+                        <template v-if="isEventItemShow && item.type_id === 1">
+                            <span class="item is-event" @click.stop="editItem(item)">
+                                <strong v-show="item.start_time" style="margin-right: 8px">
+                                    {{ item.start_time | timeFormatter }}
+                                </strong> {{ item.content }}
+                                <span class="icon is-small" 
+                                    v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
+                                    ><i class="fa fa-refresh fa-spin"></i>
                                 </span>
-                            </template>
+                            </span>
+                        </template>
 
-                            <template v-if="isTaskShow && item.type_id === 2">
-                                <span class="item is-task">
-                                    <input type="checkbox" style="margin-right: 8px" @click.stop=""> 
-                                    <span @click.stop="editItem(item)">
-                                        {{ item.content }}
-                                    </span>
-                                    <span class="icon is-small" 
-                                        v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
-                                    >
-                                        <i class="fa fa-refresh fa-spin"></i>
-                                    </span>
+                        <template v-if="isTaskItemShow && item.type_id === 2">
+                            <span class="item is-task">
+                                <input type="checkbox" style="margin-right: 8px" @click.stop=""> 
+                                <span @click.stop="editItem(item) && alert('foo')">
+                                    {{ item.content }}
                                 </span>
-                            </template>
+                                <span class="icon is-small" 
+                                    v-show="(dragItem.isLoading || deleteItem.isLoading) 
+                                                        && dragItem.draggingItem === item"
+                                    ><i class="fa fa-refresh fa-spin"></i>
+                                </span>
+                            </span>
+                        </template>
 
-                        </span>
                     </div><!-- // v-for -->
 
                     <!-- show an input field -->
-                    <template v-if="addItem.cellTo == (dayIndex + 1) + '-' + memberId">
-                        <input type="text"
-                               class="input"
-                               placeholder="Content here.."
-                               v-model="addItem.newItemContent"
-                               v-focus
-                               style=" border: none;
-                                       box-shadow: none;
-                                       border-radius: 0px;
-                                       background-color: transparent;
-                               "
-                        />
-                        <a  class="button is-small"
-                            v-show="!addItem.isLoading"
-                            @click.stop="insertEvent(memberId, dayIndex + 1, cellItems)"
-                            @blur="insertEvent(memberId, dayIndex + 1, cellItems)"
-                            >Event
-                        </a>
-    
-                        <a  class="button is-small"
-                            v-show="!addItem.isLoading"
-                            @click.stop="insertTask(memberId, dayIndex + 1, cellItems)"
-                            @blur="insertTask(memberId, dayIndex + 1, cellItems)"
-                            >Task
-                        </a>
-    
-                        <a  class="button is-small" 
-                            v-show="addItem.isLoading"
-                            ><span class="icon is-small">
-                                <i class="fa fa-refresh fa-spin"></i>
-                             </span>
-                        </a>
-    
-                        <a  class="button is-small" 
-                            v-show="!addItem.isLoading"
-                            @click.stop="resetAddItemFields()" 
-                            >cancel
-                        </a>
-                    </template>
+                    <item-insert-field 
+                        v-if="insertingCellTo == (dayIndex + 1) + '-' + memberId"
+                        :memberId="memberId"
+                        :dayIndex="dayIndex"
+                        :cellItems="cellItems"
+                    ></item-insert-field>
                 </td>
             </template>
         </tr>
     </tbody>
+    </table>
+    </div><!-- // .panel -->
 
-</table>
-</div><!-- // .panel -->
-</div>
+</div><!-- // root -->
 </template>
 
 <script>
-//    import focus from '../../../directives/form-focus.js';
+    import { mapState } from 'vuex';
     import timeFormatter from '../../../filters/time-formatter.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
-    import headerShutter from '../../../components/shutter.vue';
     import itemService from '../../../services/item.js'; 
     import dndService from '../../../services/table-item-dnd.js';
-    import editColumnModal from '../../../components/modal.vue';
-    import editColumnModalContent from './modal/edit-column-content.vue';
+    import blackScreen from '../../../components/black-screen.vue';
     import editItemModal from '../../../components/modal.vue';
     import editItemModalContent from './modal/edit-item-content.vue';
-    import deleteColumnWarning from '../../../components/message.vue';
-    import deleteColumnWarningContent from './message/delete-column-warning.vue';
+    import headerCell from './table-header-cell.vue';
+    import itemInsertField from './item-insert-field.vue';
 
     export default {
         name: 'table-view-content',
-        components: {
-            'edit-column-modal': editColumnModal,
-            'edit-item-modal': editItemModal,
-            'edit-column-modal-content': editColumnModalContent,
-            'edit-item-modal-content': editItemModalContent,
-            'delete-column-warning': deleteColumnWarning,
-            'delete-column-warning-content': deleteColumnWarningContent,
-            'header-shutter': headerShutter,
-        },
 
-//        directives: {
-//            focus
-//        },
+        components: {
+            'black-screen': blackScreen,
+            'edit-item-modal': editItemModal,
+            'edit-item-modal-content': editItemModalContent,
+            'header-cell': headerCell,
+            'item-insert-field': itemInsertField,
+        },
 
         mixins: [
             itemService, dndService, dateUtilities, timeFormatter
         ],
 
         props: {
-            id: {
-                type: String,
-                required: false,
-                twoWay: false
-            }, 
-            filteredColumns: {
-                type: Object,
-                required: false,
-                twoWay: false
-            }, 
-            filteredBody: {
-                type: Array,
-                required: false,
-                twoWay: false
-            }, 
-            showColumns: {
-                type: Array,
-                required: false,
-                twoWay: false
-            }, 
-            isEventShow: {
-                type: Boolean,
-                required: false,
-                twoWay: false
-            }, 
-            isTaskShow: {
-                type: Boolean,
-                required: false,
-                twoWay: false
-            },
-            isLoadingCalendarApi: {
-                type: Boolean,
-                required: false,
-                twoWay: false
-            }
+            filteredColumns:    { type: Object,     required: false }, 
+            filteredBody:       { type: Array,      required: false }, 
+            isBlackScreenShow:  { type: Boolean,    required: false },
         },
 
         data() {
@@ -300,27 +161,25 @@
                         'max-width': '90px'
                     },
                 },
-
-                modal: {
-                    editColumn: {
-                        isActive: false,
-                        editingColumnId: '',
-                    },
-                },
-
-                message: {
-                    deleteColumnWarning: {
-                        isActive: false,
-                        columnId: '',
-                    }
-                },
             }
         },
 
         computed: {
+            ...mapState({
+                isItemEditing: state => state.calendar.behavior.item.isEditing,
+                isEventItemShow: state => state.calendar.behavior.isEventItemShow,
+                isTaskItemShow: state => state.calendar.behavior.isTaskItemShow,
+                insertingCellTo: state => state.calendar.behavior.item.insertingCellTo,
+                theme: state => state.app.theme,
+            }),
+
+            showColumns: function() {
+                return this.$store.getters.showMembers;
+            },
+
             columnWidth: function() {
-                //const length = this.showColumns.length;
                 let length = 0;
+
                 if(this.showColumns) {
                     length = this.showColumns.length;
                 } else if(this.filteredColumns) {
@@ -334,54 +193,37 @@
                     minWidth: '170px',
                 }
             },
-
-            theme: function() {
-                return this.$store.state.app.theme;
-            }
         },
 
         methods: {
             editItem(item) {
                 u.clog('editItem()');
                 item.oldValue = item.content;
-                this.editItem.isActive = true;
-                this.editItem.editingItem = item;
+                const payload = {
+                    isEditing: !this.isItemEditing,
+                    editingItem: item
+                };
+                this.$store.commit('toggleItemEditing', payload);
             },
 
-            // ------------------------------------------------------------------------
-
-            // Insert item
             clickToItemInsert(cell) {
+                this.$store.commit('toggleItemInserting', { 
+                    isInserting: true, 
+                    insertingCellTo: cell 
+                });
                 //this.addItem.isLoading = false;
-                this.addItem.cellTo = cell;
+                //this.addItem.cellTo = cell;
             },
-
-            // edit column (open modal)
-            editColumn(memberId) {
-                u.clog('editColumn()');
-                //column.oldValue = column.content;
-                this.modal.editColumn.isActive = true;
-                this.modal.editColumn.editingColumnId = memberId;
-            },
-
-            // delete column (open warning message)
-            deleteColumn(memberId) {
-                u.clog('deleteColumn()');
-                this.message.deleteColumnWarning.isActive = true;
-                this.message.deleteColumnWarning.columnId = memberId;
-            },
-
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    .black-screen {
-        background: rgba(217, 217, 217, 0.75);
+    .black-screen-loading {
         position: absolute;
-        min-height: 100%;
-        min-width: 100%;
-        z-index: 999;
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     table.calendar {
@@ -404,22 +246,7 @@
             }
         }
     }
-/*
-    table.calendar tbody td {
-        color: #ccc;
-    }
-    table.calendar tbody tr:hover th {
-        background-color: #eee;
-    }
-    table.calendar:hover tbody tr:hover td {
-        color: #666;
-        background-color: rgba(145, 235, 250, 0.1);
-    }
-    table.calendar:hover tbody:hover td:hover {
-        opacity: 1;
-        background-color: rgba(145, 235, 250, 0.5);
-    }
-*/
+
     .date-styling {
         font-size: 1.0em;
         font-weight: bold;
@@ -459,16 +286,21 @@
             color: #363636;
         }
     }
+    .trash {
+        position: fixed;
+        top: 60px;
+        right: 60px;
+        width: 150px;
+        height: 150px;
+        padding: 50px;
+        border: 2px dotted #bdbdbd;
+        border-radius: 4px;
+        z-index: 999999;
+        background: rgba(240, 240, 240, 0.8);
+    }
     .trash-entered {
         background-color: #ff6060 !important;
         border-color: red !important;
         color: #fff;
-    }
-    .column-fade-enter-active .column-fade-leave-active {
-        transition: all .4s ease;
-        z-index: 99999;
-    }
-    .column-fade-enter .column-fade-leave-to {
-        opacity: 0;
     }
 </style>

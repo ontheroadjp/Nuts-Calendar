@@ -1,4 +1,4 @@
-import focus from '../directives/form-focus.js';
+import focus from '../directives/focus.vue';
 
 export default {
     directives: {
@@ -7,8 +7,8 @@ export default {
 
     data() {
         return {
-            isLoading: {
-                calendarApi: false
+            calendarService: {
+                isLoading: false
             },
             input: {
                 name: '',
@@ -20,7 +20,7 @@ export default {
     methods: {
         fetchCalendar(calendarId) {
             u.clog('fetchCalendar(' + calendarId + ')');
-            this.isLoading.calendarApi = true;
+            this.calendarService.isLoading = true;
     
             const id = calendarId;
             const y = this.$store.state.calendar.currentYear;
@@ -47,12 +47,12 @@ export default {
             },response.data.members);
 
             this.$store.commit('initMembers', response.data.members );
-            this.isLoading.calendarApi = false;
+            this.calendarService.isLoading = false;
         },
 
         failedFetchCalendar(error) {
             u.clog('failed');
-            this.isLoading.calendarApi = false;
+            this.calendarService.isLoading = false;
         },
 
         execPutCalendarSettings(calendarId) {

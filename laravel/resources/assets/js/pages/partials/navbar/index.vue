@@ -50,6 +50,7 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     import hamburgerMenu from './hamburger-menu.vue';
     import userAccountDropdown from './user-account-dropdown.vue';
     import themeChanger from './theme-changer.vue';
@@ -66,16 +67,27 @@
             'height'
         ],
 
-        computed : {
-            theme : function() {
-                return this.$store.state.app.theme;
-            },
-
-            headerStyle: function() {
-                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
-                    + 'box-shadow: none;';
-            },
+        computed: {
+            ...mapState({
+                theme: state => state.app.theme,
+    
+                headerStyle: function() {
+                    return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
+                        + 'box-shadow: none;';
+                },
+            }),
         },
+
+//        computed : {
+//            theme : function() {
+//                return this.$store.state.app.theme;
+//            },
+//
+//            headerStyle: function() {
+//                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
+//                    + 'box-shadow: none;';
+//            },
+//        },
 
         mounted() {
             const self = this;

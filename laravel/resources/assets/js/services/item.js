@@ -9,14 +9,14 @@ export default {
         return {
             addItem: {
                 isLoading: false,
-                cellTo: '',
+//                cellTo: '',
                 newItemContent: '',
             },
 
-            editItem: {
-                isActive: false,
-                editingItem: null,
-            },
+//            editItem: {
+//                isActive: false,
+//                editingItem: null,
+//            },
 
             deleteItem: {
                 isLoading: false,
@@ -30,17 +30,7 @@ export default {
         },
 
         removeItemFromArray: function(cellItems, itemIndex) {
-//            u.clog('BEFORE: removeItemFromArray('+ cellItems + ', ' + itemIndex + ')');
-//            cellItems.forEach( function(value) {
-//                u.clog(value.start_time);
-//            });
-
             cellItems.splice(itemIndex, 1);
-
-//            u.clog('AFTER: cellItems: ' + cellItems);
-//            cellItems.forEach( function(value) {
-//                u.clog(value.start_time);
-//            });
         },
 
         // insert
@@ -101,21 +91,48 @@ export default {
         resetAddItemFields() {
             this.addItem.isLoading = false;
             this.addItem.newItemContent = '';
-            this.addItem.cellTo = '';
+            this.$store.commit('toggleItemInserting', {
+                isInserting: false,
+                insertingCellTo: null
+            });
         },
 
         // Move
         moveItem(payload) {
             u.clog('moveItem()');
-            this.removeItemFromArray(payload.cellItemsFrom, payload.cellItemsIndex);
-            this.addItemToArray(payload.cellItemsTo, payload.item);
-    
             const y = this.$store.state.calendar.currentYear;
             const m = this.$store.state.calendar.currentMonth;
-            const d = payload.day;
+            const d = payload.enterCell.day;
     
-            payload.item.date = y + '-' + m + '-' + d;
-            payload.item.member_id = payload.member_id;
+//            payload.item.date = y + '-' + m + '-' + d;
+            this.$store.commit('setDateToItem', {
+                dayIndex: payload.fromCell.dayIndex,
+                memberId: payload.fromCell.memberId,
+                itemIndex: payload.cellItemsIndex,
+                val: y + '-' + m + '-' + d
+            });
+
+//            payload.item.member_id = payload.member_id;
+            this.$store.commit('setMemberIdToItem', {
+                dayIndex: payload.fromCell.dayIndex,
+                memberId: payload.fromCell.memberId,
+                itemIndex: payload.cellItemsIndex,
+                val: payload.enterCell.memberId
+            });
+    
+            //this.removeItemFromArray(payload.cellItemsFrom, payload.cellItemsIndex);
+            this.$store.commit('removeItem', { 
+                dayIndex: payload.fromCell.dayIndex,
+                memberId: payload.fromCell.memberId,
+                itemIndex: payload.cellItemsIndex
+            });
+
+            //this.addItemToArray(payload.cellItemsTo, payload.item);
+            this.$store.commit('addItem', {
+                dayIndex: payload.enterCell.dayIndex,
+                memberId: payload.enterCell.memberId,
+                val: payload.item
+            });
     
             this.execUpdateItem(payload.item, payload);
         },
@@ -140,9 +157,6 @@ export default {
         successUpdateItem: function(response, payload) {
             u.clog('success');
             this.dragItem.isLoading = false;
-//            const dayIndex = parseInt(payload.day) - 1;
-//            let items = this.$store.state.calendar.data.calendars[dayIndex].items[payload.member_id];
-//            items = this.sortByStartTime(items);
             this.initDraggingProperties();
         },
     

@@ -1,45 +1,38 @@
 <template>
     <div id="calendar">
         <signboard 
-            :is-loading-calendar-api="isLoading.calendarApi"
+            :calendar-service-is-loading="calendarService.isLoading"
         ></signboard>
     
         <router-view 
-            :is-loading-calendar-api="isLoading.calendarApi"
+            :calendar-service-is-loading="calendarService.isLoading"
         ></router-view>
     </div>
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     import signboard from './signboard/index.vue';
-    import calendarApi from '../../services/calendar.js';
+    import calendarService from '../../services/calendar.js';
 
     export default {
         name: 'calendar-root',
+
         components: {
             'signboard': signboard,
         },
 
         mixins: [
-            calendarApi,
+            calendarService,
         ],
 
         computed: {
-            appReady: function() {
-                return this.$store.state.app.ready;
-            },
-
-            currentCalendarId: function() {
-                return this.$store.state.calendar.currentId;
-            },
-
-            currentYear: function() {
-                return this.$store.state.calendar.currentYear;
-            },
-
-            currentMonth: function() {
-                return this.$store.state.calendar.currentMonth;
-            },
+            ...mapState({
+                appReady: state => state.app.ready,
+                currentCalendarId: state => state.calendar.currentId,
+                currentYear: state => state.calendar.currentYear,
+                currentMonth: state => state.calendar.currentMonth
+            }),
         },
 
         watch: {

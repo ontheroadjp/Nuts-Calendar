@@ -4,6 +4,7 @@ export default {
             dragItem: {
                 isLoading: false,
                 draggingItem: '',
+                fromCell: '',
                 enterCell: '',
                 enterTrash: false,
                 cellItemsFrom: '',
@@ -27,11 +28,12 @@ export default {
     },
 
     methods: {
-            handleDragStart(cellItems, item, cellItemsIndex, e) {
+            handleDragStart(fromCell, cellItems, item, cellItemsIndex, e) {
+                this.dragItem.fromCell = fromCell;
                 this.dragItem.cellItemsFrom = cellItems;
                 this.dragItem.draggingItem = item;
                 this.dragItem.cellItemsIndex = cellItemsIndex;
-                item.is_hover = false;
+//                item.is_hover = false;
             },
 
             handleDragEnter(cell) {
@@ -48,19 +50,30 @@ export default {
                 return false;
             },
 
-            handleDrop(e, cellItems) {
+            handleDrop(e, cellItemsTo) {
+                const cellItemsFrom = this.dragItem.cellItemsFrom;
+                if( cellItemsFrom === cellItemsTo ) { return; }
+
                 this.dragItem.isLoading = true;
-                u.clog('this.dragItem.isLoading: ' + this.dragItem.isLoading);
                 this.dragItem.isDropped = true;
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
 
                 this.moveItem({
-                    'cellItemsFrom': this.dragItem.cellItemsFrom,
-                    'cellItemsTo': cellItems,
+                    'cellItemsFrom': cellItemsFrom,
+                    'cellItemsTo': cellItemsTo,
                     'item': this.dragItem.draggingItem,
                     'cellItemsIndex': this.dragItem.cellItemsIndex,
+                    'fromCell': {
+                        address: this.dragItem.fromCell,
+                        dayIndex: (this.dragItem.fromCell.split('-')[0]) - 1,
+                        day: this.dragItem.fromCell.split('-')[0],
+                        memberId: this.dragItem.fromCell.split('-')[1]
+                    },
+                    'enterCell': {
+                        address: this.dragItem.enterCell,
+                        dayIndex: (this.dragItem.enterCell.split('-')[0]) - 1,
+                        day: this.dragItem.enterCell.split('-')[0],
+                        memberId: this.dragItem.enterCell.split('-')[1]
+                    },
                     'day': this.dragItem.enterCell.split('-')[0],
                     'member_id': this.dragItem.enterCell.split('-')[1],
                 });
@@ -69,9 +82,6 @@ export default {
             handleDropInTrash(e) {
                 this.deleteItem.isLoading = true;
                 this.dragItem.isDropped = true;
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
 
                 this.removeItem(
                     this.dragItem.cellItemsFrom, 
@@ -81,7 +91,9 @@ export default {
             },
 
             handleDragEnd() {
-                this.initDraggingProperties();
+                if( !this.dragItem.isLoading ) {
+                    this.initDraggingProperties();
+                }
             },
 
             initDraggingProperties() {

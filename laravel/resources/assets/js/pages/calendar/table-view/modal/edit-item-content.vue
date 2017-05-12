@@ -20,22 +20,24 @@
 </template>
 
 <script>
-export default {
-    props: [
-        'isActive', 'item'
-    ],
+import { mapState } from 'vuex';
 
+export default {
     methods: {
         close: function() {
-            this.isActive = false;
-            this.item = null;
+            const payload = {
+                isEditing: false,
+                editingItem: null
+            }
+            this.$store.commit('toggleItemEditing', payload);
         },
     },
 
     computed: {
-        theme: function() {
-            return this.$store.state.app.theme;
-        }
+        ...mapState({
+            item: state => state.calendar.behavior.item.editingItem,
+            theme: state => state.app.theme,
+        })
     }
 }
 </script>
