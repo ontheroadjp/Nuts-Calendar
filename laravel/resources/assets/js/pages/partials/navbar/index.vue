@@ -32,6 +32,7 @@
         </template>
 
         <theme-changer></theme-changer>
+        <lang-changer></lang-changer>
 
         <span class="nav-item">
             <a :class="['button', theme.primary.class, 'is-inverted']" >
@@ -54,6 +55,7 @@
     import hamburgerMenu from './hamburger-menu.vue';
     import userAccountDropdown from './user-account-dropdown.vue';
     import themeChanger from './theme-changer.vue';
+    import langChanger from './lang-changer.vue';
     
     export default {
         name: 'navbar-index',
@@ -61,6 +63,7 @@
             'hamburgerMenu': hamburgerMenu,
             'userAccountDropdown': userAccountDropdown,
             'themeChanger': themeChanger,
+            'langChanger': langChanger,
         },
 
         props: [

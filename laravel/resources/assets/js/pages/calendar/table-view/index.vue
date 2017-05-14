@@ -38,7 +38,7 @@
     import tableView from './table-view.vue';
     import toolPalette from './table-tool-palette.vue';
     import dateUtilities from '../../../mixins/date-utilities.js';
-    import orderByStartTime from '../../../mixins/order-by-start-time.js';
+//    import orderByStartTime from '../../../mixins/order-by-start-time.js';
     
     export default {
         components: {
@@ -47,7 +47,8 @@
         },
 
         mixins: [
-            dateUtilities, orderByStartTime
+//            dateUtilities, orderByStartTime
+            dateUtilities
         ],
 
         props: [
@@ -90,13 +91,13 @@
                 return this.$store.getters.filteredMembers;
             },
 
-            filteredCalendar: {
+           filteredCalendar: {
                 cache: true,
                 get() {
                     let data = this.$store.state.calendar.data.calendars;
     
                     // sort cell items
-                    this.$store.commit('sortCellItems', data);
+                    this.$store.commit('sortCellItemsByStartTime', data);
 
                     // filter by search words
                     if(this.searchQuery) {

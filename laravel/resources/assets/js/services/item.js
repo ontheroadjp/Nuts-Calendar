@@ -1,9 +1,9 @@
-import orderByStartTime from '../mixins/order-by-start-time.js';
+//import orderByStartTime from '../mixins/order-by-start-time.js';
 
 export default {
-    mixins: [
-        orderByStartTime
-    ],
+//    mixins: [
+//        orderByStartTime
+//    ],
 
     data() {
         return {

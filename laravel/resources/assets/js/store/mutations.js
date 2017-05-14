@@ -9,6 +9,10 @@ export default {
         state.app.ready = val
     },
 
+    setLang( state, val ) {
+        state.app.lang = val;
+    },
+
     // ---------------------------------------------
     // theme
 
@@ -234,7 +238,7 @@ export default {
         }
     },
 
-    sortCellItems( state, data ) {
+    sortCellItemsByStartTime( state, data ) {
         data.forEach(function(day, dayIndex) {
             const columns = day.items;
             const memberIds = Object.keys(columns);
