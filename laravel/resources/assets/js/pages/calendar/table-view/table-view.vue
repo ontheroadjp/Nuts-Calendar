@@ -6,9 +6,9 @@
         </div>
     </black-screen>
 
-    <edit-item-modal v-if="filteredBody && isItemEditing">
-        <edit-item-modal-content v-show="isItemEditing"></edit-item-modal-content>
-    </edit-item-modal>
+    <item-modal v-if="filteredBody && isItemModalActive">
+        <item-modal-content v-show="isItemModalActive"></item-modal-content>
+    </item-modal>
 
     <div :class="['trash', { 'trash-entered': dragItem.enterTrash } ]"
         v-show="dragItem.draggingItem && ! dragItem.isDropped" 
@@ -52,9 +52,13 @@
 
             <template v-for="(cellItems, memberId) in day.items">
                 <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    :style="[columnWidth, dragItem.enterCell == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
-                    @click="clickToItemInsert((dayIndex + 1) + '-' + memberId)"
-                    @dragenter="handleDragEnter((dayIndex +1) + '-' + memberId)"
+                    :style="[columnWidth, dragItem.enterCell.cellAddress == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
+                    @click="prepareAddItem(dayIndex, memberId, cellItems)"
+                    @dragenter="handleDragEnter(
+                        (dayIndex +1) + '-' + memberId,
+                        dayIndex,
+                        memberId
+                    )"
                     @dragover="handleDragOver($event)"
                     @drop.stop="handleDrop($event, cellItems)"
                     >
@@ -66,16 +70,18 @@
                         draggable="true"
                         @dragstart="handleDragStart(
                             (dayIndex +1) + '-' + memberId,
+                            dayIndex,
+                            memberId,
                             cellItems, 
-                            item, 
                             cellItemsIndex, 
+                            item, 
                             $event
                         )"
                         @dragend="handleDragEnd()"
                         >
                         
                         <template v-if="isEventItemShow && item.type_id === 1">
-                            <span class="item is-event" @click.stop="editItem(item)">
+                            <span class="item is-event" @click.stop="prepareClickItem(cellItems, item)">
                                 <strong v-show="item.start_time" style="margin-right: 8px">
                                     {{ item.start_time | timeFormatter }}
                                 </strong> {{ item.content }}
@@ -89,7 +95,7 @@
                         <template v-if="isTaskItemShow && item.type_id === 2">
                             <span class="item is-task">
                                 <input type="checkbox" style="margin-right: 8px" @click.stop=""> 
-                                <span @click.stop="editItem(item) && alert('foo')">
+                                <span @click.stop="prepareClickItem(cellItems, item) && alert('foo')">
                                     {{ item.content }}
                                 </span>
                                 <span class="icon is-small" 
@@ -104,10 +110,8 @@
 
                     <!-- show an input field -->
                     <item-insert-field 
-                        v-if="insertingCellTo == (dayIndex + 1) + '-' + memberId"
-                        :memberId="memberId"
-                        :dayIndex="dayIndex"
-                        :cellItems="cellItems"
+                        v-if="addItem.enterCell.dayIndex === dayIndex 
+                                && addItem.enterCell.memberId === memberId"
                     ></item-insert-field>
                 </td>
             </template>
@@ -120,14 +124,13 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapGetters } from 'vuex';
     import timeFormatter from '../../../filters/time-formatter.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
-    import itemService from '../../../services/item.js'; 
-    import dndService from '../../../services/table-item-dnd.js';
+    import itemDndService from '../../../services/item/item-dnd.vue'; 
     import blackScreen from '../../../components/black-screen.vue';
-    import editItemModal from '../../../components/modal.vue';
-    import editItemModalContent from './modal/edit-item-content.vue';
+    import itemModal from '../../../components/modal.vue';
+    import itemModalContent from './modal/item-modal-content.vue';
     import headerCell from './table-header-cell.vue';
     import itemInsertField from './item-insert-field.vue';
 
@@ -136,15 +139,13 @@
 
         components: {
             'black-screen': blackScreen,
-            'edit-item-modal': editItemModal,
-            'edit-item-modal-content': editItemModalContent,
+            'item-modal': itemModal,
+            'item-modal-content': itemModalContent,
             'header-cell': headerCell,
             'item-insert-field': itemInsertField,
         },
 
-        mixins: [
-            itemService, dndService, dateUtilities, timeFormatter
-        ],
+        mixins: [ itemDndService, dateUtilities, timeFormatter ],
 
         props: {
             filteredColumns:    { type: Object,     required: false }, 
@@ -166,11 +167,17 @@
 
         computed: {
             ...mapState({
-                isItemEditing: state => state.calendar.behavior.item.isEditing,
                 isEventItemShow: state => state.calendar.behavior.isEventItemShow,
                 isTaskItemShow: state => state.calendar.behavior.isTaskItemShow,
-                insertingCellTo: state => state.calendar.behavior.item.insertingCellTo,
+                addItem: state => state.calendar.behavior.item.addItem,
+                editItem: state => state.calendar.behavior.item.editItem,
+                deleteItem: state => state.calendar.behavior.item.deleteItem,
+                dragItem: state => state.calendar.behavior.item.dragItem,
                 theme: state => state.app.theme,
+            }),
+
+            ...mapGetters({
+                isItemModalActive: 'isItemModalActive',
             }),
 
             showColumns: function() {
@@ -196,25 +203,76 @@
         },
 
         methods: {
-            editItem(item) {
-                u.clog('editItem()');
-                item.oldValue = item.content;
-                const payload = {
-                    isEditing: !this.isItemEditing,
-                    editingItem: item
-                };
-                this.$store.commit('toggleItemEditing', payload);
+            prepareAddItem(dayIndex, memberId, cellItems) {
+                u.clog('prepareAddItem()');
+                this.$store.commit('prepareAddItem', { dayIndex, memberId, cellItems }); 
             },
 
-            clickToItemInsert(cell) {
-                this.$store.commit('toggleItemInserting', { 
-                    isInserting: true, 
-                    insertingCellTo: cell 
-                });
-                //this.addItem.isLoading = false;
-                //this.addItem.cellTo = cell;
+            prepareClickItem(cellItems, item) {
+                u.clog('prepareClickItem()');
+                item.oldValue = item.content;
+                this.$store.commit('prepareEditItem', { editingItem: item });
+                this.$store.commit('prepareRemoveItem', { cellItems: cellItems, deletingItem: item });
             },
-        },
+
+            handleDragStart(cellAddress, dayIndex, memberId, cellItems, cellItemsIndex, draggingItem, e) {
+                this.$store.commit('dragStart', { 
+                    fromCellAddress: cellAddress, 
+                    fromDayIndex: dayIndex, 
+                    fromMemberId: memberId, 
+                    fromCellItems: cellItems, 
+                    fromCellItemsIndex: cellItemsIndex, 
+                    draggingItem : draggingItem
+                });
+            },
+    
+            handleDragEnter(cellAddress, dayIndex, memberId) {
+                this.$store.commit('dragEnter', { 
+                    toCellAddress: cellAddress, 
+                    toDayIndex: dayIndex, 
+                    toMemberId: memberId
+               });
+            },
+    
+            handleDragOver(e) {
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+    
+                e.dataTransfer.dropEffect = 'move'
+    
+                return false;
+            },
+    
+            handleDrop(e, cellItems) {
+                const from = this.dragItem.fromCell.cellAddress;
+                const to = this.dragItem.enterCell.cellAddress;
+                if( from === to ) {
+                    this.$store.commit('finishDragItem');
+                    return;
+                }
+    
+                this.$store.commit('dragDrop', { toCellItems: cellItems });
+                this.moveItem();
+            },
+    
+            handleDropInTrash(e) {
+    //            this.deleteItem.isLoading = true;
+    //            this.dragItem.isInTrash = true;
+    //
+    //            this.removeItem(
+    //                this.dragItem.fromCell.cellItems, 
+    //                this.dragItem.fromCell.cellItemsIndex,
+    //                this.dragItem.draggingItem, 
+    //            );
+            },
+    
+            handleDragEnd() {
+                if( !this.dragItem.isLoading ) {
+                    this.$store.commit('dragEnd');
+                }
+            },
+        }
     }
 </script>
 

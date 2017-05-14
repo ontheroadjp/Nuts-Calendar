@@ -12,5 +12,12 @@ export default {
 
     showMembers: (state, getters) => {
         return Object.keys(getters.filteredMembers);
-    }
+    },
+
+    // ---------------------------------------------
+
+    isItemModalActive: (state, getters) => {
+        return state.calendar.behavior.item.editItem.isActive
+            && state.calendar.behavior.item.deleteItem.isActive;
+    },
 }

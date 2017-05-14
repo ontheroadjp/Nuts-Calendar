@@ -2,35 +2,39 @@
 <div class="wrapper">
 <div class="container" style="width: 100%; height: 100vh">
 <div class="columns is-multiline">
+
+    <div class="column is-4">
+        <date-card></date-card>
+    </div>
+
 <template v-for="uCalendar in userCalendars">
 <div class="column is-4">
 
     <router-link
         to="/calendar/view"
         class="title is-4" 
+        @click.native="clickUserCalendar(uCalendar.id)"
     >
-        <a @click="clickUserCalendar(uCalendar.id)">
-            <div :class="['card', 'is-clickable', theme.primary.class]" style="height:120px">
-            <div class="card-content">
-            <div class="media">
-    
-                <div class="media-left">
-                    <span class="icon">
-                        <i class="fa fa-calendar"></i>
-                    </span>
-                </div>
-    
-                <div class="media-content">
-                    <p>{{ uCalendar.name }}</p>
-                    <p class="subtitle is-6">
-                        {{ uCalendar.description }}
-                    </p>
-                </div>
-    
-            </div><!-- // .media -->
-            </div><!-- // .card-content -->
-            </div><!-- // .card -->
-        </a>
+        <div :class="['card', 'is-clickable', theme.primary.class]" style="height:180px">
+        <div class="card-content">
+        <div class="media">
+
+            <div class="media-left">
+                <span class="icon">
+                    <i class="fa fa-calendar"></i>
+                </span>
+            </div>
+
+            <div class="media-content">
+                <p>{{ uCalendar.name }}</p>
+                <p class="subtitle is-6">
+                    {{ uCalendar.description }}
+                </p>
+            </div>
+
+        </div><!-- // .media -->
+        </div><!-- // .card-content -->
+        </div><!-- // .card -->
     </router-link>
 
 </div><!-- // .column is-xx -->
@@ -42,8 +46,13 @@
 
 <script>
 import { mapState } from 'vuex';
+import dateCard from './date-card.vue';
 
 export default {
+
+    components: {
+        'date-card': dateCard
+    },
 
     computed: {
         ...mapState({

@@ -11,7 +11,6 @@
     <header-shutter 
         :text="member.name + '(' + member.id + ')'"
         :text-style="{ 'padding': '0.5em 0.75em' }"
-        :shutter-style="{ 'padding': '2px' }"
         >
         
         <a class="button" @click.stop="editColumn(member.id)">

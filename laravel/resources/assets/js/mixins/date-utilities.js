@@ -47,6 +47,25 @@ export default {
 
             if(moment.locale() === 'ja') return day + '(' + date + ')';
             return date + ' ' + day;
+        },
+
+        getYear(d) {
+            moment.locale(this.lang);
+            return moment(d).year();
+        },
+
+        getMonth(d) {
+            moment.locale(this.lang);
+            return moment(d).format('MMM');
+        },
+
+        getDay(d) {
+            moment.locale(this.lang);
+            return moment(d).format('D');
+        },
+        getDate(d) {
+            moment.locale(this.lang);
+            return moment(d).format('dddd');
         }
     },
 

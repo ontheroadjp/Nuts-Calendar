@@ -69,12 +69,63 @@ export default {
             },
 
             item: {
-                isInserting: false,
-                isEditing: false,
-                isDeleting: false,
-                insertingCellTo: null,
-                editingItem: null,
-                deletingItem: null,
+                addItem: {
+                    isActive: false,
+                    isLoading: false,
+                    enterCell: {
+                        dayIndex: '',
+                        memberId: '',
+                        cellItems: ''
+                    },
+                    newItem: {
+                        content: '',
+                    }
+                },
+
+                editItem: {
+                    isActive: false,
+                    isLoading: false,
+                    editingItem: ''
+                },
+
+                deleteItem: {
+                    isActive: false,
+                    isLoading: false,
+                    cellItems: '',
+                    deletingItem: ''
+                },
+
+                dragItem: {
+                    isLoading: false,
+                    isDropped: false,
+                    isInTrash: false,
+                    draggingItem: '',
+                    fromCell: {
+                        cellAddress: '',
+                        dayIndex: '',
+                        memberId: '',
+                        cellItems: '',
+                        cellItemsIndex: '',
+                    },
+                    enterCell: {
+                        cellAddress: '',
+                        dayIndex: '',
+                        memberId: '',
+                        cellItems: '',
+                    },
+                    style: {
+                        dragStart: {
+                            opacity: '0.4',
+                        }
+                    }
+                },
+
+//                isInserting: false,
+//                isEditing: false,
+//                isDeleting: false,
+//                insertingCellTo: null,
+//                editingItem: null,
+//                deletingItem: null,
             }
         },
     }

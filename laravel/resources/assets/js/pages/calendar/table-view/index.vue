@@ -96,9 +96,6 @@
                 get() {
                     let data = this.$store.state.calendar.data.calendars;
     
-                    // sort cell items
-                    this.$store.commit('sortCellItemsByStartTime', data);
-
                     // filter by search words
                     if(this.searchQuery) {
                         data = data.slice().filter( day => {
@@ -112,6 +109,9 @@
                             return this.getDayIndex(row['date']) == this.internalQuery;
                         });
                     }
+
+                    // sort cell items
+                    this.$store.commit('sortCellItemsByStartTime', data);
 
                     return data;
                 }

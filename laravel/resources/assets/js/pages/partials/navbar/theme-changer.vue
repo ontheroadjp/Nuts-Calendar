@@ -1,5 +1,5 @@
 <template>
-    <span class="field nav-item">
+    <span class="nav-item">
         <p class="control is-expanded">
         <span class="select is-fullwidth">
             <select 

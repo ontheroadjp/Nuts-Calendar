@@ -3,20 +3,20 @@
     <input type="text"
            class="input item-input-field"
            placeholder="Content here.."
-           v-model="addItem.newItemContent"
+           v-model="newItemContent"
            v-focus
     />
     <a  class="button is-small"
         v-show="!addItem.isLoading"
-        @click.stop="insertEvent(memberId, dayIndex + 1, cellItems)"
-        @blur="insertEvent(memberId, dayIndex + 1, cellItems)"
+        @click.stop="insertEvent()"
+        @blur="insertEvent()"
         >Event
     </a>
 
     <a  class="button is-small"
         v-show="!addItem.isLoading"
-        @click.stop="insertTask(memberId, dayIndex + 1, cellItems)"
-        @blur="insertTask(memberId, dayIndex + 1, cellItems)"
+        @click.stop="insertTask()"
+        @blur="insertTask()"
         >Task
     </a>
 
@@ -29,17 +29,18 @@
 
     <a  class="button is-small" 
         v-show="!addItem.isLoading"
-        @click.stop="resetAddItemFields()" 
+        @click.stop="finishAddItem()" 
         >cancel
     </a>
 </div>
 </template>
 
 <script>
-import itemService from '../../../services/item.js';
+import { mapState } from 'vuex';
+import insertItemService from '../../../services/item/insertItem.vue';
 
 export default {
-    name: 'item-input-field',
+    name: 'add-item-field',
 
     directives: {
         focus: {
@@ -49,13 +50,23 @@ export default {
         }
     },
 
-    mixins: [
-        itemService
-    ],
+    mixins: [ insertItemService ],
 
-    props: [
-        'memberId', 'dayIndex', 'cellItems'
-    ]
+    computed: {
+        ...mapState({
+            addItem: state => state.calendar.behavior.item.addItem,
+        }),
+
+        newItemContent: {
+            get() {
+                return this.$store.state.calendar.behavior.item.addItem.newItem.content;
+            },
+
+            set(value) {
+                this.$store.commit('setNewItemContent', value);
+            }
+        }
+    }
 }
 </script>
 
