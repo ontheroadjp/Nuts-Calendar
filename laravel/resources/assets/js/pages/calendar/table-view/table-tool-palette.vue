@@ -2,7 +2,7 @@
 <div id="tool-palette"
     style="background:#f0f0f0; padding:5px; overflow: scroll"
     >
-<add-column-modal v-if="isColumnInserting">
+<add-column-modal v-if="addColumn.isActive">
     <add-column-modal-content></add-column-modal-content>
 </add-column-modal>
 
@@ -30,31 +30,28 @@
         <span v-show="selected === 'member'" style="margin-left:10px">
             <template v-for="(member, memberId) in members">
                 <button  :class="['button', {'is-off': !member.isShow}]" 
-                    @click="toggleShowColumns(memberId, !member.isShow)"
+                    @click="toggleShowHideColumnButton(memberId, !member.isShow)"
                     >
                     <i v-show="member.isShow" class="fa fa-user"></i>
                     <i v-show="!member.isShow" class="fa fa-user-times"></i>
                     ({{ memberId }})
                 </button>
             </template>
-            <span class="icon is-small">
-                <button class="button" @click="clickNewColumn()">
-                    <i class="fa fa-user"></i>Add
-                </button>
-            </span>
+            <button class="button" @click="newColumnButton()">
+                <i class="fa fa-user"></i>Add
+            </button>
         </span>
 
         <span v-show="selected === 'item'" style="margin-left:10px">
-            <button :class="['button', { 'is-off': !isEventItemShow }]" 
-                    @click="$store.commit('toggleIsEventItemShow', !isEventItemShow)"
+            <button :class="[ 'button', { 'is-off': !isEventItemShow } ]" 
+                    @click="toggleShowHideEventItemButton()"
                     >
                     <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
                     <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
                     Event
             </button>
-
             <button :class="['button', { 'is-off': !isTaskItemShow }]" 
-                    @click="$store.commit('toggleIsTaskItemShow', !isTaskItemShow)"
+                    @click="toggleShowHideTaskItemButton()"
                     >
                     <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
                     <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
@@ -80,10 +77,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import searchBox from './table-search-box.vue';
+import calendarService from '../../../services/calendar.js';
+//import insertColumnService from '../../../services/column/insert.vue';
 import addColumnModalBase from '../../../components/modal.vue';
-import addColumnModalContent from './modal/add-column-content.vue';
+import addColumnModalContent from './modal/add-column-modal-content.vue';
 
 export default {
     name: 'calendar-tool-palett',
@@ -93,6 +92,11 @@ export default {
         'add-column-modal-content': addColumnModalContent,
     },
 
+    mixins: [
+//        calendarService, insertColumnService
+        calendarService
+    ],
+
     data() {
         return {
             selected: 'date',
@@ -101,46 +105,50 @@ export default {
 
     computed: {
         ...mapState({
-            isToolPaletteOpen: state => state.calendar.behavior.toolPalette.isActive,
-            searchQuery: state => state.calendar.behavior.query.search,
-            internalQuery: state => state.calendar.behavior.query.internal,
+            toolPalette: state => state.calendar.behavior.toolPalette,
             members: state => state.calendar.data.members,
-            isColumnInserting: state => state.calendar.behavior.column.isInserting,
             isEventItemShow: state => state.calendar.behavior.isEventItemShow,
             isTaskItemShow: state => state.calendar.behavior.isTaskItemShow,
             theme: state => state.app.theme,
         }),
 
+        ...mapState('action/column', {
+            addColumn: state => state.insert,
+        }),
+
         showColumns: function() {
             return this.$store.getters.showMembers;
         },
-
-        theme: function() {
-            return this.$store.state.app.theme;
-        }
     },
 
     methods: {
+        ...mapActions({
+            'prepareInsert': 'action/column/insert/prepare',
+        }),
+
         setInternalQuery(val) {
             this.$store.commit('setInternalQuery', val);
         },
 
-        clickNewColumn() {
-            this.$store.commit('toggleColumnInserting', {
-                isInserting: !this.isColumnInserting,
-                insertingColumnId: null
-            });
+        toggleShowHideColumnButton(id, value) {
+            if(this.showColumns.length === 1 && val === false) return; 
+            this.toggleShowHideColumn(id, value);
         },
 
-        toggleShowColumns(id, val) {
-            if(this.showColumns.length === 1 && val === false) { 
-                return; 
-            }
-            this.$store.commit('setMemberStatusIsShow', { 'id': id, 'val': val });
+        toggleShowHideEventItemButton() {
+            this.toggleShowHideEventItem(!this.isEventItemShow);
+        },
+
+        toggleShowHideTaskItemButton() {
+            this.toggleShowHideTaskItem(!this.isTaskItemShow);
+        },
+
+        newColumnButton() {
+            this.prepareInsert();
         },
 
         close() {
-            this.$store.commit('toggleTableToolPalette', !this.isToolPaletteOpen);
+            this.$store.commit('toggleTableToolPalette', !this.toolPalette.isActive);
         }
     },
 }

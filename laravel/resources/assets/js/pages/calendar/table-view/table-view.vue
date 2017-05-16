@@ -6,6 +6,10 @@
         </div>
     </black-screen>
 
+    <column-modal v-if="filteredBody && isColumnModalActive">
+        <column-modal-content v-show="isColumnModalActive"></column-modal-content>
+    </column-modal>
+
     <item-modal v-if="filteredBody && isItemModalActive">
         <item-modal-content v-show="isItemModalActive"></item-modal-content>
     </item-modal>
@@ -25,11 +29,15 @@
     <table class="table is-bordered">
     <thead v-if="filteredColumns">
         <tr>
-            <th :style="style.dayColumnWidth">Date</th>
+            <th :style="[{'padding': '0.4rem 1rem'}, style.dayColumnWidth]">Date</th>
             <template v-for="(member, memberId) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    :style="[{'padding': 0}, columnWidth]"
-                    ><header-cell :member="member"></header-cell>
+                    :style="[{'padding': '0.3rem 1rem'}, columnWidth]"
+                    >
+<!--
+                    <header-cell :member="member"></header-cell>
+-->
+                    <span @click="clickHeader(member)">{{ member.name }}({{ member.id}})</span>
                 </th>
             </template>
         </tr>
@@ -53,7 +61,7 @@
             <template v-for="(cellItems, memberId) in day.items">
                 <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[columnWidth, dragItem.enterCell.cellAddress == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
-                    @click="prepareAddItem(dayIndex, memberId, cellItems)"
+                    @click="clickCell(dayIndex, memberId, cellItems)"
                     @dragenter="handleDragEnter(
                         (dayIndex +1) + '-' + memberId,
                         dayIndex,
@@ -81,7 +89,7 @@
                         >
                         
                         <template v-if="isEventItemShow && item.type_id === 1">
-                            <span class="item is-event" @click.stop="prepareClickItem(cellItems, item)">
+                            <span class="item is-event" @click.stop="clickItem(cellItems, item)">
                                 <strong v-show="item.start_time" style="margin-right: 8px">
                                     {{ item.start_time | timeFormatter }}
                                 </strong> {{ item.content }}
@@ -95,7 +103,7 @@
                         <template v-if="isTaskItemShow && item.type_id === 2">
                             <span class="item is-task">
                                 <input type="checkbox" style="margin-right: 8px" @click.stop=""> 
-                                <span @click.stop="prepareClickItem(cellItems, item) && alert('foo')">
+                                <span @click.stop="clickItem(cellItems, item) && alert('foo')">
                                     {{ item.content }}
                                 </span>
                                 <span class="icon is-small" 
@@ -124,14 +132,16 @@
 </template>
 
 <script>
-    import { mapState, mapGetters } from 'vuex';
+    import { mapState, mapGetters, mapActions } from 'vuex';
     import timeFormatter from '../../../filters/time-formatter.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import itemDndService from '../../../services/item/item-dnd.vue'; 
     import blackScreen from '../../../components/black-screen.vue';
+    import columnModal from '../../../components/modal.vue';
+    import columnModalContent from './modal/column-modal-content.vue';
     import itemModal from '../../../components/modal.vue';
     import itemModalContent from './modal/item-modal-content.vue';
-    import headerCell from './table-header-cell.vue';
+//    import headerCell from './table-header-cell.vue';
     import itemInsertField from './item-insert-field.vue';
 
     export default {
@@ -139,9 +149,11 @@
 
         components: {
             'black-screen': blackScreen,
+            'column-modal': columnModal,
+            'column-modal-content': columnModalContent,
             'item-modal': itemModal,
             'item-modal-content': itemModalContent,
-            'header-cell': headerCell,
+//            'header-cell': headerCell,
             'item-insert-field': itemInsertField,
         },
 
@@ -169,6 +181,8 @@
             ...mapState({
                 isEventItemShow: state => state.calendar.behavior.isEventItemShow,
                 isTaskItemShow: state => state.calendar.behavior.isTaskItemShow,
+//                editColumn: state => state.calendar.behavior.column.editColumn,
+//                deleteColumn: state => state.calendar.behavior.column.deleteColumn,
                 addItem: state => state.calendar.behavior.item.addItem,
                 editItem: state => state.calendar.behavior.item.editItem,
                 deleteItem: state => state.calendar.behavior.item.deleteItem,
@@ -176,12 +190,26 @@
                 theme: state => state.app.theme,
             }),
 
+            ...mapState('action/column', {
+                editColumn: state => state.update,
+                deleteColumn: state => state.remove
+            }),
+
+//            ...mapState('action/item', {
+//                addItem: state => state.insert,
+//                editItem: state => state.update,
+//                deleteItem: state => state.remove
+//            }),
+
             ...mapGetters({
-                isItemModalActive: 'isItemModalActive',
+                isColumnModalActive: 'action/column/isModalActive',
+                isItemModalActive: 'action/item/isModalActive',
+                showMembers: 'showMembers',
             }),
 
             showColumns: function() {
-                return this.$store.getters.showMembers;
+                //return this.$store.getters.showMembers;
+                return this.showMembers;
             },
 
             columnWidth: function() {
@@ -203,13 +231,24 @@
         },
 
         methods: {
-            prepareAddItem(dayIndex, memberId, cellItems) {
-                u.clog('prepareAddItem()');
+            ...mapActions('action/column', {
+                prepareUpdate: 'update/prepare',
+                prepareRemove: 'remove/prepare'
+            }),
+
+            clickHeader(member) {
+                u.clog('clickHeader()');
+                this.prepareUpdate( { editingColumn: member } );
+                this.prepareRemove( { deletingColumn: member } );
+            },
+
+            clickCell(dayIndex, memberId, cellItems) {
+                u.clog('clickCell()');
                 this.$store.commit('prepareInsertItem', { dayIndex, memberId, cellItems }); 
             },
 
-            prepareClickItem(cellItems, item) {
-                u.clog('prepareClickItem()');
+            clickItem(cellItems, item) {
+                u.clog('clickItem()');
                 item.oldValue = item.content;
                 this.$store.commit('prepareUpdateItem', { editingItem: item });
                 this.$store.commit('prepareRemoveItem', { cellItems: cellItems, deletingItem: item });

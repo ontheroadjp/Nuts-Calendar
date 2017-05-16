@@ -16,8 +16,13 @@ export default {
 
     // ---------------------------------------------
 
-    isItemModalActive: (state, getters) => {
-        return state.calendar.behavior.item.editItem.isActive
-            && state.calendar.behavior.item.deleteItem.isActive;
-    },
+//    isColumnModalActive: (state, getters) => {
+//        return state.action.column.update.isActive
+//            && state.action.column.remove.isActive
+//    },
+
+//    isItemModalActive: (state, getters) => {
+//        return state.calendar.behavior.item.editItem.isActive
+//            && state.calendar.behavior.item.deleteItem.isActive;
+//    },
 }

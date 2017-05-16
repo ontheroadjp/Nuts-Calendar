@@ -18,6 +18,22 @@ export default {
     },
 
     methods: {
+        toggleShowHideColumn(id, value) {
+            this.$store.commit('toggleShowHideColumn', { 'id': id, 'value': value });
+        },
+
+        toggleShowHideEventItem(value) {
+            this.$store.commit('toggleShowHideEventItem', !this.isEventItemShow)
+        },
+
+        toggleShowHideTaskItem(value) {
+            this.$store.commit('toggleShowHideTaskItem', !this.isTaskItemShow)
+        },
+
+        resetToolPalette() {
+            this.$store.commit('resetToolPalette');
+        },
+
         fetchCalendar(calendarId) {
             u.clog('fetchCalendar(' + calendarId + ')');
             this.calendarService.isLoading = true;

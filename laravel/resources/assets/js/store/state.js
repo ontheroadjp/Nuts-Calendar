@@ -24,6 +24,20 @@ export default {
                 code: '',
             },
         },
+        message: {
+            sign: {
+                isActive: false,
+                type: 'is-info',
+                content: ''
+            },
+
+            notification: {
+                isActive: false,
+                isImportant: false,
+                type: 'is-info',
+                content: '',
+            }
+        }
     },
 
     user: {
@@ -60,12 +74,36 @@ export default {
             },
 
             column: {
-                isInserting: false,
-                isEditing: false,
-                isDeleting: false,
-                insertingColumnId: null,
-                editingColumnId: null,
-                deletingColumnId: null
+//                addColumn: {
+//                    isActive: false,
+//                    isLoading: false,
+//                    newColumn: {
+//                        name: '',
+//                    },
+//                },
+
+//                editColumn: {
+//                    isActive: false,
+//                    isLoading: false,
+//                    editingColumn: '',
+//                    input: {
+//                        name: '',
+//                        order: '',
+//                        isShow: '',
+//                    }
+//                },
+
+//                deleteColumn: {
+//                    isActive: false,
+//                    isLoading: false
+//                },
+
+//                isInserting: false,
+//                isEditing: false,
+//                isDeleting: false,
+//                insertingColumnId: null,
+//                editingColumnId: null,
+//                deletingColumnId: null
             },
 
             item: {

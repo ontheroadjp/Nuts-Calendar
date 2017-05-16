@@ -14,6 +14,64 @@ export default {
     },
 
     // ---------------------------------------------
+    // notification
+
+    notifyPrimary( state, { content, isImportant } ) {
+        if(!content || typeof(isImportant) !== 'boolean' ) return;
+        state.app.message.notification.content = content;
+        state.app.message.notification.type = 'is-primary';
+        state.app.message.notification.isImportant = isImportant;
+        state.app.message.notification.isActive = true;
+    },
+
+    notifySuccess( state, { content, isImportant } ) {
+        if(!content || typeof(isImportant) !== 'boolean' ) return;
+        state.app.message.notification.content = content;
+        state.app.message.notification.type = 'is-success';
+        state.app.message.notification.isImportant = isImportant;
+        state.app.message.notification.isActive = true;
+    },
+
+    notifyInfo( state, { content, isImportant } ) {
+        if(!content || typeof(isImportant) !== 'boolean' ) return;
+        state.app.message.notification.content = content;
+        state.app.message.notification.type = 'is-info';
+        state.app.message.notification.isImportant = isImportant;
+        state.app.message.notification.isActive = true;
+    },
+
+    notifyWarning( state, { content, isImportant } ) {
+        if(!content || typeof(isImportant) !== 'boolean' ) return;
+        state.app.message.notification.content = content;
+        state.app.message.notification.type = 'is-warning';
+        state.app.message.notification.isImportant = isImportant;
+        state.app.message.notification.isActive = true;
+    },
+
+    notifyDanger( state, { content, isImportant } ) {
+        if(!content || typeof(isImportant) !== 'boolean' ) return;
+        state.app.message.notification.content = content;
+        state.app.message.notification.type = 'is-danger';
+        state.app.message.notification.isImportant = isImportant;
+        state.app.message.notification.isActive = true;
+    },
+
+    setNotification( state, { content, type, isImportant, isActive } ) {
+        if(!content || !type || typeof(isImportant) !== 'boolean' || typeof(isActive) !== 'boolean' ) true;
+        state.app.message.notification.content = content;
+        state.app.message.notification.type = type;
+        state.app.message.notification.isImportant = isImportant;
+        state.app.message.notification.isActive = isActive;
+    },
+
+    resetNotification( state ) {
+        state.app.message.notification.content = '';
+        state.app.message.notification.type = '';
+        state.app.message.notification.isImportant = false;
+        state.app.message.notification.isActive = false;
+    },
+
+    // ---------------------------------------------
     // theme
 
     setTheme( state, name ) {
@@ -149,43 +207,28 @@ export default {
     // ---------------------------------------------
     // calendar (behavior)
 
-    toggleIsEventItemShow( state, val ) {
-        state.calendar.behavior.isEventItemShow = val;
-    },
-
-    toggleIsTaskItemShow( state, val ) {
-        state.calendar.behavior.isTaskItemShow = val;
-    },
-
     toggleTableToolPalette( state, val ) {
         state.calendar.behavior.toolPalette.isActive = val;
     },
 
-    // ---------------------------------------------
-
-    toggleColumnInserting( state, { isInserting, insertingColumnId } ) {
-        state.calendar.behavior.column.isInserting = isInserting;
-        state.calendar.behavior.column.insertingColumnId = insertingColumnId;
+    toggleShowHideEventItem( state, val ) {
+        state.calendar.behavior.isEventItemShow = val;
     },
 
-    toggleColumnEditing( state, { isEditing, editingColumnId } ) {
-        state.calendar.behavior.column.isEditing = isEditing;
-        state.calendar.behavior.column.editingColumnId = editingColumnId;
+    toggleShowHideTaskItem( state, val ) {
+        state.calendar.behavior.isTaskItemShow = val;
     },
 
-    toggleColumnDeleting( state, { isDeleting, deletingColumnId } ) {
-        state.calendar.behavior.column.isDeleting = isDeleting;
-        state.calendar.behavior.column.deletingColumnId = deletingColumnId;
-    },
-
-    // ---------------------------------------------
-    
     setSearchQuery( state, val ) {
         state.calendar.behavior.query.search = val;
     },
 
     setInternalQuery( state, val ) {
         state.calendar.behavior.query.internal = val;
+    },
+
+    closeToolPalette() {
+        state.calendar.behavior.toolPalette.isActive = false;
     },
 
     // ---------------------------------------------
@@ -195,30 +238,8 @@ export default {
         state.calendar.data.members = members;
     },
 
-    setMemberStatusIsShow(state, { id, val }) {
+    toggleShowHideColumn(state, { id, val }) {
         state.calendar.data.members[id].isShow = val;
-    },
-
-    addMember( state, { key, data } ) {
-        Vue.set(state.calendar.data.members, key, data);
-        state.calendar.data.calendars.forEach( function(val, index) {
-            Vue.set( val.items, key, [{
-                'editing': false,
-                'is_hover': false
-            }]);
-        });
-    },
-
-    updateMember( state, member ) {
-        state.calendar.data.members[member.id].name = member.name;
-        state.calendar.data.members[member.id].order = member.order;
-    },
-
-    deleteMember( state, id ) {
-        Vue.delete(state.calendar.data.members, id);
-        state.calendar.data.calendars.forEach( function(val, index) {
-            Vue.delete( val.items, id);
-        });
     },
 
     // ---------------------------------------------

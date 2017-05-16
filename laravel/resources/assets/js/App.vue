@@ -1,6 +1,7 @@
 <template>
     <div>
         <navbar></navbar>
+        <notification></notification>
         <router-view></router-view>
         <page-footer v-if="$route.footer"></page-footer>
     </div>
@@ -8,6 +9,7 @@
 
 <script>
     import navbar from './pages/partials/navbar/index.vue'
+    import notification from './components/notification.vue'
     import pageFooter from './pages/partials/footer/index.vue'
     import store from './store/index.js'
 
@@ -17,6 +19,7 @@
         
         components: {
             'navbar': navbar,
+            'notification': notification,
             'page-footer': pageFooter,
         },
     

@@ -20,8 +20,8 @@
         <footer class="modal-card-foot">
             <button 
                 class="button is-danger" 
-                @click="removeItem()" 
-                :disabled="editItem.isLoading"
+                @click="removeButton()" 
+                :disabled="editItem.isLoading || deleteItem.isLoading"
                 >
                 <span v-if="!deleteItem.isLoading"><i class="fa fa-trash"></i></span>
                 <span v-else><i class="fa fa-refresh fa-spin"></i></span>
@@ -30,7 +30,8 @@
                 class="button" 
                 @click="close()" 
                 :disabled="editItem.isLoading || deleteItem.isLoading"
-                >Cancel</button>
+                >Cancel
+            </button>
 <!--
             <button 
                 :class="['button', theme.primary.class]" 
@@ -64,6 +65,10 @@ export default {
     },
 
     methods: {
+        removeButton() {
+            this.removeItem();
+        },
+
         close() {
             this.$store.commit('finishUpdateItem');
             this.$store.commit('finishRemoveItem');

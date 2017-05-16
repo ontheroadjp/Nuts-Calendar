@@ -8,15 +8,15 @@
     />
     <a  class="button is-small"
         v-show="!addItem.isLoading"
-        @click.stop="insertEvent()"
-        @blur="insertEvent()"
+        @click.stop="eventButton()"
+        @blur="eventButton()"
         >Event
     </a>
 
     <a  class="button is-small"
         v-show="!addItem.isLoading"
-        @click.stop="insertTask()"
-        @blur="insertTask()"
+        @click.stop="taskButton()"
+        @blur="taskButton()"
         >Task
     </a>
 
@@ -29,7 +29,7 @@
 
     <a  class="button is-small" 
         v-show="!addItem.isLoading"
-        @click.stop="finishAddItem()" 
+        @click.stop="cancelButton()" 
         >cancel
     </a>
 </div>
@@ -59,21 +59,33 @@ export default {
 
         newItemContent: {
             get() {
-                return this.$store.state.calendar.behavior.item.addItem.newItem.content;
+                return this.addItem.newItem.content;
             },
 
             set(value) {
-                this.$store.commit('setNewItemContent', value);
+                this.setNewItemContent(value);
             }
         }
     },
 
     methods: {
-        beforeDestroy() {
-            u.clog('insert-item-field is going to be destroyed.');
-            this.finishAddItem();
+        eventButton() {
+            this.insertEvent();
+        },
+
+        taskButton() {
+            this.insertTask();
+        },
+
+        cancelButton() {
+            this.finishInsertItem();
         }
-    }
+    },
+
+//    beforeDestroy() {
+//        u.clog('insert-item-field is going to be destroyed.');
+//        this.finishInsertItem();
+//    }
 }
 </script>
 

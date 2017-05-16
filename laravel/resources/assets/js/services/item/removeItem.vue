@@ -23,16 +23,22 @@ export default {
         successRemoveItem(response) {
             u.clog('success');
             this.$store.commit('removeItem');
-            this.finishRemoveItem();
+            this.finishRemoveItem('success a removing item', 'is-success', false);
         },
 
         failedRemoveItem(error) {
             u.clog('failed');
-            this.finishRemoveItem();
+            this.finishRemoveItem('failed a removing item', 'is-danger', false);
         },
 
-        finishRemoveItem() {
+        finishRemoveItem(content, type, isImportant) {
             u.clog('finish');
+            this.$store.commit('setNotification', {
+                content: content,
+                type: type,
+                isImportant: isImportant,
+                isActive: true,
+            });
             this.$store.commit('finishRemoveItem');
         },
     }

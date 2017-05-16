@@ -1,19 +1,27 @@
 <template>
-<div>
+<article class="message is-danger" style="z-index: 99; width: 50%">
     <div class="message-header">
-        <p><strong>Danger</strong>!</p>
+        <p>Confirmation</p>
         <button class="delete" @click="close()"></button>
     </div>
     <div class="message-body">
-        <p style="margin-bottom:20px">
-            Are you sure to delete column <strong>{{ columnId ? members[columnId].name : ''}}</strong> ?
+        <p style="padding: 60px">
+        Are you sure to delete column <strong>{{ columnId ? members[columnId].name : ''}}</strong> ?
         </p>
-        <div>
-            <a class="button is-outlined is-danger" @click="ok()">OK</a>
-            <a class="button is-outlined is-danger" @click="close()">Cancel</a>
+        <div class="has-text-centered">
+            <a 
+                class="button is-outlined is-danger" 
+                style="margin-right: 10px"
+                @click="ok()"
+            >OK</a>
+            <a 
+                class="button is-outlined is-danger" 
+                style="margin-left: 10px"
+                @click="close()"
+            >Cancel</a>
         </div>
     </div>
-</div>
+</article>
 </template>
 
 <script>

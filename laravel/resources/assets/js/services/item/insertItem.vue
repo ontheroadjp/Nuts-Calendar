@@ -11,17 +11,28 @@ export default {
     },
 
     methods: {
-        insertEvent: function (cellItems) {
-            this.insertItem(cellItems, 1);
+        setNewItemContent: function(value) {
+            this.$store.commit('setNewItemContent', value);
         },
 
-        insertTask: function (cellItems) {
-            this.insertItem(cellItems, 2);
+        insertEvent: function () {
+            this.insertItem(1);
         },
 
-        insertItem: function (cellItems, typeId) {
+        insertTask: function () {
+            this.insertItem(2);
+        },
+
+        insertItem: function (typeId) {
             u.clog('insertItem()');
-            if( ! this.addItem.newItem.content ) return;
+
+            if( ! this.addItem.newItem.content ) {
+                this.$store.commit('notifyDanger', {
+                    content: 'no content',
+                    isImportant: false
+                });
+                return;
+            }
 
             this.$store.commit('startInsertItem');
             const d = ("0" + (this.addItem.enterCell.dayIndex + 1)).slice(-2);
@@ -38,27 +49,33 @@ export default {
             };
     
             http.fetchPost(url, params)
-                .then(response => this.successInsertItem(response, cellItems))
+                .then(response => this.successInsertItem(response))
                 .catch(error => this.failedInsertItem(error));
         },
 
-        successInsertItem(response, cellItems) {
+        successInsertItem(response) {
             u.clog('success');
             this.$store.commit('insertItem', {
                 dayIndex: this.addItem.enterCell.dayIndex,
                 memberId: this.addItem.enterCell.memberId,
                 val: response.data
             });
-            this.finishInsertItem();
+            this.finishInsertItem('success an inserting item', 'is-success', false);
         },
 
         failedInsertItem(error) {
             u.clog('failed');
-            this.finishInsertItem();
+            this.finishInsertItem('failed an inserting item', 'is-danger', false);
         },
 
-        finishInsertItem() {
+        finishInsertItem(content, type, isImportant) {
             u.clog('finish');
+            this.$store.commit('setNotification', {
+                content: content,
+                type: type,
+                isActive: true,
+                isImportant: isImportant
+            });
             this.$store.commit('finishInsertItem');
         },
     }

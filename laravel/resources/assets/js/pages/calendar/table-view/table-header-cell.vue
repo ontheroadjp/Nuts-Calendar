@@ -13,13 +13,13 @@
         :text-style="{ 'padding': '0.5em 0.75em' }"
         >
         
-        <a class="button" @click.stop="editColumn(member.id)">
+        <a class="button" @click.stop="editColumnButton(member.id)">
             <span class="icon is-small">
                 <i class="fa fa-pencil"></i>
             </span>
         </a>
     
-        <a class="button" @click="deleteColumn(member.id)">
+        <a class="button" @click="deleteColumnButton(member.id)">
             <span class="icon is-small">
                 <i class="fa fa-trash"></i>
             </span>
@@ -32,7 +32,7 @@
 import { mapState } from 'vuex';
 import editColumnModal from '../../../components/modal.vue';
 import editColumnModalContent from './modal/edit-column-content.vue';
-import deleteColumnWarning from '../../../components/message.vue';
+import deleteColumnWarning from '../../../components/modal.vue';
 import deleteColumnWarningContent from './message/delete-column-warning.vue';
 import headerShutter from '../../../components/shutter.vue';
 
@@ -59,8 +59,8 @@ export default {
     },
 
     methods: {
-        editColumn(memberId) {
-            u.clog('editColumn()');
+        editColumnButton(memberId) {
+            u.clog('editColumnButton()');
             const payload = {
                 isEditing: !this.isColumnEditing,
                 editingColumnId: memberId
@@ -68,8 +68,8 @@ export default {
             this.$store.commit('toggleColumnEditing', payload);
         },
 
-        deleteColumn(memberId) {
-            u.clog('deleteColumn()');
+        deleteColumnButton(memberId) {
+            u.clog('deleteColumnButton()');
             const payload = {
                 isDeleting: !this.isColumnDeleting,
                 deletingColumnId: memberId
