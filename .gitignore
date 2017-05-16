@@ -3,6 +3,7 @@ laravel/tags
 # laravel/.env
 laravel/vendor/
 laravel/node_modules/
+laravel/public/mix-manifest.json
 laravel/public/js/
 laravel/public/css/
 laravel/database/database.sqlite
