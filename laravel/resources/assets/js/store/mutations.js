@@ -275,18 +275,18 @@ export default {
     // ---------------------------------------------
     // item - addItem
 
-    prepareAddItem( state, { dayIndex, memberId, cellItems } ) {
+    prepareInsertItem( state, { dayIndex, memberId, cellItems } ) {
         state.calendar.behavior.item.addItem.isActive = true;
         state.calendar.behavior.item.addItem.enterCell.dayIndex = dayIndex;
         state.calendar.behavior.item.addItem.enterCell.memberId = memberId;
         state.calendar.behavior.item.addItem.enterCell.cellItems = cellItems;
     },
 
-    startAddItem( state ) {
+    startInsertItem( state ) {
         state.calendar.behavior.item.addItem.isLoading = true;
     },
 
-    addItem( state, { dayIndex, memberId, val } ) {
+    insertItem( state, { dayIndex, memberId, val } ) {
         const cellItems = state.calendar.data.calendars[dayIndex].items[memberId];
         if(cellItems instanceof Array) {
             cellItems.push(val);
@@ -297,7 +297,7 @@ export default {
         state.calendar.behavior.item.addItem.newItem.content = value;
     },
 
-    finishAddItem( state ) {
+    finishInsertItem( state ) {
         state.calendar.behavior.item.addItem.isActive = false;
         state.calendar.behavior.item.addItem.isLoading = false;
         state.calendar.behavior.item.addItem.enterCell.dayIndex = '';
@@ -309,12 +309,12 @@ export default {
     // ---------------------------------------------
     // item - editItem
 
-    prepareEditItem( state, { editingItem } ) {
+    prepareUpdateItem( state, { editingItem } ) {
         state.calendar.behavior.item.editItem.isActive = true;
         state.calendar.behavior.item.editItem.editingItem = editingItem;
     },
 
-    startEditItem( state ) {
+    startUpdateItem( state ) {
         state.calendar.behavior.item.editItem.isLoading = true;
     },
 

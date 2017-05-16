@@ -11,7 +11,7 @@ export default {
     methods: {
         saveItem: function() {
             u.clog('updateItem()');
-            this.$store.commit('startEditItem');
+            this.$store.commit('startUpdateItem');
 
             // ajax call
         },

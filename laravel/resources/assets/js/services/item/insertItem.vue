@@ -23,7 +23,7 @@ export default {
             u.clog('insertItem()');
             if( ! this.addItem.newItem.content ) return;
 
-            this.$store.commit('startAddItem');
+            this.$store.commit('startInsertItem');
             const d = ("0" + (this.addItem.enterCell.dayIndex + 1)).slice(-2);
             const date = this.currentYear + '-' + this.currentMonth + '-' + d
 
@@ -44,22 +44,22 @@ export default {
 
         successInsertItem(response, cellItems) {
             u.clog('success');
-            this.$store.commit('addItem', {
+            this.$store.commit('insertItem', {
                 dayIndex: this.addItem.enterCell.dayIndex,
                 memberId: this.addItem.enterCell.memberId,
                 val: response.data
             });
-            this.finishAddItem();
+            this.finishInsertItem();
         },
 
         failedInsertItem(error) {
             u.clog('failed');
-            this.finishAddItem();
+            this.finishInsertItem();
         },
 
-        finishAddItem() {
+        finishInsertItem() {
             u.clog('finish');
-            this.$store.commit('finishAddItem');
+            this.$store.commit('finishInsertItem');
         },
     }
 }

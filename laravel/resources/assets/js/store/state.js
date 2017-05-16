@@ -79,6 +79,10 @@ export default {
                     },
                     newItem: {
                         content: '',
+                    },
+                    error: {
+                        isError: false,
+                        message: ''
                     }
                 },
 

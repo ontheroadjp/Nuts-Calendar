@@ -66,6 +66,13 @@ export default {
                 this.$store.commit('setNewItemContent', value);
             }
         }
+    },
+
+    methods: {
+        beforeDestroy() {
+            u.clog('insert-item-field is going to be destroyed.');
+            this.finishAddItem();
+        }
     }
 }
 </script>

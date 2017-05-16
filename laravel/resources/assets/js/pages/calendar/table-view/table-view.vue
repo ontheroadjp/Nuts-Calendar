@@ -205,13 +205,13 @@
         methods: {
             prepareAddItem(dayIndex, memberId, cellItems) {
                 u.clog('prepareAddItem()');
-                this.$store.commit('prepareAddItem', { dayIndex, memberId, cellItems }); 
+                this.$store.commit('prepareInsertItem', { dayIndex, memberId, cellItems }); 
             },
 
             prepareClickItem(cellItems, item) {
                 u.clog('prepareClickItem()');
                 item.oldValue = item.content;
-                this.$store.commit('prepareEditItem', { editingItem: item });
+                this.$store.commit('prepareUpdateItem', { editingItem: item });
                 this.$store.commit('prepareRemoveItem', { cellItems: cellItems, deletingItem: item });
             },
 
