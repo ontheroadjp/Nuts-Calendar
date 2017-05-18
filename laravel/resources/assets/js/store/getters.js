@@ -1,4 +1,11 @@
 export default {
+    i18nText: (state, getters) => (key) => {
+        const keys = key.split('.');
+        const g = keys[0];
+        const k = keys[1];
+        return state.i18n[state.app.lang][g][k];
+    },
+
     filteredMembers: (state, getters) => {
         let members = state.calendar.data.members;
         let result = {};
@@ -10,19 +17,19 @@ export default {
         return result;
     },
 
-    showMembers: (state, getters) => {
+    getShowMembers: (state, getters) => {
         return Object.keys(getters.filteredMembers);
     },
 
-    // ---------------------------------------------
+    getRowIndex: (state) => (dayString) => {
+        return parseInt((dayString.split('-'))[2]) - 1;
+    },
 
-//    isColumnModalActive: (state, getters) => {
-//        return state.action.column.update.isActive
-//            && state.action.column.remove.isActive
-//    },
+    getCellAddress: (state) => (dayIndex, memberId) => {
+        return (dayIndex + 1) + '-' + memberId;
+    },
 
-//    isItemModalActive: (state, getters) => {
-//        return state.calendar.behavior.item.editItem.isActive
-//            && state.calendar.behavior.item.deleteItem.isActive;
-//    },
+    getCellItems: (state) => (dayIndex, memberId) => {
+        return state.calendar.data.calendars[dayIndex].items[memberId];
+    },
 }

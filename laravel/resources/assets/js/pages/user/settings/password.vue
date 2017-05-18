@@ -18,12 +18,12 @@
     <form>
     <div class="box" style="padding: 60px; width: 100%;">
         <div class="field">
-            <label class="label">Current password</label>
+            <label class="label">{{ t('userSettingsPasswordChange.currentPassword') }}</label>
             <p class="control has-icon" style="margin-bottom: 60px">
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    :placeholder="oldPasswordHasError ? error.oldPassword : 'Current Password'"
+                    :placeholder="oldPasswordHasError ? error.oldPassword : t('userSettingsPasswordChange.currentPassword')"
                     style="margin-bottom: 20px;"
                     v-model="input.oldPassword"
                     v-focus
@@ -35,12 +35,12 @@
         </div>
 
         <div class="field">
-            <label class="label">New password</label>
+            <label class="label">{{ t('userSettingsPasswordChange.newPassword') }}</label>
             <p class="control has-icon" style="margin-bottom: 60px">
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    :placeholder="newPasswordHasError ? error.newPassword : 'New Password'"
+                    :placeholder="newPasswordHasError ? error.newPassword : t('userSettingsPasswordChange.newPassword')"
                     style="margin-bottom: 20px;"
                     v-model="input.newPassword"
                 >
@@ -51,12 +51,12 @@
         </div>
 
         <div class="field">
-            <label class="label">New password (confirmation)</label>
+            <label class="label">{{ t('userSettingsPasswordChange.newPasswordConfirmation') }}</label>
             <p class="control has-icon" style="margin-bottom: 60px">
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    :placeholder="newPasswordConfirmationHasError ? error.newPasswordConfirme : 'New Password ( Confirme )'"
+                    :placeholder="newPasswordConfirmationHasError ? error.newPasswordConfirme : t('userSettingsPasswordChange.newPasswordConfirmation')"
                     style="margin-bottom: 20px;"
                     v-model="input.newPasswordConfirmation"
                 >
@@ -73,7 +73,7 @@
                 :class="theme.secondary.class" 
                 style="width: 50%" 
                 disabled
-            >Change Password</button>
+                >{{ t('userSettingsPasswordChange.changePassword') }}</button>
             <button 
                 v-show="isChangePasswordReady && ! isLoading"
                 type="submit"
@@ -81,7 +81,7 @@
                 :class="theme.secondary.class" 
                 style="width: 50%" 
                 @click.prevent="putChangePassword()"
-            >Change Password</button>
+            >{{ t('userSettingsPasswordChange.changePassword') }}</button>
             <button 
                 v-show="isLoading" 
                 class="button" 
@@ -99,6 +99,7 @@
 </template>
 
 <script>
+    import core from '../../../mixins/core.js';
     import userApi from '../../../services/user.js';
     import passwordChangeResultMessage from '../../../components/message.vue';
 
@@ -108,7 +109,7 @@
         },
 
         mixins: [
-            userApi,
+            core, userApi,
         ],
     
         data() {

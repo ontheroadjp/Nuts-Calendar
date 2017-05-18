@@ -6,6 +6,20 @@
     <add-column-modal-content></add-column-modal-content>
 </add-column-modal>
 
+    <div class="container columns" style="margin: 0 auto">
+        <div class="column is-4">
+            <mini-cal value="2017-04"></mini-cal>
+        </div>
+
+        <div class="column is-4">
+            <mini-cal value="2017-05"></mini-cal>
+        </div>
+
+        <div class="column is-4">
+            <mini-cal value="2017-06"></mini-cal>
+        </div>
+    </div>
+
 <span class="level" style="white-space: nowrap">
     <span class="level-left">
         <span class="select">
@@ -17,41 +31,41 @@
         </span>
 
         <span v-show="selected === 'date'" style="margin-left:10px">
-            <button class="button" @click="setInternalQuery('')" style="margin-right:8px">All</button>
-            <button class="button" @click="setInternalQuery('0')" style="background-color:#fff0f0">Sun</button>
-            <button class="button" @click="setInternalQuery('1')">Mon</button>
-            <button class="button" @click="setInternalQuery('2')">Tue</button>
-            <button class="button" @click="setInternalQuery('3')">Wed</button>
-            <button class="button" @click="setInternalQuery('4')">Thu</button>
-            <button class="button" @click="setInternalQuery('5')">Fri</button>
-            <button class="button" @click="setInternalQuery('6')" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
+            <button class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
+            <button class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
+            <button class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
+            <button class="button" @click="setInternalQuery({ value: '2' })">Tue</button>
+            <button class="button" @click="setInternalQuery({ value: '3' })">Wed</button>
+            <button class="button" @click="setInternalQuery({ value: '4' })">Thu</button>
+            <button class="button" @click="setInternalQuery({ value: '5' })">Fri</button>
+            <button class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
         </span>
 
         <span v-show="selected === 'member'" style="margin-left:10px">
             <template v-for="(member, memberId) in members">
                 <button  :class="['button', {'is-off': !member.isShow}]" 
-                    @click="toggleShowHideColumnButton(memberId, !member.isShow)"
+                    @click="clickColumnButton(memberId, !member.isShow)"
                     >
                     <i v-show="member.isShow" class="fa fa-user"></i>
                     <i v-show="!member.isShow" class="fa fa-user-times"></i>
                     ({{ memberId }})
                 </button>
             </template>
-            <button class="button" @click="newColumnButton()">
+            <button class="button" @click="clickNewColumnButton()">
                 <i class="fa fa-user"></i>Add
             </button>
         </span>
 
         <span v-show="selected === 'item'" style="margin-left:10px">
             <button :class="[ 'button', { 'is-off': !isEventItemShow } ]" 
-                    @click="toggleShowHideEventItemButton()"
+                    @click="clickEventItemButton()"
                     >
                     <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
                     <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
                     Event
             </button>
             <button :class="['button', { 'is-off': !isTaskItemShow }]" 
-                    @click="toggleShowHideTaskItemButton()"
+                    @click="clickTaskItemButton()"
                     >
                     <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
                     <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
@@ -79,10 +93,9 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import searchBox from './table-search-box.vue';
-import calendarService from '../../../services/calendar.js';
-//import insertColumnService from '../../../services/column/insert.vue';
 import addColumnModalBase from '../../../components/modal.vue';
 import addColumnModalContent from './modal/add-column-modal-content.vue';
+import miniCal from '../../../components/mini-cal.vue';
 
 export default {
     name: 'calendar-tool-palett',
@@ -90,12 +103,8 @@ export default {
         'search-box': searchBox,
         'add-column-modal': addColumnModalBase,
         'add-column-modal-content': addColumnModalContent,
+        'mini-cal': miniCal
     },
-
-    mixins: [
-//        calendarService, insertColumnService
-        calendarService
-    ],
 
     data() {
         return {
@@ -105,11 +114,14 @@ export default {
 
     computed: {
         ...mapState({
-            toolPalette: state => state.calendar.behavior.toolPalette,
             members: state => state.calendar.data.members,
-            isEventItemShow: state => state.calendar.behavior.isEventItemShow,
-            isTaskItemShow: state => state.calendar.behavior.isTaskItemShow,
             theme: state => state.app.theme,
+        }),
+
+        ...mapState('action/calendar', {
+            toolPalette: state => state.view.toolPalette,
+            isEventItemShow: state => state.view.isEventItemShow,
+            isTaskItemShow: state => state.view.isTaskItemShow,
         }),
 
         ...mapState('action/column', {
@@ -117,38 +129,41 @@ export default {
         }),
 
         showColumns: function() {
-            return this.$store.getters.showMembers;
+            return this.$store.getters.getShowMembers;
         },
     },
 
     methods: {
-        ...mapActions({
-            'prepareInsert': 'action/column/insert/prepare',
+        ...mapActions('action/column', {
+            prepareInsert: 'insert/prepare',
         }),
 
-        setInternalQuery(val) {
-            this.$store.commit('setInternalQuery', val);
+        ...mapActions('action/calendar', {
+            toggleShowHideColumn: 'view/toggleShowHideColumn',
+            toggleShowHideEventItem: 'view/toggleShowHideEventItem',
+            toggleShowHideTaskItem: 'view/toggleShowHideTaskItem',
+            setInternalQuery: 'view/setInternalQuery'
+        }),
+
+        clickColumnButton(id, value) {
+            if(this.showColumns.length === 1 && value === false) return; 
+            this.toggleShowHideColumn({ id, value });
         },
 
-        toggleShowHideColumnButton(id, value) {
-            if(this.showColumns.length === 1 && val === false) return; 
-            this.toggleShowHideColumn(id, value);
+        clickEventItemButton() {
+            this.toggleShowHideEventItem({ value: !this.isEventItemShow });
         },
 
-        toggleShowHideEventItemButton() {
-            this.toggleShowHideEventItem(!this.isEventItemShow);
+        clickTaskItemButton() {
+            this.toggleShowHideTaskItem({ value: !this.isTaskItemShow });
         },
 
-        toggleShowHideTaskItemButton() {
-            this.toggleShowHideTaskItem(!this.isTaskItemShow);
-        },
-
-        newColumnButton() {
+        clickNewColumnButton() {
             this.prepareInsert();
         },
 
         close() {
-            this.$store.commit('toggleTableToolPalette', !this.toolPalette.isActive);
+            this.toggleTableToolPalette({ value: false });
         }
     },
 }

@@ -2,7 +2,12 @@
 <span class="nav-item dropdown">
 
     <a href="#" class="dropdown-toggle" @click="toggle()">
-        <span>{{ $store.state.user.name }}</span>
+        <span>
+            <span class="icon is-small">
+                <i class="fa fa-user"></i>
+            </span>
+            {{ $store.state.user.name }}
+        </span>
         <span class="icon is-small" style="margin-top: 4px">
             <i class="fa fa-caret-down"></i>
         </span>
@@ -11,7 +16,7 @@
     <ul class="dropdown-menu" v-show="isMenuOpen">
         <li>
             <a :style="menuItemStyle" @click="toggle">
-                <router-link to="/me/settings/general">Account settings</router-link>
+                <router-link to="/me/settings/general">{{ t('navbar.accountSettings') }}</router-link>
             </a>
         </li>
         <li>
@@ -19,7 +24,7 @@
                 <span class="icon is-small">
                     <i class="fa fa-btn fa-arrow-circle-o-right"></i>
                 </span>
-                <span>Logout</span>
+                <span>{{ t('navbar.logout') }}</span>
             </a>
         </li>
     </ul>
@@ -28,11 +33,12 @@
 </template>
 
 <script>
+    import core from '../../../mixins/core.js';
     import userApi from '../../../services/user.js';
     
     export default {
         mixins: [
-            userApi
+            core, userApi
         ],
     
         data() {

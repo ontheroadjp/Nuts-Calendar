@@ -4,7 +4,7 @@
         <span :style="[day]">{{ getDay(date) }}</span>
         <span style="font-size: 48px">th</span>
     </div>
-    <div :style="[middle]">
+    <div class="middle">
         <span :style="[date]">{{ getDate(date) }}</span>
     </div>
     <div :style="[bottom]">

@@ -1,5 +1,7 @@
 // @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+//@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+
 // -------------------------------------------------
 // Vendor
 // -------------------------------------------------
@@ -13,3 +15,7 @@
 @import "resources/assets/sass/_variables";
 @import "resources/assets/sass/_main";
 @import "resources/assets/sass/_form";
+
+body {
+    font-family: 'Noto Sans Japanese', sans-serif;
+}

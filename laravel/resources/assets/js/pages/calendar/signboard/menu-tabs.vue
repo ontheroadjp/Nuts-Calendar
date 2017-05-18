@@ -9,7 +9,7 @@
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
             </span>
-            <span>Dashboard</span>
+            <span>{{ t('calendarMenu.dashboard') }}</span>
         </router-link>
     </li>
 
@@ -66,39 +66,16 @@
                     <span>Calendar Settings</span>
                 </router-link>
             </li>
-            <li>
-                <router-link to="/calendar/settings/members" 
-                    :style="menuItemStyle"
-                    @click="changeCalendar(uCalendar.id)"
-                >
-                    <span class="icon is-small">
-                        <i class="fa fa-user"></i>
-                    </span>
-                    <span>Member Settings</span>
-                </router-link>
-            </li>
-            <li>
-                <router-link to="/calendar/settings/items" 
-                    :style="menuItemStyle"
-                    @click="changeCalendar(uCalendar.id)"
-                >
-                    <span class="icon is-small">
-                        <i class="fa fa-id-card-o"></i>
-                    </span>
-                    <span>Item Settings</span>
-                </router-link>
-            </li>
         </ul>
-
-    </li>
 -->
+    </li>
 
     <li :class="">
         <router-link to="'/calendar/settings/' + currentCalendarId}">
             <span class="icon is-small">
                 <i class="fa fa-plus"></i>
             </span>
-            <span>Create new one</span>
+            <span>{{ t('calendarMenu.createNewOne') }}</span>
         </router-link>
     </li>
 </ul>
@@ -107,20 +84,23 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import core from '../../../mixins/core.js';
 
 export default {
+    props: [ 'calendarServiceIsLoading', ],
 
-    props: [
-        'calendarServiceIsLoading',
-    ],
+    mixins: [ core ],
 
     computed: {
         ...mapState({
             userCalendars: state => state.calendar.data.userCalendars,
             currentCalendarId: state => state.calendar.currentId,
-            isToolPaletteOpen: state => state.calendar.behavior.toolPalette.isActive,
             theme: state => state.app.theme,
+        }),
+
+        ...mapState('action/calendar', {
+            isToolPaletteOpen: state => state.view.toolPalette.isActive,
         }),
 
         menuItemStyle: function() {
@@ -133,6 +113,10 @@ export default {
     },
 
     methods: {
+        ...mapActions('action/calendar', {
+            toggleTableToolPalette: 'view/toggleTableToolPalette'
+        }),
+
         changeCalendar: function(id) {
             if( this.currentCalendarId == id ) return;
             u.clog('changeCalendar(' + id + ')');
@@ -142,6 +126,10 @@ export default {
         clickTabMenu: function() {
             u.clog('clickTabMenu()');
             this.toggle();
+        },
+
+        toggleToolPalet() {
+            this.toggleTableToolPalette({ value: !this.isToolPaletteOpen }); 
         },
 
 //        toggle: function() {
@@ -164,9 +152,6 @@ export default {
 //            document.removeEventListener('click', this.hide);
 //        },
 
-        toggleToolPalet() {
-            this.$store.commit('toggleTableToolPalette', !this.isToolPaletteOpen); 
-        },
     },
 
     created() {

@@ -1,10 +1,7 @@
+import { focus } from '../directives/focus.js';
 export default {
     directives: {
-        focus: {
-            inserted: function(el) {
-                el.focus();
-            }
-        }
+        focus
     },
 
     data() {
@@ -162,14 +159,22 @@ export default {
             return error => { 
                 if (error.response) {
                     if( error.response.status === 422 || error.response.status === 500) {
-                        const m = 'We couldn\'t verify your credentials.';
-                        self.error.authentication = m;
+                        self.$store.commit('notifyDanger', {
+                            content: 'We couldn\'t verify your credentials.',
+                            isImportant: false
+                        });
+//                        const m = 'We couldn\'t verify your credentials.';
+//                        self.error.authentication = m;
                     }
         
                     if( error.response.status === 429) {
-                        const m = 'Too many login attempts. Try it again after ';
-                        const min = error.response.data.retryAfter.minuts;
-                        self.error.authentication = m + min + ' minuts.';
+                        self.$store.commit('notifyDanger', {
+                            content: 'Too many login attempts. Try it again after ',
+                            isImportant: true
+                        });
+//                        const m = 'Too many login attempts. Try it again after ';
+//                        const min = error.response.data.retryAfter.minuts;
+//                        self.error.authentication = m + min + ' minuts.';
                     }
         
                     if( error.response.data.email ) {

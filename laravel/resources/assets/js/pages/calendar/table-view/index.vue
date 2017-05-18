@@ -10,6 +10,7 @@
         ><table-view 
             :filtered-columns="filteredColumns"
             :is-black-screen-show="calendarServiceIsLoading"
+            :is-fixed="isFixed"
         ></table-view>
     </div>
 
@@ -26,19 +27,19 @@
     <a  href="#top" 
         class="button" 
         style="position: fixed; bottom: 30px; right: 30px" 
-        v-show="position > fixedHeight" 
-        >Jump To Top
+        :style="'color: white; background-color: ' + theme.primary.code"
+        v-show="position > fixedHeight && !draggingItem" 
+        >{{ t('calendar.jumpToTop') }}
     </a>
-
 </div>
 </template>
 
 <script>
     import { mapState } from 'vuex';
+    import core from '../../../mixins/core.js';
     import tableView from './table-view.vue';
     import toolPalette from './table-tool-palette.vue';
     import dateUtilities from '../../../mixins/date-utilities.js';
-//    import orderByStartTime from '../../../mixins/order-by-start-time.js';
     
     export default {
         components: {
@@ -47,8 +48,7 @@
         },
 
         mixins: [
-//            dateUtilities, orderByStartTime
-            dateUtilities
+            core, dateUtilities
         ],
 
         props: [
@@ -71,10 +71,14 @@
         },
         
         computed: {
-            ...mapState({
-                isToolPaletteOpen: state => state.calendar.behavior.toolPalette.isActive,
-                searchQuery: state => (state.calendar.behavior.query.search).toLowerCase(),
-                internalQuery: state => state.calendar.behavior.query.internal,
+            ...mapState('action/calendar/view', {
+                isToolPaletteOpen: state => state.toolPalette.isActive,
+                searchQuery: state => (state.query.search).toLowerCase(),
+                internalQuery: state => state.query.internal,
+            }),
+
+            ...mapState('action/item/dnd', {
+                draggingItem: state => state.draggingItem
             }),
 
             isFixed: function() {
@@ -192,10 +196,10 @@
         height: 36px;
         &.sticky {
             position: fixed;
-            background: red;
             top: 0;
             width: 100%;
             z-index: 99;
+            border-bottom: 1px solid #dbdbdb;
         }
     }
     & .main-calendar-panel-body {

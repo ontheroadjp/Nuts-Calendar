@@ -8,9 +8,9 @@
                 @change="setTheme()"
                 style="border: none"
                 ><option 
-                    v-for="theme in themes" 
-                    :value="theme.value"
-                    >{{ theme.text }}
+                    v-for="option in options" 
+                    :value="option.value"
+                    >{{ option.text }}
                 </option>
             </select>
         </span>
@@ -19,24 +19,30 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import core from '../../../mixins/core.js';
+
 export default {
     data() {
         const self = this;
         return {
-            themes: [
-                { value: "koiai", text: "koiai" },
-                { value: "nadeshiko", text: "nadeshiko" },
-                { value: "mikan", text: "mikan" },
-                { value: "sumire", text: "sumire" },
-                { value: "moegi", text: "moegi" },
-            ],
             selectedTheme: '',
         }
     },
 
+    mixins: [
+        core
+    ],
+
     computed: {
-        theme: function() {
-            return this.$store.state.app.theme;
+        options: function() {
+            return [
+                { value: "koiai", text: this.t('theme.koiai') },
+                { value: "nadeshiko", text: this.t('theme.nadeshiko') },
+                { value: "mikan", text: this.t('theme.mikan') },
+                { value: "sumire", text: this.t('theme.sumire') },
+                { value: "moegi", text: this.t('theme.moegi') },
+            ];
         },
         selectStyle: function() {
             return {

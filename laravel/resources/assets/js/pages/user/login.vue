@@ -22,7 +22,7 @@
                     <input 
                         class="nuts-input-textbox" 
                         type="email" 
-                        :placeholder="emailHasError ? error.email : 'E-Mail Address'"
+                        :placeholder="emailHasError ? error.email : t('login.email')"
                         style="margin-bottom: 25px;"
                         v-model="input.email"
                         v-focus
@@ -38,7 +38,7 @@
                     <input 
                         class="nuts-input-textbox" 
                         type="password" 
-                        :placeholder="passwordHasError ? error.password : 'Password'"
+                        :placeholder="passwordHasError ? error.password : t('login.password')"
                         style="margin-bottom: 20px;"
                         v-model="input.password"
                     >
@@ -55,12 +55,12 @@
                     type="checkbox" 
                     v-model="input.rememberMe"
                 >
-                <label for="remember_me">Remember me</label>
+                <label for="remember_me">{{ t('login.rememberMe') }}</label>
             </p>
 
             <p class="control is-horizontal is-pulled-right">
                 <a class="btn btn-link">
-                    <router-link to="/password/email">Forgot Your Password ?</router-link>
+                    <router-link to="/password/email">{{ t('login.forgotYourPassword') }}</router-link>
                 </a>
             </p>
 
@@ -72,7 +72,7 @@
                     :class="['button', theme.secondary.class]"
                     style="width: 100%; color: #fff" 
                     @click.prevent="login()"
-                >Login</button>
+                >{{ t('login.login') }}</button>
             </p>
 
         </form>
@@ -85,25 +85,20 @@
 </template>
 
 <script>
-    import userApi from '../../services/user.js';
+import { mapState, mapGetters } from 'vuex';
+import core from '../../mixins/core.js';
+import userApi from '../../services/user.js';
 
-    export default {
-        mixins: [
-            userApi,
-        ],
+export default {
+    mixins: [
+        core, userApi,
+    ],
 
-        data() {
-            return {
-                hasError: false,
-                isRunning: false,
-            }
-        },
-
-        computed : {
-            theme : function() {
-                return this.$store.state.app.theme;
-            }
-        },
-
-    }
+    data() {
+        return {
+            hasError: false,
+            isRunning: false,
+        }
+    },
+}
 </script>

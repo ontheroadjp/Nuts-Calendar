@@ -18,12 +18,12 @@
     <div class="box" style="padding: 60px; width: 100%;">
 
         <div class="field">
-            <label class="label">Name</label>
+            <label class="label">{{ t('userSettingsGeneral.name') }}</label>
             <p class="control has-icon" style="margin-bottom: 60px">
                 <input 
                     class="nuts-input-textbox" 
                     type="text" 
-                    :placeholder="nameHasError ? error.name : 'Name'"
+                    :placeholder="nameHasError ? error.name : t('userSettingsGeneral.name')"
                     style="margin-bottom: 25px;"
                     v-model="input.name"
                     v-focus
@@ -41,7 +41,7 @@
                 :class="theme.secondary.class" 
                 style="width: 25%" 
                 disabled
-            >Save</button>
+            >{{ t('userSettingsGeneral.save') }}</button>
             <button 
                 v-show="isNameChanged && ! isLoading"
                 type="submit"
@@ -49,7 +49,7 @@
                 :class="theme.secondary.class" 
                 style="width: 25%" 
                 @click.prevent="putSettings"
-                >Save</button>
+                >{{ t('userSettingsGeneral.save') }}</button>
             <button 
                 v-show="isLoading" 
                 class="button" 
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+    import core from '../../../mixins/core.js';
     import userApi from '../../../services/user.js';
     import accountResultMessage from '../../../components/message.vue';
 
@@ -76,7 +77,7 @@
         },
 
         mixins: [
-            userApi,
+            core, userApi,
         ],
     
         data() {

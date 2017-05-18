@@ -17,7 +17,7 @@ const router = init(
 );
 Vue.use(VueRouter);
 
-// utilities
+// utils
 import { utils } from './libs/utils.js';
 window.u = utils;
 

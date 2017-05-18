@@ -1,4 +1,4 @@
-import focus from '../directives/focus.vue';
+import { focus } from '../directives/focus.js';
 
 export default {
     directives: {

@@ -205,53 +205,21 @@ export default {
     },
 
     // ---------------------------------------------
-    // calendar (behavior)
-
-    toggleTableToolPalette( state, val ) {
-        state.calendar.behavior.toolPalette.isActive = val;
-    },
-
-    toggleShowHideEventItem( state, val ) {
-        state.calendar.behavior.isEventItemShow = val;
-    },
-
-    toggleShowHideTaskItem( state, val ) {
-        state.calendar.behavior.isTaskItemShow = val;
-    },
-
-    setSearchQuery( state, val ) {
-        state.calendar.behavior.query.search = val;
-    },
-
-    setInternalQuery( state, val ) {
-        state.calendar.behavior.query.internal = val;
-    },
-
-    closeToolPalette() {
-        state.calendar.behavior.toolPalette.isActive = false;
-    },
-
-    // ---------------------------------------------
     // members
 
     initMembers( state, members ) {
         state.calendar.data.members = members;
     },
 
-    toggleShowHideColumn(state, { id, val }) {
-        state.calendar.data.members[id].isShow = val;
-    },
-
     // ---------------------------------------------
     // cellItems
 
-    setCellItems( state, { dayIndex, memberId, val } ) {
-        const columns = state.calendar.data.calendars[dayIndex].items;
-        if(columns instanceof Object) {
-            //columns[memberId] = val;
-            Vue.set(columns, memberId, val);
-        }
-    },
+//    setCellItems( state, { dayIndex, memberId, val } ) {
+//        const columns = state.calendar.data.calendars[dayIndex].items;
+//        if(columns instanceof Object) {
+//            Vue.set(columns, memberId, val);
+//        }
+//    },
 
     sortCellItemsByStartTime( state, data ) {
         data.forEach(function(day, dayIndex) {
@@ -288,184 +256,7 @@ export default {
                     item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
                     item.itemIndex = index;
                 });
-
             });
         });
-    },
-
-    // ---------------------------------------------
-    // item - addItem
-
-    prepareInsertItem( state, { dayIndex, memberId, cellItems } ) {
-        state.calendar.behavior.item.addItem.isActive = true;
-        state.calendar.behavior.item.addItem.enterCell.dayIndex = dayIndex;
-        state.calendar.behavior.item.addItem.enterCell.memberId = memberId;
-        state.calendar.behavior.item.addItem.enterCell.cellItems = cellItems;
-    },
-
-    startInsertItem( state ) {
-        state.calendar.behavior.item.addItem.isLoading = true;
-    },
-
-    insertItem( state, { dayIndex, memberId, val } ) {
-        const cellItems = state.calendar.data.calendars[dayIndex].items[memberId];
-        if(cellItems instanceof Array) {
-            cellItems.push(val);
-        }
-    },
-
-    setNewItemContent( state, value ) {
-        state.calendar.behavior.item.addItem.newItem.content = value;
-    },
-
-    finishInsertItem( state ) {
-        state.calendar.behavior.item.addItem.isActive = false;
-        state.calendar.behavior.item.addItem.isLoading = false;
-        state.calendar.behavior.item.addItem.enterCell.dayIndex = '';
-        state.calendar.behavior.item.addItem.enterCell.memberId = '';
-        state.calendar.behavior.item.addItem.enterCell.cellItems = '';
-        state.calendar.behavior.item.addItem.newItem.content = '';
-    },
-
-    // ---------------------------------------------
-    // item - editItem
-
-    prepareUpdateItem( state, { editingItem } ) {
-        state.calendar.behavior.item.editItem.isActive = true;
-        state.calendar.behavior.item.editItem.editingItem = editingItem;
-    },
-
-    startUpdateItem( state ) {
-        state.calendar.behavior.item.editItem.isLoading = true;
-    },
-
-    updateItem( state, { item, params } ) {
-        const keys = Object.keys(params);
-        keys.forEach(function(key) {
-            item[key] = params[key];
-        });
-    },
-
-//    updateItem( state, { dayIndex, memberId, itemIndex, params } ) {
-//        const cellItems = state.calendar.data.calendars[dayIndex].items[memberId];
-//        if(cellItems instanceof Array && cellItems[itemIndex]) {
-//            const keys = Object.keys(params);
-//            keys.forEach(function(key) {
-//                cellItems[itemIndex][key] = params[key];
-//            });
-//        }
-//    },
-
-    finishUpdateItem( state ) {
-        state.calendar.behavior.item.editItem.isActive = false;
-        state.calendar.behavior.item.editItem.isLoading = false;
-        state.calendar.behavior.item.editItem.editingItem = '';
-    },
-
-    // ---------------------------------------------
-    // item - deleteItem
-
-    prepareRemoveItem( state, { cellItems, deletingItem } ) {
-        state.calendar.behavior.item.deleteItem.isActive = true;
-        state.calendar.behavior.item.deleteItem.deletingItem = deletingItem;
-        state.calendar.behavior.item.deleteItem.cellItems = cellItems;
-    },
-
-    startRemoveItem( state ) {
-        state.calendar.behavior.item.deleteItem.isLoading = true;
-    },
-
-    removeItem( state ) {
-        const item = state.calendar.behavior.item.deleteItem.deletingItem;
-        if( !state.calendar.behavior.item.deleteItem.isActive || !item ) return;
-
-        //const cellItems = state.calendar.data.calendars[item.dayIndex].items[item.member_id];
-        const cellItems = state.calendar.behavior.item.deleteItem.cellItems;
-        if(cellItems instanceof Array && cellItems[item.itemIndex]) {
-            cellItems.splice(item.itemIndex, 1);
-        }
-    },
-
-    finishRemoveItem( state ) {
-        state.calendar.behavior.item.deleteItem.isActive = false;
-        state.calendar.behavior.item.deleteItem.isLoading = false;
-        state.calendar.behavior.item.deleteItem.deletingItem = '';
-        state.calendar.behavior.item.deleteItem.cellItems = '';
-    },
-
-    // ---------------------------------------------
-    // item - dnd
-
-    dragStart( state, { fromCellAddress, fromDayIndex, fromMemberId, fromCellItems, fromCellItemsIndex, draggingItem }) {
-        state.calendar.behavior.item.dragItem.fromCell.cellAddress = fromCellAddress,
-        state.calendar.behavior.item.dragItem.fromCell.dayIndex = fromDayIndex,
-        state.calendar.behavior.item.dragItem.fromCell.memberId = fromMemberId,
-        state.calendar.behavior.item.dragItem.fromCell.cellItems = fromCellItems,
-        state.calendar.behavior.item.dragItem.fromCell.cellItemsIndex = fromCellItemsIndex,
-        state.calendar.behavior.item.dragItem.draggingItem = draggingItem
-    },
-
-    dragEnter( state, { toCellAddress, toDayIndex, toMemberId }) {
-        state.calendar.behavior.item.dragItem.enterCell.cellAddress = toCellAddress,
-        state.calendar.behavior.item.dragItem.enterCell.dayIndex = toDayIndex,
-        state.calendar.behavior.item.dragItem.enterCell.memberId = toMemberId
-    },
-
-    dragDrop( state, { toCellItems }) {
-        state.calendar.behavior.item.dragItem.isLoading = true,
-        state.calendar.behavior.item.dragItem.isDropped = true,
-        state.calendar.behavior.item.dragItem.enterCell.cellItems = toCellItems
-    },
-
-    dragDropInTrash( state, { fromCellItems, fromCellItemsIndex, draggingItem }) {
-        state.calendar.behavior.dragItem.isLoading = true,
-        state.calendar.behavior.item.dragItem.isInTrash = true,
-        state.calendar.behavior.item.dragItem.draggingItem = draggingItem,
-        state.calendar.behavior.item.dragItem.fromCell.cellItems = fromCellItems,
-        state.calendar.behavior.item.dragItem.fromCell.cellItemsIndex = fromCellItemsIndex
-    },
-
-    dragEnd( state ) {
-        state.calendar.behavior.item.dragItem.isLoading = false
-    },
-
-    finishDragItem( state ) {
-        state.calendar.behavior.item.dragItem.isLoading = false,
-        state.calendar.behavior.item.dragItem.isDropped = false,
-        state.calendar.behavior.item.dragItem.enterTrash = false,
-        state.calendar.behavior.item.dragItem.draggingItem = '',
-        state.calendar.behavior.item.dragItem.fromCell.cellAddress = '',
-        state.calendar.behavior.item.dragItem.fromCell.dayIndex = '',
-        state.calendar.behavior.item.dragItem.fromCell.memberId = '',
-        state.calendar.behavior.item.dragItem.fromCell.cellItems = '',
-        state.calendar.behavior.item.dragItem.fromCell.cellItemsIndex = '',
-        state.calendar.behavior.item.dragItem.enterCell.cellAddress = '',
-        state.calendar.behavior.item.dragItem.enterCell.dayIndex = '',
-        state.calendar.behavior.item.dragItem.enterCell.memberId = '',
-        state.calendar.behavior.item.dragItem.enterCell.cellItems = ''
-    },
-
-    moveItem( state, { fromDayIndex, fromMemberId, fromCellItemsIndex, toDayIndex, toMemberId, item } ) {
-        const fromCellItems = state.calendar.data.calendars[fromDayIndex].items[fromMemberId];
-        const toCellItems = state.calendar.data.calendars[toDayIndex].items[toMemberId];
-
-        if(fromCellItems instanceof Array 
-            && toCellItems instanceof Array
-            && fromCellItems[fromCellItemsIndex]
-        ) {
-
-            const y = state.calendar.currentYear;
-            const m = state.calendar.currentMonth;
-
-            // update item
-            item.date = y + '-' + m + '-' + (toDayIndex + 1);
-            item.member_id = toMemberId;
-
-            // remove item
-            fromCellItems.splice(fromCellItemsIndex, 1);
-
-            // add item
-            toCellItems.push(item);
-        }
     },
 }

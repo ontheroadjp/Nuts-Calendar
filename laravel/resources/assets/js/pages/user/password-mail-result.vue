@@ -10,16 +10,22 @@
             <span style="font-size: 36px; margin-left: 20px;">{{ message }}</span>
         </span>
         <p v-if="status === 'failed'">
-            <a @click="$parent.passwordMailResult = ''">try again</a>
+            <a @click="$parent.passwordMailResult = ''">{{ t('passwordMailResult.tryAgain') }}</a>
         </p>
     </div>
 </div>
 </template>
 
 <script>
+import core from '../../mixins/core.js';
+
 export default {
     props: [
         'status'
+    ],
+
+    mixins: [
+        core
     ],
 
     computed: {
@@ -29,12 +35,9 @@ export default {
 
         message: function() {
             return this.status === 'success' 
-                ? 'Sent Reset Link Mail Successfully' 
-                : 'Sent Reset Link Mail failed';
+                ? this.t('passwordMailResult.success')
+                : this.t('passwordMailResult.failed');
         }
     }
 }
 </script>
-
-<style>
-</style>

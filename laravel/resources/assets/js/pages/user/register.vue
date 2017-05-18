@@ -12,7 +12,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="text" 
-                    :placeholder="nameHasError ? errors.name : 'Name'"
+                    :placeholder="nameHasError ? errors.name : t('register.name')"
                     style="margin-bottom: 25px;"
                     v-model="input.name"
                     v-focus
@@ -28,7 +28,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="email" 
-                    :placeholder="emailHasError ? errors.email : 'E-Mail Address'"
+                    :placeholder="emailHasError ? errors.email : t('register.email')"
                     style="margin-bottom: 25px;"
                     v-model="input.email"
                 >
@@ -43,7 +43,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    :placeholder="passwordHasError ? errors.password : 'Password'"
+                    :placeholder="passwordHasError ? errors.password : t('register.password')"
                     style="margin-bottom: 20px;"
                     v-model="input.password"
                 >
@@ -58,7 +58,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="password" 
-                    :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : 'Password ( Confirm )'"
+                    :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : t('register.passwordConfirmation')"
                     style="margin-bottom: 20px;"
                     v-model="input.passwordConfirmation"
                 >
@@ -70,7 +70,7 @@
 
         <p class="control is-horizontal is-pulled-right">
             <a class="btn btn-link">
-                <router-link to="/login">Login Form</router-link>
+                <router-link to="/login">{{ t('register.loginForm') }}</router-link>
             </a>
         </p>
 
@@ -82,7 +82,7 @@
                 :class="['button', theme.secondary.class]"
                 style="width: 100%; color: #fff" 
                 @click.prevent="register()"
-            >Register</button>
+            >{{ t('register.register') }}</button>
         </p>
 
     </form>
@@ -95,17 +95,13 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
+    import core from '../../mixins/core.js';
     import userApi from '../../services/user.js';
     export default {
         mixins: [
-            userApi
+            core, userApi
         ],
-
-        computed : {
-            theme : function() {
-                return this.$store.state.app.theme;
-            }
-        },
     }
 </script>
 

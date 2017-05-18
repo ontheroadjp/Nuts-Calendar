@@ -11,13 +11,13 @@
 
     <hamburger-menu></hamburger-menu>
 
-    <div class="nav-right nav-menu">
+    <div class="nav-right nav-menu" style="overflow:visible">
 
-        <router-link to="/" class="nav-item">Home</router-link>
+        <router-link to="/" class="nav-item">{{ t('navbar.home') }}</router-link>
 
         <template v-if="! $store.state.user.name">
-            <router-link to="/login" class="nav-item">Login</router-link>
-            <router-link to="/register" class="nav-item">Register</router-link>
+            <router-link to="/login" class="nav-item">{{ t('navbar.login') }}</router-link>
+            <router-link to="/register" class="nav-item">{{ t('navbar.register') }}</router-link>
         </template>
 
         <template v-else>
@@ -25,7 +25,7 @@
                 to="/calendar"
                 class="nav-item"
                 @click="$store.commit('setCurrentCalendarId', 'dashboard')"
-                >Dashboard
+                >{{ t('navbar.dashboard') }}
             </router-link>
 
             <user-account-dropdown></user-account-dropdown>
@@ -52,6 +52,7 @@
 
 <script>
     import { mapState } from 'vuex';
+    import core from '../../../mixins/core.js';
     import hamburgerMenu from './hamburger-menu.vue';
     import userAccountDropdown from './user-account-dropdown.vue';
     import themeChanger from './theme-changer.vue';
@@ -66,31 +67,20 @@
             'langChanger': langChanger,
         },
 
+        mixins: [
+            core
+        ],
+
         props: [
             'height'
         ],
 
         computed: {
-            ...mapState({
-                theme: state => state.app.theme,
-    
-                headerStyle: function() {
-                    return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
-                        + 'box-shadow: none;';
-                },
-            }),
+            headerStyle: function() {
+                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
+                    + 'box-shadow: none;';
+            },
         },
-
-//        computed : {
-//            theme : function() {
-//                return this.$store.state.app.theme;
-//            },
-//
-//            headerStyle: function() {
-//                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
-//                    + 'box-shadow: none;';
-//            },
-//        },
 
         mounted() {
             const self = this;

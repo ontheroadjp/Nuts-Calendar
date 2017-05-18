@@ -8,15 +8,15 @@
     />
     <a  class="button is-small"
         v-show="!addItem.isLoading"
-        @click.stop="eventButton()"
-        @blur="eventButton()"
+        @click.stop="clickEvent()"
+        @blur="clickEvent()"
         >Event
     </a>
 
     <a  class="button is-small"
         v-show="!addItem.isLoading"
-        @click.stop="taskButton()"
-        @blur="taskButton()"
+        @click.stop="clickTask()"
+        @blur="clickTask()"
         >Task
     </a>
 
@@ -24,37 +24,29 @@
         v-show="addItem.isLoading"
         ><span class="icon is-small">
             <i class="fa fa-refresh fa-spin"></i>
-         </span>
+        </span>
     </a>
 
     <a  class="button is-small" 
         v-show="!addItem.isLoading"
-        @click.stop="cancelButton()" 
+        @click.stop="clickCancel()" 
         >cancel
     </a>
 </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import insertItemService from '../../../services/item/insertItem.vue';
+import { mapState, mapActions } from 'vuex';
+import { focus } from '../../../directives/focus.js';
 
 export default {
     name: 'add-item-field',
 
-    directives: {
-        focus: {
-            inserted: function(el) {
-                el.focus();
-            }
-        }
-    },
-
-    mixins: [ insertItemService ],
+    directives: { focus },
 
     computed: {
-        ...mapState({
-            addItem: state => state.calendar.behavior.item.addItem,
+        ...mapState('action/item', {
+            addItem: state => state.insert,
         }),
 
         newItemContent: {
@@ -63,29 +55,31 @@ export default {
             },
 
             set(value) {
-                this.setNewItemContent(value);
+                this.setContent( { value } );
             }
         }
     },
 
     methods: {
-        eventButton() {
+        ...mapActions('action/item/insert', {
+            setContent: 'setContent',
+            insertEvent: 'insertEvent',
+            insertTask: 'insertTask',
+            reset: 'reset'
+        }),
+
+        clickEvent() {
             this.insertEvent();
         },
 
-        taskButton() {
+        clickTask() {
             this.insertTask();
         },
 
-        cancelButton() {
-            this.finishInsertItem();
+        clickCancel() {
+            this.reset();
         }
     },
-
-//    beforeDestroy() {
-//        u.clog('insert-item-field is going to be destroyed.');
-//        this.finishInsertItem();
-//    }
 }
 </script>
 

@@ -8,10 +8,11 @@
 </template>
 
 <script>
-    import navbar from './pages/partials/navbar/index.vue'
-    import notification from './components/notification.vue'
-    import pageFooter from './pages/partials/footer/index.vue'
-    import store from './store/index.js'
+    import core from './mixins/core.js';
+    import navbar from './pages/partials/navbar/index.vue';
+    import notification from './components/notification.vue';
+    import pageFooter from './pages/partials/footer/index.vue';
+    import store from './store/index.js';
 
     export default {
     
@@ -23,6 +24,8 @@
             'page-footer': pageFooter,
         },
     
+        mixins: [ core ],
+
         created() {
             u.clog('start@app.vue');
             eventBus.listen('nuts.login.success', this.handleLogin, 'app.vue');
@@ -36,7 +39,17 @@
 
             startApp() {
                 this.setTheme();
+                this.setLang();
                 this.initToken();
+            },
+
+            setLang() {
+                const lang = localStorage.getItem('lang');
+                if(lang) {
+                    this.$store.commit('setLang', lang);
+                } else {
+                    this.$store.commit('setLang', 'en');
+                }
             },
 
             setTheme() {
@@ -91,7 +104,7 @@
                 if(false) {
                     localStorage.setItem('rememberMe', token);
                 } else {
-                    localStorage.clear();
+                    localStorage.removeItem('rememberMe');
                 }
     
                 this.initApp();

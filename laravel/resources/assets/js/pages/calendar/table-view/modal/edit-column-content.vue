@@ -64,17 +64,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import memberApi from '../../../../services/member.js';
+import { focus } from '../../../directives/focus.js';
 
 export default {
     name: 'edit-column-modal-content',
-//    props: [
-//        'isActive', 'memberId'
-//    ],
 
-    mixins: [
-        memberApi
-    ],
+    directives: { focus },
 
     computed: {
         ...mapState({
@@ -82,13 +77,6 @@ export default {
             memberId: state => state.calendar.behavior.column.editingColumnId,
             theme: state => state.app.theme,
         }),
-//        members: function() {
-//            return this.$store.state.calendar.data.members;
-//        },
-//
-//        theme: function() {
-//            return this.$store.state.app.theme;
-//        }
     },
 
     methods: {
@@ -98,9 +86,6 @@ export default {
         },
 
         close: function() {
-//            this.isActive = false;
-//            this.column = null;
-
             this.input.name = '';
             this.input.order = '';
 
@@ -111,13 +96,5 @@ export default {
             this.$store.commit('toggleColumnEditing', payload);
         },
     },
-
-//    watch: {
-//        'memberId': function(oldVal, newVal) {
-//            if(oldVal == '') return;
-//            this.input.name = this.members[this.memberId].name;
-//            this.input.order = this.members[this.memberId].order;
-//        }
-//    },
 }
 </script>

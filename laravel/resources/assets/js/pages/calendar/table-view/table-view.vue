@@ -6,37 +6,42 @@
         </div>
     </black-screen>
 
-    <column-modal v-if="filteredBody && isColumnModalActive">
-        <column-modal-content v-show="isColumnModalActive"></column-modal-content>
-    </column-modal>
+    <column-modal v-if="filteredBody && isColumnModalActive"></column-modal>
+    <item-modal v-if="filteredBody && isItemModalActive"></item-modal>
 
-    <item-modal v-if="filteredBody && isItemModalActive">
-        <item-modal-content v-show="isItemModalActive"></item-modal-content>
-    </item-modal>
-
+<!--
     <div :class="['trash', { 'trash-entered': dragItem.enterTrash } ]"
         v-show="dragItem.draggingItem && ! dragItem.isDropped" 
         @dragenter="dragItem.enterTrash = true"
         @dragover="handleDragOver($event)"
         @dragleave="dragItem.enterTrash = false"
-        @drop.stop="handleDropInTrash($event)"
+        @drop.stop="handleDropInTrash()"
         ><span class="icon is-large">
             <i class="fa fa-trash"></i>
         </span>
     </div>
+-->
 
     <div class="panel" :style="isBlackScreenShow ? 'height: 100vh' : ''">
-    <table class="table is-bordered">
+<!--
+    <table class="table is-bordered"
+        :style="isFixed ? 'background-color: ' + theme.primary.code : ''"
+    >
+-->
+    <table class="table is-bordered"
+        :style="isFixed ? style.table : ''"
+    >
     <thead v-if="filteredColumns">
         <tr>
-            <th :style="[{'padding': '0.4rem 1rem'}, style.dayColumnWidth]">Date</th>
+            <th style="padding: 0.4rem 1rem"
+                :style="[style.dayColumnWidth, textColor]"
+            >Date</th>
             <template v-for="(member, memberId) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    :style="[{'padding': '0.3rem 1rem'}, columnWidth]"
+                    style="padding: 0.4rem 1rem; cursor: pointer"
+                    :style="[columnWidth, textColor]"
                     >
-<!--
-                    <header-cell :member="member"></header-cell>
--->
+                    <!-- <header-cell :member="member"></header-cell> -->
                     <span @click="clickHeader(member)">{{ member.name }}({{ member.id}})</span>
                 </th>
             </template>
@@ -45,14 +50,11 @@
 
     <tbody v-if="filteredBody">
         <tr v-for="(day, dayIndex) in filteredBody"
-            :class="{
-                saturday: getDayIndex(day.date) == 6, 
-                sunday: getDayIndex(day.date) == 0
-            }"
+            :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }"
             >
 
-            <td class="date-styling" :style="style.dayColumnWidth">
-                <span style="font-family: Consolas, 'Courier New', Courier, Monaco, monospace;">
+            <td class="date-styling" :style="[style.dayColumnWidth]">
+                <span>
                     <!-- // temp :class="[ 'is-pulled-right', { today: isToday(day.date) } ]" -->
                     {{ getDateAndDay(day.date) }}
                 </span>
@@ -60,63 +62,34 @@
 
             <template v-for="(cellItems, memberId) in day.items">
                 <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    :style="[columnWidth, dragItem.enterCell.cellAddress == ((dayIndex +1) + '-' + memberId) ? dragEnter : '']"
-                    @click="clickCell(dayIndex, memberId, cellItems)"
-                    @dragenter="handleDragEnter(
-                        (dayIndex +1) + '-' + memberId,
-                        dayIndex,
-                        memberId
-                    )"
+                    :style="[
+                        columnWidth, 
+                        dragItem.enterCell.cellAddress 
+                            == getCellAddress(getRowIndex(day.date), memberId) 
+                            ? dragEnterStyle : ''
+                    ]"
+                    @click="clickCell(dayIndex, memberId)"
+                    @dragenter="handleDragEnter(day.date, memberId)"
                     @dragover="handleDragOver($event)"
-                    @drop.stop="handleDrop($event, cellItems)"
+                    @drop.stop="handleDrop()"
                     >
 
-                    <!-- Show cellItems -->
-                    <div v-for="(item, cellItemsIndex) in cellItems"
+                    <div v-for="(item, itemIndex) in cellItems"
                         style="cursor: move"
                         :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
                         draggable="true"
-                        @dragstart="handleDragStart(
-                            (dayIndex +1) + '-' + memberId,
-                            dayIndex,
-                            memberId,
-                            cellItems, 
-                            cellItemsIndex, 
-                            item, 
-                            $event
-                        )"
+                        @dragstart="handleDragStart(item)"
                         @dragend="handleDragEnd()"
                         >
-                        
-                        <template v-if="isEventItemShow && item.type_id === 1">
-                            <span class="item is-event" @click.stop="clickItem(cellItems, item)">
-                                <strong v-show="item.start_time" style="margin-right: 8px">
-                                    {{ item.start_time | timeFormatter }}
-                                </strong> {{ item.content }}
-                                <span class="icon is-small" 
-                                    v-show="(dragItem.isLoading || deleteItem.isLoading) && dragItem.draggingItem == item"
-                                    ><i class="fa fa-refresh fa-spin"></i>
-                                </span>
-                            </span>
-                        </template>
 
-                        <template v-if="isTaskItemShow && item.type_id === 2">
-                            <span class="item is-task">
-                                <input type="checkbox" style="margin-right: 8px" @click.stop=""> 
-                                <span @click.stop="clickItem(cellItems, item) && alert('foo')">
-                                    {{ item.content }}
-                                </span>
-                                <span class="icon is-small" 
-                                    v-show="(dragItem.isLoading || deleteItem.isLoading) 
-                                                        && dragItem.draggingItem === item"
-                                    ><i class="fa fa-refresh fa-spin"></i>
-                                </span>
-                            </span>
-                        </template>
+                        <item 
+                            :isEventItem="isEventItem" 
+                            :isTaskItem="isTaskItem" 
+                            :item="item"
+                        ></item>
 
                     </div><!-- // v-for -->
 
-                    <!-- show an input field -->
                     <item-insert-field 
                         v-if="addItem.enterCell.dayIndex === dayIndex 
                                 && addItem.enterCell.memberId === memberId"
@@ -128,21 +101,22 @@
     </table>
     </div><!-- // .panel -->
 
+    <mini-cal-bar v-if="filteredBody"></mini-cal-bar>
+
 </div><!-- // root -->
 </template>
 
 <script>
     import { mapState, mapGetters, mapActions } from 'vuex';
-    import timeFormatter from '../../../filters/time-formatter.js';
     import dateUtilities from '../../../mixins/date-utilities.js';
-    import itemDndService from '../../../services/item/item-dnd.vue'; 
     import blackScreen from '../../../components/black-screen.vue';
-    import columnModal from '../../../components/modal.vue';
-    import columnModalContent from './modal/column-modal-content.vue';
-    import itemModal from '../../../components/modal.vue';
-    import itemModalContent from './modal/item-modal-content.vue';
+    import columnModal from './modal/column-modal.vue';
+    import itemModal from './modal/item-modal.vue';
+    import item from './item/index.vue';
 //    import headerCell from './table-header-cell.vue';
     import itemInsertField from './item-insert-field.vue';
+    import miniCalBar from './footer-bar/mini-cal-bar.vue';
+    import chroma from 'chroma-js';
 
     export default {
         name: 'table-view-content',
@@ -150,44 +124,39 @@
         components: {
             'black-screen': blackScreen,
             'column-modal': columnModal,
-            'column-modal-content': columnModalContent,
             'item-modal': itemModal,
-            'item-modal-content': itemModalContent,
-//            'header-cell': headerCell,
+            'item': item,
             'item-insert-field': itemInsertField,
+//            'header-cell': headerCell,
+            'mini-cal-bar': miniCalBar
         },
 
-        mixins: [ itemDndService, dateUtilities, timeFormatter ],
+        mixins: [ dateUtilities ],
 
         props: {
             filteredColumns:    { type: Object,     required: false }, 
             filteredBody:       { type: Array,      required: false }, 
             isBlackScreenShow:  { type: Boolean,    required: false },
+            isFixed:            { type: Boolean,    required: false }
         },
 
         data() {
             return {
-                style: {
-                    dayColumnWidth: {
-                        'width': '8%',
-                        'min-width': '90px',
-                        'max-width': '90px'
-                    },
-                },
+                selectedMiniCalPopper: '',
             }
         },
 
         computed: {
             ...mapState({
-                isEventItemShow: state => state.calendar.behavior.isEventItemShow,
-                isTaskItemShow: state => state.calendar.behavior.isTaskItemShow,
-//                editColumn: state => state.calendar.behavior.column.editColumn,
-//                deleteColumn: state => state.calendar.behavior.column.deleteColumn,
-                addItem: state => state.calendar.behavior.item.addItem,
-                editItem: state => state.calendar.behavior.item.editItem,
-                deleteItem: state => state.calendar.behavior.item.deleteItem,
-                dragItem: state => state.calendar.behavior.item.dragItem,
+                currentYear: state => state.calendar.currentYear,
+                currentMonth: state => state.calendar.currentMonth,
+                lang: state => state.app.lang,
                 theme: state => state.app.theme,
+            }),
+
+            ...mapState('action/calendar', {
+                isEventItem: state => state.view.isEventItemShow,
+                isTaskItem: state => state.view.isTaskItemShow,
             }),
 
             ...mapState('action/column', {
@@ -195,22 +164,26 @@
                 deleteColumn: state => state.remove
             }),
 
-//            ...mapState('action/item', {
-//                addItem: state => state.insert,
-//                editItem: state => state.update,
-//                deleteItem: state => state.remove
-//            }),
-
-            ...mapGetters({
-                isColumnModalActive: 'action/column/isModalActive',
-                isItemModalActive: 'action/item/isModalActive',
-                showMembers: 'showMembers',
+            ...mapState('action/item', {
+                addItem: state => state.insert,
+                editItem: state => state.update,
+                deleteItem: state => state.remove,
+                dragItem: state => state.dnd
             }),
 
-            showColumns: function() {
-                //return this.$store.getters.showMembers;
-                return this.showMembers;
-            },
+            ...mapGetters({
+                showColumns: 'getShowMembers',
+                getCellAddress: 'getCellAddress',
+                getRowIndex: 'getRowIndex'
+            }),
+
+            ...mapGetters('action/column', {
+                isColumnModalActive: 'isModalActive',
+            }),
+
+            ...mapGetters('action/item', {
+                isItemModalActive: 'isModalActive',
+            }),
 
             columnWidth: function() {
                 let length = 0;
@@ -228,88 +201,84 @@
                     minWidth: '170px',
                 }
             },
+
+            textColor: function(){
+                if(!this.isFixed) return;
+
+                return {
+                    color: 'white'
+                }
+            },
+
+            dragEnterStyle: function() {
+                return { 
+                    border: '2px solid ' + this.theme.secondary.code,
+                }
+            },
+
+            style: function() {
+                return {
+                    table: {
+                        'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl')
+                    },
+                    dayColumnWidth: {
+                        'width': '8%',
+                        'min-width': '110px',
+                        'max-width': '110px',
+                    },
+                }
+            }
         },
 
         methods: {
             ...mapActions('action/column', {
-                prepareUpdate: 'update/prepare',
-                prepareRemove: 'remove/prepare'
+                prepareUpdateColumn: 'update/prepare',
+                prepareRemoveColumn: 'remove/prepare',
+            }),
+
+            ...mapActions('action/item', {
+                prepareInsertItem: 'insert/prepare',
+                dragStart: 'dnd/dragStart',
+                dragEnter: 'dnd/dragEnter',
+                dragOver: 'dnd/dragOver',
+                drop: 'dnd/drop',
+//                dropInTrash: 'dnd/dropInTrash',
+                dragEnd: 'dnd/dragEnd',
             }),
 
             clickHeader(member) {
                 u.clog('clickHeader()');
-                this.prepareUpdate( { editingColumn: member } );
-                this.prepareRemove( { deletingColumn: member } );
+                this.prepareUpdateColumn( { editingColumn: member } );
+                this.prepareRemoveColumn( { deletingColumn: member } );
             },
 
-            clickCell(dayIndex, memberId, cellItems) {
+            clickCell(dayIndex, memberId) {
                 u.clog('clickCell()');
-                this.$store.commit('prepareInsertItem', { dayIndex, memberId, cellItems }); 
+                this.prepareInsertItem( { dayIndex, memberId } );
             },
 
-            clickItem(cellItems, item) {
-                u.clog('clickItem()');
-                item.oldValue = item.content;
-                this.$store.commit('prepareUpdateItem', { editingItem: item });
-                this.$store.commit('prepareRemoveItem', { cellItems: cellItems, deletingItem: item });
+            handleDragStart(draggingItem) {
+                this.dragStart({ draggingItem });
+            },
+    
+            handleDragEnter(dayString, memberId) {
+                this.dragEnter({ dayString, memberId });
             },
 
-            handleDragStart(cellAddress, dayIndex, memberId, cellItems, cellItemsIndex, draggingItem, e) {
-                this.$store.commit('dragStart', { 
-                    fromCellAddress: cellAddress, 
-                    fromDayIndex: dayIndex, 
-                    fromMemberId: memberId, 
-                    fromCellItems: cellItems, 
-                    fromCellItemsIndex: cellItemsIndex, 
-                    draggingItem : draggingItem
-                });
-            },
-    
-            handleDragEnter(cellAddress, dayIndex, memberId) {
-                this.$store.commit('dragEnter', { 
-                    toCellAddress: cellAddress, 
-                    toDayIndex: dayIndex, 
-                    toMemberId: memberId
-               });
-            },
-    
             handleDragOver(e) {
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
-    
-                e.dataTransfer.dropEffect = 'move'
-    
-                return false;
+                this.dragOver({ e });
             },
     
-            handleDrop(e, cellItems) {
-                const from = this.dragItem.fromCell.cellAddress;
-                const to = this.dragItem.enterCell.cellAddress;
-                if( from === to ) {
-                    this.$store.commit('finishDragItem');
-                    return;
-                }
-    
-                this.$store.commit('dragDrop', { toCellItems: cellItems });
-                this.moveItem();
+            handleDrop() {
+                this.drop();
             },
     
-            handleDropInTrash(e) {
-    //            this.deleteItem.isLoading = true;
-    //            this.dragItem.isInTrash = true;
-    //
-    //            this.removeItem(
-    //                this.dragItem.fromCell.cellItems, 
-    //                this.dragItem.fromCell.cellItemsIndex,
-    //                this.dragItem.draggingItem, 
-    //            );
-            },
+//            handleDropInTrash() {
+//                this.dropInTrash();
+//            },
     
             handleDragEnd() {
-                if( !this.dragItem.isLoading ) {
-                    this.$store.commit('dragEnd');
-                }
+                this.dragEnd();
             },
         }
     }
@@ -359,30 +328,7 @@
     .sunday {
         background-color: rgba(255, 240, 240, 1);
     }
-    .item {
-        align-items: center;
-        border-radius: 3px;
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
-        display: inline-flex;
-        font-size: 12px;
-        justify-content: center;
-        padding-left: 10px;
-        padding-right: 10px;
-        vertical-align: top;
-        margin-bottom: 5px;
-        line-height: 2em;
-        &.is-event {
-            background-color: rgba(0, 209, 178, 0.3);
-            border: 1px solid rgb(0, 209, 178);
-            color: #023a31;
-        }
-        &.is-task {
-            background-color: rgb(240, 240, 240);
-            border: 1px solid #dbdbdb;
-            color: #363636;
-        }
-    }
+/*
     .trash {
         position: fixed;
         top: 60px;
@@ -400,4 +346,5 @@
         border-color: red !important;
         color: #fff;
     }
+*/
 </style>

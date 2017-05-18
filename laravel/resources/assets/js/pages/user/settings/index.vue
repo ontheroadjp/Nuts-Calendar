@@ -1,20 +1,20 @@
 <template>
 <div>
-    <hero title="Account settings" subtitle="Primary subtitle"></hero>
+    <hero :title="t('userSettingsIndex.title')" :subtitle="t('userSettingsIndex.subtitle')"></hero>
     <div style="width: 100%; height: 100vh; background: #fff;">
     
         <div class="tabs is-boxed">
             <ul>
                 <li :class="{'is-active': selected == 'general'}">
-                    <router-link to="/me/settings/general">General infomation</router-link>
+                    <router-link to="/me/settings/general">{{ t('userSettingsIndex.generalInfomation') }}</router-link>
                 </li>
     
                 <li :class="{'is-active': selected == 'theme'}">
-                    <router-link to="/me/settings/theme">Theme settings</router-link>
+                    <router-link to="/me/settings/theme">{{ t('userSettingsIndex.themeSettings') }}</router-link>
                 </li>
     
                 <li :class="{'is-active': selected == 'password'}">
-                    <router-link to="/me/settings/password">Password change</router-link>
+                    <router-link to="/me/settings/password">{{ t('userSettingsIndex.passwordChange') }}</router-link>
                 </li>
             </ul>
         </div>
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import core from '../../../mixins/core.js';
 import hero from '../../partials/hero.vue';
 import generalPane from './general.vue';
 import themePane from './theme.vue';
@@ -48,6 +49,8 @@ export default {
         'theme-pane': themePane,
         'password-pane': passwordPane,
     },
+
+    mixins: [ core ],
 
     data() {
         return {

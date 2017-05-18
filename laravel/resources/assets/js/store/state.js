@@ -1,7 +1,6 @@
 const now = new Date();
 
 export default {
-
     app: {
         ready: false,
         lang: 'en',
@@ -25,17 +24,12 @@ export default {
             },
         },
         message: {
-            sign: {
-                isActive: false,
-                type: 'is-info',
-                content: ''
-            },
-
             notification: {
                 isActive: false,
                 isImportant: false,
                 type: 'is-info',
                 content: '',
+                autoClose: 3000
             }
         }
     },
@@ -47,128 +41,14 @@ export default {
     },
 
     calendar: {
+        isLoading: false,
         currentId: 'dashboard',
         currentYear: now.getFullYear(),
-        currentMonth: ("0" + (now.getMonth() + 1)).slice(-2),
+        currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
         data: {
             userCalendars: [],
             calendars: [],
             members: [],
-        },
-
-        isLoading: false,
-
-        behavior: {
-
-            showColumns: [],
-            isEventItemShow: true,
-            isTaskItemShow: true,
-
-            query: {
-                search: '',
-                internal: ''
-            },
-
-            toolPalette: {
-                isActive: false,
-            },
-
-            column: {
-//                addColumn: {
-//                    isActive: false,
-//                    isLoading: false,
-//                    newColumn: {
-//                        name: '',
-//                    },
-//                },
-
-//                editColumn: {
-//                    isActive: false,
-//                    isLoading: false,
-//                    editingColumn: '',
-//                    input: {
-//                        name: '',
-//                        order: '',
-//                        isShow: '',
-//                    }
-//                },
-
-//                deleteColumn: {
-//                    isActive: false,
-//                    isLoading: false
-//                },
-
-//                isInserting: false,
-//                isEditing: false,
-//                isDeleting: false,
-//                insertingColumnId: null,
-//                editingColumnId: null,
-//                deletingColumnId: null
-            },
-
-            item: {
-                addItem: {
-                    isActive: false,
-                    isLoading: false,
-                    enterCell: {
-                        dayIndex: '',
-                        memberId: '',
-                        cellItems: ''
-                    },
-                    newItem: {
-                        content: '',
-                    },
-                    error: {
-                        isError: false,
-                        message: ''
-                    }
-                },
-
-                editItem: {
-                    isActive: false,
-                    isLoading: false,
-                    editingItem: ''
-                },
-
-                deleteItem: {
-                    isActive: false,
-                    isLoading: false,
-                    cellItems: '',
-                    deletingItem: ''
-                },
-
-                dragItem: {
-                    isLoading: false,
-                    isDropped: false,
-                    isInTrash: false,
-                    draggingItem: '',
-                    fromCell: {
-                        cellAddress: '',
-                        dayIndex: '',
-                        memberId: '',
-                        cellItems: '',
-                        cellItemsIndex: '',
-                    },
-                    enterCell: {
-                        cellAddress: '',
-                        dayIndex: '',
-                        memberId: '',
-                        cellItems: '',
-                    },
-                    style: {
-                        dragStart: {
-                            opacity: '0.4',
-                        }
-                    }
-                },
-
-//                isInserting: false,
-//                isEditing: false,
-//                isDeleting: false,
-//                insertingCellTo: null,
-//                editingItem: null,
-//                deletingItem: null,
-            }
         },
     }
 }

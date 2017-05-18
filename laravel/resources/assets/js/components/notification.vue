@@ -39,7 +39,7 @@ export default {
             if(newVal && !this.notification.isImportant) {
                 setTimeout( () => {
                     this.$store.commit('resetNotification')
-                }, 1500);
+                }, this.$store.state.app.message.notification.autoClose);
             }
         }
     }

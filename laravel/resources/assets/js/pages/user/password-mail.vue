@@ -17,7 +17,7 @@
                 <input 
                     class="nuts-input-textbox" 
                     type="email" 
-                    :placeholder="emailHasError ? errors.email : 'E-Mail Address'"
+                    :placeholder="emailHasError ? errors.email : t('passwordMail.email')"
                     style="margin-bottom: 25px;"
                     v-model="input.email"
                     v-focus
@@ -32,7 +32,7 @@
 
         <p class="control is-horizontal is-pulled-right">
             <a class="btn btn-link">
-                <router-link to="/login">Login Form</router-link>
+                <router-link to="/login">{{ t('passwordMail.loginForm') }}</router-link>
             </a>
         </p>
 
@@ -47,7 +47,7 @@
             >
                 <span class="icon is-small">
                     <i class="fa fa-btn fa-envelope"></i>
-                </span><span>Send Password Reset Link</span>
+                </span><span>{{ t('passwordMail.sendPasswordResetLink') }}</span>
             </button>
         </p>
 
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+    import core from '../../mixins/core.js';
     import resultView from './password-mail-result.vue';
     import userApi from '../../services/user.js';
     export default {
@@ -69,7 +70,7 @@
         },
 
         mixins: [
-            userApi
+            core, userApi
         ],
 
         computed : {

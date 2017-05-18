@@ -20,31 +20,31 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
-    methods: {
-        clearField() {
-            this.$store.commit('setSearchQuery', '');
-        },
-    },
-
     computed: {
         ...mapState({
             theme: state => state.app.theme,
         }),
 
-//        ...mapMutations({
-//            setQuery: (state, val) => state.commit('setSearchQuery', val),
-//        }),
-
         searchQuery: {
             get() {
-                return this.$store.state.calendar.behavior.query.search;
+                return this.$store.state.action.calendar.view.query.search;
             },
-            set(val) {
-                this.$store.commit('setSearchQuery', val);
+            set(value) {
+                this.setSearchQuery({ value });
             }
+        },
+    },
+
+    methods: {
+        ...mapActions('action/calendar', {
+            setSearchQuery: 'view/setSearchQuery'
+        }),
+
+        clearField() {
+            this.setSearchQuery({ value: '' });
         },
     }
 }

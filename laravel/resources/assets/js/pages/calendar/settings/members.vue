@@ -99,11 +99,12 @@
 
 <script>
     import calendarApi from '../../../services/calendar.js';
-    import memberApi from '../../../services/member.js';
+//    import memberApi from '../../../services/member.js';
 
     export default {
         mixins: [
-            calendarApi, memberApi
+//            calendarApi, memberApi
+            calendarApi
         ],
 
         data() {
@@ -193,30 +194,30 @@
                 return false;
             },
 
-            handleDrop(e, item) {
-                u.clog('drop - item: ' + this.dnd.draggingItem.id);
-                u.clog('drop - dest: ' + item.id);
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
+//            handleDrop(e, item) {
+//                u.clog('drop - item: ' + this.dnd.draggingItem.id);
+//                u.clog('drop - dest: ' + item.id);
+//                if (e.stopPropagation) {
+//                    e.stopPropagation();
+//                }
+//
+//                this.$store.commit('deleteMember', this.dnd.draggingItem.id);
+//                this.initDraggingProperties();
+//
+//                return false;
+//            },
 
-                this.$store.commit('deleteMember', this.dnd.draggingItem.id);
-                this.initDraggingProperties();
+//            handleDragEnd() {
+//                u.clog('dragEnd');
+//                this.initDraggingProperties();
+//            },
 
-                return false;
-            },
-
-            handleDragEnd() {
-                u.clog('dragEnd');
-                this.initDraggingProperties();
-            },
-
-            initDraggingProperties() {
-                u.clog('initDraggingProperties()');
-                this.dnd.draggingItem = '';
-                this.dnd.dragEnterItem = '';
-                this.dnd.dropAreaIndex = '';
-            }
+//            initDraggingProperties() {
+//                u.clog('initDraggingProperties()');
+//                this.dnd.draggingItem = '';
+//                this.dnd.dragEnterItem = '';
+//                this.dnd.dropAreaIndex = '';
+//            }
 
         },
 

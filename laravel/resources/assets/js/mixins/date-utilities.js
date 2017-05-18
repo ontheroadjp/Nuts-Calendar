@@ -31,6 +31,14 @@ export default {
             return moment(d).day();
         },
 
+        isSunday(d) {
+            return moment(d).day() === 0;
+        },
+
+        isSaturday(d) {
+            return moment(d).day() === 6;
+        },
+
         getYearAndMonth(d) {
             moment.locale(this.lang);
             const year = moment(d).year();

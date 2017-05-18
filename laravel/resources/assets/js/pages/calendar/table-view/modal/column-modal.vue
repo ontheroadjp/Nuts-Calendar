@@ -1,5 +1,5 @@
 <template>
-<div>
+<modal>
 <button class="modal-close" @click="close()"></button>
 <div class="modal-card">
     <section class="modal-card-body" style="
@@ -7,6 +7,7 @@
             border-top-right-radius: 5px;
             padding: 60px 60px 0 60px;
         ">
+
         <div class="field">
             <div class="control">
                 <span class="is-pulled-right">
@@ -15,8 +16,7 @@
                         class="nuts-input-checkbox" 
                         type="checkbox" 
                         v-model="inputIsShow"
-                    >
-                    <label for="is-show">Display</label>
+                    ><label for="is-show">Display</label>
                 </span>
             </div>
         </div>
@@ -38,7 +38,6 @@
                         </option>
                     </select>
                 </span>
-
             </div>
         </div>
 
@@ -68,14 +67,19 @@
         </button>
     </footer>
 </div><!-- // .modal-card -->
-</div>
+</modal>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import modal from '../../../../components/modal.vue';
 
 export default {
     name: 'column-modal-content',
+
+    components: {
+        modal
+    },
 
     computed: {
         ...mapState({
