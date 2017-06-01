@@ -81,6 +81,7 @@ export default {
     transition: all .4s ease;
     z-index: 99999;
 }
+
 .result-fade-enter .result-fade-leave-to {
     opacity: 0;
 }
