@@ -44,7 +44,7 @@
     export default {
         components: {
             'table-view': tableView,
-            'tool-palette': toolPalette,
+            'tool-palette': toolPalette
         },
 
         mixins: [
@@ -52,7 +52,7 @@
         ],
 
         props: [
-            'calendarServiceIsLoading',
+            'calendarServiceIsLoading'
         ],
 
         data() {
@@ -74,7 +74,7 @@
             ...mapState('action/calendar/view', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
                 searchQuery: state => (state.query.search).toLowerCase(),
-                internalQuery: state => state.query.internal,
+                internalQuery: state => state.query.internal
             }),
 
             ...mapState('action/item/dnd', {
@@ -151,7 +151,7 @@
 
             onScrollBody: function() {
                 this.elements.tableHeader.scrollLeft = this.elements.tableBody.scrollLeft;
-            },
+            }
         },
 
         watch: {
@@ -182,7 +182,7 @@
                 this.elements.tableHeader = document.getElementById('table-view-header');
                 this.elements.tableBody = document.getElementById('table-view-body');
             });
-        },
+        }
     }
 </script>
 

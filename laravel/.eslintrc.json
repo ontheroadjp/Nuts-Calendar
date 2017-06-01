@@ -1,7 +1,10 @@
 {
-    extends: ["eslint:recommended"],
-	plugins: ["vue"],
-	rules: {
-		'vue/jsx-uses-vars': 1,
-	},
+    "extends": ["eslint:recommended", "vue"],
+	"plugins": ["vue"],
+    "parserOptions": {},
+    "env": {"browser": true},
+    "globals": {},
+	"rules": {
+		"vue/jsx-uses-vars": 2
+	}
 }

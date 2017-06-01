@@ -108,34 +108,34 @@ export default {
 
     data() {
         return {
-            selected: 'date',
+            selected: 'date'
         }
     },
 
     computed: {
         ...mapState({
             members: state => state.calendar.data.members,
-            theme: state => state.app.theme,
+            theme: state => state.app.theme
         }),
 
         ...mapState('action/calendar', {
             toolPalette: state => state.view.toolPalette,
             isEventItemShow: state => state.view.isEventItemShow,
-            isTaskItemShow: state => state.view.isTaskItemShow,
+            isTaskItemShow: state => state.view.isTaskItemShow
         }),
 
         ...mapState('action/column', {
-            addColumn: state => state.insert,
+            addColumn: state => state.insert
         }),
 
         showColumns: function() {
             return this.$store.getters.getShowMembers;
-        },
+        }
     },
 
     methods: {
         ...mapActions('action/column', {
-            prepareInsert: 'insert/prepare',
+            prepareInsert: 'insert/prepare'
         }),
 
         ...mapActions('action/calendar', {
@@ -165,7 +165,7 @@ export default {
         close() {
             this.toggleTableToolPalette({ value: false });
         }
-    },
+    }
 }
 </script>
 

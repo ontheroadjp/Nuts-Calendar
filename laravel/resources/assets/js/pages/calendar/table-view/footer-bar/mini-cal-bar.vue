@@ -2,7 +2,7 @@
 <transition name="mini-cal-bar-fade">
 <div v-show="draggingItem && !isDropped" id="mini-cal-bar" :style="style.bar">
 
-    <span v-for="yearLabel in yearLabels" style="margin-left: 20px">
+    <span v-for="yearLabel in yearLabels" class="tag" style="margin-left: 20px">
         {{ yearLabel + ': '}}
         <span 
             v-if="yearLabel === monthLabel.split('-')[0]" 
@@ -10,7 +10,7 @@
         >
             <span class="tag"
                 :style="[
-                    style.mlabel, 
+                    style.monthLabel, 
                     onMiniCal === monthLabel ? style.labelSelected : '',
                     monthLabel === currentYear + '-' + currentMonth + '-01' ? style.thisMonth : ''
                 ]"
@@ -65,7 +65,7 @@ export default {
             const m = moment(this.currentYear + this.currentMonth + '01').add(-6,'months');
             let labels = [];
             let prev = ''
-            for(let i=0; i < 11; i++) {
+            for(let i=0; i < 12; i++) {
                 let next = m.add(1, 'months').format('YYYY');
                 if( prev !== next ) {
                     labels.push(next);
@@ -79,7 +79,7 @@ export default {
             const m = moment(this.currentYear + this.currentMonth + '01').add(-6,'months');
             let labels = [];
             for(let i=0; i < 12; i++) {
-                labels.push(m.add(1, 'months').format('YYYY-MM-DD'));
+                labels.push(m.add(1, 'months').format('YYYY-MM'));
             }
             return labels.sort();
         },
@@ -93,20 +93,20 @@ export default {
         style: function() {
             return {
                 bar: {
-                    'background-color': chroma(this.theme.primary.code).alpha(0.2).css('rgba'),
+                    'background-color': chroma(this.theme.primary.code).alpha(0.5).css('rgba'),
                     'position': 'fixed',
                     'bottom': 0,
                     'width': '100%',
-                    'line-height': '3em'
+                    'line-height': '2em'
                 },
-                monthLabel: {
-                    'position': 'relative',
-                    'margin': '0.25em'
-                },
-                thisMonth: {
-                    'background-color': this.theme.secondary.code,
-                    'color': '#fff'
-                },
+//                monthLabel: {
+//                    'position': 'relative',
+//                    'margin': '0.25em'
+//                },
+//                thisMonth: {
+//                    'background-color': this.theme.secondary.code,
+//                    'color': '#fff'
+//                },
                 labelSelected: {
                     'background-color': this.theme.primary.code,
                     'color': '#fff'
@@ -135,8 +135,7 @@ export default {
         handleDragEnter: function(monthLabel) {
             u.clog('DRAG ENTER !!!!!!!(' + monthLabel + ')');
             this.setOnMiniCal({ value: monthLabel });
-        },
-
+        }
     }
 }
 </script>
