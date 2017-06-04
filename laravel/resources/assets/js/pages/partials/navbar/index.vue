@@ -51,7 +51,6 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
     import core from '../../../mixins/core.js';
     import hamburgerMenu from './hamburger-menu.vue';
     import userAccountDropdown from './user-account-dropdown.vue';
@@ -64,7 +63,7 @@
             'hamburgerMenu': hamburgerMenu,
             'userAccountDropdown': userAccountDropdown,
             'themeChanger': themeChanger,
-            'langChanger': langChanger,
+            'langChanger': langChanger
         },
 
         mixins: [
@@ -79,7 +78,7 @@
             headerStyle: function() {
                 return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
                     + 'box-shadow: none;';
-            },
+            }
         },
 
         mounted() {
@@ -91,3 +90,7 @@
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

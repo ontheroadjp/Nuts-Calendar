@@ -30,10 +30,12 @@ export default {
 figure {
     position: relative;
     overflow: hidden;
+
     &:hover figcaption {
         top: 0;
         left: 0;
     }
+
     & figcaption {
         position: absolute;
         top: -100%;
@@ -41,8 +43,8 @@ figure {
         z-index: 2;
         width: 100%;
         height: 100%;
-        background-color: rgba(240, 240, 240, .8);
-        transition: .3s;
+        background-color: rgba(240, 240, 240, 0.8);
+        transition: 0.3s;
         opacity: 1;
     }
 }

@@ -85,20 +85,23 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
 import core from '../../mixins/core.js';
 import userApi from '../../services/user.js';
 
 export default {
     mixins: [
-        core, userApi,
+        core, userApi
     ],
 
     data() {
         return {
             hasError: false,
-            isRunning: false,
+            isRunning: false
         }
-    },
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

@@ -141,10 +141,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .mini-cal-bar-fade-enter-active, .mini-cal-bar-fade-leave-active {
-        transition: all .3s ease;
+    .mini-cal-bar-fade-enter-active,
+    .mini-cal-bar-fade-leave-active {
+        transition: all 0.3s ease;
     }
-    .mini-cal-bar-fade-enter, .mini-cal-bar-fade-leave-to {
+
+    .mini-cal-bar-fade-enter,
+    .mini-cal-bar-fade-leave-to {
         opacity: 0;
     }
 </style>

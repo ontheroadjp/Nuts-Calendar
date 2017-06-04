@@ -13,7 +13,7 @@ export const en = {
             nadeshiko: 'nadeshiko',
             mikan: 'mikan',
             sumire: 'sumire',
-            moegi: 'moegi',
+            moegi: 'moegi'
         },
         login: {
             email: 'Email Address',
@@ -63,6 +63,6 @@ export const en = {
         },
         calendar: {
             jumpToTop: 'Jump to top'
-        },
+        }
     }
 }

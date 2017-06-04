@@ -14,7 +14,7 @@ export default {
             nadeshiko: '撫子',
             mikan: '蜜柑',
             sumire: '菫',
-            moegi: '萌葱',
+            moegi: '萌葱'
         },
         login: {
             email: 'メールアドレス',
@@ -64,6 +64,6 @@ export default {
         },
         calendar: {
             jumpToTop: 'ページ先頭へ'
-        },
+        }
     }
 }

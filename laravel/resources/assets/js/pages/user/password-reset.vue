@@ -80,18 +80,20 @@
 </template>
 
 <script>
-    import resultView from './password-reset-result.vue';
-    import userApi from '../../services/user.js';
-    export default {
-        components: {
-            resultView: resultView,
-        },
+import resultView from './password-reset-result.vue';
+import userApi from '../../services/user.js';
 
-        mixins: [
-            userApi
-        ],
-    }
+export default {
+    components: {
+        resultView: resultView
+    },
+
+    mixins: [
+        userApi
+    ]
+}
 </script>
 
-<style>
+<style lang="scss" scoped>
+    /* empty */
 </style>

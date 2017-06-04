@@ -7,8 +7,8 @@ export default {
         isActive: false,
         isLoading: false,
         input: {
-            name: '',
-        },
+            name: ''
+        }
     },
 
     actions: {
@@ -91,6 +91,6 @@ export default {
             state.isLoading = false;
             state.isActive = false;
             state.input.name = '';
-        },
+        }
     }
 };

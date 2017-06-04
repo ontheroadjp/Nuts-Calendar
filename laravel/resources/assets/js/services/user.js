@@ -13,7 +13,7 @@ export default {
                 passwordConfirmation: '',
                 oldPassword: '',
                 newPassword: '',
-                newPasswordConfirmation: '',
+                newPasswordConfirmation: ''
 //                rememberMe: false,
             },
 
@@ -25,7 +25,7 @@ export default {
                 passwordConfirmation: '',
                 oldPassword: '',
                 newPassword: '',
-                newPasswordConfirmation: '',
+                newPasswordConfirmation: ''
 //                rememberMe: '',
             },
 
@@ -34,9 +34,9 @@ export default {
 
             style: {
                 error: {
-                    color: 'red',
+                    color: 'red'
                 }
-            },
+            }
         }
     },
 
@@ -74,7 +74,7 @@ export default {
         newPasswordConfirmationHasError: function() {
             return this.error.newPasswordConfirmation 
                 && ! this.input.newPasswordConfirmation ? true : false;
-        },
+        }
     },
 
     methods: {
@@ -97,7 +97,7 @@ export default {
                 this.error.email = 'The email format is invalid.';
                 this.input.email = '';
                 return true;
-            };
+            }
 
             return false;
         },
@@ -139,7 +139,7 @@ export default {
 
             http.post( '/api/v1/login', {
                 'email': this.input.email,
-                'password': this.input.password,
+                'password': this.input.password
             }, 
                 this.successLogin(this),
                 this.failedLogin(this)
@@ -203,7 +203,7 @@ export default {
             this.error.passwordConfirmation = '';
 
             const inputNameInvalid = this.isNameInvalid();
-            const inputEmailInvalid = this.isEmailInvalid();
+            //const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
             const inputPasswordConfirmationInvalid = this.isPasswordConfirmationInvalid();
             if( inputNameInvalid 
@@ -216,7 +216,7 @@ export default {
                 'name': this.input.name,
                 'email': this.input.email,
                 'password': this.input.password,
-                'password_confirmation': this.input.passwordConfirmation,
+                'password_confirmation': this.input.passwordConfirmation
             }, 
                 this.successLogin(this), 
                 this.failedLogin(this)
@@ -289,7 +289,7 @@ export default {
                 'email': this.input.email,
                 'password': this.input.password,
                 'password_confirmation': this.input.passwordConfirmation,
-                'token': token,
+                'token': token
             }, 
                 this.successPasswordReset(this), 
                 this.failedPasswordReset(this)
@@ -324,7 +324,7 @@ export default {
             return new Promise( (resolve,reject) => {
                 http.post( uri, {
                     'name': this.input.name,
-                    '_method': 'PUT',
+                    '_method': 'PUT'
                     }, response => {
                         u.clog('execPutSettings().then() status: ' + response.status);
                         switch(response.status) {
@@ -368,7 +368,7 @@ export default {
                     'old_password': this.input.oldPassword,
                     'new_password': this.input.newPassword,
                     'new_password_confirmation': this.input.newPasswordConfirmation,
-                    '_method': 'PUT',
+                    '_method': 'PUT'
                     }, response => {
                         u.clog('execPutPassword().then() status: ' + response.status);
                         switch(response.status) {
@@ -399,6 +399,6 @@ export default {
             this.input.oldPassword = '';
             this.input.newPassword = '';
             this.input.newPasswordConfirmation = '';
-        },
+        }
     }
 }

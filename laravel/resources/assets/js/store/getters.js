@@ -31,5 +31,5 @@ export default {
 
     getCellItems: (state) => (dayIndex, memberId) => {
         return state.calendar.data.calendars[dayIndex].items[memberId];
-    },
+    }
 }

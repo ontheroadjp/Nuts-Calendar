@@ -10,11 +10,15 @@
 </template>
 
 <script>
-    export default {
-        computed: {
-            theme: function() {
-                return this.$store.state.app.theme;
-            }
-        },
+export default {
+    computed: {
+        theme: function() {
+            return this.$store.state.app.theme;
+        }
     }
+}
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

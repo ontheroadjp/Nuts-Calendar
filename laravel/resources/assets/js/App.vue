@@ -21,7 +21,7 @@
         components: {
             'navbar': navbar,
             'notification': notification,
-            'page-footer': pageFooter,
+            'page-footer': pageFooter
         },
     
         mixins: [ core ],
@@ -97,7 +97,6 @@
 
             handleLogin(p) {
                 const token = p.response.data.token;
-                const username = p.response.data.user.name;
     
                 // temp
                 //if( p.rememberMe ) {
@@ -110,7 +109,11 @@
                 this.initApp();
 
                 this.$router.push('/calendar');
-            },
+            }
         }
     }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

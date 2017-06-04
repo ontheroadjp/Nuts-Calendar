@@ -33,7 +33,7 @@
 // forked from https://github.com/jinzhe/vue-calendar
 // -----------------------------------------------------
 
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import core from '../mixins/core.js';
 import dateUtilities from '../mixins/date-utilities.js';
 
@@ -53,7 +53,7 @@ export default {
 //        rangeEnd:   { type: Array, default: Array },
         sep:        { type: String,     default: "-" },
         weeks:      { type: Array,      default: () => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] },
-        months:     { type: Array,      default: () => ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' ] },
+        months:     { type: Array,      default: () => ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' ] }
     },
 
     data() {
@@ -67,7 +67,7 @@ export default {
             days: [],
             today: [],
             currentMonth: Number,
-            monthString:"",
+            monthString:""
         }
     },
 
@@ -103,7 +103,7 @@ export default {
         zero: (n) => { return n < 10 ? '0' + n : n },
 
         init(){
-            var now = new Date();
+//            var now = new Date();
 //            if (this.value != "") {
                 if (this.value.indexOf("-") != -1) this.sep = "-"
                 if (this.value.indexOf(".") != -1) this.sep = "."
@@ -231,7 +231,7 @@ export default {
                         // console.log(this.begin,this.end);
                          var options = {
                             day: i,
-                            selected: false,
+                            selected: false
                         }
 //                        if (this.begin != "") {
 //                            var beginSplit = this.begin.split(this.sep)
@@ -269,7 +269,7 @@ export default {
                 }
             } //end for
             this.days = temp
-        },
+        }
     }
 }
 </script>
@@ -290,148 +290,134 @@ export default {
     padding: 10px;
     background: #fff;
     position: absolute;
-    border: 1px solid #DEDEDE;
+    border: 1px solid #dedede;
     border-radius: 2px;
-    opacity:.95;
-    transition: all .5s ease;
-    &:before {
+    opacity: 0.95;
+    transition: all 0.5s ease;
+
+    &::before {
         position: absolute;
-    /*    left:30px; */
-    /*    top: -10px; */
         content: "";
-        border:5px solid rgba(0, 0, 0, 0);
-        border-bottom-color: #DEDEDE;
+        border: 5px solid rgba(0, 0, 0, 0);
+        border-bottom-color: #dedede;
     }
-    &:after {
-    /*    position: absolute; */
-    /*    left:30px; */
-    /*    top: -9px; */
+
+    &::after {
         content: "";
-        border:5px solid rgba(0, 0, 0, 0);
+        border: 5px solid rgba(0, 0, 0, 0);
         border-bottom-color: #fff;
     }
+
     & table {
         clear: both;
         width: 100%;
-        margin-bottom:10px;
+        margin-bottom: 10px;
         border-collapse: collapse;
-        color: #444444;
+        color: #444;
     }
+
     & thead td {
-      text-transform: uppercase;
+        text-transform: uppercase;
     }
+
     & td {
-        margin:2px !important;
-        padding:0px 0;
+        margin: 2px !important;
+        padding: 0;
         width: 14.28571429%;
-        height:34px;
+        height: 34px;
         text-align: center;
         vertical-align: middle;
-        font-size:14px;
+        font-size: 14px;
         line-height: 125%;
         cursor: pointer;
+
         &.week {
-            pointer-events:none !important;
-            cursor: default !important;    
-        }
-        &.disabled {
-            color: #c0c0c0;
-            pointer-events:none !important;
+            pointer-events: none !important;
             cursor: default !important;
         }
+
+        &.disabled {
+            color: #c0c0c0;
+            pointer-events: none !important;
+            cursor: default !important;
+        }
+
         & span {
-            display:block;
-            height:30px;
-            line-height:30px;
-            margin:2px;
-            border-radius:2px;
-            &:hover{
-                background:#f3f8fa;
+            display: block;
+            height: 30px;
+            line-height: 30px;
+            margin: 2px;
+            border-radius: 2px;
+
+            &:hover {
+                background: #f3f8fa;
             }
         }
+
         &.selected {
-            & span{
+            & span {
                 background-color: #5e7a88;
                 color: #fff;
-                &:hover{
+
+                &:hover {
                     background-color: #5e7a88;
                     color: #fff;
                 }
             }
         }
     }
-/*
-    & .timer{
-        margin:10px 0;
-        text-align: center;
-        & input{
-            border-radius: 2px;
-            padding:5px;
-            font-size: 14px;
-            line-height: 18px;
-            color: #5e7a88;
-            width: 50px;
-            text-align: center;
-            border:1px solid #efefef;
-            &:focus{
-                border:1px solid #5e7a88;
-            }
-        }
-    }
-*/
 }
+
 .calendar-tools {
-    height:32px;
+    height: 32px;
     font-size: 20px;
     line-height: 32px;
-    color:#5e7a88;
+    color: #5e7a88;
+
     & .float.left {
-        float:left;
+        float: left;
     }
+
     & .float.right {
-        float:right;
+        float: right;
     }
+
     & input {
         font-size: 20px;
         line-height: 32px;
         color: #5e7a88;
         width: 70px;
         text-align: center;
-        border:none;
+        border: none;
         background-color: transparent;
     }
+
     & span {
         cursor: pointer;
     }
-/*
-    & .calendar-prev {
-        float:left;
-    }
-    & .calendar-next {
-        float:right;
-    }
-*/
 }
- 
+
 .calendar-button {
     text-align: center;
+
     & span {
         cursor: pointer;
         display: inline-block;
         min-height: 1em;
         min-width: 5em;
         vertical-align: baseline;
-        background:#5e7a88;
-        color:#fff;
-        margin: 0 .25em 0 0;
-        padding: .6em 2em;
+        background: #5e7a88;
+        color: #fff;
+        margin: 0 0.25em 0 0;
+        padding: 0.6em 2em;
         font-size: 1em;
         line-height: 1em;
         text-align: center;
-        border-radius: .3em;
+        border-radius: 0.3em;
+
         &.cancel {
-            background:#efefef;
-            color:#666;
+            background: #efefef;
+            color: #666;
         }
     }
 }

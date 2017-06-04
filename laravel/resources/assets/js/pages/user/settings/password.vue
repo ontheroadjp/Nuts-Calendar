@@ -105,11 +105,11 @@
 
     export default {
         components: {
-            'password-change-result-message': passwordChangeResultMessage,
+            'password-change-result-message': passwordChangeResultMessage
         },
 
         mixins: [
-            core, userApi,
+            core, userApi
         ],
     
         data() {
@@ -122,8 +122,8 @@
                     message: '',
                     color: '',
                     isImportant: false,
-                    isShow: false,
-                },
+                    isShow: false
+                }
             }
         },
 
@@ -137,14 +137,13 @@
                     && this.input.newPassword 
                     && this.input.newPasswordConfirmation
                     && this.input.newPassword === this.input.newPasswordConfirmation;
-            },
+            }
         },
 
         methods: {
             putChangePassword: function() {
                 this.isLoading = true;
 
-                const self = this;
                 this.execPutPasswordChange()
                     .then(response => {
                         u.clog('success')
@@ -165,19 +164,11 @@
                 if(! this.passwordChangeResult.isImportant) {
                     setTimeout( () => this.passwordChangeResult.isShow = false, 1500);
                 }
-            },
-        },
+            }
+        }
     }
 </script>
 
-<style>
-/*
-    .result-fade-enter-active, .result-fade-leave-active {
-        transition: all .4s ease;
-        z-index: 99999;
-    }
-    .result-fade-enter, .result-fade-leave-to {
-        opacity: 0;
-    }
-*/
+<style lang="scss" scoped>
+    /* empty */
 </style>

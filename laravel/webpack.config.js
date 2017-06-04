@@ -4,7 +4,6 @@ let webpack = require('webpack');
 let Mix = require('laravel-mix').config;
 let webpackPlugins = require('laravel-mix').plugins;
 let dotenv = require('dotenv')
-let StylelintPlugin = require('stylelint-webpack-plugin')
 
 /*
  |--------------------------------------------------------------------------
@@ -93,11 +92,7 @@ module.exports.output = Mix.output();
  |
  */
 
-let plugins = [
-//    new StylelintPlugin({
-//      files: ['**/*.vue']
-//    })
-];
+let plugins = [];
 
 if (Mix.options.extractVueStyles) {
     var vueExtractTextPlugin = Mix.vueExtractTextPlugin();

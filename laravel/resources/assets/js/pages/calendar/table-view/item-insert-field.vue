@@ -46,7 +46,7 @@ export default {
 
     computed: {
         ...mapState('action/item', {
-            addItem: state => state.insert,
+            addItem: state => state.insert
         }),
 
         newItemContent: {
@@ -79,7 +79,7 @@ export default {
         clickCancel() {
             this.reset();
         }
-    },
+    }
 }
 </script>
 
@@ -87,7 +87,7 @@ export default {
     .item-input-field {
         border: none;
         box-shadow: none;
-        border-radius: 0px;
+        border-radius: 0;
         background-color: transparent;
     }
 </style>

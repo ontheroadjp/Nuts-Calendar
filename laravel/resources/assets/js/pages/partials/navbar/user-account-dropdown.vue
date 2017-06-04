@@ -43,7 +43,7 @@
     
         data() {
             return {
-                isMenuOpen: false,
+                isMenuOpen: false
             }
         },
 
@@ -74,21 +74,22 @@
             clickLogout: function() {
                 this.isMenuOpen = false;
                 this.logout();
-            },
-        },
+            }
+        }
     }
 </script>
 
 <style lang="scss">
-/* @import '../../../../sass/app.scss'; */
-/* @import 'resources/assets/sass/app.scss'; */
+/*
+   @import '../../../../sass/app.scss';
+    @import 'resources/assets/sass/app.scss';
+*/
 
-/** 
- * A fork of https://github.com/twbs/bootstrap.
- */
+/* A fork of https://github.com/twbs/bootstrap.  */
 .dropdown {
     position: relative;
 }
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -114,12 +115,12 @@
         clear: both;
         font-weight: normal;
         line-height: 1.428571429;
-/*        color: $primary-color; */
         color: white;
         white-space: nowrap;
     }
 
-    & > li > a:hover, & > li > a:focus {
+    & > li > a:hover,
+    & > li > a:focus {
         text-decoration: none;
         color: #262626;
         background-color: #f5f5f5;

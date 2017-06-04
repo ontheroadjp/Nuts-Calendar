@@ -68,22 +68,22 @@ export const routes = [
                 path: '',
                 component: dashboard,
                 auth: true,
-                footer: false,
+                footer: false
             },
             {
                 path: 'view',
                 component: tableView,
                 auth: true,
-                footer: false,
+                footer: false
             },
             {
                 path: 'settings/:type',
                 component: calendarSettings,
                 auth: true,
-                footer: false,
-            },
+                footer: false
+            }
         ]
-    },
+    }
 ];
 
 

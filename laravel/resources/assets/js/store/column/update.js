@@ -8,7 +8,7 @@ export default {
         input: {
             name: '',
             order: '',
-            isShow: '',
+            isShow: ''
         }
     },
 
@@ -36,7 +36,7 @@ export default {
             const url = '/api/v1/member/' + state.editingColumn.id;
             const data = {
                 'name': state.input.name,
-                'order': state.input.order,
+                'order': state.input.order
             };
     
             http.fetchPut(url, data)
@@ -62,7 +62,7 @@ export default {
 
                     commit('notifyDanger', {
                         content: 'failed update member',
-                        isActive: true,
+                        isActive: true
                     }, { root: true});
 
                     commit('reset');
@@ -110,6 +110,6 @@ export default {
             state.input.name = '';
             state.input.isShow = '';
             state.input.order = '';
-        },
+        }
     }
 };

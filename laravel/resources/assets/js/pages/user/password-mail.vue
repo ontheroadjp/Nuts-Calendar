@@ -61,26 +61,27 @@
 </template>
 
 <script>
-    import core from '../../mixins/core.js';
-    import resultView from './password-mail-result.vue';
-    import userApi from '../../services/user.js';
-    export default {
-        components: {
-            resultView: resultView,
-        },
+import core from '../../mixins/core.js';
+import resultView from './password-mail-result.vue';
+import userApi from '../../services/user.js';
 
-        mixins: [
-            core, userApi
-        ],
+export default {
+    components: {
+        resultView: resultView
+    },
 
-        computed : {
-            theme : function() {
-                return this.$store.state.app.theme;
-            }
-        },
+    mixins: [
+        core, userApi
+    ],
 
+    computed : {
+        theme : function() {
+            return this.$store.state.app.theme;
+        }
     }
+}
 </script>
 
-<style>
+<style lang="scss" scoped>
+    /* empty */
 </style>

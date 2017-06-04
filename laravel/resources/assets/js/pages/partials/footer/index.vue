@@ -20,5 +20,6 @@
 <scripts>
 </scripts>
 
-<style>
+<style lang="scss" scoped>
+    /* empty */
 </style>

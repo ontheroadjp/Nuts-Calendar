@@ -23,7 +23,7 @@ export default {
 
     props: [
         'isEventItem', 'isTaskItem', 'item'
-    ],
+    ]
 }
 </script>
 
@@ -41,11 +41,13 @@ export default {
         vertical-align: top;
         margin-bottom: 5px;
         line-height: 2em;
+
         &.is-event {
             background-color: rgba(0, 209, 178, 0.3);
             border: 1px solid rgb(0, 209, 178);
             color: #023a31;
         }
+
         &.is-task {
             background-color: rgb(240, 240, 240);
             border: 1px solid #dbdbdb;

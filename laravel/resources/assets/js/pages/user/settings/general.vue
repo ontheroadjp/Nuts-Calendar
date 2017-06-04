@@ -73,11 +73,11 @@
 
     export default {
         components: {
-            'account-result-message': accountResultMessage,
+            'account-result-message': accountResultMessage
         },
 
         mixins: [
-            core, userApi,
+            core, userApi
         ],
     
         data() {
@@ -87,8 +87,8 @@
                     message: '',
                     color: '',
                     isImportant: false,
-                    isShow: false,
-                },
+                    isShow: false
+                }
             }
         },
 
@@ -100,7 +100,7 @@
             isNameChanged: function() {
                 return this.input.name !== this.$store.state.user.name 
                     && this.input.name !== '';
-            },
+            }
         },
 
         methods: {
@@ -129,7 +129,7 @@
                 if(! this.accountResult.isImportant) {
                     setTimeout( () => this.accountResult.isShow = false, 1500);
                 }
-            },
+            }
         },
 
         mounted() {
@@ -141,7 +141,10 @@
             } else {
                 self.input.name = self.$store.state.user.name;
             }
-        },
-
+        }
     }
 </script>
+
+<style lang="scss" scoped>
+/* empty */
+</style>

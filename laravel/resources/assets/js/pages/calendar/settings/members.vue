@@ -231,17 +231,18 @@
 </script>
 <style lang='scss' scoped>
     .drop-area {
-        padding:5px 0
+        padding: 5px 0;
     }
 
     .members-dnd-fade-enter-active .members-dnd-fade-leave-active {
-        transition: all .8s ease;
+        transition: all 0.8s ease;
         z-index: 99999;
         padding: 20px 0;
         border: 2px dotted red;
         border-radius: 5px;
         margin-bottom: 10px;
     }
+
     .members-dnd-fade-enter .members-dnd-fade-leave-to {
         padding: 0;
         opacity: 0;

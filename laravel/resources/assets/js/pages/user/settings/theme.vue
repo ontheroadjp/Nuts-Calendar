@@ -122,17 +122,19 @@
         computed: {
             theme: function() {
                 return this.$store.state.app.theme;
-            },
-        },
+            }
+        }
     }
 </script>
 
 <style>
-    .result-fade-enter-active .result-fade-leave-active {
-        transition: all .4s ease;
-        z-index: 99999;
-    }
-    .result-fade-enter, .result-fade-leave-to {
-        opacity: 0;
-    }
+.result-fade-enter-active .result-fade-leave-active {
+    transition: all 0.4s ease;
+    z-index: 99999;
+}
+
+.result-fade-enter,
+.result-fade-leave-to {
+    opacity: 0;
+}
 </style>

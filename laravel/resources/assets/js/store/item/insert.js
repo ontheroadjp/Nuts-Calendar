@@ -10,7 +10,7 @@ export default {
             cellItems: ''
         },
         newItem: {
-            content: '',
+            content: ''
         },
         error: {
             isError: false,
@@ -122,6 +122,6 @@ export default {
             state.newItem.content = '';
             state.error.isError = false;
             state.error.message = '';
-        },
+        }
     }
 }

@@ -75,8 +75,8 @@ export default {
         ...mapState({
             members: state => state.calendar.data.members,
             memberId: state => state.calendar.behavior.column.editingColumnId,
-            theme: state => state.app.theme,
-        }),
+            theme: state => state.app.theme
+        })
     },
 
     methods: {
@@ -94,7 +94,11 @@ export default {
                 editingColumnId: null
             }
             this.$store.commit('toggleColumnEditing', payload);
-        },
-    },
+        }
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

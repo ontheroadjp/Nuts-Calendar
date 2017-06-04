@@ -121,5 +121,5 @@ export const http = {
                 return Promise.reject(error)
             }
         );
-    },
+    }
 }

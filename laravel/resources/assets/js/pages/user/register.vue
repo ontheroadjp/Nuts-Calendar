@@ -95,15 +95,16 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex';
-    import core from '../../mixins/core.js';
-    import userApi from '../../services/user.js';
-    export default {
-        mixins: [
-            core, userApi
-        ],
-    }
+import core from '../../mixins/core.js';
+import userApi from '../../services/user.js';
+
+export default {
+    mixins: [
+        core, userApi
+    ]
+}
 </script>
 
-<style>
+<style lang="scss" scoped>
+    /* empty */
 </style>

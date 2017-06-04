@@ -14,10 +14,13 @@
 </script>
 
 <style scoped>
-    .modal-fade-enter-active, .modal-fade-leave-active {
-        transition: all .2s ease;
+    .modal-fade-enter-active,
+    .modal-fade-leave-active {
+        transition: all 0.2s ease;
     }
-    .modal-fade-enter, .modal-fade-leave-to {
+
+    .modal-fade-enter,
+    .modal-fade-leave-to {
         opacity: 0;
     }
 </style>

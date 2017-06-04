@@ -163,81 +163,56 @@ export default {
 
 }
 </script>
-<style lang="scss">
-/*    @import '../../../../sass/app.scss'; */
+<style lang="scss" scoped>
+/** A fork of https://github.com/twbs/bootstrap.  */
 
-    /** A fork of https://github.com/twbs/bootstrap.  */
-    #tabs-dropdown-menu {
+#tabs-dropdown-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    list-style: none;
+    font-size: 14px;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+
+    & > li > a {
         display: block;
-        position: absolute;
-        top: 100%;
-        z-index: 1000;
-        float: left;
-        min-width: 160px;
-        padding: 5px 0;
-        margin: 2px 0 0;
-        list-style: none;
-        font-size: 14px;
-        text-align: left;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border: 1px solid rgba(0, 0, 0, 0.15);
-        border-radius: 4px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-        background-clip: padding-box;
-    
-        & > li > a {
-            display: block;
-            padding: 3px 20px;
-            clear: both;
-            font-weight: normal;
-            line-height: 1.428571429;
-/*            color: $primary-color; */
-            color: white;
-            white-space: nowrap;
-        }
-    
-        & > li > a:hover, & > li > a:focus {
-            text-decoration: none;
-            color: #262626;
-            background-color: #f5f5f5;
-        }
+        padding: 3px 20px;
+        clear: both;
+        font-weight: normal;
+        line-height: 1.428571429;
+        color: white;
+        white-space: nowrap;
     }
-    .hero.is-nadeshiko .tabs.is-boxed li.is-active a,
-    .hero.is-mikan .tabs.is-boxed li.is-active a,
-    .hero.is-moegi .tabs.is-boxed li.is-active a {
-        background-color: #fff !important;
-        border-color: #fff !important;
+
+    & > li > a:hover,
+    & > li > a:focus {
+        text-decoration: none;
+        color: #262626;
+        background-color: #f5f5f5;
     }
-    #tabs-dropdown-menu > li > a:hover, #tabs-dropdown-menu > li > a:focus {
-        text-decoration: none !important;
-        background-color: #f5f5f5 !important;
-    }
-/*
-    .hero.is-koiai .tabs.is-boxed li.is-active a {
-        background-color: rgba(25, 96, 183, 0.4) !important;
-        border-color: #185eb2 !important;
-        color: #ffffff !important;
-    }
-    .hero.is-nadeshiko .tabs.is-boxed li.is-active a {
-        background-color: rgba(239, 110, 154, 0.4) !important;
-        border-color: #ee6896 !important;
-        color: #ffffff !important;
-    }
-    .hero.is-mikan .tabs.is-boxed li.is-active a {
-        background-color: rgba(255, 193, 18, 0.4) !important;
-        border-color: #ffc012 !important;
-        color: #ffffff !important;
-    }
-    .hero.is-sumire .tabs.is-boxed li.is-active a {
-        background-color: rgba(182, 136, 255, 0.4) !important;
-        border-color: #b688ff !important;
-        color: #ffffff !important;
-    }
-    .hero.is-moegi .tabs.is-boxed li.is-active a {
-        background-color: rgba(55, 175, 5, 0.4) !important;
-        border-color: rgb(71, 179, 16) !important;
-        color: #ffffff !important;
-    }
-*/
+}
+
+.hero.is-nadeshiko .tabs.is-boxed li.is-active a,
+.hero.is-mikan .tabs.is-boxed li.is-active a,
+.hero.is-moegi .tabs.is-boxed li.is-active a {
+    background-color: #fff !important;
+    border-color: #fff !important;
+}
+
+#tabs-dropdown-menu > li > a:hover,
+#tabs-dropdown-menu > li > a:focus {
+    text-decoration: none !important;
+    background-color: #f5f5f5 !important;
+}
 </style>

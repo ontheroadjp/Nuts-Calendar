@@ -19,14 +19,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
 import core from '../../../mixins/core.js';
 
 export default {
     data() {
-        const self = this;
         return {
-            selectedTheme: '',
+            selectedTheme: ''
         }
     },
 
@@ -41,13 +39,13 @@ export default {
                 { value: "nadeshiko", text: this.t('theme.nadeshiko') },
                 { value: "mikan", text: this.t('theme.mikan') },
                 { value: "sumire", text: this.t('theme.sumire') },
-                { value: "moegi", text: this.t('theme.moegi') },
+                { value: "moegi", text: this.t('theme.moegi') }
             ];
         },
         selectStyle: function() {
             return {
                 background: 'none',
-                color: this.theme.primary.codeInvert,
+                color: this.theme.primary.codeInvert
             }
         }
     },
@@ -65,3 +63,7 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

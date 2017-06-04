@@ -44,7 +44,7 @@ export default {
         'edit-column-modal-content': editColumnModalContent,
         'delete-column-warning': deleteColumnWarning,
         'delete-column-warning-content': deleteColumnWarningContent,
-        'header-shutter': headerShutter,
+        'header-shutter': headerShutter
     },
 
     props: [
@@ -54,7 +54,7 @@ export default {
     computed: {
         ...mapState({
             isColumnEditing: state => state.calendar.behavior.column.isEditing,
-            isColumnDeleting: state => state.calendar.behavior.column.isDeleting,
+            isColumnDeleting: state => state.calendar.behavior.column.isDeleting
         })
     },
 
@@ -75,7 +75,11 @@ export default {
                 deletingColumnId: memberId
             };
             this.$store.commit('toggleColumnDeleting', payload);
-        },
+        }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

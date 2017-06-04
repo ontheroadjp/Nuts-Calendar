@@ -55,8 +55,8 @@ export default {
         ...mapState({
             editItem: state => state.action.item.update,
             deleteItem: state => state.action.item.remove,
-            theme: state => state.app.theme,
-        }),
+            theme: state => state.app.theme
+        })
     },
 
     methods: {
@@ -64,7 +64,7 @@ export default {
             update: 'action/item/update/update',
             updateReset: 'action/item/update/reset',
             remove: 'action/item/remove/remove',
-            removeReset: 'action/item/remove/reset',
+            removeReset: 'action/item/remove/reset'
         }),
 
         clickSave() {
@@ -87,3 +87,7 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

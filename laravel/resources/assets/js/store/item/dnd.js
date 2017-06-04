@@ -11,17 +11,17 @@ export default {
             dayIndex: '',
             memberId: '',
             cellItems: '',
-            itemIndex: '',
+            itemIndex: ''
         },
         enterCell: {
             cellAddress: '',
             dayIndex: '',
             memberId: '',
-            cellItems: '',
+            cellItems: ''
         },
         style: {
             dragStart: {
-                opacity: '0.4',
+                opacity: '0.4'
             }
         },
         onMiniCal: ''
@@ -108,7 +108,6 @@ export default {
         },
 
         setOnMiniCal( { commit }, { value } ) {
-            console.log(value);
             commit('setOnMiniCal', { value });
         },
 

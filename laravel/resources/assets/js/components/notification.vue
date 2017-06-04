@@ -30,8 +30,8 @@ import { mapState } from 'vuex';
 export default {
     computed: {
         ...mapState({
-            notification: state => state.app.message.notification,
-        }),
+            notification: state => state.app.message.notification
+        })
     },
 
     watch: {
@@ -47,10 +47,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .notification-slide-in-enter-active, .notification-slide-in-leave-active {
-        transition: all .1s linear;
+    .notification-slide-in-enter-active,
+    .notification-slide-in-leave-active {
+        transition: all 0.1s linear;
     }
-    .notification-slide-in-enter, .notification-slide-in-leave-to {
+
+    .notification-slide-in-enter,
+    .notification-slide-in-leave-to {
         transform: translateX(100px);
     }
 </style>

@@ -14,7 +14,11 @@ export default {
     methods: {
         close: function() {
             setTimeout( () => this.isShow = false, 1500);
-        },
-    },
+        }
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

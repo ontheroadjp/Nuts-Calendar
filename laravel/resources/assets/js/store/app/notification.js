@@ -5,7 +5,7 @@ export default {
         isActive: false,
         isImportant: false,
         type: 'is-info',
-        content: '',
+        content: ''
     },
 
     actions: {
@@ -80,6 +80,6 @@ export default {
             state.type = '';
             state.isImportant = false;
             state.isActive = false;
-        },
+        }
     }
 }

@@ -12,7 +12,7 @@ export default {
             },
             input: {
                 name: '',
-                description: '',
+                description: ''
             }
         }
     },
@@ -79,7 +79,7 @@ export default {
             const data = {
                 'name': this.input.name,
                 'description': this.input.description,
-                '_method': 'PUT',
+                '_method': 'PUT'
             };
     
             http.fetchPost(url, data)
@@ -99,8 +99,8 @@ export default {
 
         failedPutCalendarSettings(error) {
             u.clog('failed');
-        },
+        }
 
-    },
+    }
 
 }

@@ -66,7 +66,7 @@ export default {
     computed: {
         ...mapState({
             addColumn: state => state.action.column.insert,
-            theme: state => state.app.theme,
+            theme: state => state.app.theme
         }),
 
         inputName: {
@@ -76,14 +76,14 @@ export default {
             set(value) {
                 this.setName( { value } );
             }
-        },
+        }
     },
 
     methods: {
         ...mapActions('action/column/insert', {
             setName: 'setName',
             insert: 'insert',
-            reset: 'reset',
+            reset: 'reset'
         }),
 
         saveButton: function() {
@@ -92,7 +92,11 @@ export default {
 
         close: function() {
             this.reset();
-        },
-    },
+        }
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

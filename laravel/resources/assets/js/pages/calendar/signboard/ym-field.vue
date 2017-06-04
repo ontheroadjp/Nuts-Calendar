@@ -38,7 +38,7 @@ import dateUtilities from '../../../mixins/date-utilities.js';
 
 export default {
     mixins: [
-        dateUtilities,
+        dateUtilities
     ],
 
     props: {
@@ -94,6 +94,10 @@ export default {
         theme: function() {
             return this.$store.state.app.theme;
         }
-    },
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

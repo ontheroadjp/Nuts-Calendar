@@ -2,8 +2,16 @@
     "extends": ["eslint:recommended", "vue"],
 	"plugins": ["vue"],
     "parserOptions": {},
-    "env": {"browser": true},
-    "globals": {},
+    "env": {
+        "browser": false,
+        "node": false
+    },
+    "globals": {
+        "u": false,
+        "http": false,
+        "jwtToken": false,
+        "eventBus": false
+    },
 	"rules": {
 		"vue/jsx-uses-vars": 2
 	}

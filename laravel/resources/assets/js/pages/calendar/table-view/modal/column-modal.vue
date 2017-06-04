@@ -86,7 +86,7 @@ export default {
             members: state => state.calendar.data.members,
             editColumn: state => state.action.column.update,
             deleteColumn: state => state.action.column.remove,
-            theme: state => state.app.theme,
+            theme: state => state.app.theme
         }),
 
         inputName: {
@@ -102,7 +102,7 @@ export default {
         inputOrder: {
             get() { return this.editColumn.input.order; },
             set(value) { this.setOrder( { value } ); }
-        },
+        }
     },
 
     methods: {
@@ -129,7 +129,11 @@ export default {
 
         close: function() {
             this.reset();
-        },
-    },
+        }
+    }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

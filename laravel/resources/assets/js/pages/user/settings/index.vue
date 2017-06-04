@@ -47,14 +47,14 @@ export default {
         'hero': hero,
         'general-pane': generalPane,
         'theme-pane': themePane,
-        'password-pane': passwordPane,
+        'password-pane': passwordPane
     },
 
     mixins: [ core ],
 
     data() {
         return {
-            selected: 'general',
+            selected: 'general'
         }
     },
 
@@ -71,14 +71,14 @@ export default {
     computed: {
         theme: function() {
             return this.$store.state.app.theme;
-        },
-    },
+        }
+    }
 }
 </script>
 
 <style lang='scss'>
 .result-fade-enter-active .result-fade-leave-active {
-    transition: all .4s ease;
+    transition: all 0.4s ease;
     z-index: 99999;
 }
 

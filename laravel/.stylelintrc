@@ -1,4 +1,8 @@
 {
     "processors": ["stylelint-processor-html"],
-    "extends": "stylelint-config-standard"
+    "extends": "stylelint-config-standard",
+    "rules": {
+        "indentation": 4,
+        "string-quotes": "double"
+    }
 }

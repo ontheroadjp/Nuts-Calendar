@@ -11,17 +11,17 @@ export default {
                 class: '',
                 classInvert: '',
                 code: '',
-                codeInvert: '',
+                codeInvert: ''
             },
             secondary: {
                 class: '',
                 classInvert: '',
                 code: '',
-                codeInvert: '',
+                codeInvert: ''
             },
             accent: {
-                code: '',
-            },
+                code: ''
+            }
         },
         message: {
             notification: {
@@ -37,7 +37,7 @@ export default {
     user: {
         name: null,
         token: null,
-        rememberMe: false,
+        rememberMe: false
     },
 
     calendar: {
@@ -48,7 +48,7 @@ export default {
         data: {
             userCalendars: [],
             calendars: [],
-            members: [],
-        },
+            members: []
+        }
     }
 }

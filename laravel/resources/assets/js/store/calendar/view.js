@@ -11,8 +11,8 @@ export default {
         },
 
         toolPalette: {
-            isActive: false,
-        },
+            isActive: false
+        }
     },
 
     actions: {
@@ -39,7 +39,7 @@ export default {
     
         setInternalQuery( { commit }, { value } ) {
             commit('setInternalQuery', { value });
-        },
+        }
     },
 
     mutations: {
@@ -65,6 +65,6 @@ export default {
     
         setInternalQuery( state, { value } ) {
             state.query.internal = value;
-        },
+        }
     }
 }

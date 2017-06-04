@@ -8,17 +8,17 @@ export default {
             class: '',
             classInvert: '',
             code: '',
-            codeInvert: '',
+            codeInvert: ''
         },
         secondary: {
             class: '',
             classInvert: '',
             code: '',
-            codeInvert: '',
+            codeInvert: ''
         },
         accent: {
-            code: '',
-        },
+            code: ''
+        }
     },
 
     actions: {
@@ -107,7 +107,7 @@ export default {
                     state.accent.code = '';
                     break;
             }
-        },
-    },
+        }
+    }
 }
 

@@ -189,11 +189,13 @@
 <style lang="scss" scoped>
 .main-calendar-panel-wrapper {
     position: relative;
+
     & .main-calendar-panel-header {
         user-select: none;
         overflow: hidden;
         position: relative;
         height: 36px;
+
         &.sticky {
             position: fixed;
             top: 0;
@@ -202,25 +204,30 @@
             border-bottom: 1px solid #dbdbdb;
         }
     }
+
     & .main-calendar-panel-body {
         user-select: none;
         overflow-y: scroll;
         position: relative;
         height: 100%;
+
         &.sticky-offset {
             margin-top: 37px;
         }
-    } 
+    }
 }
 
-.tool-palette-enter-active, .tool-palette-leave-active {
-    transition: all .1s ease;
+.tool-palette-enter-active,
+.tool-palette-leave-active {
+    transition: all 0.1s ease;
     height: 40px;
     padding: 10px;
     background-color: #eee;
     overflow: hidden;
 }
-.tool-palette-enter, .tool-palette-leave-to {
+
+.tool-palette-enter,
+.tool-palette-leave-to {
     height: 0;
     padding: 0 10px;
     opacity: 0;

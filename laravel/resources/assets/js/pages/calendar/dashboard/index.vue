@@ -80,20 +80,23 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 div.card {
     &.is-koiai.is-clickable:hover {
         border: 1px solid rgba(25, 96, 182, 0.5);
     }
+
     &.is-nadeshiko.is-clickable:hover {
-        border: 1px solid rgba(239, 113, 156, 0.4);;
+        border: 1px solid rgba(239, 113, 156, 0.4);
     }
+
     &.is-mikan.is-clickable:hover {
         border: 1px solid rgba(240, 131, 0, 0.4);
     }
+
     &.is-sumire.is-clickable:hover {
-        border: 1px solid rgba(112, 88, 163, 0.5);;
+        border: 1px solid rgba(112, 88, 163, 0.5);
     }
+
     &.is-moegi.is-clickable:hover {
         border: 1px solid rgba(170, 207, 83, 0.5);
     }

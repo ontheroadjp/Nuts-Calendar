@@ -142,7 +142,7 @@
 
         data() {
             return {
-                selectedMiniCalPopper: '',
+                selectedMiniCalPopper: ''
             }
         },
 
@@ -151,12 +151,12 @@
                 currentYear: state => state.calendar.currentYear,
                 currentMonth: state => state.calendar.currentMonth,
                 lang: state => state.app.lang,
-                theme: state => state.app.theme,
+                theme: state => state.app.theme
             }),
 
             ...mapState('action/calendar', {
                 isEventItem: state => state.view.isEventItemShow,
-                isTaskItem: state => state.view.isTaskItemShow,
+                isTaskItem: state => state.view.isTaskItemShow
             }),
 
             ...mapState('action/column', {
@@ -178,11 +178,11 @@
             }),
 
             ...mapGetters('action/column', {
-                isColumnModalActive: 'isModalActive',
+                isColumnModalActive: 'isModalActive'
             }),
 
             ...mapGetters('action/item', {
-                isItemModalActive: 'isModalActive',
+                isItemModalActive: 'isModalActive'
             }),
 
             columnWidth: function() {
@@ -198,7 +198,7 @@
 
                 return {
                     width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
-                    minWidth: '170px',
+                    minWidth: '170px'
                 }
             },
 
@@ -212,7 +212,7 @@
 
             dragEnterStyle: function() {
                 return { 
-                    border: '2px solid ' + this.theme.secondary.code,
+                    border: '2px solid ' + this.theme.secondary.code
                 }
             },
 
@@ -224,8 +224,8 @@
                     dayColumnWidth: {
                         'width': '8%',
                         'min-width': '110px',
-                        'max-width': '110px',
-                    },
+                        'max-width': '110px'
+                    }
                 }
             }
         },
@@ -233,7 +233,7 @@
         methods: {
             ...mapActions('action/column', {
                 prepareUpdateColumn: 'update/prepare',
-                prepareRemoveColumn: 'remove/prepare',
+                prepareRemoveColumn: 'remove/prepare'
             }),
 
             ...mapActions('action/item', {
@@ -243,7 +243,7 @@
                 dragOver: 'dnd/dragOver',
                 drop: 'dnd/drop',
 //                dropInTrash: 'dnd/dropInTrash',
-                dragEnd: 'dnd/dragEnd',
+                dragEnd: 'dnd/dragEnd'
             }),
 
             clickHeader(member) {
@@ -279,7 +279,7 @@
     
             handleDragEnd() {
                 this.dragEnd();
-            },
+            }
         }
     }
 </script>
@@ -297,54 +297,41 @@
             & td {
                 color: #ccc;
             }
+
             & tr:hover th {
                 background-color: #eee;
             }
         }
+
         &:hover tbody {
-            & tr:hover td {
-                color: #666;
-                background-color: rgba(145, 235, 250, 0.1);
-            }
             &:hover td:hover {
                 opacity: 1;
                 background-color: rgba(145, 235, 250, 0.5);
+            }
+
+            & tr:hover td {
+                color: #666;
+                background-color: rgba(145, 235, 250, 0.1);
             }
         }
     }
 
     .date-styling {
-        font-size: 1.0em;
+        font-size: 1em;
         font-weight: bold;
     }
+
     .today {
         background-color: red;
         color: #fff;
         border-radius: 20px;
     }
+
     .saturday {
         background-color: rgba(240, 240, 255, 1);
     }
+
     .sunday {
         background-color: rgba(255, 240, 240, 1);
     }
-/*
-    .trash {
-        position: fixed;
-        top: 60px;
-        right: 60px;
-        width: 150px;
-        height: 150px;
-        padding: 50px;
-        border: 2px dotted #bdbdbd;
-        border-radius: 4px;
-        z-index: 999999;
-        background: rgba(240, 240, 240, 0.8);
-    }
-    .trash-entered {
-        background-color: #ff6060 !important;
-        border-color: red !important;
-        color: #fff;
-    }
-*/
 </style>

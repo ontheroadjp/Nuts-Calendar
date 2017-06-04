@@ -24,8 +24,8 @@ export default {
     computed: {
         ...mapState('action/item', {
             dragItem: state => state.dnd,
-            deleteItem: state => state.remove,
-        }),
+            deleteItem: state => state.remove
+        })
     },
 
     methods: {
@@ -48,8 +48,9 @@ export default {
     }
 }
 </script>
+
 <style lang="scss" scoped>
 .task-done {
-    text-decoration: line-through
+    text-decoration: line-through;
 }
 </style>

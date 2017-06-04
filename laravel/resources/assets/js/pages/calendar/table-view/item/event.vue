@@ -23,7 +23,7 @@ export default {
     computed: {
         ...mapState('action/item', {
             dragItem: state => state.dnd,
-            deleteItem: state => state.remove,
+            deleteItem: state => state.remove
         })
     },
 
@@ -37,7 +37,11 @@ export default {
             u.clog('clickItem()');
             this.prepareUpdateItem( { editingItem: this.item } );
             this.prepareRemoveItem( { deletingItem: this.item } );
-        },
+        }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

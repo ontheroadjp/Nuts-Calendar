@@ -25,7 +25,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     computed: {
         ...mapState({
-            theme: state => state.app.theme,
+            theme: state => state.app.theme
         }),
 
         searchQuery: {
@@ -35,7 +35,7 @@ export default {
             set(value) {
                 this.setSearchQuery({ value });
             }
-        },
+        }
     },
 
     methods: {
@@ -45,7 +45,11 @@ export default {
 
         clearField() {
             this.setSearchQuery({ value: '' });
-        },
+        }
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

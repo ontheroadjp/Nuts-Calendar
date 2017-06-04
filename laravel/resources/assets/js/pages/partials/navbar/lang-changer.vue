@@ -22,20 +22,19 @@ import { mapState } from 'vuex';
 
 export default {
     data() {
-        const self = this;
         return {
             langs: [
                 { value: "en", text: 'English' },
-                { value: "ja", text: 'Japanese' },
+                { value: "ja", text: 'Japanese' }
             ],
-            selectedVal: '',
+            selectedVal: ''
         }
     },
 
     computed: {
         ...mapState({
             lang: state => state.app.lang,
-            theme: state => state.app.theme,
+            theme: state => state.app.theme
         }),
 
         textEn: () => this.lang === 'en' ? 'English' : '英語',
@@ -44,7 +43,7 @@ export default {
         selectStyle: function() {
             return {
                 background: 'none',
-                color: this.theme.primary.codeInvert,
+                color: this.theme.primary.codeInvert
             }
         }
     },
@@ -62,3 +61,7 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+    /* empty */
+</style>

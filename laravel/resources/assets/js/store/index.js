@@ -5,8 +5,8 @@ import mutations from './mutations.js';
 import actions from './actions.js';
 import getters from './getters.js';
 
-import appTheme from './app/theme.js';
-import appNotification from './app/notification.js';
+//import appTheme from './app/theme.js';
+//import appNotification from './app/notification.js';
 
 import { en } from '../i18n/en.js';
 import ja from '../i18n/ja.js';
@@ -71,13 +71,13 @@ export default new Vuex.Store({
                     getters: {
                         isModalActive: (state) => {
                             return state.update.isActive && state.remove.isActive
-                        },
+                        }
                     },
 
                     modules: {
                         insert: columnInsert,
                         update: columnUpdate,
-                        remove: columnRemove,
+                        remove: columnRemove
                     }
                 },
 
@@ -86,13 +86,13 @@ export default new Vuex.Store({
                     getters: {
                         isModalActive: ( state, getters, rootState ) => {
                             return state.update.isActive && state.remove.isActive;
-                        },
+                        }
                     },
                     modules: {
                         insert: itemInsert,
                         update: itemUpdate,
                         remove: itemRemove,
-                        dnd: itemDnd,
+                        dnd: itemDnd
                     }
                 }
             }

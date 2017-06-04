@@ -11,5 +11,5 @@ export default {
         ...mapGetters({
             t: 'i18nText'
         })
-    },
+    }
 }
