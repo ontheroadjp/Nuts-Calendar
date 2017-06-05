@@ -81,6 +81,7 @@ export default {
                 'content': state.draggingItem.content,
                 'start_time': state.draggingItem.start_time,
                 'end_time': state.draggingItem.end_time,
+                'is_done': state.draggingItem.is_done,
                 'date': state.draggingItem.date
             };
     
