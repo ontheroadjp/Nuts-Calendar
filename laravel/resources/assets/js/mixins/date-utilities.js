@@ -27,6 +27,21 @@ export default {
 //            return new Date(year + '/' + month + '/' + date);
 //        },
 
+        getDateString(dateObj) {
+            if( dateObj instanceof Date ) {
+                const y = dateObj.getFullYear();
+                const m = dateObj.getMonth() + 1;
+                const d = dateObj.getDate();
+                return y + '-' + m + '-' + d;
+            }
+
+            return false;
+        },
+
+        now() {
+            return this.getDateString(new Date());
+        },
+
         getDayIndex(d) {
             return moment(d).day();
         },

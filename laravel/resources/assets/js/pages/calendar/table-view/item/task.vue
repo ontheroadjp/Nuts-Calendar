@@ -42,6 +42,7 @@ export default {
         },
 
         clickDone() {
+            this.prepareUpdateItem( { editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
 
