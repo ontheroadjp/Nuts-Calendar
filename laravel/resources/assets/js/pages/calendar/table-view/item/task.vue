@@ -1,7 +1,7 @@
 <template>
     <span class="item is-task" @click.stop="clickItem()">
         <span :class="{'task-done': item.is_done}">
-            <input id="item.id" type="checkbox" style="margin-right: 8px" @click.stop="clickDone()"> 
+            <input id="item.id" type="checkbox" style="margin-right: 8px" @click.stop="clickDone()" :checked="item.is_done"> 
             <span>
                 {{ item.content }}
             </span>

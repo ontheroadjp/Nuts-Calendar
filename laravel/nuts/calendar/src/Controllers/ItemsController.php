@@ -60,7 +60,7 @@ class ItemsController extends Controller
         $item = Item::findOrAbort($id);
         $item->fill($request->only(
             //Item::getFillable()
-            ['member_id','content','date','start_time', 'end_time']
+            ['member_id','content','date','is_done', 'start_time', 'end_time']
         ));
         $item->save();
         return $item;
