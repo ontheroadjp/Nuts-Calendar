@@ -23,11 +23,6 @@
 -->
 
     <div class="panel" :style="isBlackScreenShow ? 'height: 100vh' : ''">
-<!--
-    <table class="table is-bordered"
-        :style="isFixed ? 'background-color: ' + theme.primary.code : ''"
-    >
--->
     <table class="table is-bordered"
         :style="isFixed ? style.table : ''"
     >

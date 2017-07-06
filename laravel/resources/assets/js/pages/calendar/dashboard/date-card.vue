@@ -21,17 +21,23 @@ import dateUtilities from '../../../mixins/date-utilities.js';
 export default {
     mixins: [ dateUtilities ],
 
-    data() {
-        return {
-            date: '2017-5-15'
-        }
-    },
+//    data() {
+//        const now = date();
+//        return {
+////            date: '2017-5-15'
+//            date: this.getNow()
+//        }
+//    },
 
     computed: {
         ...mapState({
             lang: state => state.app.lang,
             theme: state => state.app.theme,
         }),
+
+        date: function() {
+            return this.now()
+        },
 
         dayPanel: function() {
             return {

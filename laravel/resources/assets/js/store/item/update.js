@@ -18,17 +18,20 @@ export default {
             commit('prepare', { editingItem } );
         },
 
-        toggleTaskDone( { commit }, { item } ) {
+        toggleTaskDone( { dispatch, commit }, { item } ) {
+            dispatch('update');
             commit('toggleTaskDone', { item });
         },
 
         update( { commit } ) {
             u.clog('update()');
             commit('update');
-            commit('nofitySuccess', {
-                content: 'success add task',
+
+            commit('notifySuccess', {
+                content: 'success update task',
                 isImportant: false
             }, { root: true });
+
             commit('reset');
         },
 

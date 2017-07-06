@@ -6,23 +6,9 @@
     <add-column-modal-content></add-column-modal-content>
 </add-column-modal>
 
-    <div class="container columns" style="margin: 0 auto">
-        <div class="column is-4">
-            <mini-cal value="2017-04"></mini-cal>
-        </div>
-
-        <div class="column is-4">
-            <mini-cal value="2017-05"></mini-cal>
-        </div>
-
-        <div class="column is-4">
-            <mini-cal value="2017-06"></mini-cal>
-        </div>
-    </div>
-
 <span class="level" style="white-space: nowrap">
     <span class="level-left">
-        <span class="select">
+        <span class="level-item select">
             <select v-model="selected">
                 <option value="date" selected>Date</option>
                 <option value="member">Member</option>
@@ -30,7 +16,7 @@
             </select>
         </span>
 
-        <span v-show="selected === 'date'" style="margin-left:10px">
+        <span v-show="selected === 'date'" class="level-item">
             <button class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
             <button class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
             <button class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
@@ -41,7 +27,7 @@
             <button class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
         </span>
 
-        <span v-show="selected === 'member'" style="margin-left:10px">
+        <span v-show="selected === 'member'" class="level-item">
             <template v-for="(member, memberId) in members">
                 <button  :class="['button', {'is-off': !member.isShow}]" 
                     @click="clickColumnButton(memberId, !member.isShow)"
@@ -56,7 +42,7 @@
             </button>
         </span>
 
-        <span v-show="selected === 'item'" style="margin-left:10px">
+        <span v-show="selected === 'item'" class="level-item">
             <button :class="[ 'button', { 'is-off': !isEventItemShow } ]" 
                     @click="clickEventItemButton()"
                     >
@@ -76,7 +62,7 @@
     </span><!-- // .level-left -->
 
     <span class="level-right">
-        <span class="level-item" style="margin-right:10px">
+        <span class="level-item">
             <search-box></search-box>
         </span>
         <span class="level-item icon is-small" 
@@ -95,7 +81,6 @@ import { mapState, mapActions } from 'vuex';
 import searchBox from './table-search-box.vue';
 import addColumnModalBase from '../../../components/modal.vue';
 import addColumnModalContent from './modal/add-column-modal-content.vue';
-import miniCal from '../../../components/mini-cal.vue';
 
 export default {
     name: 'calendar-tool-palett',
@@ -103,7 +88,6 @@ export default {
         'search-box': searchBox,
         'add-column-modal': addColumnModalBase,
         'add-column-modal-content': addColumnModalContent,
-        'mini-cal': miniCal
     },
 
     data() {
