@@ -23,13 +23,13 @@ services:
         volumes:
             - "./mariadb:/var/lib/mysql"
 
-    mariadb_testing:
-        image: mysql
-        environment:
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=familycal
-        volumes:
-            - "./mariadb_testing:/var/lib/mysql"
+#    mariadb_testing:
+#        image: mysql
+#        environment:
+#            - MYSQL_ROOT_PASSWORD=root
+#            - MYSQL_DATABASE=familycal
+#        volumes:
+#            - "./mariadb_testing:/var/lib/mysql"
 
     mailcatcher:
         image: nutsllc/toybox-mailcatcher:latest
