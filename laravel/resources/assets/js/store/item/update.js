@@ -19,20 +19,48 @@ export default {
         },
 
         toggleTaskDone( { dispatch, commit }, { item } ) {
-            dispatch('update');
             commit('toggleTaskDone', { item });
+            dispatch('update', { item });
         },
 
-        update( { commit } ) {
+        update( { commit }, { item } ) {
             u.clog('update()');
-            commit('update');
+            //commit('update');
 
-            commit('notifySuccess', {
-                content: 'success update task',
-                isImportant: false
-            }, { root: true });
+            const url = '/api/v1/item/' + item.id;
+            const data = {
+                member_id: item.member_id,
+                content: item.content,
+                date: item.date,
+                start_time: item.start_time,
+                end_time: item.end_time,
+                is_done: item.is_done,
+            };
+    
+            http.fetchPut(url, data)
+                .then( response => {
+                    u.clog('success');
 
-            commit('reset');
+                    commit('notifySuccess', {
+                        content: 'success update task',
+                        isImportant: false
+                    }, { root: true });
+        
+                    commit('reset');
+                })
+
+                .catch( error => {
+                    u.clog('failed');
+
+                    commit('toggleTaskDone', { item });
+                    commit('notifyDanger', {
+                        content: 'failed update member',
+                        isActive: true
+                    }, { root: true});
+
+                    commit('reset');
+                });
+
         },
 
         reset( { commit } ) {
