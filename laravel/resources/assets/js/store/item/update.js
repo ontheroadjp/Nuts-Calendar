@@ -18,23 +18,27 @@ export default {
             commit('prepare', { editingItem } );
         },
 
-        toggleTaskDone( { dispatch, commit }, { item } ) {
-            commit('toggleTaskDone', { item });
-            dispatch('update', { item });
+        toggleTaskDone( { dispatch, commit } ) {
+            commit('toggleTaskDone');
+            dispatch('update');
         },
 
-        update( { commit }, { item } ) {
+//        toggleTaskDone( { dispatch, commit }, { item } ) {
+//            commit('toggleTaskDone', { item });
+//            dispatch('update', { item });
+//        },
+//
+        update( { state, commit } ) {
             u.clog('update()');
-            //commit('update');
 
-            const url = '/api/v1/item/' + item.id;
+            const url = '/api/v1/item/' + state.editingItem.id;
             const data = {
-                member_id: item.member_id,
-                content: item.content,
-                date: item.date,
-                start_time: item.start_time,
-                end_time: item.end_time,
-                is_done: item.is_done,
+                member_id: state.editingItem.member_id,
+                content: state.editingItem.content,
+                date: state.editingItem.date,
+                start_time: state.editingItem.start_time,
+                end_time: state.editingItem.end_time,
+                is_done: state.editingItem.is_done,
             };
     
             http.fetchPut(url, data)
@@ -52,7 +56,7 @@ export default {
                 .catch( error => {
                     u.clog('failed');
 
-                    commit('toggleTaskDone', { item });
+                    commit('toggleTaskDone');
                     commit('notifyDanger', {
                         content: 'failed update member',
                         isActive: true
@@ -62,6 +66,45 @@ export default {
                 });
 
         },
+
+//        update( { commit }, { item } ) {
+//            u.clog('update()');
+//
+//            const url = '/api/v1/item/' + item.id;
+//            const data = {
+//                member_id: item.member_id,
+//                content: item.content,
+//                date: item.date,
+//                start_time: item.start_time,
+//                end_time: item.end_time,
+//                is_done: item.is_done,
+//            };
+//    
+//            http.fetchPut(url, data)
+//                .then( response => {
+//                    u.clog('success');
+//
+//                    commit('notifySuccess', {
+//                        content: 'success update task',
+//                        isImportant: false
+//                    }, { root: true });
+//        
+//                    commit('reset');
+//                })
+//
+//                .catch( error => {
+//                    u.clog('failed');
+//
+//                    commit('toggleTaskDone', { item });
+//                    commit('notifyDanger', {
+//                        content: 'failed update member',
+//                        isActive: true
+//                    }, { root: true});
+//
+//                    commit('reset');
+//                });
+//
+//        },
 
         reset( { commit } ) {
             commit('reset');
@@ -77,10 +120,14 @@ export default {
             state.isActive = true;
         },
 
-        toggleTaskDone( state, { item } ) {
-            item.is_done = !item.is_done;
+        toggleTaskDone( state ) {
+            state.editingItem.is_done = !state.editingItem.is_done;
         },
 
+//        toggleTaskDone( state, { item } ) {
+//            item.is_done = !item.is_done;
+//        },
+//
         start( state ) {
             state.isLoading = true;
         },
