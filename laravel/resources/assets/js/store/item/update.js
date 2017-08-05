@@ -6,7 +6,7 @@ export default {
         isLoading: false,
         editingItem: '',
         input: {
-            name: '',
+            content: '',
             startTime: '',
             endTime: ''
         }
@@ -23,12 +23,13 @@ export default {
             dispatch('update');
         },
 
-//        toggleTaskDone( { dispatch, commit }, { item } ) {
-//            commit('toggleTaskDone', { item });
-//            dispatch('update', { item });
-//        },
-//
+        updateContent( { dispatch, commit }, { value } ) {
+            commit('updateContent', { value });
+            dispatch('update');
+        },
+
         update( { state, commit } ) {
+            commit('start');
             u.clog('update()');
 
             const url = '/api/v1/item/' + state.editingItem.id;
@@ -114,22 +115,23 @@ export default {
     mutations: {
         prepare( state, { editingItem } ) {
             state.editingItem = editingItem;
-            state.input.name = editingItem.name;
+            state.input.content = editingItem.content;
             state.input.startTime = editingItem.startTime;
             state.input.endTime = editingItem.endTime;
             state.isActive = true;
+        },
+
+        start( state ) {
+            state.isLoading = true;
         },
 
         toggleTaskDone( state ) {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
 
-//        toggleTaskDone( state, { item } ) {
-//            item.is_done = !item.is_done;
-//        },
-//
-        start( state ) {
-            state.isLoading = true;
+        updateContent( state, { value } ) {
+            state.editingItem.content = value;
+            state.input.content = value;
         },
 
         update( state ) {
@@ -153,7 +155,7 @@ export default {
             state.isActive = false,
             state.isLoading = false,
             state.editingItem = '',
-            state.input.name = '',
+            state.input.content = '',
             state.input.startTime = '',
             state.input.endTime = ''
         }

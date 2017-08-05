@@ -7,9 +7,17 @@
             border-top-right-radius: 5px;
             padding: 60px;
         ">
+            <content-field
+                name="content"
+                :value="editItem.editingItem.content"
+                :action="updateContent"
+                :is-loading="editItem.isLoading"
+            ></content-field>
+<!--
             <p style="margin-bottom: 20px">
                 content: {{ editItem.editingItem.content }} 
             </p>
+-->
             <p style="margin-bottom: 20px">
                 start: {{ editItem.editingItem.start_time }} 
             </p>
@@ -35,12 +43,14 @@
                 :disabled="editItem.isLoading || deleteItem.isLoading"
                 >Cancel
             </button>
+<!--
             <button 
-                :class="['button', 'is-pulled-right', theme.primary.class]"
+                :class="['button', theme.primary.class]"
                 @click="clickSave()" 
                 :disabled="editItem.isLoading || deleteItem.isLoading"
                 >Save
             </button>
+-->
         </footer>
     </div>
 </modal>
@@ -49,12 +59,14 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
+import contentField from '../../../../components/edit-field.vue';
 
 export default {
     name: 'item-modal-content',
 
     components: {
-        modal
+        modal,
+        contentField
     },
 
     computed: {
@@ -67,15 +79,16 @@ export default {
 
     methods: {
         ...mapActions({
-            update: 'action/item/update/update',
+//            update: 'action/item/update/update',
             updateReset: 'action/item/update/reset',
             remove: 'action/item/remove/remove',
-            removeReset: 'action/item/remove/reset'
+            removeReset: 'action/item/remove/reset',
+            updateContent: 'action/item/update/updateContent'
         }),
 
-        clickSave() {
-            this.update();
-        },
+//        clickSave() {
+//            this.update();
+//        },
 
         clickRemove() {
             this.remove();
