@@ -30,7 +30,8 @@
     <a  class="button is-small" 
         v-show="!addItem.isLoading"
         @click.stop="clickCancel()" 
-        >cancel
+        style="border: none; background: none;"
+        ><i class="fa fa-times-circle"></i>
     </a>
 </div>
 </template>
