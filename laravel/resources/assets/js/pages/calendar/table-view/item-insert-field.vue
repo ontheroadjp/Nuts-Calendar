@@ -27,11 +27,17 @@
         </span>
     </a>
 
-    <a  class="button is-small" 
-        v-show="!addItem.isLoading"
+    <a  v-show="!addItem.isLoading"
         @click.stop="clickCancel()" 
         style="border: none; background: none;"
-        ><i class="fa fa-times-circle"></i>
+        ><i 
+            class="fa fa-times-circle"
+            style="
+                color: black;
+                padding-top: 5px;
+                padding-left: 5px;
+            "
+        ></i>
     </a>
 </div>
 </template>
