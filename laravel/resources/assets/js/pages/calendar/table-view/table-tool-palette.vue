@@ -65,11 +65,15 @@
         <span class="level-item">
             <search-box></search-box>
         </span>
-        <span class="level-item icon is-small" 
-              style="cursor:pointer; margin: 0 10px"
-              @click="close()"
-              ><i class="fa fa-times-circle"></i>
+        <!--
+        <span class="level-item">
+            <span class="icon is-small" 
+                  style="cursor:pointer; margin: 0 10px"
+                  @click="close()"
+                  ><i class="fa fa-times-circle"></i>
+            </span>
         </span>
+        -->
     </span>
 
 </span><!-- // .level -->
