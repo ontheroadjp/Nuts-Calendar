@@ -1,6 +1,6 @@
 <template>
 <modal>
-    <button class="modal-close" @click="close()"></button>
+    <button class="modal-close" @click="clickClose()"></button>
     <div class="modal-card">
         <section class="modal-card-body" style="
             border-top-left-radius: 5px;
@@ -31,9 +31,15 @@
             </button>
             <button 
                 class="button" 
-                @click="close()" 
+                @click="clickClose()" 
                 :disabled="editItem.isLoading || deleteItem.isLoading"
                 >Cancel
+            </button>
+            <button 
+                :class="['button', 'is-pulled-right', theme.primary.class]"
+                @click="clickSave()" 
+                :disabled="editItem.isLoading || deleteItem.isLoading"
+                >Save
             </button>
         </footer>
     </div>
@@ -56,7 +62,7 @@ export default {
             editItem: state => state.action.item.update,
             deleteItem: state => state.action.item.remove,
             theme: state => state.app.theme
-        })
+        }),
     },
 
     methods: {
@@ -75,7 +81,7 @@ export default {
             this.remove();
         },
 
-        close() {
+        clickClose() {
             this.updateReset();
             this.removeReset();
         }
@@ -83,7 +89,7 @@ export default {
 
     beforeDestroy() {
         u.clog('edit-item-content is going to be destroyed.');
-        this.close();
+        this.clickClose();
     }
 }
 </script>
