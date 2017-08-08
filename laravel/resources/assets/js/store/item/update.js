@@ -28,6 +28,11 @@ export default {
             dispatch('update');
         },
 
+        updateTimeRange( { dispatch, commit }, { start, end } ) {
+            commit('updateTimeRange', { startTime: start, endTime: end } );
+            dispatch('update');
+        },
+
         update( { state, commit } ) {
             commit('start');
             u.clog('update()');
@@ -132,6 +137,11 @@ export default {
         updateContent( state, { value } ) {
             state.editingItem.content = value;
             state.input.content = value;
+        },
+
+        updateTimeRange( state, { startTime, endTime } ) {
+            state.editingItem.start_time = startTime;
+            state.editingItem.end_time = endTime;
         },
 
         update( state ) {
