@@ -28,46 +28,7 @@
             <span class="icon is-small" v-show="currentCalendarId == uCalendar.id && ! calendarServiceIsLoading">
                 <i class="fa fa-navicon" @click="toggleToolPalet()"></i>
             </span>
-<!--
-            <span class="icon is-small">
-                <i  v-show="currentCalendarId == uCalendar.id
-                            && $route.path == '/calendar/view'" 
-                    class="fa fa-chevron-circle-down"
-                    @click="clickTabMenu()"
-                ></i>
-                <i  v-show="currentCalendarId == uCalendar.id 
-                            && $route.path != '/calendar/view'"
-                    class="fa fa-chevron-circle-down fa-rotate-90"
-                ></i>
-            </span>
--->
         </router-link>
-<!--
-        <ul id="tabs-dropdown-menu" 
-            v-show="isDropdownOpen && currentCalendarId == uCalendar.id"
-        >
-            <li>
-                <a :style="menuItemStyle" @click="toggleToolPalet()">
-                    <span class="icon is-small">
-                        <i class="fa fa-wrench"></i>
-                    </span>
-                    <span v-if="!isToolPaletteOpen">Show Tool Palette</span>
-                    <span v-else>Close Tool Palette</span>
-                </a>
-            </li>
-            <li>
-                <router-link to="/calendar/settings/calendar"
-                    :style="menuItemStyle"
-                    @click="changeCalendar(uCalendar.id)"
-                >
-                    <span class="icon is-small">
-                        <i class="fa fa-calendar-o"></i>
-                    </span>
-                    <span>Calendar Settings</span>
-                </router-link>
-            </li>
-        </ul>
--->
     </li>
 
     <li :class="">
@@ -131,27 +92,6 @@ export default {
         toggleToolPalet() {
             this.toggleTableToolPalette({ value: !this.isToolPaletteOpen }); 
         },
-
-//        toggle: function() {
-//            u.clog('toggle');
-//            if (this.isDropdownOpen) {
-//                return this.hide()
-//            }
-//            return this.show()
-//        },
-//
-//        show: function() {
-//            u.clog('show');
-//            this.isDropdownOpen = true;
-//            setTimeout(() => document.addEventListener('click', this.hide), 0);
-//        },
-//
-//        hide: function() {
-//            u.clog('hide');
-//            this.isDropdownOpen = false;
-//            document.removeEventListener('click', this.hide);
-//        },
-
     },
 
     created() {

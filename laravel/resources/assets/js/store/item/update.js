@@ -6,7 +6,7 @@ export default {
         isLoading: false,
         editingItem: '',
         input: {
-            name: '',
+            content: '',
             startTime: '',
             endTime: ''
         }
@@ -18,23 +18,33 @@ export default {
             commit('prepare', { editingItem } );
         },
 
-        toggleTaskDone( { dispatch, commit }, { item } ) {
-            commit('toggleTaskDone', { item });
-            dispatch('update', { item });
+        toggleTaskDone( { dispatch, commit } ) {
+            commit('toggleTaskDone');
+            dispatch('update');
         },
 
-        update( { commit }, { item } ) {
-            u.clog('update()');
-            //commit('update');
+        updateContent( { dispatch, commit }, { value } ) {
+            commit('updateContent', { value });
+            dispatch('update');
+        },
 
-            const url = '/api/v1/item/' + item.id;
+        updateTimeRange( { dispatch, commit }, { start, end } ) {
+            commit('updateTimeRange', { startTime: start, endTime: end } );
+            dispatch('update');
+        },
+
+        update( { state, commit } ) {
+            commit('start');
+            u.clog('update()');
+
+            const url = '/api/v1/item/' + state.editingItem.id;
             const data = {
-                member_id: item.member_id,
-                content: item.content,
-                date: item.date,
-                start_time: item.start_time,
-                end_time: item.end_time,
-                is_done: item.is_done,
+                member_id: state.editingItem.member_id,
+                content: state.editingItem.content,
+                date: state.editingItem.date,
+                start_time: state.editingItem.start_time,
+                end_time: state.editingItem.end_time,
+                is_done: state.editingItem.is_done,
             };
     
             http.fetchPut(url, data)
@@ -52,7 +62,7 @@ export default {
                 .catch( error => {
                     u.clog('failed');
 
-                    commit('toggleTaskDone', { item });
+                    commit('toggleTaskDone');
                     commit('notifyDanger', {
                         content: 'failed update member',
                         isActive: true
@@ -63,6 +73,45 @@ export default {
 
         },
 
+//        update( { commit }, { item } ) {
+//            u.clog('update()');
+//
+//            const url = '/api/v1/item/' + item.id;
+//            const data = {
+//                member_id: item.member_id,
+//                content: item.content,
+//                date: item.date,
+//                start_time: item.start_time,
+//                end_time: item.end_time,
+//                is_done: item.is_done,
+//            };
+//    
+//            http.fetchPut(url, data)
+//                .then( response => {
+//                    u.clog('success');
+//
+//                    commit('notifySuccess', {
+//                        content: 'success update task',
+//                        isImportant: false
+//                    }, { root: true });
+//        
+//                    commit('reset');
+//                })
+//
+//                .catch( error => {
+//                    u.clog('failed');
+//
+//                    commit('toggleTaskDone', { item });
+//                    commit('notifyDanger', {
+//                        content: 'failed update member',
+//                        isActive: true
+//                    }, { root: true});
+//
+//                    commit('reset');
+//                });
+//
+//        },
+
         reset( { commit } ) {
             commit('reset');
         }
@@ -71,18 +120,28 @@ export default {
     mutations: {
         prepare( state, { editingItem } ) {
             state.editingItem = editingItem;
-            state.input.name = editingItem.name;
+            state.input.content = editingItem.content;
             state.input.startTime = editingItem.startTime;
             state.input.endTime = editingItem.endTime;
             state.isActive = true;
         },
 
-        toggleTaskDone( state, { item } ) {
-            item.is_done = !item.is_done;
-        },
-
         start( state ) {
             state.isLoading = true;
+        },
+
+        toggleTaskDone( state ) {
+            state.editingItem.is_done = !state.editingItem.is_done;
+        },
+
+        updateContent( state, { value } ) {
+            state.editingItem.content = value;
+            state.input.content = value;
+        },
+
+        updateTimeRange( state, { startTime, endTime } ) {
+            state.editingItem.start_time = startTime;
+            state.editingItem.end_time = endTime;
         },
 
         update( state ) {
@@ -106,7 +165,7 @@ export default {
             state.isActive = false,
             state.isLoading = false,
             state.editingItem = '',
-            state.input.name = '',
+            state.input.content = '',
             state.input.startTime = '',
             state.input.endTime = ''
         }

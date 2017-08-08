@@ -1,24 +1,27 @@
 <template>
 <modal>
-    <button class="modal-close" @click="close()"></button>
+    <button class="modal-close" @click="clickClose()"></button>
     <div class="modal-card">
         <section class="modal-card-body" style="
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             padding: 60px;
         ">
-            <p style="margin-bottom: 20px">
-                content: {{ editItem.editingItem.content }} 
-            </p>
-            <p style="margin-bottom: 20px">
-                start: {{ editItem.editingItem.start_time }} 
-            </p>
-            <p style="margin-bottom: 20px">
-                end: {{ editItem.editingItem.end_time }} 
-            </p>
-            <p style="margin-bottom: 20px">
-                color: {{ editItem.editingItem.end_time }} 
-            </p>
+            <content-field
+                name="content"
+                :value="editItem.editingItem.content"
+                :action="updateContent"
+                :is-loading="editItem.isLoading"
+            ></content-field>
+
+            <time-range
+                name="content"
+                :startTime="editItem.editingItem.start_time"
+                :endTime="editItem.editingItem.end_time"
+                :action="updateTimeRange"
+                :is-loading="editItem.isLoading"
+            ></time-range>
+
         </section>
         <footer class="modal-card-foot">
             <button 
@@ -31,7 +34,7 @@
             </button>
             <button 
                 class="button" 
-                @click="close()" 
+                @click="clickClose()" 
                 :disabled="editItem.isLoading || deleteItem.isLoading"
                 >Cancel
             </button>
@@ -43,12 +46,16 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
+import contentField from '../../../../components/edit-text-field.vue';
+import timeRange from '../../../../components/edit-time-range.vue';
 
 export default {
     name: 'item-modal-content',
 
     components: {
-        modal
+        modal,
+        contentField,
+        timeRange
     },
 
     computed: {
@@ -56,26 +63,23 @@ export default {
             editItem: state => state.action.item.update,
             deleteItem: state => state.action.item.remove,
             theme: state => state.app.theme
-        })
+        }),
     },
 
     methods: {
         ...mapActions({
-            update: 'action/item/update/update',
             updateReset: 'action/item/update/reset',
             remove: 'action/item/remove/remove',
-            removeReset: 'action/item/remove/reset'
+            removeReset: 'action/item/remove/reset',
+            updateContent: 'action/item/update/updateContent',
+            updateTimeRange: 'action/item/update/updateTimeRange'
         }),
-
-        clickSave() {
-            this.update();
-        },
 
         clickRemove() {
             this.remove();
         },
 
-        close() {
+        clickClose() {
             this.updateReset();
             this.removeReset();
         }
@@ -83,7 +87,7 @@ export default {
 
     beforeDestroy() {
         u.clog('edit-item-content is going to be destroyed.');
-        this.close();
+        this.clickClose();
     }
 }
 </script>
