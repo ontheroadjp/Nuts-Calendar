@@ -13,20 +13,15 @@
                 :action="updateContent"
                 :is-loading="editItem.isLoading"
             ></content-field>
-<!--
-            <p style="margin-bottom: 20px">
-                content: {{ editItem.editingItem.content }} 
-            </p>
--->
-            <p style="margin-bottom: 20px">
-                start: {{ editItem.editingItem.start_time }} 
-            </p>
-            <p style="margin-bottom: 20px">
-                end: {{ editItem.editingItem.end_time }} 
-            </p>
-            <p style="margin-bottom: 20px">
-                color: {{ editItem.editingItem.end_time }} 
-            </p>
+
+            <time-range
+                name="content"
+                :startTime="editItem.editingItem.start_time"
+                :endTime="editItem.editingItem.end_time"
+                :action="updateTimeRange"
+                :is-loading="editItem.isLoading"
+            ></time-range>
+
         </section>
         <footer class="modal-card-foot">
             <button 
@@ -43,14 +38,6 @@
                 :disabled="editItem.isLoading || deleteItem.isLoading"
                 >Cancel
             </button>
-<!--
-            <button 
-                :class="['button', theme.primary.class]"
-                @click="clickSave()" 
-                :disabled="editItem.isLoading || deleteItem.isLoading"
-                >Save
-            </button>
--->
         </footer>
     </div>
 </modal>
@@ -59,14 +46,16 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
-import contentField from '../../../../components/edit-field.vue';
+import contentField from '../../../../components/edit-text-field.vue';
+import timeRange from '../../../../components/edit-time-range.vue';
 
 export default {
     name: 'item-modal-content',
 
     components: {
         modal,
-        contentField
+        contentField,
+        timeRange
     },
 
     computed: {
@@ -79,16 +68,12 @@ export default {
 
     methods: {
         ...mapActions({
-//            update: 'action/item/update/update',
             updateReset: 'action/item/update/reset',
             remove: 'action/item/remove/remove',
             removeReset: 'action/item/remove/reset',
-            updateContent: 'action/item/update/updateContent'
+            updateContent: 'action/item/update/updateContent',
+            updateTimeRange: 'action/item/update/updateTimeRange'
         }),
-
-//        clickSave() {
-//            this.update();
-//        },
 
         clickRemove() {
             this.remove();
