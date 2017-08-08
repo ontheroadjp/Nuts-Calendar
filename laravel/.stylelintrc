@@ -4,5 +4,6 @@
     "rules": {
         "indentation": 4,
         "string-quotes": "double"
-    }
+    },
+    "ignoreFiles" :"resources/assets/js/test/*.*"
 }
