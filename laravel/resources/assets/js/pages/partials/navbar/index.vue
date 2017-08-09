@@ -22,10 +22,10 @@
 
         <template v-else>
             <router-link 
-                to="/calendar"
+                to="/calendar" 
+                @click.native="$store.commit('setCurrentCalendarId', 'dashboard')"
                 class="nav-item"
-                @click="$store.commit('setCurrentCalendarId', 'dashboard')"
-                >{{ t('navbar.dashboard') }}
+            >{{ t('navbar.dashboard') }}
             </router-link>
 
             <user-account-dropdown></user-account-dropdown>
