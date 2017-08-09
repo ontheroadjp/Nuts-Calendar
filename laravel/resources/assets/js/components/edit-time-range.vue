@@ -1,10 +1,17 @@
 <template>
+<span>
+    <span class="icon" style="margin-right: 10px">
+        <i class="fa fa-clock-o"></i>
+    </span>
+
     <span v-if="!isEditing" @click="clickField">
-        <span v-if="start" class="field">{{ startTime }}</span>
-        <span v-else class="field">not set</span>
+        <span v-if="start" class="field" style="font-size: 1.2rem">{{ startTime }}</span>
+        <a v-else class="button">SET</a>
+
         <span style="margin: 0 0.5rem">〜</span>
-        <span v-if="end" class="field">{{ endTime }}</span>
-        <span v-else class="field">not set</span>
+
+        <span v-if="end" class="field" style="font-size: 1.2rem">{{ endTime }}</span>
+        <a v-else class="button">SET</a>
     </span>
     <span v-else>
         <div class="select">
@@ -22,6 +29,20 @@
         </div>
 
         <span style="margin: 0 0.5rem">〜</span>
+
+        <div class="select">
+            <select v-model="input.end.hour">
+                <option v-for="h in hours">{{ h }}</option>
+            </select>
+        </div>
+
+        <span style="font-size: 1.4rem; margin: 0 10px;">:</span>
+
+        <div class="select">
+            <select v-model="input.end.minut">
+                <option v-for="m in minuts">{{ m }}</option>
+            </select>
+        </div>
 
         <button
             v-show="!isLoading"
@@ -45,6 +66,7 @@
                 <i v-else class="fa fa-refresh fa-spin"></i>
         </button> 
     </span>
+</span>
 </template>
 
 <script>
