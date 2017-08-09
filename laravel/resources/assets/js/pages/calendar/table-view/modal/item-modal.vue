@@ -3,8 +3,8 @@
     <button class="modal-close" @click="clickClose()"></button>
     <div class="modal-card">
         <section class="modal-card-body" style="
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
             padding: 60px;
         ">
             <content-field
