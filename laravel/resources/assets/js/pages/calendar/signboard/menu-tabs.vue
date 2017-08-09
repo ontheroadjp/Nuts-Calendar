@@ -4,7 +4,9 @@
 <ul>
 
     <!-- DASHBOARD -->
-    <li :class="{ 'is-active': currentCalendarId === 'dashboard' }">
+    <li :class="{ 'is-active': currentCalendarId === 'dashboard' }"
+        @click="changeCalendar('dashboard')"
+    >
         <router-link to="/calendar" @click="changeCalendar('dashboard')">
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
