@@ -21,14 +21,6 @@ import dateUtilities from '../../../mixins/date-utilities.js';
 export default {
     mixins: [ dateUtilities ],
 
-//    data() {
-//        const now = date();
-//        return {
-////            date: '2017-5-15'
-//            date: this.getNow()
-//        }
-//    },
-
     computed: {
         ...mapState({
             lang: state => state.app.lang,
