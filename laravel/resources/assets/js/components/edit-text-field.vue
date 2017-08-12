@@ -1,6 +1,10 @@
 <template>
     <span v-if="!isEditing" @click="clickField">
-        <p class="field">{{ value }}</p>
+        <p class="field" style="font-size: 1.2rem">
+            <span class="icon" style="margin-right: 10px">
+                <i class="fa fa-tasks"></i>
+            </span>{{ value }}
+        </p>
     </span>
     <span v-else>
         <input class="field input" :name="name" type="text" v-model="input.value" v-focus> 

@@ -1,7 +1,10 @@
 <template>
     <span class="item is-event" @click.stop="clickItem()">
-        <strong v-show="item.start_time" style="margin-right: 8px">
-            {{ item.start_time | timeFormatter }}
+        <strong v-show="item.start_time" style="margin-right: 8px;">
+            {{ item.start_time | timeFormatter }} 
+            <template v-show="item.end_time !== null">
+                <br>{{ item.end_time | timeFormatter }}
+            </template>
         </strong> {{ item.content }}
         <span class="icon is-small" 
             v-show="(dragItem.isLoading || deleteItem.isLoading) 

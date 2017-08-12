@@ -3,9 +3,10 @@
     <button class="modal-close" @click="clickClose()"></button>
     <div class="modal-card">
         <section class="modal-card-body" style="
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
             padding: 60px;
+            height: 350px;
         ">
             <content-field
                 name="content"
@@ -14,6 +15,10 @@
                 :is-loading="editItem.isLoading"
             ></content-field>
 
+            <span class="icon" style="margin-right: 10px">
+                <i class="fa fa-clock-o"></i>
+            </span>
+<!--
             <time-range
                 name="content"
                 :startTime="editItem.editingItem.start_time"
@@ -21,6 +26,15 @@
                 :action="updateTimeRange"
                 :is-loading="editItem.isLoading"
             ></time-range>
+-->
+
+                <timeRangePicker 
+                    minute-interval="5"
+                    :startTime="editItem.editingItem.start_time"
+                    :endTime="editItem.editingItem.end_time"
+                    :action="updateTimeRange"
+                    :isLoading="editItem.isLoading"
+                ></timeRangePicker>
 
         </section>
         <footer class="modal-card-foot">
@@ -48,14 +62,16 @@ import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
 import contentField from '../../../../components/edit-text-field.vue';
 import timeRange from '../../../../components/edit-time-range.vue';
+import timeRangePicker from '../../../../components/time-range-picker.vue';
 
 export default {
     name: 'item-modal-content',
 
     components: {
-        modal,
-        contentField,
-        timeRange
+        'modal': modal,
+        'contentField': contentField,
+        'timeRange': timeRange,
+        'timeRangePicker': timeRangePicker
     },
 
     computed: {
