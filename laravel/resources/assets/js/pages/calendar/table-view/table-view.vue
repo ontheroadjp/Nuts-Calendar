@@ -24,6 +24,7 @@
 
     <div class="panel" :style="isBlackScreenShow ? 'height: 100vh' : ''">
     <table class="table is-bordered"
+        style="width: 100%;"
         :style="isFixed ? style.table : ''"
     >
     <thead v-if="filteredColumns">
@@ -193,7 +194,7 @@
 
                 return {
                     width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
-                    minWidth: '170px'
+                    minWidth: '206px'
                 }
             },
 
@@ -214,7 +215,8 @@
             style: function() {
                 return {
                     table: {
-                        'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl')
+                        'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl'),
+                        'width': '100%'
                     },
                     dayColumnWidth: {
                         'width': '8%',
