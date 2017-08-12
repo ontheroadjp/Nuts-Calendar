@@ -1,9 +1,5 @@
 <template>
 <span>
-    <span class="icon" style="margin-right: 10px">
-        <i class="fa fa-clock-o"></i>
-    </span>
-
     <span v-if="!isEditing" @click="clickField">
         <span v-if="start" class="field" style="font-size: 1.2rem">{{ startTime }}</span>
         <a v-else class="button">SET</a>
