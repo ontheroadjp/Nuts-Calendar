@@ -150,9 +150,9 @@
                 theme: state => state.app.theme
             }),
 
-            ...mapState('action/calendar', {
-                isEventItem: state => state.view.isEventItemShow,
-                isTaskItem: state => state.view.isTaskItemShow
+            ...mapState('action/calendar/toolPalette', {
+                isEventItem: state => state.isEventItemShow,
+                isTaskItem: state => state.isTaskItemShow
             }),
 
             ...mapState('action/column', {

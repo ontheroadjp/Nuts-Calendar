@@ -62,8 +62,8 @@ export default {
             theme: state => state.app.theme,
         }),
 
-        ...mapState('action/calendar', {
-            isToolPaletteOpen: state => state.view.toolPalette.isActive,
+        ...mapState('action/calendar/toolPalette', {
+            isToolPaletteOpen: state => state.toolPalette.isActive,
         }),
 
         menuItemStyle: function() {
@@ -76,8 +76,8 @@ export default {
     },
 
     methods: {
-        ...mapActions('action/calendar', {
-            toggleTableToolPalette: 'view/toggleTableToolPalette'
+        ...mapActions('action/calendar/toolPalette', {
+            toggleTableToolPalette: 'toggleTableToolPalette'
         }),
 
         changeCalendar: function(id) {

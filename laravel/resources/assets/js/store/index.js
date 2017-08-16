@@ -11,16 +11,16 @@ import getters from './getters.js';
 import { en } from '../i18n/en.js';
 import ja from '../i18n/ja.js';
 
-import calendarView from './calendar/view.js';
+import tableViewToolPalette from './calendar/table-view/tool-palette.js';
 
-import columnInsert from './column/insert.js';
-import columnUpdate from './column/update.js';
-import columnRemove from './column/remove.js';
+import columnInsert from './calendar/table-view/column/insert.js';
+import columnUpdate from './calendar/table-view/column/update.js';
+import columnRemove from './calendar/table-view/column/remove.js';
 
-import itemInsert from './item/insert.js';
-import itemUpdate from './item/update.js';
-import itemRemove from './item/remove.js';
-import itemDnd from './item/dnd.js';
+import itemInsert from './calendar/table-view/item/insert.js';
+import itemUpdate from './calendar/table-view/item/update.js';
+import itemRemove from './calendar/table-view/item/remove.js';
+import itemDnd from './calendar/table-view/item/dnd.js';
 
 Vue.use(Vuex);
 
@@ -62,7 +62,7 @@ export default new Vuex.Store({
                 calendar: {
                     namespaced: true,
                     modules: {
-                        view: calendarView
+                        toolPalette: tableViewToolPalette
                     }
                 },
 

@@ -71,7 +71,7 @@
         },
         
         computed: {
-            ...mapState('action/calendar/view', {
+            ...mapState('action/calendar/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
                 searchQuery: state => (state.query.search).toLowerCase(),
                 internalQuery: state => state.query.internal
