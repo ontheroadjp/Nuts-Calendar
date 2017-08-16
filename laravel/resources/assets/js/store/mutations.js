@@ -207,6 +207,10 @@ export default {
     // ---------------------------------------------
     // members
 
+    initDashboardMembers( state, members ) {
+        state.dashboard.members = members;
+    },
+
     initMembers( state, members ) {
         state.calendar.data.members = members;
     },

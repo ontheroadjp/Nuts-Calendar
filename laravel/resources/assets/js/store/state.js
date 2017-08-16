@@ -40,6 +40,10 @@ export default {
         rememberMe: false
     },
 
+    dashboard: {
+        members: []
+    },
+
     calendar: {
         isLoading: false,
         currentId: 'dashboard',
