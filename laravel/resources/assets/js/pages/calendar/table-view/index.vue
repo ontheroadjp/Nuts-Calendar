@@ -77,7 +77,7 @@
                 internalQuery: state => state.query.internal
             }),
 
-            ...mapState('action/item/dnd', {
+            ...mapState('action/calendar/tableView/item/dnd', {
                 draggingItem: state => state.draggingItem
             }),
 

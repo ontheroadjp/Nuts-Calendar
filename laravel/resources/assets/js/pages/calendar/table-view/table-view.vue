@@ -160,7 +160,7 @@
                 deleteColumn: state => state.remove
             }),
 
-            ...mapState('action/item', {
+            ...mapState('action/calendar/tableView/item', {
                 addItem: state => state.insert,
                 editItem: state => state.update,
                 deleteItem: state => state.remove,
@@ -177,7 +177,7 @@
                 isColumnModalActive: 'isModalActive'
             }),
 
-            ...mapGetters('action/item', {
+            ...mapGetters('action/calendar/tableView/item', {
                 isItemModalActive: 'isModalActive'
             }),
 
@@ -233,7 +233,7 @@
                 prepareRemoveColumn: 'remove/prepare'
             }),
 
-            ...mapActions('action/item', {
+            ...mapActions('action/calendar/tableView/item', {
                 prepareInsertItem: 'insert/prepare',
                 dragStart: 'dnd/dragStart',
                 dragEnter: 'dnd/dragEnter',
