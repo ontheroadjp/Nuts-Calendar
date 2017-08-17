@@ -1,22 +1,10 @@
 <template>
 <div class="tabs is-toggle">
     <ul>
-        <li :class="currentId === 1 ? 'is-active' : ''">
-            <a @click="clickTab(1)">
-                <span class="icon is-small"><i class="fa fa-calendar"></i></span>
-                <span>Calendars</span>
-            </a>
-        </li>
-        <li :class="currentId === 2 ? 'is-active' : ''">
-            <a @click="clickTab(2)">
-                <span class="icon is-small"><i class="fa fa-gear"></i></span>
-                <span>Application Settings</span>
-            </a>
-        </li>
-        <li :class="currentId === 3 ? 'is-active' : ''">
-            <a @click="clickTab(3)">
-                <span class="icon is-small"><i class="fa fa-users"></i></span>
-                <span>Account Settings</span>
+        <li v-for="(tab, index) in tabs" :class="currentId === index ? 'is-active' : ''">
+            <a @click="clickTab(index)">
+                <span class="icon is-small"><i class="fa" :class="tab.icon"></i></span>
+                <span>{{ tab.label }}</span>
             </a>
         </li>
     </ul>
@@ -27,6 +15,17 @@
 import { mapState, mapAction } from 'vuex';
 
 export default {
+    data() {
+        return {
+            tabs: [
+                { label: 'Dashboard', icon: 'fa-calendar' },
+                { label: 'Calendar Settings', icon: 'fa-gear' },
+                { label: 'Application Settings', icon: 'fa-gear' },
+                { label: 'Account Settings', icon: 'fa-gear' }
+            ]
+        }
+    },
+
     computed: {
         ...mapState('dashboard', {
             currentId: state => state.currentId
