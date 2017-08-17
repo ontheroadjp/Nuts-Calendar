@@ -52,8 +52,27 @@ export default new Vuex.Store({
         dashboard: {
             namespaced: true,
             state: {
+                currentId: 1,
                 data: {
                     members: []
+                }
+            },
+
+            mutations: {
+                setCurrentId(state, { id }) {
+                    state.currentId = id
+                }
+            },
+
+            calendar: {
+                namespaced: true,
+                modules: {
+                    members: {
+//                        insert: memberInsert,
+//                        update: memberUpdate,
+//                        remove: memberRemove,
+//                        dnd: memberDnd
+                    }
                 }
             }
         },
