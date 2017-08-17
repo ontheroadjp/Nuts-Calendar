@@ -30,7 +30,7 @@ export default {
 
         searchQuery: {
             get() {
-                return this.$store.state.action.calendar.view.query.search;
+                return this.$store.state.action.calendar.tableView.toolPalette.query.search;
             },
             set(value) {
                 this.setSearchQuery({ value });
@@ -39,8 +39,8 @@ export default {
     },
 
     methods: {
-        ...mapActions('action/calendar', {
-            setSearchQuery: 'view/setSearchQuery'
+        ...mapActions('action/calendar/tableView/toolPalette', {
+            setSearchQuery: 'setSearchQuery'
         }),
 
         clearField() {

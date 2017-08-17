@@ -150,17 +150,17 @@
                 theme: state => state.app.theme
             }),
 
-            ...mapState('action/calendar', {
-                isEventItem: state => state.view.isEventItemShow,
-                isTaskItem: state => state.view.isTaskItemShow
+            ...mapState('action/calendar/tableView/toolPalette', {
+                isEventItem: state => state.isEventItemShow,
+                isTaskItem: state => state.isTaskItemShow
             }),
 
-            ...mapState('action/column', {
+            ...mapState('action/calendar/tableView/column', {
                 editColumn: state => state.update,
                 deleteColumn: state => state.remove
             }),
 
-            ...mapState('action/item', {
+            ...mapState('action/calendar/tableView/item', {
                 addItem: state => state.insert,
                 editItem: state => state.update,
                 deleteItem: state => state.remove,
@@ -173,11 +173,11 @@
                 getRowIndex: 'getRowIndex'
             }),
 
-            ...mapGetters('action/column', {
+            ...mapGetters('action/calendar/tableView/column', {
                 isColumnModalActive: 'isModalActive'
             }),
 
-            ...mapGetters('action/item', {
+            ...mapGetters('action/calendar/tableView/item', {
                 isItemModalActive: 'isModalActive'
             }),
 
@@ -228,12 +228,12 @@
         },
 
         methods: {
-            ...mapActions('action/column', {
+            ...mapActions('action/calendar/tableView/column', {
                 prepareUpdateColumn: 'update/prepare',
                 prepareRemoveColumn: 'remove/prepare'
             }),
 
-            ...mapActions('action/item', {
+            ...mapActions('action/calendar/tableView/item', {
                 prepareInsertItem: 'insert/prepare',
                 dragStart: 'dnd/dragStart',
                 dragEnter: 'dnd/dragEnter',
