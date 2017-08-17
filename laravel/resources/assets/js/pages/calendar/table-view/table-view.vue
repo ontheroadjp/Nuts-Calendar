@@ -150,7 +150,7 @@
                 theme: state => state.app.theme
             }),
 
-            ...mapState('action/calendar/toolPalette', {
+            ...mapState('action/calendar/tableView/toolPalette', {
                 isEventItem: state => state.isEventItemShow,
                 isTaskItem: state => state.isTaskItemShow
             }),

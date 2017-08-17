@@ -106,7 +106,7 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('action/calendar/toolPalette', {
+        ...mapState('action/calendar/tableView/toolPalette', {
             //toolPalette: state => state.toolPalette,
             isEventItemShow: state => state.isEventItemShow,
             isTaskItemShow: state => state.isTaskItemShow
@@ -126,7 +126,7 @@ export default {
             prepareInsert: 'insert/prepare'
         }),
 
-        ...mapActions('action/calendar/toolPalette', {
+        ...mapActions('action/calendar/tableView/toolPalette', {
             toggleShowHideColumn: 'toggleShowHideColumn',
             toggleShowHideEventItem: 'toggleShowHideEventItem',
             toggleShowHideTaskItem: 'toggleShowHideTaskItem',

@@ -62,7 +62,12 @@ export default new Vuex.Store({
                 calendar: {
                     namespaced: true,
                     modules: {
-                        toolPalette: tableViewToolPalette
+                        tableView: {
+                            namespaced: true,
+                            modules: {
+                                toolPalette: tableViewToolPalette
+                            }
+                        }
                     }
                 },
 
