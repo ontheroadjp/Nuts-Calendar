@@ -10,7 +10,9 @@
 </div>
 
 <menu-tabs></menu-tabs>
-<calendar-content v-show="this.currentId === 1"></calendar-content>
+<calendar-settings v-show="this.currentId === 1"></calendar-settings>
+<application-settings v-show="this.currentId === 2"></application-settings>
+<account-settings v-show="this.currentId === 3"></account-settings>
 
 </div><!-- // .container -->
 </div><!-- // .wrapper -->
@@ -19,14 +21,18 @@
 <script>
 import { mapState } from 'vuex';
 import menuTabs from './menu-tabs.vue';
-import calendarContent from './calendar/index.vue';
+import calendarSettings from './calendar-settings/index.vue';
+import applicationSettings from './application-settings/index.vue';
+import accountSettings from './account-settings/index.vue';
 import dateCard from './date-card.vue';
 
 export default {
 
     components: {
         'menu-tabs': menuTabs,
-        'calendar-content': calendarContent,
+        'calendar-settings': calendarSettings,
+        'application-settings': applicationSettings,
+        'account-settings': accountSettings,
         'date-card': dateCard
     },
 

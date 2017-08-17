@@ -52,7 +52,7 @@ export default new Vuex.Store({
         dashboard: {
             namespaced: true,
             state: {
-                currentId: 1,
+                currentId: 0,
                 data: {
                     members: []
                 }
