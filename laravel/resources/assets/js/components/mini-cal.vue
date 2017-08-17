@@ -82,7 +82,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('action/item/dnd', {
+        ...mapActions('action/calendar/tableView/item/dnd', {
             setOnMiniCal: 'setOnMiniCal',
             dragOver: 'dragOver'
         }),

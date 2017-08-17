@@ -83,12 +83,12 @@ export default {
     },
 
     methods: {
-        ...mapActions({
-            updateReset: 'action/item/update/reset',
-            remove: 'action/item/remove/remove',
-            removeReset: 'action/item/remove/reset',
-            updateContent: 'action/item/update/updateContent',
-            updateTimeRange: 'action/item/update/updateTimeRange'
+        ...mapActions('action/calendar/tableView/item', {
+            updateReset: 'update/reset',
+            remove: 'remove/remove',
+            removeReset: 'remove/reset',
+            updateContent: 'update/updateContent',
+            updateTimeRange: 'update/updateTimeRange'
         }),
 
         clickRemove() {
