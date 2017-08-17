@@ -22,6 +22,8 @@ import itemDnd              from './calendar/table-view/item/dnd.js';
 
 Vue.use(Vuex);
 
+const now = new Date();
+
 export default new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
 
@@ -54,6 +56,61 @@ export default new Vuex.Store({
             }
         },
 
+        calendar: {
+            namespaced: true,
+            state: {
+                isLoading: false,
+                currentId: 'dashboard',
+                currentYear: now.getFullYear(),
+                currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
+                data: {
+                    userCalendars: [],
+                    calendars: [],
+                    members: []
+                }
+            },
+
+            modules: {
+                tableView: {
+                    namespaced: true,
+                    modules: {
+                        toolPalette: tableViewToolPalette,
+
+                        column: {
+                            namespaced: true,
+                            getters: {
+                                isModalActive: (state) => {
+                                    return state.update.isActive && state.remove.isActive
+                                }
+                            },
+        
+                            modules: {
+                                insert: columnInsert,
+                                update: columnUpdate,
+                                remove: columnRemove
+                            }
+                        },
+
+                        item: {
+                            namespaced: true,
+                            getters: {
+                                isModalActive: ( state, getters, rootState ) => {
+                                    return state.update.isActive && state.remove.isActive;
+                                }
+                            },
+                            modules: {
+                                insert: itemInsert,
+                                update: itemUpdate,
+                                remove: itemRemove,
+                                dnd: itemDnd
+                            }
+                        }
+
+                    }
+                }
+            }
+        },
+
         action: {
             namespaced: true,
             modules: {
@@ -64,47 +121,18 @@ export default new Vuex.Store({
                     }
                 },
 
-                calendar: {
-                    namespaced: true,
-                    modules: {
-                        tableView: {
-                            namespaced: true,
-                            modules: {
-                                toolPalette: tableViewToolPalette,
-
-                                column: {
-                                    namespaced: true,
-                                    getters: {
-                                        isModalActive: (state) => {
-                                            return state.update.isActive && state.remove.isActive
-                                        }
-                                    },
-                
-                                    modules: {
-                                        insert: columnInsert,
-                                        update: columnUpdate,
-                                        remove: columnRemove
-                                    }
-                                },
-
-                                item: {
-                                    namespaced: true,
-                                    getters: {
-                                        isModalActive: ( state, getters, rootState ) => {
-                                            return state.update.isActive && state.remove.isActive;
-                                        }
-                                    },
-                                    modules: {
-                                        insert: itemInsert,
-                                        update: itemUpdate,
-                                        remove: itemRemove,
-                                        dnd: itemDnd
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+//                calendar: {
+//                    namespaced: true,
+//
+//                    modules: {
+//                        tableView: {
+//                            namespaced: true,
+//                            modules: {
+//
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }

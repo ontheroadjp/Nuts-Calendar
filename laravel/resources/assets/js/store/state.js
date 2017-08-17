@@ -1,4 +1,4 @@
-const now = new Date();
+//const now = new Date();
 
 export default {
     app: {
@@ -40,15 +40,15 @@ export default {
         rememberMe: false
     },
 
-    calendar: {
-        isLoading: false,
-        currentId: 'dashboard',
-        currentYear: now.getFullYear(),
-        currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
-        data: {
-            userCalendars: [],
-            calendars: [],
-            members: []
-        }
-    }
+//    calendar: {
+//        isLoading: false,
+//        currentId: 'dashboard',
+//        currentYear: now.getFullYear(),
+//        currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
+//        data: {
+//            userCalendars: [],
+//            calendars: [],
+//            members: []
+//        }
+//    }
 }
