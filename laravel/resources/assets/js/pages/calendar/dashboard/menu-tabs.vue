@@ -12,19 +12,12 @@
 </template>
 
 <script>
-import { mapState, mapAction } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
-    data() {
-        return {
-            tabs: [
-                { label: 'Dashboard', icon: 'fa-calendar' },
-                { label: 'Calendar Settings', icon: 'fa-gear' },
-                { label: 'Application Settings', icon: 'fa-gear' },
-                { label: 'Account Settings', icon: 'fa-gear' }
-            ]
-        }
-    },
+    props: [
+        'tabs'
+    ],
 
     computed: {
         ...mapState('dashboard', {
@@ -41,4 +34,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    /* empty */
 </style>

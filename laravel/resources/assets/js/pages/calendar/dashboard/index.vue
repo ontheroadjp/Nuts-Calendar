@@ -9,7 +9,7 @@
     </div>
 </div>
 
-<menu-tabs></menu-tabs>
+<menu-tabs :tabs="tabs"></menu-tabs>
 <calendar-settings v-show="this.currentId === 1"></calendar-settings>
 <application-settings v-show="this.currentId === 2"></application-settings>
 <account-settings v-show="this.currentId === 3"></account-settings>
@@ -36,12 +36,20 @@ export default {
         'date-card': dateCard
     },
 
+    data() {
+        return {
+            tabs: [
+                { label: 'Dashboard', icon: 'fa-calendar' },
+                { label: 'Calendar Settings', icon: 'fa-gear' },
+                { label: 'Application Settings', icon: 'fa-gear' },
+                { label: 'Account Settings', icon: 'fa-gear' }
+            ]
+        }
+    },
+
     computed: {
         ...mapState({
             currentId: state => state.dashboard.currentId,
-//            userCalendars: state => state.calendar.data.userCalendars,
-//            members: state => state.dashboard.data.members,
-//            theme: state => state.app.theme
         })
     },
 }
