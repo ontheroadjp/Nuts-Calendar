@@ -2,114 +2,130 @@
 <div class="wrapper">
 <div class="container" style="width: 100%; height: 100vh">
 
-<!-- infomation -->
-<div class="columns is-multiline">
-    <div class="column is-4">
-        <date-card></date-card>
+    <!-- infomation -->
+    <div class="columns is-multiline">
+        <div class="column is-4">
+            <date-card></date-card>
+        </div>
     </div>
-</div>
+    
+    <menu-tabs :tabs="tabs"></menu-tabs>
 
-<!-- columns -->
-<div class="member-waiting">
-    <template v-for="m in members">
-        <span 
-            class="member-in-waiting" 
-            draggable
-        >{{ m.name }}</span>
-    </template>
-</div>
+    <div v-show="currentId === 0">
 
-<!-- user calendars -->
-<div class="columns is-multiline">
-<template v-for="uCalendar in userCalendars">
-<div class="column is-4">
+        <div style="margin-bottom: 20px;">
+            <a 
+                :class="['button', theme.primary.class]"
+                @click="clickNewCalendarButton()"
+            >New Calendar</a>
+        </div>
 
-    <router-link
-        to="/calendar/view"
-        class="title is-4" 
-        @click.native="clickUserCalendar(uCalendar.id)"
-    >
-        <div 
-            :class="['card', 'is-clickable', theme.primary.class]"
-            @dragenter="handleDragEnter()"
-        >
-        <div class="card-content">
-        <div class="media">
-
-            <div class="media-left">
-                <span class="icon">
-                    <i class="fa fa-calendar"></i>
-                </span>
-            </div>
-
-            <div class="media-content">
-                <p>{{ uCalendar.name }}</p>
-                <p class="subtitle is-6">
-                    {{ uCalendar.description }}
-                </p>
-                <div class="calendar-members">
-                    <template v-for="m in members">
+        <!-- user calendars -->
+        <template v-for="uCalendar in userCalendars">
+        <div class="columns is-multiline">
+        <div class="column is-12">
+        
+            <router-link
+                to="/calendar/view"
+                class="title is-4" 
+                @click.native="clickUserCalendar(uCalendar.id)"
+            >
+                <div 
+                    :class="['card', 'is-clickable', theme.primary.class]"
+                    @dragenter="handleDragEnter()"
+                >
+                <div class="card-content" style="height: 120px">
+                <div class="media">
+        
+                    <div class="media-left">
+                        <span class="icon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                    </div>
+        
+                    <div class="media-content">
+                        <p style="margin-bottom: 10px;">{{ uCalendar.name }}</p>
+                        <p class="subtitle is-6">
+                            {{ uCalendar.description }}
+                        </p>
                         <div 
-                            class="member-in-calendar" 
-                            v-if="m.id === uCalendar.id"
-                            draggable
-                        >{{ m.name }}</div>
-                    </template>
-                </div>
-            </div>
+                            class="icon"
+                            style="
+                                position: absolute;
+                                top: 20px;
+                                right: 20px;
+                            "
+                        ><i class="fa fa-gear"></i></div>
+                    </div>
+        
+                </div><!-- // .media -->
+                </div><!-- // .card-content -->
+                </div><!-- // .card -->
+            </router-link>
+        
+        </div><!-- // .column is-xx -->
+        </div><!-- // .columns -->
+        </template>
+    </div>
 
-        </div><!-- // .media -->
-        </div><!-- // .card-content -->
-        </div><!-- // .card -->
-    </router-link>
+    <calendar-settings v-show="currentId === 1"></calendar-settings>
+    <application-settings v-show="currentId === 2"></application-settings>
+    <account-settings v-show="currentId === 3"></account-settings>
 
-</div><!-- // .column is-xx -->
-</template>
-</div><!-- // .columns -->
 </div><!-- // .container -->
 </div><!-- // .wrapper -->
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import menuTabs from './menu-tabs.vue';
+import calendarSettings from './calendar-settings/index.vue';
+import applicationSettings from './application-settings/index.vue';
+import accountSettings from './account-settings/index.vue';
 import dateCard from './date-card.vue';
 
 export default {
 
     components: {
+        'menu-tabs': menuTabs,
+        'calendar-settings': calendarSettings,
+        'application-settings': applicationSettings,
+        'account-settings': accountSettings,
         'date-card': dateCard
+    },
+
+    data() {
+        return {
+            tabs: [
+                { label: 'Dashboard', icon: 'fa-calendar' },
+                { label: 'Calendar Settings', icon: 'fa-gear' },
+                { label: 'Application Settings', icon: 'fa-gear' },
+                { label: 'Account Settings', icon: 'fa-gear' }
+            ]
+        }
     },
 
     computed: {
         ...mapState({
+            currentId: state => state.dashboard.currentId,
             userCalendars: state => state.calendar.data.userCalendars,
-            members: state => state.dashboard.data.members,
             theme: state => state.app.theme
         })
     },
 
-//    computed: {
-//        userCalendars: function() {
-//            return this.$store.state.calendar.data.userCalendars;
-//        },
-//
-//        theme: function() {
-//            return this.$store.state.app.theme;
-//        }
-//    },
-
     methods: {
+        clickNewCalendarButton: function() {
+            u.clog('New Calendar Button');
+        },
+
         clickUserCalendar: function(id) {
             u.clog('changeCalendar(' + id + ')');
             this.$store.commit('setCurrentCalendarId', id);
-        },
-
-        handleDragEnter: function() {
-            u.clog('drag enter');
         }
-    },
+    }
 }
 </script>
+
 <style lang="scss" scoped>
 div.card {
     &.is-koiai.is-clickable:hover {
@@ -130,45 +146,6 @@ div.card {
 
     &.is-moegi.is-clickable:hover {
         border: 1px solid rgba(170, 207, 83, 0.5);
-    }
-}
-
-.member-waiting {
-    border: 1px solid red;
-    padding: 20px;
-    margin-bottom: 25px;
-}
-
-.calendar-members {
-    border: 1px solid blue;
-    padding: 10px;
-}
-
-.member-in-waiting {
-    border: 1px solid green;
-    border-radius: 3px;
-    line-height: 2.5rem;
-    margin: 5px;
-    padding: 5px;
-    cursor: move;
-    &:before {
-        content: "\f2bd";
-        margin-right: 5px;
-        font-family: FontAwesome;
-    }
-}
-
-.member-in-calendar {
-    font-size: 1rem;
-    border: 1px solid red;
-    margin-bottom: 5px;
-    border-radius: 3px;
-    padding: 5px;
-    cursor: move;
-    &:before {
-        content: "\f2bd";
-        margin-right: 5px;
-        font-family: FontAwesome;
     }
 }
 
