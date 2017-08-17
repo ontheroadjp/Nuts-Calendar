@@ -103,18 +103,6 @@ export default new Vuex.Store({
                 }
             }
         },
-
-        action: {
-            namespaced: true,
-            modules: {
-                dashboard: {
-                    namespaced: true,
-                    modules: {
-
-                    }
-                },
-
-            }
-        }
+        
     }
 })
