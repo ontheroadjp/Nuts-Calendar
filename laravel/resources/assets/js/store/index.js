@@ -41,13 +41,6 @@ export default new Vuex.Store({
 //            }
 //        },
 
-//        calendar: {
-//            namespaced: true,
-//            modules: {
-//
-//            }
-//        },
-
         i18n: {
             namespaced: true,
             modules: {
@@ -121,18 +114,6 @@ export default new Vuex.Store({
                     }
                 },
 
-//                calendar: {
-//                    namespaced: true,
-//
-//                    modules: {
-//                        tableView: {
-//                            namespaced: true,
-//                            modules: {
-//
-//                            }
-//                        }
-//                    }
-//                }
             }
         }
     }
