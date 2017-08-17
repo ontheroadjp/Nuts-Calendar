@@ -66,6 +66,22 @@ export default new Vuex.Store({
                             namespaced: true,
                             modules: {
                                 toolPalette: tableViewToolPalette,
+
+                                column: {
+                                    namespaced: true,
+                                    getters: {
+                                        isModalActive: (state) => {
+                                            return state.update.isActive && state.remove.isActive
+                                        }
+                                    },
+                
+                                    modules: {
+                                        insert: columnInsert,
+                                        update: columnUpdate,
+                                        remove: columnRemove
+                                    }
+                                },
+
                                 item: {
                                     namespaced: true,
                                     getters: {
@@ -83,23 +99,7 @@ export default new Vuex.Store({
                             }
                         }
                     }
-                },
-
-                column: {
-                    namespaced: true,
-                    getters: {
-                        isModalActive: (state) => {
-                            return state.update.isActive && state.remove.isActive
-                        }
-                    },
-
-                    modules: {
-                        insert: columnInsert,
-                        update: columnUpdate,
-                        remove: columnRemove
-                    }
-                },
-
+                }
             }
         }
     }
