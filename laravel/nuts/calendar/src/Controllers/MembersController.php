@@ -5,6 +5,7 @@ namespace Nuts\Calendar\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Nuts\Calendar\Models\Member;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class MembersController extends Controller
@@ -18,6 +19,17 @@ class MembersController extends Controller
     {
         $items = Member::all();
         return $items;
+    }
+
+    public function userIndex()
+    {
+        $results = DB::table('users')
+            ->join('user_calendars', 'users.id', '=', 'user_calendars.user_id')
+            ->join('members', 'user_calendars.id', '=', 'members.user_calendar_id')
+            ->select('users.name', 'members.name', 'user_calendars.id')
+            ->get();
+
+        return $results;
     }
 
     /**
@@ -43,7 +55,7 @@ class MembersController extends Controller
     /**
      * Display the specified Story.
      *
-     * @param  int $id
+     * @param  int $id member id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -93,7 +105,6 @@ class MembersController extends Controller
      * Remove the specified Story from storage.
      *
      * @param int $id
-     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
