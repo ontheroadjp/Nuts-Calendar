@@ -22,14 +22,14 @@ export default {
     props: [ 'item' ],
 
     computed: {
-        ...mapState('action/item', {
+        ...mapState('calendar/tableView/item', {
             dragItem: state => state.dnd,
             deleteItem: state => state.remove
         })
     },
 
     methods: {
-        ...mapActions('action/item', {
+        ...mapActions('calendar/tableView/item', {
             prepareUpdateItem: 'update/prepare',
             prepareRemoveItem: 'remove/prepare',
             toggleTaskDone: 'update/toggleTaskDone'

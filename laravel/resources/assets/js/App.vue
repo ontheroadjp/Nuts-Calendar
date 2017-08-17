@@ -76,6 +76,7 @@
                 u.clog('success')
                 this.$store.commit('login', response.data.currentuser.name);
                 this.$store.commit('initUserCalendar', response.data.usercalendar );
+                this.$store.commit('initDashboardMembers', response.data.members );
 
 //                this.$store.commit('initCalendar', response.data.days );
 //                Object.keys(response.data.members).forEach(function(key) {
