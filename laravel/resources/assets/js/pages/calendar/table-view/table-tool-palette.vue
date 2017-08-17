@@ -106,13 +106,13 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('action/calendar', {
-            toolPalette: state => state.view.toolPalette,
-            isEventItemShow: state => state.view.isEventItemShow,
-            isTaskItemShow: state => state.view.isTaskItemShow
+        ...mapState('calendar/tableView/toolPalette', {
+            //toolPalette: state => state.toolPalette,
+            isEventItemShow: state => state.isEventItemShow,
+            isTaskItemShow: state => state.isTaskItemShow
         }),
 
-        ...mapState('action/column', {
+        ...mapState('calendar/tableView/column', {
             addColumn: state => state.insert
         }),
 
@@ -122,15 +122,15 @@ export default {
     },
 
     methods: {
-        ...mapActions('action/column', {
+        ...mapActions('calendar/tableView/column', {
             prepareInsert: 'insert/prepare'
         }),
 
-        ...mapActions('action/calendar', {
-            toggleShowHideColumn: 'view/toggleShowHideColumn',
-            toggleShowHideEventItem: 'view/toggleShowHideEventItem',
-            toggleShowHideTaskItem: 'view/toggleShowHideTaskItem',
-            setInternalQuery: 'view/setInternalQuery'
+        ...mapActions('calendar/tableView/toolPalette', {
+            toggleShowHideColumn: 'toggleShowHideColumn',
+            toggleShowHideEventItem: 'toggleShowHideEventItem',
+            toggleShowHideTaskItem: 'toggleShowHideTaskItem',
+            setInternalQuery: 'setInternalQuery'
         }),
 
         clickColumnButton(id, value) {
