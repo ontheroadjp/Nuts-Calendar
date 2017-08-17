@@ -49,6 +49,15 @@ export default new Vuex.Store({
             }
         },
 
+        dashboard: {
+            namespaced: true,
+            state: {
+                data: {
+                    members: []
+                }
+            }
+        },
+
         calendar: {
             namespaced: true,
             state: {

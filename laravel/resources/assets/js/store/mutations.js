@@ -208,7 +208,7 @@ export default {
     // members
 
     initDashboardMembers( state, members ) {
-        state.dashboard.members = members;
+        state.dashboard.data.members = members;
     },
 
     initMembers( state, members ) {
