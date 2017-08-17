@@ -71,13 +71,13 @@
         },
         
         computed: {
-            ...mapState('action/calendar/tableView/toolPalette', {
+            ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
                 searchQuery: state => (state.query.search).toLowerCase(),
                 internalQuery: state => state.query.internal
             }),
 
-            ...mapState('action/calendar/tableView/item/dnd', {
+            ...mapState('calendar/tableView/item/dnd', {
                 draggingItem: state => state.draggingItem
             }),
 

@@ -62,7 +62,7 @@ export default {
             theme: state => state.app.theme,
         }),
 
-        ...mapState('action/calendar/tableView/toolPalette', {
+        ...mapState('calendar/tableView/toolPalette', {
             isToolPaletteOpen: state => state.toolPalette.isActive,
         }),
 
@@ -76,7 +76,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('action/calendar/tableView/toolPalette', {
+        ...mapActions('calendar/tableView/toolPalette', {
             toggleTableToolPalette: 'toggleTableToolPalette'
         }),
 
