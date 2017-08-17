@@ -83,7 +83,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('action/calendar/tableView/item', {
+        ...mapActions('calendar/tableView/item', {
             updateReset: 'update/reset',
             remove: 'remove/remove',
             removeReset: 'remove/reset',

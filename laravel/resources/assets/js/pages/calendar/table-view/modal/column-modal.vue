@@ -84,12 +84,10 @@ export default {
     computed: {
         ...mapState({
             members: state => state.calendar.data.members,
-//            editColumn: state => state.action.calendar.tableView.column.update,
-//            deleteColumn: state => state.action.calendar.tableView.column.remove,
             theme: state => state.app.theme
         }),
 
-        ...mapState('action/calendar/tableView/column', {
+        ...mapState('calendar/tableView/column', {
             editColumn: state => state.update,
             deleteColumn: state => state.remove
         }),
@@ -111,7 +109,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('action/calendar/tableView/column/update', {
+        ...mapActions('calendar/tableView/column/update', {
             setName: 'setName', 
             setIsShow: 'setIsShow', 
             setOrder: 'setOrder', 
@@ -119,7 +117,7 @@ export default {
             reset: 'reset'
         }),
 
-        ...mapActions('action/calendar/tableView/column/remove', {
+        ...mapActions('calendar/tableView/column/remove', {
             remove: 'remove',
             reset: 'reset'
         }),
