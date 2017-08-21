@@ -2,6 +2,20 @@
 <div class="wrapper">
 <div class="container" style="width: 100%; height: 100vh">
 
+<modal v-show="modal.columnSettings.isActive">
+    <button class="modal-close" @click="clickClose()"></button>
+    <div class="modal-card">
+        <section class="modal-card-body" style="
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+            padding: 60px;
+            height: 350px;
+        ">
+            <h1>HOGE</h1>
+        </section>
+    </div>
+</modal>
+
     <!-- infomation -->
     <div class="columns is-multiline">
         <div class="column is-4">
@@ -22,6 +36,61 @@
 
         <!-- user calendars -->
         <div class="columns is-multiline">
+        <template v-for="uCal in userCalendars">
+        <div class="column is-6">
+            <div 
+                :class="['card', 'is-clickable', theme.primary.class]"
+                style="height: 150px;"
+                @dragenter="handleDragEnter()"
+            >
+            <div class="card-content">
+            <div class="media">
+    
+                <div class="media-left">
+                    <span class="icon">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </div>
+    
+                <div class="media-content">
+                    <p style="margin-bottom: 10px;">
+                        <router-link
+                            to="/calendar/view"
+                            class="title is-4" 
+                            @click.native="clickUserCalendar(uCal.id)"
+                        >{{ uCal.name }}
+                        </router-link>
+                    </p>
+
+                    <p class="subtitle is-6">
+                        {{ uCal.description }}
+                    </p>
+
+                    <div 
+                        class="icon"
+                        style="
+                            position: absolute;
+                            top: 20px;
+                            right: 20px;
+                        "
+                    >
+                        <a @click="modal.columnSettings.isActive = true">
+                            <i class="fa fa-gear"></i>
+                        </a>
+                    </div>
+                </div>
+    
+            </div><!-- // .media -->
+            </div><!-- // .card-content -->
+            </div><!-- // .card -->
+        
+        </div><!-- // .column is-xx -->
+        </template>
+        </div><!-- // .columns -->
+        <!-- // user calendars -->
+<!--
+        <!-- members -->
+        <div class="columns is-multiline">
         <template v-for="value in members">
         <div class="column is-6">
         
@@ -31,7 +100,7 @@
                 @click.native="clickUserCalendar(value.id)"
             >
                 <div 
-                    :class="['card', 'is-clickable', theme.primary.class]"
+                    :class="['card', 'card-foover', 'is-clickable', theme.primary.class]"
                     @dragenter="handleDragEnter()"
                 >
                 <div class="card-content">
@@ -100,7 +169,7 @@
         </template>
         </div><!-- // .columns -->
         <!-- // user calendars -->
-
+-->
     </div>
 
     <calendar-settings v-show="currentId === 1"></calendar-settings>
@@ -113,6 +182,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import modal from '../../../components/modal.vue';
 import menuTabs from './menu-tabs.vue';
 import calendarSettings from './calendar-settings/index.vue';
 import applicationSettings from './application-settings/index.vue';
@@ -122,6 +192,7 @@ import dateCard from './date-card.vue';
 export default {
 
     components: {
+        'modal': modal,
         'menu-tabs': menuTabs,
         'calendar-settings': calendarSettings,
         'application-settings': applicationSettings,
@@ -131,6 +202,12 @@ export default {
 
     data() {
         return {
+            modal: {
+                columnSettings: {
+                    isActive: false
+                }
+            },
+
             tabs: [
                 { label: 'Dashboard', icon: 'fa-calendar' },
                 { label: 'Calendar Settings', icon: 'fa-gear' },
@@ -150,6 +227,10 @@ export default {
     },
 
     methods: {
+        clickClose: function() {
+            this.modal.columnSettings.isActive = false;
+        },
+
         clickNewCalendarButton: function() {
             u.clog('New Calendar Button');
         },
@@ -163,7 +244,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div.card {
+.card-foover {
     &.is-koiai.is-clickable:hover {
         border: 1px solid rgba(25, 96, 182, 0.5);
     }
@@ -184,5 +265,4 @@ div.card {
         border: 1px solid rgba(170, 207, 83, 0.5);
     }
 }
-
 </style>
