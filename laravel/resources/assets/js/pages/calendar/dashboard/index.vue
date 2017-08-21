@@ -82,8 +82,8 @@ export default {
 
     computed: {
         ...mapState({
-            currentId: state => state.dashboard.currentId,
             userCalendars: state => state.calendar.data.userCalendars,
+            currentId: state => state.dashboard.currentId,
             members: state => state.dashboard.data.members,
             theme: state => state.app.theme
         })
@@ -103,7 +103,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-foover {
+.card-fover {
     &.is-koiai.is-clickable:hover {
         border: 1px solid rgba(25, 96, 182, 0.5);
     }

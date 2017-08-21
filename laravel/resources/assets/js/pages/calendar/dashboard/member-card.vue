@@ -1,6 +1,6 @@
 <template>
 <div 
-    :class="['card', 'card-foover', 'is-clickable', theme.primary.class]"
+    :class="['card', 'card-fover', 'is-clickable', theme.primary.class]"
     @dragenter="handleDragEnter()"
 >
     <div class="card-content">
