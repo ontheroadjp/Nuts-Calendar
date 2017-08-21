@@ -76,8 +76,8 @@ export default {
 
     computed: {
         ...mapState({
-            editItem: state => state.action.item.update,
-            deleteItem: state => state.action.item.remove,
+            editItem: state => state.calendar.tableView.item.update,
+            deleteItem: state => state.calendar.tableView.item.remove,
             theme: state => state.app.theme
         }),
     },
