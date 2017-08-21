@@ -21,33 +21,66 @@
         </div>
 
         <!-- user calendars -->
-        <template v-for="uCalendar in userCalendars">
         <div class="columns is-multiline">
-        <div class="column is-12">
+        <template v-for="value in members">
+        <div class="column is-6">
         
             <router-link
                 to="/calendar/view"
                 class="title is-4" 
-                @click.native="clickUserCalendar(uCalendar.id)"
+                @click.native="clickUserCalendar(value.id)"
             >
                 <div 
                     :class="['card', 'is-clickable', theme.primary.class]"
                     @dragenter="handleDragEnter()"
                 >
-                <div class="card-content" style="height: 120px">
+                <div class="card-content">
                 <div class="media">
         
                     <div class="media-left">
                         <span class="icon">
-                            <i class="fa fa-calendar"></i>
+                            <i class="fa fa-user-o"></i>
                         </span>
                     </div>
         
                     <div class="media-content">
-                        <p style="margin-bottom: 10px;">{{ uCalendar.name }}</p>
+                        <p style="margin-bottom: 10px;">{{ value.name }}</p>
                         <p class="subtitle is-6">
-                            {{ uCalendar.description }}
+                            {{ value.description }}
                         </p>
+
+                        <div>Today</div>
+                        <div class="columns">
+                            <div class="column is-6">
+                                <p class="today-schedule">
+                                    Schedule:<br>
+                                    10:00 MTG w/yamada
+                                </p>
+                            </div>
+                            <div class="column is-6">
+                                <p class="today-ToDo">
+                                    ToDo:<br>
+                                    10:00 MTG w/yamada
+                                </p>
+                            </div>
+                        </div>
+
+                        <div>within 7days</div>
+                        <div class="columns">
+                            <div class="column is-6">
+                                <p class="today-schedule">
+                                    Schedule:<br>
+                                    12件
+                                </p>
+                            </div>
+                            <div class="column is-6">
+                                <p class="today-ToDo">
+                                    ToDo:<br>
+                                    20件
+                                </p>
+                            </div>
+                        </div>
+
                         <div 
                             class="icon"
                             style="
@@ -64,8 +97,10 @@
             </router-link>
         
         </div><!-- // .column is-xx -->
-        </div><!-- // .columns -->
         </template>
+        </div><!-- // .columns -->
+        <!-- // user calendars -->
+
     </div>
 
     <calendar-settings v-show="currentId === 1"></calendar-settings>
@@ -109,6 +144,7 @@ export default {
         ...mapState({
             currentId: state => state.dashboard.currentId,
             userCalendars: state => state.calendar.data.userCalendars,
+            members: state => state.dashboard.data.members,
             theme: state => state.app.theme
         })
     },
