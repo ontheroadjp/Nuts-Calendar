@@ -2,24 +2,10 @@
 <div class="wrapper">
 <div class="container" style="width: 100%; height: 100vh">
 
-<modal v-show="modal.columnSettings.isActive">
-    <button class="modal-close" @click="clickClose()"></button>
-    <div class="modal-card">
-        <section class="modal-card-body" style="
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-            padding: 60px;
-            height: 350px;
-        ">
-            <h1>HOGE</h1>
-        </section>
-    </div>
-</modal>
-
     <!-- infomation -->
     <div class="columns is-multiline">
         <div class="column is-4">
-            <date-card></date-card>
+            <today-date-card></today-date-card>
         </div>
     </div>
     
@@ -28,148 +14,28 @@
     <div v-show="currentId === 0">
 
         <div style="margin-bottom: 20px;">
-            <a 
-                :class="['button', theme.primary.class]"
+            <a :class="['button', theme.primary.class]"
                 @click="clickNewCalendarButton()"
             >New Calendar</a>
         </div>
 
         <!-- user calendars -->
         <div class="columns is-multiline">
-        <template v-for="uCal in userCalendars">
-        <div class="column is-6">
-            <div 
-                :class="['card', 'is-clickable', theme.primary.class]"
-                style="height: 150px;"
-                @dragenter="handleDragEnter()"
-            >
-            <div class="card-content">
-            <div class="media">
-    
-                <div class="media-left">
-                    <span class="icon">
-                        <i class="fa fa-calendar"></i>
-                    </span>
+            <template v-for="uCal in userCalendars">
+                <div class="column is-6">
+                    <user-calendar-card :userCalendar="uCal"></user-calendar-card>
                 </div>
-    
-                <div class="media-content">
-                    <p style="margin-bottom: 10px;">
-                        <router-link
-                            to="/calendar/view"
-                            class="title is-4" 
-                            @click.native="clickUserCalendar(uCal.id)"
-                        >{{ uCal.name }}
-                        </router-link>
-                    </p>
+            </template>
+        </div>
 
-                    <p class="subtitle is-6">
-                        {{ uCal.description }}
-                    </p>
-
-                    <div 
-                        class="icon"
-                        style="
-                            position: absolute;
-                            top: 20px;
-                            right: 20px;
-                        "
-                    >
-                        <a @click="modal.columnSettings.isActive = true">
-                            <i class="fa fa-gear"></i>
-                        </a>
-                    </div>
-                </div>
-    
-            </div><!-- // .media -->
-            </div><!-- // .card-content -->
-            </div><!-- // .card -->
-        
-        </div><!-- // .column is-xx -->
-        </template>
-        </div><!-- // .columns -->
-        <!-- // user calendars -->
-<!--
         <!-- members -->
         <div class="columns is-multiline">
-        <template v-for="value in members">
-        <div class="column is-6">
-        
-            <router-link
-                to="/calendar/view"
-                class="title is-4" 
-                @click.native="clickUserCalendar(value.id)"
-            >
-                <div 
-                    :class="['card', 'card-foover', 'is-clickable', theme.primary.class]"
-                    @dragenter="handleDragEnter()"
-                >
-                <div class="card-content">
-                <div class="media">
-        
-                    <div class="media-left">
-                        <span class="icon">
-                            <i class="fa fa-user-o"></i>
-                        </span>
-                    </div>
-        
-                    <div class="media-content">
-                        <p style="margin-bottom: 10px;">{{ value.name }}</p>
-                        <p class="subtitle is-6">
-                            {{ value.description }}
-                        </p>
-
-                        <div>Today</div>
-                        <div class="columns">
-                            <div class="column is-6">
-                                <p class="today-schedule">
-                                    Schedule:<br>
-                                    10:00 MTG w/yamada
-                                </p>
-                            </div>
-                            <div class="column is-6">
-                                <p class="today-ToDo">
-                                    ToDo:<br>
-                                    10:00 MTG w/yamada
-                                </p>
-                            </div>
-                        </div>
-
-                        <div>within 7days</div>
-                        <div class="columns">
-                            <div class="column is-6">
-                                <p class="today-schedule">
-                                    Schedule:<br>
-                                    12件
-                                </p>
-                            </div>
-                            <div class="column is-6">
-                                <p class="today-ToDo">
-                                    ToDo:<br>
-                                    20件
-                                </p>
-                            </div>
-                        </div>
-
-                        <div 
-                            class="icon"
-                            style="
-                                position: absolute;
-                                top: 20px;
-                                right: 20px;
-                            "
-                        ><i class="fa fa-gear"></i></div>
-                    </div>
-        
-                </div><!-- // .media -->
-                </div><!-- // .card-content -->
-                </div><!-- // .card -->
-            </router-link>
-        
-        </div><!-- // .column is-xx -->
-        </template>
-        </div><!-- // .columns -->
-        <!-- // user calendars -->
--->
+            <template v-for="member in members">
+                <div class="column is-6">
+                    <member-card :member="member"></member-card> 
+                </div>
+            </template>
+        </div>
     </div>
 
     <calendar-settings v-show="currentId === 1"></calendar-settings>
@@ -182,32 +48,29 @@
 
 <script>
 import { mapState } from 'vuex';
-import modal from '../../../components/modal.vue';
+import userCalendarCard from './user-calendar-card.vue';
+import memberCard from './member-card.vue';
 import menuTabs from './menu-tabs.vue';
 import calendarSettings from './calendar-settings/index.vue';
 import applicationSettings from './application-settings/index.vue';
 import accountSettings from './account-settings/index.vue';
-import dateCard from './date-card.vue';
+import todayDateCard from './today-date-card.vue';
 
 export default {
 
     components: {
-        'modal': modal,
+//        'modal': modal,
         'menu-tabs': menuTabs,
+        'user-calendar-card': userCalendarCard,
+        'member-card': memberCard,
         'calendar-settings': calendarSettings,
         'application-settings': applicationSettings,
         'account-settings': accountSettings,
-        'date-card': dateCard
+        'today-date-card': todayDateCard
     },
 
     data() {
         return {
-            modal: {
-                columnSettings: {
-                    isActive: false
-                }
-            },
-
             tabs: [
                 { label: 'Dashboard', icon: 'fa-calendar' },
                 { label: 'Calendar Settings', icon: 'fa-gear' },
@@ -227,10 +90,6 @@ export default {
     },
 
     methods: {
-        clickClose: function() {
-            this.modal.columnSettings.isActive = false;
-        },
-
         clickNewCalendarButton: function() {
             u.clog('New Calendar Button');
         },
