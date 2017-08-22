@@ -13,12 +13,6 @@
 
     <div v-show="currentId === 0">
 
-        <div style="margin-bottom: 20px;">
-            <a :class="['button', theme.primary.class]"
-                @click="clickNewCalendarButton()"
-            >New Calendar</a>
-        </div>
-
         <!-- user calendars -->
         <div class="columns is-multiline">
             <template v-for="uCal in userCalendars">
@@ -44,7 +38,8 @@
                 </div>
             </template>
         </div>
-    </div>
+
+    </div><!-- // v-show -->
 
     <calendar-settings v-show="currentId === 1"></calendar-settings>
     <application-settings v-show="currentId === 2"></application-settings>
