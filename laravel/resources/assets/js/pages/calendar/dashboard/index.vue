@@ -26,6 +26,14 @@
                     <user-calendar-card :userCalendar="uCal"></user-calendar-card>
                 </div>
             </template>
+            <div class="column is-6">
+                <div class="new-user-calendar-card" 
+                    style="height: 150px; cursor: pointer"
+                    @click="clickNewCalendar()"
+                >
+                    <div class="card-content">Create New Calendar</div>
+                </div>
+            </div>
         </div>
 
         <!-- members -->
@@ -90,7 +98,7 @@ export default {
     },
 
     methods: {
-        clickNewCalendarButton: function() {
+        clickNewCalendar: function() {
             u.clog('New Calendar Button');
         },
 
@@ -103,6 +111,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.new-user-calendar-card {
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    color: #4a4a4a;
+    max-width: 100%;
+    position: relative;
+    border: 4px dotted rgba(10, 10, 10, 0.24);
+}
+
 .card-fover {
     &.is-koiai.is-clickable:hover {
         border: 1px solid rgba(25, 96, 182, 0.5);
