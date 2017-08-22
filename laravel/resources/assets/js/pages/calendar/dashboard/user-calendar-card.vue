@@ -9,15 +9,15 @@
                 padding: 60px;
                 height: 350px;
             ">
-                <h1>HOGE</h1>
+                <h2>ID: {{ modal.columnSettings.userCalendar.id }}</h2>
+                <h2>Name: {{ modal.columnSettings.userCalendar.name }}</h2>
+                <h2>Description: {{ modal.columnSettings.userCalendar.description }}</h2>
             </section>
         </div>
     </modal>
     
-    <div 
-        :class="['card', 'is-clickable', theme.primary.class]"
+    <div :class="['card', 'is-clickable', theme.primary.class]"
         style="height: 150px;"
-        @dragenter="handleDragEnter()"
     >
         <div class="card-content">
         <div class="media">
@@ -42,15 +42,10 @@
                     {{ userCalendar.description }}
                 </p>
     
-                <div 
-                    class="icon"
-                    style="
-                        position: absolute;
-                        top: 20px;
-                        right: 20px;
-                    "
+                <div class="icon"
+                    style="position: absolute; top: 20px; right: 20px;"
                 >
-                    <a @click="modal.columnSettings.isActive = true">
+                    <a @click="openDialog(userCalendar)">
                         <i class="fa fa-gear"></i>
                     </a>
                 </div>
@@ -79,7 +74,8 @@ export default {
         return {
             modal: {
                 columnSettings: {
-                    isActive: false
+                    isActive: false,
+                    userCalendar: ''
                 }
             }
         }
@@ -92,6 +88,11 @@ export default {
     },
 
     methods: {
+        openDialog: function( userCalendar ) {
+            this.modal.columnSettings.userCalendar = userCalendar;
+            this.modal.columnSettings.isActive = true;
+        },
+
         clickClose: function() {
             this.modal.columnSettings.isActive = false;
         }
