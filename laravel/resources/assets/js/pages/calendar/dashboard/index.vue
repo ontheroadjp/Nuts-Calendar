@@ -31,6 +31,7 @@
         </div>
 
         <!-- members -->
+<!--
         <div class="columns is-multiline">
             <template v-for="member in members">
                 <div class="column is-6">
@@ -38,6 +39,7 @@
                 </div>
             </template>
         </div>
+-->
 
     </div><!-- // v-show -->
 
@@ -75,8 +77,8 @@ export default {
     data() {
         return {
             tabs: [
-                { label: 'Dashboard', icon: 'fa-calendar' },
-                { label: 'Calendar Settings', icon: 'fa-gear' },
+                { label: 'Calendars', icon: 'fa-calendar' },
+                { label: 'Member Settings', icon: 'fa-gear' },
                 { label: 'Application Settings', icon: 'fa-gear' },
                 { label: 'Account Settings', icon: 'fa-gear' }
             ]
@@ -95,11 +97,6 @@ export default {
     methods: {
         clickNewCalendar: function() {
             u.clog('New Calendar Button');
-        },
-
-        clickUserCalendar: function(id) {
-            u.clog('changeCalendar(' + id + ')');
-            this.$store.commit('setCurrentCalendarId', id);
         }
     }
 }
