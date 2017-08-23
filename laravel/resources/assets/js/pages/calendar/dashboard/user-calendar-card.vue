@@ -1,6 +1,6 @@
 <template>
 <div>
-    <modal v-show="modal.columnSettings.isActive">
+    <modal v-if="modal.columnSettings.isActive">
         <button class="modal-close" @click="clickClose()"></button>
         <div class="modal-card">
             <section class="modal-card-body" style="
@@ -9,9 +9,23 @@
                 padding: 60px;
                 height: 350px;
             ">
-                <h2>ID: {{ modal.columnSettings.userCalendar.id }}</h2>
-                <h2>Name: {{ modal.columnSettings.userCalendar.name }}</h2>
-                <h2>Description: {{ modal.columnSettings.userCalendar.description }}</h2>
+                <div class="title">{{ modal.columnSettings.userCalendar.name }}</div>
+                <div class="subtitle 5">{{ modal.columnSettings.userCalendar.description }}</div>
+                <div class="members-label">
+                    <i class="fa fa-user">&nbsp; Members</i>
+                </div>
+                <ul class="members">
+                    <li v-for="member in members" class="member">
+                        <template v-if="member.id === modal.columnSettings.userCalendar.id"> 
+                            <input type="checkbox" checked>
+                                <span class="member-checkbox-label">{{ member.name }}</span>
+                        </template>
+                        <template v-else>
+                            <input type="checkbox">
+                                <span class="member-checkbox-label">{{ member.name }}</span>
+                        </template>
+                    </li>
+                </ul>
             </section>
         </div>
     </modal>
@@ -32,13 +46,13 @@
                 <p style="margin-bottom: 10px;">
                     <router-link
                         to="/calendar/view"
-                        class="title is-4" 
+                        class="title" 
                         @click.native="clickUserCalendar(userCalendar.id)"
                     >{{ userCalendar.name }}
                     </router-link>
                 </p>
     
-                <p class="subtitle is-6">
+                <p class="subtitle">
                     {{ userCalendar.description }}
                 </p>
     
@@ -83,7 +97,8 @@ export default {
 
     computed: {
         ...mapState({
-            'theme': state => state.app.theme
+            members: state => state.dashboard.data.members,
+            theme: state => state.app.theme
         })
     },
 
@@ -95,11 +110,26 @@ export default {
 
         clickClose: function() {
             this.modal.columnSettings.isActive = false;
+        },
+
+        clickUserCalendar: function(id) {
+            u.clog('changeCalendar(' + id + ')');
+            this.$store.commit('setCurrentCalendarId', id);
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    /* empty */
+.members {
+    margin: 10px 20px;
+}
+
+.member {
+    line-height: 1.5rem;
+}
+
+.member-checkbox-label {
+    margin: 0 5px;
+}
 </style>
