@@ -7,18 +7,14 @@
                 <div class="message"> error!  </div>
             </section>
 
-            <section class="modal-card-body" style="
-                border-top-left-radius: 3px;
-                border-top-right-radius: 3px;
-                padding: 60px;
-                height: 600px;
-            ">
+            <section class="modal-card-body" style="padding: 40px;" :style="[style.bgSecondary]">
                 <form>
                     <input 
                         id="name"
                         class="title inline-text-input" 
                         type="text" 
                         style="margin-bottom: 0"
+                        :style="[style.bgSecondary]"
                         placeholder="Calendar Name"
                         v-model="modal.input.name"
                         @focus="modal.editing.name = true"
@@ -39,6 +35,7 @@
                         id="description"
                         class="subtitle inline-text-input" 
                         type="text" 
+                        :style="[style.bgSecondary]"
                         placeholder="Description"
                         v-model="modal.input.description"
                         @focus="modal.editing.description = true"
@@ -54,23 +51,25 @@
                         @click="clickDescriptionSave()"
                         :disabled="modal.input.description === userCalendar.description"
                     ><i class="fa fa-floppy-o"></i></a>
-                
-                    <label class="label">Members</label>
-                    <ul class="members">
-                        <li v-for="member in members" class="member">
-                            <input :id="member.name" 
-                                type="checkbox" 
-                                class="nuts-input-checkbox" 
-                                :checked="member.id === modal.columnSettings.userCalendar.id"
-                            >
-                            <label :for="member.name" 
-                                class="member-checkbox-label" 
-                                style="display: inline;"
-                            >{{ member.name }}</label>
-                        </li>
-                    </ul>
-
                 </form>
+            </section> 
+
+            <section class="modal-card-body" style="padding: 60px;">
+                <label class="label">Members</label>
+                <ul class="members">
+                    <li v-for="member in members" class="member">
+                        <input :id="member.name" 
+                            type="checkbox" 
+                            class="nuts-input-checkbox" 
+                            :checked="member.id === modal.columnSettings.userCalendar.id"
+                        >
+                        <label :for="member.name" 
+                            class="member-checkbox-label" 
+                            style="display: inline;"
+                        >{{ member.name }}</label>
+                    </li>
+                </ul>
+
             </section>
         </div>
     </modal>
@@ -156,7 +155,16 @@ export default {
         ...mapState({
             members: state => state.dashboard.data.members,
             theme: state => state.app.theme
-        })
+        }),
+
+        style: function() {
+            return {
+                bgSecondary: {
+                    'background-color': this.theme.secondary.code,
+                    'color': 'white'
+                }
+            }
+        }
     },
 
     methods: {
