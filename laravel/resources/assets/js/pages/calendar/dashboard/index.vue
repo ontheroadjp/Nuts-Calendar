@@ -2,116 +2,117 @@
 <div class="wrapper">
 <div class="container" style="width: 100%; height: 100vh">
 
-<!-- infomation -->
-<div class="columns is-multiline">
-    <div class="column is-4">
-        <date-card></date-card>
+    <!-- infomation -->
+    <div class="columns is-multiline">
+        <div class="column is-4">
+            <today-date-card></today-date-card>
+        </div>
     </div>
-</div>
+    
+    <menu-tabs :tabs="tabs"></menu-tabs>
 
-<!-- columns -->
-<div class="member-waiting">
-    <template v-for="m in members">
-        <span 
-            class="member-in-waiting" 
-            draggable
-        >{{ m.name }}</span>
-    </template>
-</div>
+    <div v-show="currentId === 0">
 
-<!-- user calendars -->
-<div class="columns is-multiline">
-<template v-for="uCalendar in userCalendars">
-<div class="column is-4">
-
-    <router-link
-        to="/calendar/view"
-        class="title is-4" 
-        @click.native="clickUserCalendar(uCalendar.id)"
-    >
-        <div 
-            :class="['card', 'is-clickable', theme.primary.class]"
-            @dragenter="handleDragEnter()"
-        >
-        <div class="card-content">
-        <div class="media">
-
-            <div class="media-left">
-                <span class="icon">
-                    <i class="fa fa-calendar"></i>
-                </span>
-            </div>
-
-            <div class="media-content">
-                <p>{{ uCalendar.name }}</p>
-                <p class="subtitle is-6">
-                    {{ uCalendar.description }}
-                </p>
-                <div class="calendar-members">
-                    <template v-for="m in members">
-                        <div 
-                            class="member-in-calendar" 
-                            v-if="m.id === uCalendar.id"
-                            draggable
-                        >{{ m.name }}</div>
-                    </template>
+        <!-- user calendars -->
+        <div class="columns is-multiline">
+            <template v-for="uCal in userCalendars">
+                <div class="column is-6">
+                    <user-calendar-card :userCalendar="uCal"></user-calendar-card>
+                </div>
+            </template>
+            <div class="column is-6">
+                <div class="new-user-calendar-card" 
+                    style="height: 150px; cursor: pointer"
+                    @click="clickNewCalendar()"
+                >
+                    <div class="card-content">Create New Calendar</div>
                 </div>
             </div>
+        </div>
 
-        </div><!-- // .media -->
-        </div><!-- // .card-content -->
-        </div><!-- // .card -->
-    </router-link>
+        <!-- members -->
+<!--
+        <div class="columns is-multiline">
+            <template v-for="member in members">
+                <div class="column is-6">
+                    <member-card :member="member"></member-card> 
+                </div>
+            </template>
+        </div>
+-->
 
-</div><!-- // .column is-xx -->
-</template>
-</div><!-- // .columns -->
+    </div><!-- // v-show -->
+
+    <calendar-settings v-show="currentId === 1"></calendar-settings>
+    <application-settings v-show="currentId === 2"></application-settings>
+    <account-settings v-show="currentId === 3"></account-settings>
+
 </div><!-- // .container -->
 </div><!-- // .wrapper -->
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import dateCard from './date-card.vue';
+import userCalendarCard from './user-calendar-card.vue';
+import memberCard from './member-card.vue';
+import menuTabs from './menu-tabs.vue';
+import calendarSettings from './calendar-settings/index.vue';
+import applicationSettings from './application-settings/index.vue';
+import accountSettings from './account-settings/index.vue';
+import todayDateCard from './today-date-card.vue';
 
 export default {
 
     components: {
-        'date-card': dateCard
+//        'modal': modal,
+        'menu-tabs': menuTabs,
+        'user-calendar-card': userCalendarCard,
+        'member-card': memberCard,
+        'calendar-settings': calendarSettings,
+        'application-settings': applicationSettings,
+        'account-settings': accountSettings,
+        'today-date-card': todayDateCard
+    },
+
+    data() {
+        return {
+            tabs: [
+                { label: 'Calendars', icon: 'fa-calendar' },
+                { label: 'Member Settings', icon: 'fa-gear' },
+                { label: 'Application Settings', icon: 'fa-gear' },
+                { label: 'Account Settings', icon: 'fa-gear' }
+            ]
+        }
     },
 
     computed: {
         ...mapState({
             userCalendars: state => state.calendar.data.userCalendars,
+            currentId: state => state.dashboard.currentId,
             members: state => state.dashboard.data.members,
             theme: state => state.app.theme
         })
     },
 
-//    computed: {
-//        userCalendars: function() {
-//            return this.$store.state.calendar.data.userCalendars;
-//        },
-//
-//        theme: function() {
-//            return this.$store.state.app.theme;
-//        }
-//    },
-
     methods: {
-        clickUserCalendar: function(id) {
-            u.clog('changeCalendar(' + id + ')');
-            this.$store.commit('setCurrentCalendarId', id);
-        },
-
-        handleDragEnter: function() {
-            u.clog('drag enter');
+        clickNewCalendar: function() {
+            u.clog('New Calendar Button');
         }
-    },
+    }
 }
 </script>
+
 <style lang="scss" scoped>
-div.card {
+.new-user-calendar-card {
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+    color: #4a4a4a;
+    max-width: 100%;
+    position: relative;
+    border: 4px dotted rgba(10, 10, 10, 0.24);
+}
+
+.card-fover {
     &.is-koiai.is-clickable:hover {
         border: 1px solid rgba(25, 96, 182, 0.5);
     }
@@ -132,44 +133,4 @@ div.card {
         border: 1px solid rgba(170, 207, 83, 0.5);
     }
 }
-
-.member-waiting {
-    border: 1px solid red;
-    padding: 20px;
-    margin-bottom: 25px;
-}
-
-.calendar-members {
-    border: 1px solid blue;
-    padding: 10px;
-}
-
-.member-in-waiting {
-    border: 1px solid green;
-    border-radius: 3px;
-    line-height: 2.5rem;
-    margin: 5px;
-    padding: 5px;
-    cursor: move;
-    &:before {
-        content: "\f2bd";
-        margin-right: 5px;
-        font-family: FontAwesome;
-    }
-}
-
-.member-in-calendar {
-    font-size: 1rem;
-    border: 1px solid red;
-    margin-bottom: 5px;
-    border-radius: 3px;
-    padding: 5px;
-    cursor: move;
-    &:before {
-        content: "\f2bd";
-        margin-right: 5px;
-        font-family: FontAwesome;
-    }
-}
-
 </style>

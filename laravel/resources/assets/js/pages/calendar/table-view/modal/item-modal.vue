@@ -61,7 +61,7 @@
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
 import contentField from '../../../../components/edit-text-field.vue';
-import timeRange from '../../../../components/edit-time-range.vue';
+//import timeRange from '../../../../components/edit-time-range.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 
 export default {
@@ -70,7 +70,7 @@ export default {
     components: {
         'modal': modal,
         'contentField': contentField,
-        'timeRange': timeRange,
+//        'timeRange': timeRange,
         'timeRangePicker': timeRangePicker
     },
 
