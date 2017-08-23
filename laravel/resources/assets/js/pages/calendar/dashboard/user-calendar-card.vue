@@ -58,14 +58,15 @@
                     <label class="label">Members</label>
                     <ul class="members">
                         <li v-for="member in members" class="member">
-                            <template v-if="member.id === modal.columnSettings.userCalendar.id"> 
-                                <input :id="member.name" type="checkbox" class="nuts-input-checkbox" checked>
-                                <label :for="member.name" class="member-checkbox-label">{{ member.name }}</label>
-                            </template>
-                            <template v-else>
-                                <input :id="member.name" class="nuts-input-checkbox" type="checkbox">
-                                <label :for="member.name" class="member-checkbox-label">{{ member.name }}</label>
-                            </template>
+                            <input :id="member.name" 
+                                type="checkbox" 
+                                class="nuts-input-checkbox" 
+                                :checked="member.id === modal.columnSettings.userCalendar.id"
+                            >
+                            <label :for="member.name" 
+                                class="member-checkbox-label" 
+                                style="display: inline;"
+                            >{{ member.name }}</label>
                         </li>
                     </ul>
 
