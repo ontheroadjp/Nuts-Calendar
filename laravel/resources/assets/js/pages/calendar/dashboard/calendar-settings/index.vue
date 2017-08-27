@@ -70,12 +70,13 @@ export default {
         }),
 
         ...mapState('dashboard', {
-            members: state => state.data.members
+            members: state => state.data.members,
+            userCalendars: state => state.data.userCalendars
         }),
 
-        ...mapState('calendar', {
-            userCalendars: state => state.data.userCalendars
-        })
+//        ...mapState('calendar', {
+//            userCalendars: state => state.data.userCalendars
+//        })
     },
 
     methods: {

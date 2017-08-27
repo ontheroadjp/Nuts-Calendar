@@ -10,10 +10,6 @@ export default {
             calendarService: {
                 isLoading: false
             },
-            input: {
-                name: '',
-                description: ''
-            }
         }
     },
 
@@ -71,36 +67,5 @@ export default {
             this.calendarService.isLoading = false;
         },
 
-        execPutCalendarSettings(calendarId) {
-//            u.clog('execPutCalendarSettings(' + calendarId + ')');
-//            this.isLoading.calendarApi = true;
-    
-            const url = '/api/v1/calendar/' + calendarId;
-            const data = {
-                'name': this.input.name,
-                'description': this.input.description,
-                '_method': 'PUT'
-            };
-    
-            http.fetchPost(url, data)
-                .then( response => this.successPutCalendarSettings(response))
-                .catch( error => this.failedPutCalendarSettings(error));
-        },
-
-        successPutCalendarSettings(response) {
-            u.clog('success');
-            const id = response.data.id;
-            const name = response.data.name;
-            const description = response.data.description;
-
-            this.$store.commit('setCalendarName', {id:id, name:name});
-            this.$store.commit('setCalendarDescription', {id:id, description:description});
-        },
-
-        failedPutCalendarSettings(error) {
-            u.clog('failed');
-        }
-
     }
-
 }
