@@ -1,6 +1,6 @@
 <template>
 <div>
-    <modal v-if="modal.columnSettings.isActive">
+    <modal v-if="modal.isActive">
         <!-- <button class="modal-close" @click="clickClose()"></button> -->
         <div class="modal-card">
             <section v-show="modal.hasError">
@@ -28,11 +28,11 @@
                     >
                     <a class="button" 
                         v-show="modal.editing.name" 
-                        @click="clickNameCancel().editing.name=false"
+                        @click="clickCancel().editing.name=false"
                     ><i class="fa fa-times"></i></a>
                     <a class="button" 
                         v-show="modal.editing.name"
-                        @click="clickNameSave()"
+                        @click="clickSave()"
                         :disabled="modal.input.name === userCalendar.name"
                     ><i class="fa fa-floppy-o"></i></a>
 
@@ -48,11 +48,11 @@
                     >
                     <a class="button"
                         v-show="modal.editing.description" 
-                        @click="clickDescriptionCancel()"
+                        @click="clickCancel()"
                     ><i class="fa fa-times"></i></a>
                     <a class="button"
                         v-show="modal.editing.description"
-                        @click="clickDescriptionSave()"
+                        @click="clickSave()"
                         :disabled="modal.input.description === userCalendar.description"
                     ><i class="fa fa-floppy-o"></i></a>
                 </form>
@@ -65,7 +65,12 @@
                         <input :id="member.name" 
                             type="checkbox" 
                             class="nuts-input-checkbox" 
-                            :checked="member.id === modal.columnSettings.userCalendar.id"
+                            :checked="userCalendarMemberIds.indexOf(member.id) !== -1"
+                            @change="changeMemberValue(
+                                member.name, 
+                                userCalendar.id,
+                                member.id
+                            )"
                         >
                         <label :for="member.name" 
                             class="member-checkbox-label" 
@@ -122,8 +127,13 @@
 <script>
 import { mapState } from 'vuex';
 import modal from '../../../components/modal.vue';
+import userCalendarMemberApi from '../../../services/userCalendarMember.js';
 
 export default {
+    mixins: [
+        userCalendarMemberApi
+    ],
+
     components: {
         'modal': modal
     },
@@ -134,12 +144,9 @@ export default {
 
     data() {
         return {
+            userCalendarMemberIds: [],
             modal: {
-                columnSettings: {
-                    isActive: false,
-                    userCalendar: ''
-                },
-
+                isActive: false,
                 hasError: false,
 
                 editing: {
@@ -158,6 +165,7 @@ export default {
     computed: {
         ...mapState({
             members: state => state.dashboard.data.members,
+            userCalendarMembers: state => state.dashboard.data.userCalendarMembers,
             theme: state => state.app.theme
         }),
 
@@ -173,56 +181,82 @@ export default {
 
     methods: {
         openDialog: function( userCalendar ) {
-            this.modal.columnSettings.userCalendar = userCalendar;
-            this.modal.columnSettings.isActive = true;
+            this.modal.isActive = true;
         },
 
         clickClose: function() {
-            this.modal.columnSettings.isActive = false;
+            this.modal.isActive = false;
         },
 
-        clickNameSave: function() {
-            u.clog('clickNameSave()');
+        clickSave: function() {
+            u.clog('clickSave()');
             this.modal.editing.name = false;
+            this.modal.editing.description = false;
             this.modal.hasError = false;
+            this.update(this.userCalendar.id, this.modal.input.name, this.modal.input.description);
         },
 
-        clickNameCancel: function() {
+        clickCancel: function() {
             this.modal.input.name = this.userCalendar.name;
-            this.modal.editing.name = false;
-            this.modal.hasError = false;
-        },
-
-        blurName: function() {
-            if( this.modal.input.name === this.userCalendar.name ) {
-                this.modal.editing.name = false;
-            } else {
-                u.clog('name has not been saved');
-                document.getElementById('name').focus();
-                this.modal.hasError = true;
-            }
-        },
-
-        clickDescriptionSave: function() {
-            u.clog('clickDescriptionSave()');
-            this.modal.editing.description = false;
-            this.modal.hasError = false;
-        },
-
-        clickDescriptionCancel: function() {
             this.modal.input.description = this.userCalendar.description;
+            this.modal.editing.name = false;
             this.modal.editing.description = false;
             this.modal.hasError = false;
         },
 
-        blurDescription: function() {
-            if( this.modal.input.description === this.userCalendar.description ) {
-                this.modal.editing.description = false;
-            } else {
-                u.clog('description has not been saved');
-                document.getElementById('description').focus();
-                this.modal.hasError = true;
-            }
+//        clickNameSave: function() {
+//            u.clog('clickNameSave()');
+//            this.modal.editing.name = false;
+//            this.modal.hasError = false;
+//            this.update(this.userCalendar.id, this.modal.input.name, this.modal.input.description);
+//        },
+
+//        clickNameCancel: function() {
+//            this.modal.input.name = this.userCalendar.name;
+//            this.modal.editing.name = false;
+//            this.modal.hasError = false;
+//        },
+
+//        blurName: function() {
+//            if( this.modal.input.name === this.userCalendar.name ) {
+//                this.modal.editing.name = false;
+//            } else {
+//                u.clog('name has not been saved');
+//                document.getElementById('name').focus();
+//                this.modal.hasError = true;
+//            }
+//        },
+
+//        clickDescriptionSave: function() {
+//            u.clog('clickDescriptionSave()');
+//            this.modal.editing.description = false;
+//            this.modal.hasError = false;
+//            this.update(this.userCalendar.id, this.modal.input.name, this.modal.input.description);
+//        },
+
+//        clickDescriptionCancel: function() {
+//            this.modal.input.description = this.userCalendar.description;
+//            this.modal.editing.description = false;
+//            this.modal.hasError = false;
+//        },
+
+//        blurDescription: function() {
+//            if( this.modal.input.description === this.userCalendar.description ) {
+//                this.modal.editing.description = false;
+//            } else {
+//                u.clog('description has not been saved');
+//                document.getElementById('description').focus();
+//                this.modal.hasError = true;
+//            }
+//        },
+
+        changeMemberValue(elementId, userCalendarId, memberId) {
+            u.clog('--------------------------------');
+            u.clog('user_calendar_id: ' + userCalendarId);
+            u.clog('member_id: ' + memberId);
+            const value = document.getElementById(elementId).checked;
+            u.clog('value: ' + value);
+            this.chengeMember(userCalendarId, memberId, value);
         },
 
         clickUserCalendar: function(id) {
@@ -231,9 +265,22 @@ export default {
         }
     },
 
+    watch: {
+        userCalendarMembers: function(value) {
+            u.clog('watch!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        }
+    },
+
     mounted() {
         this.modal.input.name = this.userCalendar.name;
         this.modal.input.description = this.userCalendar.description;
+
+        const self = this;
+        this.userCalendarMembers.forEach( function( val ) {
+            if( val.user_calendar_id === self.userCalendar.id ) {
+                self.userCalendarMemberIds.push(val.member_id);
+            }
+        });
     }
 }
 </script>
