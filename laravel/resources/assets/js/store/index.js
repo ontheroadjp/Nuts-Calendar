@@ -54,6 +54,7 @@ export default new Vuex.Store({
             state: {
                 currentId: 0,
                 data: {
+                    userCalendars: [],
                     userCalendarMembers: [],
                     members: []
                 }
@@ -65,17 +66,17 @@ export default new Vuex.Store({
                 }
             },
 
-            calendar: {
-                namespaced: true,
-                modules: {
-                    members: {
-//                        insert: memberInsert,
-//                        update: memberUpdate,
-//                        remove: memberRemove,
-//                        dnd: memberDnd
-                    }
-                }
-            }
+//            calendar: {
+//                namespaced: true,
+//                modules: {
+//                    members: {
+////                        insert: memberInsert,
+////                        update: memberUpdate,
+////                        remove: memberRemove,
+////                        dnd: memberDnd
+//                    }
+//                }
+//            }
         },
 
         calendar: {
@@ -86,7 +87,7 @@ export default new Vuex.Store({
                 currentYear: now.getFullYear(),
                 currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
                 data: {
-                    userCalendars: [],
+//                    userCalendars: [],
                     calendars: [],
                     members: []
                 }
