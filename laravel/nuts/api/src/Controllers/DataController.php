@@ -11,11 +11,12 @@
 
 namespace Nuts\Api\Controllers;
 
+use Nuts\Calendar\Models\Member;
 use Nuts\Api\Requests\DataRequest;
 use Nuts\Calendar\Models\Calendar;
-use Illuminate\Support\Facades\DB;
 use Nuts\Calendar\Models\UserCalendar;
 use Nuts\Api\Responses\JwtAuthJsonResponse;
+use Nuts\Calendar\Models\UserCalendarMember;
 use Nuts\Calendar\Controllers\MembersController;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -35,12 +36,15 @@ class DataController extends BaseController
             return $this->sendUserCalendarNotFound();
         }
 
-        $members = DB::table('users')
-            ->join('user_calendars', 'users.id', '=', 'user_calendars.user_id')
-            ->join('members', 'user_calendars.id', '=', 'members.user_calendar_id')
-            ->select('members.name', 'user_calendars.id')
-            ->where('users.id', '=', $userId)
-            ->get();
+//        $members = DB::table('users')
+//            ->join('user_calendars', 'users.id', '=', 'user_calendars.user_id')
+//            ->join('members', 'user_calendars.id', '=', 'members.user_calendar_id')
+//            ->select('members.name', 'members.id as member_id', 'user_calendars.id as user_calendar_id')
+//            ->where('users.id', '=', $userId)
+//            ->get();
+
+        $members = Member::all();
+        $userCalendarMembers = UserCalendarMember::all();
 
         // calendar
 //        $currentCalendarId = $userCalendarKeys[0];
@@ -57,6 +61,7 @@ class DataController extends BaseController
             'message' => 'application data',
             'currentuser' => auth()->user(),
             'usercalendar' => $userCalendars,
+            'usercalendar_members' => $userCalendarMembers,
             'members' => $members,
 //            'currentCalendarId' =>  $currentCalendarId,
 //            'days' => $calendar['days'],

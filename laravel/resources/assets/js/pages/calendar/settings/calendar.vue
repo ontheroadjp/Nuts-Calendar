@@ -100,14 +100,14 @@
             const self = this;
             if(! this.$store.state.app.ready ) {
                 eventBus.listen('nuts.app.ready', function() {
-                    const cal = self.$store.state.calendar.data.userCalendars[self.currentCalendarId];
+                    const cal = self.$store.state.dashboard.data.userCalendars[self.currentCalendarId];
                     const calName = cal.name;
                     const calDescription = cal.description;
                     self.input.name = calName;
                     self.input.description = calDescription;
                 },this.$route.path);
             } else {
-                const cal = self.$store.state.calendar.data.userCalendars[self.currentCalendarId];
+                const cal = self.$store.state.dashboard.data.userCalendars[self.currentCalendarId];
                 const calName = cal.name;
                 const calDescription = cal.description;
                 self.input.name = calName;

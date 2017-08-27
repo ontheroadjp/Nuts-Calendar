@@ -173,12 +173,21 @@ export default {
     // user calendar
 
     initUserCalendar( state, userCalendars ) {
-        state.calendar.data.userCalendars = userCalendars;
+        state.dashboard.data.userCalendars = userCalendars;
+//        state.calendar.data.userCalendars = userCalendars;
     },
 
     setCurrentCalendarId( state, id ) {
         state.calendar.currentId = id;
         localStorage.setItem('currentCalendarId', id);
+    },
+
+    setUserCalendarName( state, { id, name } ) {
+        state.dashboard.data.userCalendars[id].name = name;
+    },
+
+    setUserCalendarDescription( state, { id, description } ) {
+        state.dashboard.data.userCalendars[id].description = description;
     },
 
     // ---------------------------------------------
@@ -196,16 +205,12 @@ export default {
         state.calendar.currentMonth = month;
     },
 
-    setCalendarName( state, { id, name } ) {
-        state.calendar.data.userCalendars[id].name = name;
-    },
-
-    setCalendarDescription( state, { id, description } ) {
-        state.calendar.data.userCalendars[id].description = description;
-    },
-
     // ---------------------------------------------
     // members
+
+    initDashboardUserCalendarMembers( state, members ) {
+        state.dashboard.data.userCalendarMembers = members;
+    },
 
     initDashboardMembers( state, members ) {
         state.dashboard.data.members = members;
