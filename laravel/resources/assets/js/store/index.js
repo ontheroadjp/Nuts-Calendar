@@ -54,6 +54,7 @@ export default new Vuex.Store({
             state: {
                 currentId: 0,
                 data: {
+                    userCalendarMembers: [],
                     members: []
                 }
             },
