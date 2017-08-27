@@ -16,10 +16,8 @@ export default {
 
             if( value ) {
                 this.addMember(url, data);
-
             } else {
                 this.removeMember(url, data);
-
             }
         },
 
