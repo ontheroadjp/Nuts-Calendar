@@ -23,17 +23,16 @@
                         :style="[style.bgSecondary]"
                         placeholder="Calendar Name"
                         v-model="modal.input.name"
-                        @focus="modal.editing.name = true"
-                        @blur="blurName()"
                     >
                     <a class="button" 
-                        v-show="modal.editing.name" 
-                        @click="clickCancel().editing.name=false"
-                    ><i class="fa fa-times"></i></a>
+                        v-show="userCalendar.name !== modal.input.name" 
+                        @click="clickUndo()"
+                    >
+                        <i class="fa fa-undo"></i>
+                    </a>
                     <a class="button" 
-                        v-show="modal.editing.name"
+                        v-show="userCalendar.name !== modal.input.name"
                         @click="clickSave()"
-                        :disabled="modal.input.name === userCalendar.name"
                     ><i class="fa fa-floppy-o"></i></a>
 
                     <input 
@@ -43,18 +42,16 @@
                         :style="[style.bgSecondary]"
                         placeholder="Description"
                         v-model="modal.input.description"
-                        @focus="modal.editing.description = true"
-                        @blur="blurDescription()"
                     >
-                    <a class="button"
-                        v-show="modal.editing.description" 
-                        @click="clickCancel()"
-                    ><i class="fa fa-times"></i></a>
-                    <a class="button"
-                        v-show="modal.editing.description"
+                    <a class="button" 
+                        v-show="userCalendar.description !== modal.input.description" 
+                        @click="clickUndo()"
+                    ><i class="fa fa-undo"></i></a>
+                    <a class="button" 
+                        v-show="userCalendar.description !== modal.input.description"
                         @click="clickSave()"
-                        :disabled="modal.input.description === userCalendar.description"
                     ><i class="fa fa-floppy-o"></i></a>
+
                 </form>
             </section> 
 
@@ -149,11 +146,6 @@ export default {
                 isActive: false,
                 hasError: false,
 
-                editing: {
-                    name: false,
-                    description: false
-                },
-
                 input: {
                     name: '',
                     description: ''
@@ -186,69 +178,24 @@ export default {
 
         clickClose: function() {
             this.modal.isActive = false;
+            this.initModalInput();
         },
 
         clickSave: function() {
             u.clog('clickSave()');
-            this.modal.editing.name = false;
-            this.modal.editing.description = false;
             this.modal.hasError = false;
-            this.update(this.userCalendar.id, this.modal.input.name, this.modal.input.description);
+            this.update(
+                this.userCalendar.id, 
+                this.modal.input.name, 
+                this.modal.input.description
+            );
         },
 
-        clickCancel: function() {
+        clickUndo: function() {
             this.modal.input.name = this.userCalendar.name;
             this.modal.input.description = this.userCalendar.description;
-            this.modal.editing.name = false;
-            this.modal.editing.description = false;
             this.modal.hasError = false;
         },
-
-//        clickNameSave: function() {
-//            u.clog('clickNameSave()');
-//            this.modal.editing.name = false;
-//            this.modal.hasError = false;
-//            this.update(this.userCalendar.id, this.modal.input.name, this.modal.input.description);
-//        },
-
-//        clickNameCancel: function() {
-//            this.modal.input.name = this.userCalendar.name;
-//            this.modal.editing.name = false;
-//            this.modal.hasError = false;
-//        },
-
-//        blurName: function() {
-//            if( this.modal.input.name === this.userCalendar.name ) {
-//                this.modal.editing.name = false;
-//            } else {
-//                u.clog('name has not been saved');
-//                document.getElementById('name').focus();
-//                this.modal.hasError = true;
-//            }
-//        },
-
-//        clickDescriptionSave: function() {
-//            u.clog('clickDescriptionSave()');
-//            this.modal.editing.description = false;
-//            this.modal.hasError = false;
-//            this.update(this.userCalendar.id, this.modal.input.name, this.modal.input.description);
-//        },
-
-//        clickDescriptionCancel: function() {
-//            this.modal.input.description = this.userCalendar.description;
-//            this.modal.editing.description = false;
-//            this.modal.hasError = false;
-//        },
-
-//        blurDescription: function() {
-//            if( this.modal.input.description === this.userCalendar.description ) {
-//                this.modal.editing.description = false;
-//            } else {
-//                u.clog('description has not been saved');
-//                document.getElementById('description').focus();
-//                this.modal.hasError = true;
-//            }
-//        },
 
         changeMemberValue(elementId, userCalendarId, memberId) {
             u.clog('--------------------------------');
@@ -262,25 +209,26 @@ export default {
         clickUserCalendar: function(id) {
             u.clog('changeCalendar(' + id + ')');
             this.$store.commit('setCurrentCalendarId', id);
-        }
-    },
+        },
 
-    watch: {
-        userCalendarMembers: function(value) {
-            u.clog('watch!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        initModalInput: function() {
+            this.modal.input.name = this.userCalendar.name;
+            this.modal.input.description = this.userCalendar.description;
+        },
+
+        initUserCalendarMemberIds: function() {
+            const self = this;
+            this.userCalendarMembers.forEach( function( val ) {
+                if( val.user_calendar_id === self.userCalendar.id ) {
+                    self.userCalendarMemberIds.push(val.member_id);
+                }
+            });
         }
     },
 
     mounted() {
-        this.modal.input.name = this.userCalendar.name;
-        this.modal.input.description = this.userCalendar.description;
-
-        const self = this;
-        this.userCalendarMembers.forEach( function( val ) {
-            if( val.user_calendar_id === self.userCalendar.id ) {
-                self.userCalendarMemberIds.push(val.member_id);
-            }
-        });
+        this.initModalInput();
+        this.initUserCalendarMemberIds();
     }
 }
 </script>
