@@ -182,11 +182,11 @@ export default {
         localStorage.setItem('currentCalendarId', id);
     },
 
-    setCalendarName( state, { id, name } ) {
+    setUserCalendarName( state, { id, name } ) {
         state.dashboard.data.userCalendars[id].name = name;
     },
 
-    setCalendarDescription( state, { id, description } ) {
+    setUserCalendarDescription( state, { id, description } ) {
         state.dashboard.data.userCalendars[id].description = description;
     },
 
