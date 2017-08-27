@@ -22,16 +22,16 @@
                         style="margin-bottom: 0"
                         :style="[style.bgSecondary]"
                         placeholder="Calendar Name"
-                        v-model="modal.input.name"
+                        v-model="input.name"
                     >
                     <a class="button" 
-                        v-show="userCalendar.name !== modal.input.name" 
+                        v-show="userCalendar.name !== input.name" 
                         @click="clickUndo()"
                     >
                         <i class="fa fa-undo"></i>
                     </a>
                     <a class="button" 
-                        v-show="userCalendar.name !== modal.input.name"
+                        v-show="userCalendar.name !== input.name"
                         @click="clickSave()"
                     ><i class="fa fa-floppy-o"></i></a>
 
@@ -41,14 +41,14 @@
                         type="text" 
                         :style="[style.bgSecondary]"
                         placeholder="Description"
-                        v-model="modal.input.description"
+                        v-model="input.description"
                     >
                     <a class="button" 
-                        v-show="userCalendar.description !== modal.input.description" 
+                        v-show="userCalendar.description !== input.description" 
                         @click="clickUndo()"
                     ><i class="fa fa-undo"></i></a>
                     <a class="button" 
-                        v-show="userCalendar.description !== modal.input.description"
+                        v-show="userCalendar.description !== input.description"
                         @click="clickSave()"
                     ><i class="fa fa-floppy-o"></i></a>
 
@@ -124,11 +124,12 @@
 <script>
 import { mapState } from 'vuex';
 import modal from '../../../components/modal.vue';
-import userCalendarMemberApi from '../../../services/userCalendarMember.js';
+import userCalendarService from '../../../services/userCalendar.js';
+import userCalendarMemberService from '../../../services/userCalendarMember.js';
 
 export default {
     mixins: [
-        userCalendarMemberApi
+        userCalendarService, userCalendarMemberService
     ],
 
     components: {
@@ -146,10 +147,10 @@ export default {
                 isActive: false,
                 hasError: false,
 
-                input: {
-                    name: '',
-                    description: ''
-                }
+//                input: {
+//                    name: '',
+//                    description: ''
+//                }
             }
         }
     },
@@ -184,16 +185,12 @@ export default {
         clickSave: function() {
             u.clog('clickSave()');
             this.modal.hasError = false;
-            this.update(
-                this.userCalendar.id, 
-                this.modal.input.name, 
-                this.modal.input.description
-            );
+            this.update(this.userCalendar.id);
         },
 
         clickUndo: function() {
-            this.modal.input.name = this.userCalendar.name;
-            this.modal.input.description = this.userCalendar.description;
+            this.input.name = this.userCalendar.name;
+            this.input.description = this.userCalendar.description;
             this.modal.hasError = false;
         },
 
@@ -212,8 +209,8 @@ export default {
         },
 
         initModalInput: function() {
-            this.modal.input.name = this.userCalendar.name;
-            this.modal.input.description = this.userCalendar.description;
+            this.input.name = this.userCalendar.name;
+            this.input.description = this.userCalendar.description;
         },
 
         initUserCalendarMemberIds: function() {
