@@ -1,13 +1,19 @@
 <template>
 <div>
     <modal v-if="modal.columnSettings.isActive">
-        <button class="modal-close" @click="clickClose()"></button>
+        <!-- <button class="modal-close" @click="clickClose()"></button> -->
         <div class="modal-card">
             <section v-show="modal.hasError">
                 <div class="message"> error!  </div>
             </section>
 
             <section class="modal-card-body" style="padding: 40px;" :style="[style.bgSecondary]">
+                <button 
+                    class="delete" 
+                    style="position: absolute; top: 20px; right: 20px;"
+                    aria-label="close" 
+                    @click="clickClose()"
+                ></button>
                 <form>
                     <input 
                         id="name"
@@ -23,7 +29,6 @@
                     <a class="button" 
                         v-show="modal.editing.name" 
                         @click="clickNameCancel().editing.name=false"
-                        :disabled="modal.input.name === userCalendar.name"
                     ><i class="fa fa-times"></i></a>
                     <a class="button" 
                         v-show="modal.editing.name"
@@ -41,12 +46,11 @@
                         @focus="modal.editing.description = true"
                         @blur="blurDescription()"
                     >
-                    <a class="button" 
+                    <a class="button"
                         v-show="modal.editing.description" 
                         @click="clickDescriptionCancel()"
-                        :disabled="modal.input.description === userCalendar.description"
                     ><i class="fa fa-times"></i></a>
-                    <a class="button" 
+                    <a class="button"
                         v-show="modal.editing.description"
                         @click="clickDescriptionSave()"
                         :disabled="modal.input.description === userCalendar.description"
