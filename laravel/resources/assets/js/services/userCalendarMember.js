@@ -4,9 +4,16 @@ export default {
         focus
     },
 
+    data() {
+        return {
+            isLoading: false
+        }
+    },
+
     methods: {
         chengeMember: function(userCalendarId, memberId, value) {
             u.clog('checkMember()');
+            this.isLoading = true;
 
             const url =  '/api/v1/calendar/member';
             const data = {
@@ -26,9 +33,11 @@ export default {
                 .then( response => {
                     u.clog("success");
                     this.$store.commit('dashboard/addUserCalendarMember', { obj: response.data });
+                    this.isLoading = false;
                 })
                 .catch( error => {
                     u.clog('error: ' + error.response.status);
+                    this.isLoading = false;
                 });
         },
 
@@ -37,9 +46,11 @@ export default {
                 .then( response => {
                     u.clog("success");
                     this.$store.commit('dashboard/removeUserCalendarMember', { obj: response.data });
+                    this.isLoading = false;
                 })
                 .catch( error => {
                     u.clog('error: ' + error.response.status);
+                    this.isLoading = false;
                 });
         }
 
