@@ -146,11 +146,6 @@ export default {
             modal: {
                 isActive: false,
                 hasError: false,
-
-//                input: {
-//                    name: '',
-//                    description: ''
-//                }
             }
         }
     },
@@ -201,6 +196,12 @@ export default {
             const value = document.getElementById(elementId).checked;
             u.clog('value: ' + value);
             this.chengeMember(userCalendarId, memberId, value);
+            if( value ) {
+                this.userCalendarMemberIds.push(memberId);
+            } else {
+                const index = this.userCalendarMemberIds.indexOf(memberId);
+                this.userCalendarMemberIds.splice(index, 1);
+            }
         },
 
         clickUserCalendar: function(id) {

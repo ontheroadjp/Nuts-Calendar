@@ -45,11 +45,9 @@ class UserCalendarsController extends Controller
     {
         $userCalendarId = $request->input('user_calendar_id');
         $memberId = $request->input('member_id');
-//        return [
-//            'user_calendar_id' => $userCalendarId,
-//            'member_id' => $memberId
-//        ];
-        return UserCalendarMember::where('user_calendar_id', $userCalendarId)
-            ->where('member_id', $memberId)->delete();
+        $target = UserCalendarMember::where('user_calendar_id', $userCalendarId)
+            ->where('member_id', $memberId)->get();
+        $target[0]->delete();
+        return $target[0];
     }
 }
