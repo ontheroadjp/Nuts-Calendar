@@ -32,7 +32,7 @@
             </span>
         </router-link>
     </li>
-
+<!--
     <li :class="">
         <router-link to="'/calendar/settings/' + currentCalendarId}">
             <span class="icon is-small">
@@ -41,6 +41,7 @@
             <span>{{ t('calendarMenu.createNewOne') }}</span>
         </router-link>
     </li>
+-->
 </ul>
 </nav>
 </div><!-- // container -->
