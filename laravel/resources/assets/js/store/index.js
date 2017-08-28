@@ -66,26 +66,20 @@ export default new Vuex.Store({
                 },
 
                 addUserCalendarMember(state, { obj }) {
-                    state.data.userCalendarMembers.push(obj);
+                    const t = state.data.userCalendarMembers;
+                    Vue.set(t, t.length, obj); 
                 },
 
                 removeUserCalendarMember(state, { obj }) {
-                    const index = state.data.userCalendarMembers.indexOf(obj);
-                    state.data.userCalendarMembers.splice(index, 1);
-                },
+                    const t = state.data.userCalendarMembers;
+                    t.forEach( function(val, index) {
+                        if((val.user_calendar_id === obj.user_calendar_id) 
+                            && (val.member_id === obj.member_id)) {
+                            Vue.delete(t, index);
+                        }
+                    });
+                }
             },
-
-//            calendar: {
-//                namespaced: true,
-//                modules: {
-//                    members: {
-////                        insert: memberInsert,
-////                        update: memberUpdate,
-////                        remove: memberRemove,
-////                        dnd: memberDnd
-//                    }
-//                }
-//            }
         },
 
         calendar: {
