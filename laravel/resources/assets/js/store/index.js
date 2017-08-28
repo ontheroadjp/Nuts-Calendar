@@ -63,7 +63,16 @@ export default new Vuex.Store({
             mutations: {
                 setCurrentId(state, { id }) {
                     state.currentId = id
-                }
+                },
+
+                addUserCalendarMember(state, { obj }) {
+                    state.data.userCalendarMembers.push(obj);
+                },
+
+                removeUserCalendarMember(state, { obj }) {
+                    const index = state.data.userCalendarMembers.indexOf(obj);
+                    state.data.userCalendarMembers.splice(index, 1);
+                },
             },
 
 //            calendar: {

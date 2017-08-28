@@ -24,7 +24,8 @@ export default {
         addMember: function(url, data) {
             http.fetchPost(url, data)
                 .then( response => {
-                    u.clog("success: ['member_id' => " + response.data.member_id + "]");
+                    u.clog("success");
+                    this.$store.commit('dashboard/addUserCalendarMember', { obj: response.data });
                 })
                 .catch( error => {
                     u.clog('error: ' + error.response.status);
@@ -34,7 +35,8 @@ export default {
         removeMember: function(url, data) {
             http.fetchDelete( url, data)
                 .then( response => {
-                    u.clog('success: ' + response.data + ' record(s) removed.');
+                    u.clog("success");
+                    this.$store.commit('dashboard/removeUserCalendarMember', { obj: response.data });
                 })
                 .catch( error => {
                     u.clog('error: ' + error.response.status);
