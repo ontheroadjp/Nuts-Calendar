@@ -32,11 +32,13 @@ class Calendar extends Model
         return $this->hasMany(Item::class,'date','date');
     }
 
-    public function fetch($userCalendarId, $year, $month)
+    public function fetch($userId, $userCalendarId, $year, $month)
     {
-        $members = Member::where('user_calendar_id', $userCalendarId)
-                ->get()
-                ->keyBy('id');
+//        $members = Member::where('user_id', $userCalendarId)
+//                ->get()
+//                ->keyBy('id');
+
+        $members = Member::where('user_id', $userId)->get();
 
         $calendar = $this->fetchCalendarWithItems($year,$month);
         $calendar = $this->tidyItems($calendar, $members);

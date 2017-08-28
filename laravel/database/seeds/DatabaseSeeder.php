@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Nuts\Calendar\Models\Member;
@@ -25,12 +26,11 @@ class DatabaseSeeder extends Seeder
 
         // member
         $faker = Faker::create('en_US');
-        foreach( UserCalendar::all(['id']) as $val ) {
+        foreach( User::all(['id']) as $val ) {
             for( $i=1; $i<rand(3, 6); $i++ ) {
                 Member::create([
                     'name' => $faker->name,
-                    'order' => $i,
-                    'user_calendar_id' => $val->id,
+                    'user_id' => $val->id,
                 ]);
             }
         }
