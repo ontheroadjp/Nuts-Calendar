@@ -43,7 +43,7 @@
 
     </div><!-- // v-show -->
 
-    <calendar-settings v-show="currentId === 1"></calendar-settings>
+    <member-settings v-show="currentId === 1"></member-settings>
     <application-settings v-show="currentId === 2"></application-settings>
     <account-settings v-show="currentId === 3"></account-settings>
 
@@ -56,7 +56,7 @@ import { mapState } from 'vuex';
 import userCalendarCard from './user-calendar-card.vue';
 import memberCard from './member-card.vue';
 import menuTabs from './menu-tabs.vue';
-import calendarSettings from './calendar-settings/index.vue';
+import memberSettings from './member-settings/index.vue';
 import applicationSettings from './application-settings/index.vue';
 import accountSettings from './account-settings/index.vue';
 import todayDateCard from './today-date-card.vue';
@@ -64,11 +64,10 @@ import todayDateCard from './today-date-card.vue';
 export default {
 
     components: {
-//        'modal': modal,
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
         'member-card': memberCard,
-        'calendar-settings': calendarSettings,
+        'member-settings': memberSettings,
         'application-settings': applicationSettings,
         'account-settings': accountSettings,
         'today-date-card': todayDateCard
