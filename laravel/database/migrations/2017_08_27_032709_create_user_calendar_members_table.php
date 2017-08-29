@@ -13,6 +13,7 @@ class CreateUserCalendarMembersTable extends Migration
     public function up()
     {
         Schema::create('user_calendar_members', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('user_calendar_id')->unsigned();
             $table->integer('member_id')->unsigned();
