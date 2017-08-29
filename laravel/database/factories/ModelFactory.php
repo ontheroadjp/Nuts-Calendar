@@ -26,6 +26,7 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
     foreach( App\User::all(['id']) as $val ) {
         $userIds[] = $val->id;
     }
+
     return [
         'name' => $faker->word,
         'description' => $faker->sentence,
@@ -58,8 +59,7 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
 //});
 
 $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) {
-
-    foreach( Nuts\Calendar\Models\Users::all(['id']) as $val ) {
+    foreach( App\User::all(['id']) as $val ) {
         $userIds[] = $val->id;
     }
 
@@ -67,7 +67,6 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
         'name' => $faker->name,
         'user_id' => $faker->randomElement($userIds),
     ];
-
 });
 
 $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $faker) {
