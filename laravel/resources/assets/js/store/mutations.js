@@ -170,11 +170,25 @@ export default {
     },
 
     // ---------------------------------------------
+    // calendar
+
+    initCalendar( state, calendars ) {
+        state.calendar.data.calendars = calendars;
+    },
+
+    setCurrentYear( state, year ) {
+        state.calendar.currentYear = year;
+    },
+
+    setCurrentMonth( state, month ) {
+        state.calendar.currentMonth = month;
+    },
+
+    // ---------------------------------------------
     // user calendar
 
     initUserCalendar( state, userCalendars ) {
         state.dashboard.data.userCalendars = userCalendars;
-//        state.calendar.data.userCalendars = userCalendars;
     },
 
     setCurrentCalendarId( state, id ) {
@@ -191,33 +205,18 @@ export default {
     },
 
     // ---------------------------------------------
-    // calendar
-
-    initCalendar( state, calendars ) {
-        state.calendar.data.calendars = calendars;
-    },
-
-    setCurrentYear( state, year ) {
-        state.calendar.currentYear = year;
-    },
-
-    setCurrentMonth( state, month ) {
-        state.calendar.currentMonth = month;
-    },
-
-    // ---------------------------------------------
     // members
 
-    initDashboardUserCalendarMembers( state, members ) {
-        state.dashboard.data.userCalendarMembers = members;
+    initMembers( state, members ) {
+        state.calendar.data.members = members;
     },
 
     initDashboardMembers( state, members ) {
         state.dashboard.data.members = members;
     },
 
-    initMembers( state, members ) {
-        state.calendar.data.members = members;
+    initDashboardUserCalendarMembers( state, members ) {
+        state.dashboard.data.userCalendarMembers = members;
     },
 
     // ---------------------------------------------

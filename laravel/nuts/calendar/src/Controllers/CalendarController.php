@@ -2,7 +2,6 @@
 
 namespace Nuts\Calendar\Controllers;
 
-use App\Http\Requests;
 use Illuminate\Http\Request;
 use Nuts\Calendar\Models\Calendar;
 use App\Http\Controllers\Controller;
@@ -14,8 +13,9 @@ class CalendarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Calendar $calendar, $userCalendarId, $year, $month)
+    public function index(Request $request, Calendar $calendar, $userCalendarId, $year, $month)
     {
-        return $calendar->fetch($userCalendarId, $year,$month);
+        $userId = $request->user()->id;
+        return $calendar->fetch($userId, $userCalendarId, $year,$month);
     }
 }
