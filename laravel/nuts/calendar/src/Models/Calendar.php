@@ -38,10 +38,25 @@ class Calendar extends Model
 //                ->get()
 //                ->keyBy('id');
 
-        $members = Member::where('user_id', $userId)->get();
+        if($userCalendarId === 'dashboard') return;
+
+        $allMembers = Member::where('user_id', $userId)->get()->toArray();
+
+        $userCalendarMemberIds = UserCalendarMember::where('user_calendar_id', $userCalendarId)
+                                    ->get(['member_id'])
+                                    ->keyBy('member_id')
+                                    ->keys()
+                                    ->toArray();
+
+        $members = [];
+        foreach( $allMembers as $val ) {
+            if( in_array($val['id'], $userCalendarMemberIds) ) {
+                array_push($members, $val);
+            }
+        }
 
         $calendar = $this->fetchCalendarWithItems($year,$month);
-        $calendar = $this->tidyItems($calendar, $members);
+        $calendar = $this->tidyItems($calendar, collect($members));
 
         $item = new Item();
         $items = $item->fetchSpecificMonth($year, $month);
