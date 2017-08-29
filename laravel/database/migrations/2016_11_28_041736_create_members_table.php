@@ -13,18 +13,31 @@ class CreateMembersTable extends Migration
      */
     public function up()
     {
+//        Schema::create('members', function (Blueprint $table) {
+//            $table->engine = 'InnoDB';
+//            $table->increments('id');
+//            $table->integer('user_calendar_id')->unsigned();
+//            $table->integer('order');
+//            $table->string('name');
+//            $table->timestamps();
+//
+//            $table
+//                ->foreign('user_calendar_id')
+//                ->references('id')
+//                ->on('user_calendars')
+//                ->onDelete('cascade');
+//        });
         Schema::create('members', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('user_calendar_id')->unsigned();
-            $table->integer('order');
+            $table->integer('user_id')->unsigned();
             $table->string('name');
             $table->timestamps();
 
             $table
-                ->foreign('user_calendar_id')
+                ->foreign('user_id')
                 ->references('id')
-                ->on('user_calendars')
+                ->on('users')
                 ->onDelete('cascade');
         });
     }

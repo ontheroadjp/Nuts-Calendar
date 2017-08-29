@@ -34,6 +34,7 @@ class JwtAuthServiceProvider extends ServiceProvider
 
         // -------------------------------------------------------------------
         // for Nuts\Calendar
+
         $this->app['router']->group([
             'namespace' => 'Nuts\Calendar\Controllers',
             'prefix' => '/api/v1',
@@ -41,8 +42,9 @@ class JwtAuthServiceProvider extends ServiceProvider
         ], function() {
             Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
 
-                // calendar(date)
-                Route::get('calendar/{userCalendarId}/{year}/{month}', 'CalendarController@index' );
+                // calendar(days)
+                $url = 'calendar/{userCalendarId}/{year}/{month}';
+                Route::get($url, 'CalendarController@index' );
 
                 // user calendar
                 Route::put('calendar/{id}', 'UserCalendarsController@update');
@@ -50,7 +52,8 @@ class JwtAuthServiceProvider extends ServiceProvider
                 Route::delete('calendar/member', 'UserCalendarsController@removeMember');
 
                 // user calendar members
-                Route::get('userCalendarMembers/{user_calendar_id}', 'UserCalendarMembersController@userIndex' );
+                $url = 'uscrCalendarMembers/{user_calendar_id}';
+                Route::get($url, 'UserCalendarMembersController@userIndex' );
 
                 // member
                 Route::get('member/index/{id}', 'MembersController@userIndex' );
@@ -67,6 +70,7 @@ class JwtAuthServiceProvider extends ServiceProvider
 
         // -------------------------------------------------------------------
         // for Nuts\Api
+
         $this->app['router']->group([
             'namespace' => 'Nuts\Api\Controllers',
         ], function() {
