@@ -40,7 +40,7 @@ class Calendar extends Model
 
         if($userCalendarId === 'dashboard') return;
 
-        $allMembers = Member::where('user_id', $userId)->get()->toArray();
+        $allMembers = Member::where('user_id', $userId)->get()->keyBy('id')->toArray();
 
         $userCalendarMemberIds = UserCalendarMember::where('user_calendar_id', $userCalendarId)
                                     ->get(['member_id'])
@@ -51,7 +51,7 @@ class Calendar extends Model
         $members = [];
         foreach( $allMembers as $val ) {
             if( in_array($val['id'], $userCalendarMemberIds) ) {
-                array_push($members, $val);
+                $members += [$val['id'] => $val];
             }
         }
 
@@ -98,6 +98,7 @@ class Calendar extends Model
                 ->diff($items_group_by->keys())
                 ->flatten();
 
+            // add empty item
             for( $i=0; $i < count($diff); $i++ ) {
                 $items_group_by->put($diff[$i], []);
 //                $items_group_by->put($diff[$i], array([
@@ -107,6 +108,7 @@ class Calendar extends Model
 //                ]));
             }
 
+            // replace items to new one
             $days[] = collect($calendar[$n])
                 ->forget('items')
                 ->put('items', $items_group_by);
