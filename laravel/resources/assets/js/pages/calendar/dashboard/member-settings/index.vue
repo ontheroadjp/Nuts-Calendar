@@ -9,7 +9,6 @@
                 type="text" 
                 style="
                     width:40%; 
-                    margin-bottom:5px; 
                     font-size:1rem; 
                     line-height:2.3rem
                 "
@@ -33,7 +32,7 @@
 
     <div class="card" style="padding: 20px 40px;">
         <form>
-        <table style="width: 60%">
+        <table class="member-edit-table" style="width: 60%">
         <template v-for="member, index in members">
             <tr 
                 @mouseenter="showEditIcon(index, true)"
@@ -61,8 +60,7 @@
                         class="inline-text-input input-icon" 
                         type="text" 
                         style="
-                            width:100%; 
-                            margin-bottom:5px; 
+                            width:95%; 
                             font-size:1rem; 
                             line-height:1.5rem
                         "
@@ -203,6 +201,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.member-edit-table {
+    & td {
+        vertical-align: middle;
+    }
+}
+
 .inline-text-input {
     border: none;
     box-shadow: none;
