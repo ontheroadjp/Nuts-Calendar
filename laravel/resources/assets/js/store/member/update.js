@@ -4,17 +4,17 @@ export default {
     state: {
         isActive: false,
         isLoading: false,
-        editingColumn: '',
+        editingMember: '',
         input: {
             name: '',
-            order: '',
+//            order: '',
             isShow: ''
         }
     },
 
     actions: {
-        prepare( { commit }, { editingColumn } ) {
-            commit('prepare', { editingColumn } ); 
+        prepare( { commit }, { editingMember } ) {
+            commit('prepare', { editingMember } ); 
         },
 
         setName( { commit }, { value } ) {
@@ -25,18 +25,18 @@ export default {
             commit('setIsShow', { value });
         },
 
-        setOrder( { commit }, { value } ) {
-            commit('setOrder', { value });
-        },
+//        setOrder( { commit }, { value } ) {
+//            commit('setOrder', { value });
+//        },
 
         update( { state, commit, rootState } ) {
             u.clog('update()');
             commit('start');
 
-            const url = '/api/v1/member/' + state.editingColumn.id;
+            const url = '/api/v1/member/' + state.editingMember.id;
             const data = {
                 'name': state.input.name,
-                'order': state.input.order
+//                'order': state.input.order
             };
     
             http.fetchPut(url, data)
@@ -46,7 +46,7 @@ export default {
                     commit('update', {
                         'member': rootState.calendar.data.members[response.data.id],
                         'name': response.data.name,
-                        'order': response.data.order
+//                        'order': response.data.order
                     });
 
                     commit('notifySuccess', {
@@ -75,12 +75,12 @@ export default {
     },
 
     mutations: {
-        prepare( state, { editingColumn } ) {
+        prepare( state, { editingMember } ) {
             state.isActive = true;  
-            state.editingColumn = editingColumn;
-            state.input.name = editingColumn.name;
-            state.input.order = editingColumn.order;
-            state.input.isShow = editingColumn.isShow;
+            state.editingMember = editingMember;
+            state.input.name = editingMember.name;
+//            state.input.order = editingMember.order;
+            state.input.isShow = editingMember.isShow;
         },
     
         setName( state, { value } ) {
@@ -91,17 +91,18 @@ export default {
             state.input.isShow = value;
         },
     
-        setOrder( state, { value } ) {
-            state.input.order = value;
-        },
+//        setOrder( state, { value } ) {
+//            state.input.order = value;
+//        },
     
         start( state ) {
             state.isLoading = true;
         },
 
-        update( state, { member, name, order } ) {
+//        update( state, { member, name, order } ) {
+        update( state, { member, name } ) {
             member.name = name;
-            member.order = order;
+//            member.order = order;
         },
 
         reset( state ) {
@@ -109,7 +110,7 @@ export default {
             state.isActive = false;
             state.input.name = '';
             state.input.isShow = '';
-            state.input.order = '';
+//            state.input.order = '';
         }
     }
 };

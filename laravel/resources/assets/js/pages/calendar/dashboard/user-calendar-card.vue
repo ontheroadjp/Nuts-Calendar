@@ -22,7 +22,7 @@
                         style="margin-bottom: 0"
                         :style="[style.bgSecondary]"
                         placeholder="Calendar Name"
-                        v-model="input.name"
+                        v-model.trim="input.name"
                     >
                     <a class="button" 
                         v-show="userCalendar.name !== input.name" 
@@ -41,7 +41,7 @@
                         type="text" 
                         :style="[style.bgSecondary]"
                         placeholder="Description"
-                        v-model="input.description"
+                        v-model.trim="input.description"
                     >
                     <a class="button" 
                         v-show="userCalendar.description !== input.description" 

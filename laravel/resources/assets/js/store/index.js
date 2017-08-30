@@ -12,9 +12,9 @@ import { en }   from '../i18n/en.js';
 import ja       from '../i18n/ja.js';
 
 import tableViewToolPalette from './calendar/table-view/tool-palette.js';
-import columnInsert         from './calendar/table-view/column/insert.js';
-import columnUpdate         from './calendar/table-view/column/update.js';
-import columnRemove         from './calendar/table-view/column/remove.js';
+import memberInsert         from './member/insert.js';
+import memberUpdate         from './member/update.js';
+import memberRemove         from './member/remove.js';
 import itemInsert           from './calendar/table-view/item/insert.js';
 import itemUpdate           from './calendar/table-view/item/update.js';
 import itemRemove           from './calendar/table-view/item/remove.js';
@@ -80,6 +80,22 @@ export default new Vuex.Store({
                     });
                 }
             },
+
+        },
+
+        member: {
+            namespaced: true,
+            getters: {
+                isModalActive: (state) => {
+                    return state.update.isActive && state.remove.isActive
+                }
+            },
+
+            modules: {
+                insert: memberInsert,
+                update: memberUpdate,
+                remove: memberRemove
+            }
         },
 
         calendar: {
@@ -102,20 +118,20 @@ export default new Vuex.Store({
                     modules: {
                         toolPalette: tableViewToolPalette,
 
-                        column: {
-                            namespaced: true,
-                            getters: {
-                                isModalActive: (state) => {
-                                    return state.update.isActive && state.remove.isActive
-                                }
-                            },
-        
-                            modules: {
-                                insert: columnInsert,
-                                update: columnUpdate,
-                                remove: columnRemove
-                            }
-                        },
+//                        column: {
+//                            namespaced: true,
+//                            getters: {
+//                                isModalActive: (state) => {
+//                                    return state.update.isActive && state.remove.isActive
+//                                }
+//                            },
+//        
+//                            modules: {
+//                                insert: memberInsert,
+//                                update: columnUpdate,
+//                                remove: columnRemove
+//                            }
+//                        },
 
                         item: {
                             namespaced: true,
