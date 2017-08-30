@@ -7,7 +7,7 @@ export default {
         isActive: false,
         isLoading: false,
         input: {
-            name: ''
+            newName: ''
         }
     },
 
@@ -16,31 +16,36 @@ export default {
             commit('prepare'); 
         },
 
-        setName( { commit }, { value } ) {
-            commit('setName', { value });
+        setNewName( { commit }, { value } ) {
+            commit('setNewName', { value });
         },
 
         insert( { dispatch, commit, state, rootState } ) {
             u.clog('insert()');
             commit('start');
 
-            const order = Object.keys(rootState.calendar.data.members).length + 1;
+//            const order = Object.keys(rootState.calendar.data.members).length + 1;
             const url = '/api/v1/member';
+//            const params = {
+//                'user_calendar_id': rootState.calendar.currentId,
+//                'name': state.input.newName,
+//                'order': order
+//            };
+            
             const params = {
-                'user_calendar_id': rootState.calendar.currentId,
-                'name': state.input.name,
-                'order': order
+                'name': state.input.newName,
             };
             
             http.fetchPost(url, params)
                 .then(response => {
                     u.clog('success');
 
-                    const calendars = rootState.calendar.data.calendars;
-                    const members = rootState.calendar.data.members;
-                    const key = response.data.id;
+//                    const calendars = rootState.calendar.data.calendars;
+//                    const members = rootState.calendar.data.members;
+//                    const memberId = response.data.id;
                     const data = response.data;
-                    commit('insert', { calendars, members, key, data } );
+//                    commit('insert', { calendars, members, memberId, data } );
+                    commit('insert', { data } );
 
                     commit('notifySuccess', {
                         content: 'success add member',
@@ -71,26 +76,34 @@ export default {
             state.isActive = true;  
         },
     
-        setName( state, { value } ) {
-            state.input.name = value;
+        setNewName( state, { value } ) {
+            state.input.newName = value;
         },
     
         start( state ) {
             state.isLoading = true;
         },
     
-        insert( state, { calendars, members, key, data } ) {
+//        insert( state, { calendars, members, key, data } ) {
+//            data.isShow = true;
+//            Vue.set(members, key, data);
+//            calendars.forEach( function(val, index) {
+//                Vue.set( val.items, key, []);
+//            });
+//        },
+
+        insert( state, { data } ) {
             data.isShow = true;
-            Vue.set(members, key, data);
-            calendars.forEach( function(val, index) {
-                Vue.set( val.items, key, []);
-            });
+//            Vue.set(members, memberId, data);
+//            calendars.forEach( function(val, index) {
+//                Vue.set( val.items, memberId, []);
+//            });
         },
 
         reset( state ) {
             state.isLoading = false;
             state.isActive = false;
-            state.input.name = '';
+            state.input.newName = '';
         }
     }
 };
