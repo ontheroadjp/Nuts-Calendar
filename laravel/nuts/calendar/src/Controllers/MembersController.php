@@ -72,12 +72,17 @@ class MembersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'user_calendar_id' => 'required',
             'name' => 'required',
-            'order' => 'required',
         ]);
 
-        $item = new Member($request->all());
+        $userId = $request->user()->id;
+        $name = $request->input('name');
+
+        $item = Member::create([
+            'user_id' => $userId,
+            'name' => $name
+        ]);
+
         $item->save();
         return $item;
     }
@@ -95,7 +100,8 @@ class MembersController extends Controller
 
         $item->fill($request->only(
             //Member::getFillable()
-            ['name','order', 'color']
+            //['name','order', 'color']
+            ['name']
         ));
         $item->save();
         return $item;
