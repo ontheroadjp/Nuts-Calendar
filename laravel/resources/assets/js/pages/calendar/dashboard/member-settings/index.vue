@@ -14,26 +14,45 @@
                     line-height:2.3rem
                 "
                 placeholder="Add New Member"
-                v-model="input.newName"
+                v-model.trim="newName"
             >
             <a :class="['button', theme.primary.class]" 
-                @click="clickSave(index)"
-               :disabled="!input.newName != ''"
-            ><i class="fa fa-floppy-o"></i>&nbspAdd</a>
+                @click="clickAddMember()"
+               :disabled="!newName != '' || isInsertLoading"
+            >
+                <span v-if="!isInsertLoading">
+                    <i class="fa fa-floppy-o" style="margin-top: 3px;"></i>&nbspAdd
+                </span>
+
+                <span v-else>
+                    <i class="fa fa-refresh fa-spin"></i>
+                </span>
+            </a>
         </form>
     </div>
 
     <div class="card" style="padding: 20px 40px;">
         <form>
-        <table style="width: 40%">
-        <template v-for="m, index in members">
+        <table style="width: 60%">
+        <template v-for="member, index in members">
             <tr 
                 @mouseenter="showEditIcon(index, true)"
                 @mouseleave="showEditIcon(index, false)"
                 style="height: 2.5rem"
             >
                 <td width="30px">
-                    <i v-show="(!isEditing && input.icon[index]) || input.editing[index]" class="fa fa-pencil"></i>
+                    <i v-if="(!isFocused && input.icon[index]) || input.fucused[index]" 
+                        class="fa fa-pencil"
+                        style="display:inline;"></i>
+                    <i v-else-if="input.notSaved[index]" 
+                        class="fa fa-exclamation-circle"
+                        style="color:red; display:inline"></i>
+<!--
+                    <i v-else-if="isUpdateLoading && input.focused[index]" 
+                        class="fa fa-refresh fa-spin"
+                        style="display:inline"></i>
+-->
+                    <span v-else>{{ index }}</span>
                 </td>
 
                 <td>
@@ -49,23 +68,27 @@
                         "
                         placeholder="Name"
                         v-model.trim="input.name[index]"
-                        @focus="editing(index, true)"
-                        @blur="editing(index, false)"
+                        @focus="fucused(index, true)"
+                        @blur="fucused(index, false)"
                     >
                 </td>
-                <td style="width: 100px">
+                <td style="width: 160px">
                     <a class="button" 
-                       v-show="(!isEditing && input.icon[index]) || input.editing[index]"
+                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
                         @click="clickUndo(index)"
-                       :disabled="input.name[index] === members[index].name"
+                       :disabled="input.name[index] === members[index].name || input.name[index] === ''"
                     >
                         <i class="fa fa-undo"></i>
                     </a>
                     <a class="button" 
-                       v-show="(!isEditing && input.icon[index]) || input.editing[index]"
+                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
                         @click="clickSave(index)"
-                       :disabled="input.name[index] === members[index].name"
+                       :disabled="!isUpdateLoading && (input.name[index] === members[index].name || input.name[index] === '')"
                     ><i class="fa fa-floppy-o"></i></a>
+                    <a class="button" 
+                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
+                        @click=""
+                    ><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
         </template>
@@ -76,14 +99,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     data() {
         return {
             input: {
-                newName: '',
-                editing: [],
+                fucused: [],
+                notSaved: [],
                 name: [],
                 icon: []
             }
@@ -100,28 +123,71 @@ export default {
             userCalendars: state => state.data.userCalendars
         }),
 
-        isEditing: function() {
-            return this.input.editing.indexOf(true) !== -1;
+        ...mapState('member/insert', {
+            isInsertLoading: state => state.isLoading
+        }),
+
+        ...mapState('member/update', {
+            isUpdateLoading: state => state.isLoading
+        }),
+
+        newName: {
+            get () {
+                return this.$store.state.member.insert.input.newName;
+            },
+
+            set (value) {
+                this.setNewName({ value });
+            }
+        },
+
+        isFocused: function() {
+            return this.input.fucused.indexOf(true) !== -1;
         }
     },
 
     methods: {
+        ...mapActions('member/insert', {
+            setNewName: 'setNewName',
+            insert: 'insert'
+        }),
+
+        ...mapActions('member/update', {
+            prepare: 'prepare',
+            update: 'update'
+        }),
+
+        clickAddMember: function() {
+            this.insert();
+        },
+
         showEditIcon: function(index, value) {
             this.$set(this.input.icon, index, value);
         },
 
-        editing: function(index, value) {
-            this.$set(this.input.name, index, this.members[index].name);
-            this.$set(this.input.editing, index, value);
+        fucused: function(index, value) {
+            this.$set(this.input.fucused, index, value);
+            if( !value ) {
+                if( this.members[index].name !== this.input.name[index] ) {
+                    this.$set(this.input.notSaved, index, true);
+                } else {
+                    this.$set(this.input.notSaved, index, false);
+                }
+            }
         },
 
         clickUndo: function(index) {
-            const i = parseInt(index);
+            this.$set(this.input.notSaved, index, false);
             this.$set(this.input.name, index, this.members[index].name);
         },
 
         clickSave: function(index) {
-
+            this.$set(this.input.notSaved, index, false);
+            let editingMember = this.members[index];
+            editingMember.name = this.input.name[index];
+            editingMember.isShow = true;
+            this.prepare({ editingMember })
+            this.update();
         }
     },
 
@@ -144,14 +210,4 @@ export default {
     outline: none;
 }
 
-p:before {
-    content: "HOGE";
-}
-
-.input-icon {
-    font-size: 1.5rem;
-    &:hover::before {
-        content: "<i class='fa fa-pencil'></i>";
-    }
-}
 </style>
