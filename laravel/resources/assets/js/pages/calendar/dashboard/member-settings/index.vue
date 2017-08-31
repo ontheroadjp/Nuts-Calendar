@@ -4,7 +4,6 @@
     <div class="card" style="padding: 20px 40px;">
         <form>
             <input 
-                id="name"
                 class="inline-text-input" 
                 type="text" 
                 style="
@@ -23,7 +22,7 @@
                     Add Member
                 </span>
 
-                <span v-else>
+                <span class="icon is-small" v-else>
                     <i class="fa fa-refresh fa-spin"></i>
                 </span>
             </a>
@@ -81,7 +80,7 @@
                     ><i class="fa fa-floppy-o" @click="clickSave(index)"></i></a>
                     <a class="button no-border" 
                        v-show="(!isFocused && input.icon[index]) || input.focused[index]"
-                    ><i class="fa fa-trash" @click=""></i></a>
+                    ><i class="fa fa-trash" @click="clickRemove(index)"></i></a>
                 </td>
             </tr>
         </template>
@@ -146,8 +145,13 @@ export default {
         }),
 
         ...mapActions('member/update', {
-            prepare: 'prepare',
-            update: 'update'
+            prepareUpdate: 'prepare',
+            update: 'update',
+        }),
+
+        ...mapActions('member/remove', {
+            prepareRemove: 'prepare',
+            remove: 'remove'
         }),
 
         clickAddMember: function() {
@@ -179,8 +183,13 @@ export default {
             let editingMember = this.members[index];
             editingMember.name = this.input.name[index];
             editingMember.isShow = true;
-            this.prepare({ editingMember })
+            this.prepareUpdate({ editingMember })
             this.update();
+        },
+
+        clickRemove: function(index) {
+            const deletingMemberId = this.members[index].id;
+            this.remove({ deletingMemberId });
         }
     },
 

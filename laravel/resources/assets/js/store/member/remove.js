@@ -4,30 +4,38 @@ export default {
     namespaced: true,
 
     state: {
-        isActive: false,
+//        isActive: false,
         isLoading: false,
-        calendars: '',
-        columns: '',
-        deletingColumn: ''
+//        calendars: '',
+//        members: '',
+//        deletingMemberId: ''
     },
 
     actions: {
-        prepare( { commit, rootState }, { deletingColumn }  ) {
-            const calendars = rootState.calendar.data.calendars;
-            const columns = rootState.calendar.data.members;
-            commit('prepare', { calendars, columns, deletingColumn } );
-        },
+//        prepare( { commit, rootState }, { deletingMember }  ) {
+//            const calendars = rootState.calendar.data.calendars;
+//            const members = rootState.calendar.data.members;
+//            commit('prepare', { calendars, members, deletingMember } );
+//        },
 
-        remove( { commit, state } ) {
+//        prepare( { commit, rootState }, { deletingMemberId }  ) {
+//            commit('prepare', { deletingMemberId } );
+//        },
+
+        remove( { commit, state, rootState }, { deletingMemberId } ) {
             u.clog('remove()');
             commit('start');
 
-            const url = '/api/v1/member/' + state.deletingColumn.id;
+            const calendars = rootState.calendar.data.calendars;
+            const members = rootState.dashboard.data.members;
+
+            const url = '/api/v1/member/' + deletingMemberId;
             http.fetchDelete(url)
                 .then(response => {
                     u.clog('success');
 
-                    commit('remove');
+//                    commit('remove');
+                    commit('remove', { calendars, members, deletingMemberId });
 
                     commit('notifySuccess', {
                         content: 'success remove member',
@@ -55,41 +63,53 @@ export default {
     },
 
     mutations: {
-        prepare( state, { calendars, columns, deletingColumn } ) {
-            state.calendars = calendars,
-            state.columns = columns,
-            state.deletingColumn = deletingColumn
-            state.isActive = true;
-        },
+//        prepare( state, { calendars, members, deletingMember } ) {
+//            state.calendars = calendars,
+//            state.members = members,
+//            state.deletingMember = deletingMember
+//            state.isActive = true;
+//        },
+
+//        prepare( state, { deletingMemberId } ) {
+//            state.deletingMemberId = deletingMemberId
+//            state.isActive = true;
+//        },
 
         start( state ) {
             state.isLoading = true;
         },
 
-        remove( state ) {
-//            //state.columns.splice(state.deletingColumn.id, 1);
-//            delete state.columns[state.deletingColumn.id];
+//        remove( state ) {
+//            Vue.delete(state.members, state.deletingMemberId);
 //            state.calendars.forEach( function(val, index) {
-//                delete val.items[state.deletingColumn.id];
-//                //val.items.splice(state.deletingColumn, 1);
+//                Vue.delete( val.items, state.deletingMemberId);
 //            });
+//        },
 
-            Vue.delete(state.columns, state.deletingColumn.id);
-            state.calendars.forEach( function(val, index) {
-                Vue.delete( val.items, state.deletingColumn.id);
+//        remove( state, { calendars, members } ) {
+//            Vue.delete(members, state.deletingMemberId);
+//            calendars.forEach( function(val, index) {
+//                Vue.delete( val.items, state.deletingMemberId);
+//            });
+//        },
+
+        remove( state, { calendars, members, deletingMemberId } ) {
+            Vue.delete(members, deletingMemberId);
+            calendars.forEach( function(val, index) {
+                Vue.delete( val.items, deletingMemberId);
             });
         },
 
-        finish( { state, commit }, { content, type, isImportant } ) {
-
-        },
+//        finish( { state, commit }, { content, type, isImportant } ) {
+//
+//        },
 
         reset( state ) {
-            state.isActive = false,
-            state.isLoading = false,
-            state.calendars = '',
-            state.columns = '',
-            state.deletingColumn = ''
+//            state.isActive = false;
+            state.isLoading = false;
+//            state.calendars = '';
+//            state.members = '';
+//            state.deletingMemberId = '';
         }
     }
 }
