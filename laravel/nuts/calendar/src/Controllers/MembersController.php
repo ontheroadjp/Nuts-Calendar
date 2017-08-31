@@ -99,8 +99,6 @@ class MembersController extends Controller
         if( $item instanceof \Illuminate\Http\JsonResponse ) return $item;
 
         $item->fill($request->only(
-            //Member::getFillable()
-            //['name','order', 'color']
             ['name']
         ));
         $item->save();
@@ -118,8 +116,10 @@ class MembersController extends Controller
         $item = Member::findOrAbort($id);
         $item->delete();
 
-        return \Response::json([
-            'success' => true
-        ]);
+        return $item;
+
+//        return \Response::json([
+//            'success' => true
+//        ]);
     }
 }
