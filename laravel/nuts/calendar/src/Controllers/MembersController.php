@@ -114,12 +114,15 @@ class MembersController extends Controller
     public function destroy($id)
     {
         $item = Member::findOrAbort($id);
+
+        if( ! $item instanceof Member ) {
+            return [
+                'status' => 400,
+                'message' => 'member id does not exist'
+            ];
+        }
+
         $item->delete();
-
         return $item;
-
-//        return \Response::json([
-//            'success' => true
-//        ]);
     }
 }
