@@ -20,7 +20,7 @@
                :disabled="!newName != '' || isInsertLoading"
             >
                 <span v-if="!isInsertLoading">
-                    <i class="fa fa-floppy-o" style="margin-top: 3px;"></i>&nbspAdd
+                    Add Member
                 </span>
 
                 <span v-else>
@@ -40,7 +40,7 @@
                 style="height: 2.5rem"
             >
                 <td width="30px">
-                    <i v-if="(!isFocused && input.icon[index]) || input.fucused[index]" 
+                    <i v-if="(!isFocused && input.icon[index]) || input.focused[index]" 
                         class="fa fa-pencil"
                         style="display:inline;"></i>
                     <i v-else-if="input.notSaved[index]" 
@@ -51,7 +51,6 @@
                         class="fa fa-refresh fa-spin"
                         style="display:inline"></i>
 -->
-                    <span v-else>{{ index }}</span>
                 </td>
 
                 <td>
@@ -66,27 +65,23 @@
                         "
                         placeholder="Name"
                         v-model.trim="input.name[index]"
-                        @focus="fucused(index, true)"
-                        @blur="fucused(index, false)"
+                        @focus="focused(index, true)"
+                        @blur="focused(index, false)"
                     >
                 </td>
                 <td style="width: 160px">
-                    <a class="button" 
-                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
-                        @click="clickUndo(index)"
+                    <a class="button no-border" 
+                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
                        :disabled="input.name[index] === members[index].name || input.name[index] === ''"
-                    >
-                        <i class="fa fa-undo"></i>
+                    ><i class="fa fa-undo" @click="clickUndo(index)"></i>
                     </a>
-                    <a class="button" 
-                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
-                        @click="clickSave(index)"
+                    <a class="button no-border" 
+                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
                        :disabled="!isUpdateLoading && (input.name[index] === members[index].name || input.name[index] === '')"
-                    ><i class="fa fa-floppy-o"></i></a>
-                    <a class="button" 
-                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
-                        @click=""
-                    ><i class="fa fa-trash"></i></a>
+                    ><i class="fa fa-floppy-o" @click="clickSave(index)"></i></a>
+                    <a class="button no-border" 
+                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
+                    ><i class="fa fa-trash" @click=""></i></a>
                 </td>
             </tr>
         </template>
@@ -103,7 +98,7 @@ export default {
     data() {
         return {
             input: {
-                fucused: [],
+                focused: [],
                 notSaved: [],
                 name: [],
                 icon: []
@@ -140,7 +135,7 @@ export default {
         },
 
         isFocused: function() {
-            return this.input.fucused.indexOf(true) !== -1;
+            return this.input.focused.indexOf(true) !== -1;
         }
     },
 
@@ -163,8 +158,8 @@ export default {
             this.$set(this.input.icon, index, value);
         },
 
-        fucused: function(index, value) {
-            this.$set(this.input.fucused, index, value);
+        focused: function(index, value) {
+            this.$set(this.input.focused, index, value);
             if( !value ) {
                 if( this.members[index].name !== this.input.name[index] ) {
                     this.$set(this.input.notSaved, index, true);
@@ -201,6 +196,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.no-border {
+    border: none;
+}
+
 .member-edit-table {
     & td {
         vertical-align: middle;
