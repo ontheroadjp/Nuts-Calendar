@@ -188,8 +188,7 @@ export default {
         },
 
         clickRemove: function(index) {
-            const deletingMemberId = this.members[index].id;
-            this.remove({ deletingMemberId });
+            this.remove({ index });
         }
     },
 

@@ -22,20 +22,19 @@ export default {
 //            commit('prepare', { deletingMemberId } );
 //        },
 
-        remove( { commit, state, rootState }, { deletingMemberId } ) {
+        remove( { commit, state, rootState }, { index } ) {
             u.clog('remove()');
             commit('start');
 
-            const calendars = rootState.calendar.data.calendars;
+//            const calendars = rootState.calendar.data.calendars;
             const members = rootState.dashboard.data.members;
 
-            const url = '/api/v1/member/' + deletingMemberId;
+            const url = '/api/v1/member/' + members[index].id;
             http.fetchDelete(url)
                 .then(response => {
                     u.clog('success');
 
-//                    commit('remove');
-                    commit('remove', { calendars, members, deletingMemberId });
+                    commit('remove', { members, index });
 
                     commit('notifySuccess', {
                         content: 'success remove member',
@@ -79,30 +78,12 @@ export default {
             state.isLoading = true;
         },
 
-//        remove( state ) {
-//            Vue.delete(state.members, state.deletingMemberId);
+        remove( state, { members, index } ) {
+            Vue.delete(members, index);
 //            state.calendars.forEach( function(val, index) {
 //                Vue.delete( val.items, state.deletingMemberId);
 //            });
-//        },
-
-//        remove( state, { calendars, members } ) {
-//            Vue.delete(members, state.deletingMemberId);
-//            calendars.forEach( function(val, index) {
-//                Vue.delete( val.items, state.deletingMemberId);
-//            });
-//        },
-
-        remove( state, { calendars, members, deletingMemberId } ) {
-            Vue.delete(members, deletingMemberId);
-            calendars.forEach( function(val, index) {
-                Vue.delete( val.items, deletingMemberId);
-            });
         },
-
-//        finish( { state, commit }, { content, type, isImportant } ) {
-//
-//        },
 
         reset( state ) {
 //            state.isActive = false;
