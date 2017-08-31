@@ -155,7 +155,7 @@
                 isTaskItem: state => state.isTaskItemShow
             }),
 
-            ...mapState('calendar/tableView/column', {
+            ...mapState('member', {
                 editColumn: state => state.update,
                 deleteColumn: state => state.remove
             }),
@@ -173,7 +173,7 @@
                 getRowIndex: 'getRowIndex'
             }),
 
-            ...mapGetters('calendar/tableView/column', {
+            ...mapGetters('member', {
                 isColumnModalActive: 'isModalActive'
             }),
 
@@ -228,7 +228,7 @@
         },
 
         methods: {
-            ...mapActions('calendar/tableView/column', {
+            ...mapActions('member', {
                 prepareUpdateColumn: 'update/prepare',
                 prepareRemoveColumn: 'remove/prepare'
             }),

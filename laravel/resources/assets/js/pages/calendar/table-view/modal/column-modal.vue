@@ -87,7 +87,7 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('calendar/tableView/column', {
+        ...mapState('member', {
             editColumn: state => state.update,
             deleteColumn: state => state.remove
         }),
@@ -109,7 +109,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/column/update', {
+        ...mapActions('member/update', {
             setName: 'setName', 
             setIsShow: 'setIsShow', 
             setOrder: 'setOrder', 
@@ -117,7 +117,7 @@ export default {
             reset: 'reset'
         }),
 
-        ...mapActions('calendar/tableView/column/remove', {
+        ...mapActions('member/remove', {
             remove: 'remove',
             reset: 'reset'
         }),
