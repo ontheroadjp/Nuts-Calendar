@@ -41,7 +41,7 @@
     <div class="panel" style="background: white">
         <p class="panel-heading" :style="panelHeader">Link</p>
         <router-link
-            to="/calendar" 
+            to="/dashboard" 
             class="panel-block"
             style="line-height: 1.8em"
             @click=""
