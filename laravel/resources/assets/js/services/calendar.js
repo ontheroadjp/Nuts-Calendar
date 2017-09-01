@@ -32,6 +32,8 @@ export default {
 
         fetchCalendar(calendarId) {
             u.clog('fetchCalendar(' + calendarId + ')');
+            if(calendarId === 'dashboard') return;
+
             this.calendarService.isLoading = true;
     
             const id = calendarId;
