@@ -152,7 +152,7 @@ export default {
 
     computed: {
         ...mapState({
-            members: state => state.dashboard.data.members,
+            members: state => state.member.data.members,
             userCalendarMembers: state => state.dashboard.data.userCalendarMembers,
             theme: state => state.app.theme
         }),

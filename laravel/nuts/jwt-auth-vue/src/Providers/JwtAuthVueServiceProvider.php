@@ -36,23 +36,23 @@ class JwtAuthServiceProvider extends ServiceProvider
             'namespace' => 'Nuts\Api\Controllers',
         ], function() {
 
-            Route::get('/', 'PagesController@getTop');
-            Route::get('/dashboard', 'PagesController@getDashboard');
-            Route::get('/user/settings', 'JwtUserController@getSettings');
-            Route::get('/calendar/{userCalendarId}', 'PagesController@getUserCalendar');
-
-            Route::get('login', 'JwtAuthController@getLogin');
-            Route::get('register', 'JwtAuthController@getRegister');
-            Route::get('password/email', 'JwtPasswordController@getEmail');
-            Route::get('password/reset/{token}', 'JwtPasswordController@getReset');
-
-            Route::group(['prefix' => '/api/v1'], function() {
-                Route::get('jwttoken', 'JwtAuthController@checkAuth');
-                Route::post('login', 'JwtAuthController@postLogin');
-                Route::post('register', 'JwtAuthController@postRegister');
-                Route::post('password/email', 'JwtPasswordController@postEmail');
-                Route::post('password/reset', 'JwtPasswordController@postReset');
-            });
+//            Route::get('/', 'PagesController@getTop');
+//            Route::get('/user/settings', 'JwtUserController@getSettings');
+//            Route::get('/dashboard', 'PagesController@getUserCalendar');
+//            Route::get('/calendar/{userCalendarId}', 'PagesController@getUserCalendar');
+//
+//            Route::get('login', 'JwtAuthController@getLogin');
+//            Route::get('register', 'JwtAuthController@getRegister');
+//            Route::get('password/email', 'JwtPasswordController@getEmail');
+//            Route::get('password/reset/{token}', 'JwtPasswordController@getReset');
+//
+//            Route::group(['prefix' => '/api/v1'], function() {
+//                Route::get('jwttoken', 'JwtAuthController@checkAuth');
+//                Route::post('login', 'JwtAuthController@postLogin');
+//                Route::post('register', 'JwtAuthController@postRegister');
+//                Route::post('password/email', 'JwtPasswordController@postEmail');
+//                Route::post('password/reset', 'JwtPasswordController@postReset');
+//            });
         });
     }
 

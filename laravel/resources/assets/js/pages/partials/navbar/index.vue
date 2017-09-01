@@ -22,7 +22,7 @@
 
         <template v-else>
             <router-link 
-                to="/calendar" 
+                to="/dashboard" 
                 @click.native="$store.commit('setCurrentCalendarId', 'dashboard')"
                 class="nav-item"
             >{{ t('navbar.dashboard') }}

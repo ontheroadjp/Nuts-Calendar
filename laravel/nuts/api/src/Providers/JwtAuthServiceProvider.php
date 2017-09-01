@@ -84,6 +84,7 @@ class JwtAuthServiceProvider extends ServiceProvider
             //  the access restriction should be handle at cliant side (vue.js)
             //Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
                 Route::get('/me/settings/{type}', 'JwtUserController@getSettings');
+                Route::get('/dashboard', 'PagesController@index');
                 Route::get('/calendar', 'PagesController@index');
                 Route::get('/calendar/view', 'PagesController@index');
                 Route::get('/calendar/settings/{type}', 'PagesController@index');

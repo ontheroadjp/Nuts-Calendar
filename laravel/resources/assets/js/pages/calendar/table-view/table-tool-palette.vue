@@ -112,7 +112,7 @@ export default {
             isTaskItemShow: state => state.isTaskItemShow
         }),
 
-        ...mapState('calendar/tableView/column', {
+        ...mapState('member', {
             addColumn: state => state.insert
         }),
 
@@ -122,7 +122,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/column', {
+        ...mapActions('member', {
             prepareInsert: 'insert/prepare'
         }),
 

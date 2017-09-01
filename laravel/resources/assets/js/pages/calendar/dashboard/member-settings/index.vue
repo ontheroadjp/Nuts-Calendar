@@ -4,7 +4,6 @@
     <div class="card" style="padding: 20px 40px;">
         <form>
             <input 
-                id="name"
                 class="inline-text-input" 
                 type="text" 
                 style="
@@ -20,10 +19,10 @@
                :disabled="!newName != '' || isInsertLoading"
             >
                 <span v-if="!isInsertLoading">
-                    <i class="fa fa-floppy-o" style="margin-top: 3px;"></i>&nbspAdd
+                    Add Member
                 </span>
 
-                <span v-else>
+                <span class="icon is-small" v-else>
                     <i class="fa fa-refresh fa-spin"></i>
                 </span>
             </a>
@@ -40,7 +39,7 @@
                 style="height: 2.5rem"
             >
                 <td width="30px">
-                    <i v-if="(!isFocused && input.icon[index]) || input.fucused[index]" 
+                    <i v-if="(!isFocused && input.icon[index]) || input.focused[index]" 
                         class="fa fa-pencil"
                         style="display:inline;"></i>
                     <i v-else-if="input.notSaved[index]" 
@@ -51,7 +50,6 @@
                         class="fa fa-refresh fa-spin"
                         style="display:inline"></i>
 -->
-                    <span v-else>{{ index }}</span>
                 </td>
 
                 <td>
@@ -66,27 +64,23 @@
                         "
                         placeholder="Name"
                         v-model.trim="input.name[index]"
-                        @focus="fucused(index, true)"
-                        @blur="fucused(index, false)"
+                        @focus="focused(index, true)"
+                        @blur="focused(index, false)"
                     >
                 </td>
                 <td style="width: 160px">
-                    <a class="button" 
-                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
-                        @click="clickUndo(index)"
+                    <a class="button no-border" 
+                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
                        :disabled="input.name[index] === members[index].name || input.name[index] === ''"
-                    >
-                        <i class="fa fa-undo"></i>
+                    ><i class="fa fa-undo" @click="clickUndo(index)"></i>
                     </a>
-                    <a class="button" 
-                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
-                        @click="clickSave(index)"
+                    <a class="button no-border" 
+                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
                        :disabled="!isUpdateLoading && (input.name[index] === members[index].name || input.name[index] === '')"
-                    ><i class="fa fa-floppy-o"></i></a>
-                    <a class="button" 
-                       v-show="(!isFocused && input.icon[index]) || input.fucused[index]"
-                        @click=""
-                    ><i class="fa fa-trash"></i></a>
+                    ><i class="fa fa-floppy-o" @click="clickSave(index)"></i></a>
+                    <a class="button no-border" 
+                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
+                    ><i class="fa fa-trash" @click="clickRemove(index)"></i></a>
                 </td>
             </tr>
         </template>
@@ -103,7 +97,7 @@ export default {
     data() {
         return {
             input: {
-                fucused: [],
+                focused: [],
                 notSaved: [],
                 name: [],
                 icon: []
@@ -113,12 +107,15 @@ export default {
 
     computed: {
         ...mapState({
-            theme: state => state.app.theme
+            theme: state => state.app.theme,
         }),
 
         ...mapState('dashboard', {
-            members: state => state.data.members,
             userCalendars: state => state.data.userCalendars
+        }),
+
+        ...mapState('member', {
+            members: state => state.data.members,
         }),
 
         ...mapState('member/insert', {
@@ -140,19 +137,28 @@ export default {
         },
 
         isFocused: function() {
-            return this.input.fucused.indexOf(true) !== -1;
+            return this.input.focused.indexOf(true) !== -1;
         }
     },
 
     methods: {
+        ...mapActions('dashboard', {
+            data: 'data'
+        }),
+
         ...mapActions('member/insert', {
             setNewName: 'setNewName',
             insert: 'insert'
         }),
 
         ...mapActions('member/update', {
-            prepare: 'prepare',
-            update: 'update'
+            prepareUpdate: 'prepare',
+            update: 'update',
+        }),
+
+        ...mapActions('member/remove', {
+            prepareRemove: 'prepare',
+            remove: 'remove'
         }),
 
         clickAddMember: function() {
@@ -163,8 +169,8 @@ export default {
             this.$set(this.input.icon, index, value);
         },
 
-        fucused: function(index, value) {
-            this.$set(this.input.fucused, index, value);
+        focused: function(index, value) {
+            this.$set(this.input.focused, index, value);
             if( !value ) {
                 if( this.members[index].name !== this.input.name[index] ) {
                     this.$set(this.input.notSaved, index, true);
@@ -184,15 +190,34 @@ export default {
             let editingMember = this.members[index];
             editingMember.name = this.input.name[index];
             editingMember.isShow = true;
-            this.prepare({ editingMember })
+            this.prepareUpdate({ editingMember })
             this.update();
+        },
+
+        clickRemove: function(index) {
+            this.remove({ index });
         }
     },
 
-    watch: {
-        'members': function(val) {
+    beforeRouteEnter (route, redirect, next) {
+        c.ulog('!!!!!!!!!!!!!!!!!!!! ENTER !!!!!!!!!!!!!!!!!!!!!!!!');
+        next();
+    },
+
+    beforeRouteUpdate (route, redirect, next) {
+        c.ulog('!!!!!!!!!!!!!!!!!!!!! UPDATE !!!!!!!!!!!!!!!!!!!!!!!');
             const self = this;
             this.members.forEach(function(val, index) {
+                self.input.name[index] = val.name;
+            });
+            next()
+    },
+
+    watch: {
+        members: function(val) {
+            const self = this;
+            this.members.forEach(function(val, index) {
+                u.clog('index: ' + index + ', name: ' + val.name);
                 self.input.name[index] = val.name;
             });
         }
@@ -201,6 +226,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.no-border {
+    border: none;
+}
+
 .member-edit-table {
     & td {
         vertical-align: middle;

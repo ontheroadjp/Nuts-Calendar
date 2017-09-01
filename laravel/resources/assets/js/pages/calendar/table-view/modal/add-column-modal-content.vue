@@ -65,7 +65,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     computed: {
         ...mapState({
-            addColumn: state => state.calendar.tableView.column.insert,
+            addColumn: state => state.member.insert,
             theme: state => state.app.theme
         }),
 
@@ -80,7 +80,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/column/insert', {
+        ...mapActions('member/insert', {
             setName: 'setName',
             insert: 'insert',
             reset: 'reset'
