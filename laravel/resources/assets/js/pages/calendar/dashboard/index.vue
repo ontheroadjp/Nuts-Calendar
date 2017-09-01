@@ -43,9 +43,9 @@
 
     </div><!-- // v-show -->
 
-    <member-settings v-show="currentId === 1"></member-settings>
-    <application-settings v-show="currentId === 2"></application-settings>
-    <account-settings v-show="currentId === 3"></account-settings>
+    <member-settings v-if="currentId === 1"></member-settings>
+    <application-settings v-if="currentId === 2"></application-settings>
+    <account-settings v-if="currentId === 3"></account-settings>
 
 </div><!-- // .container -->
 </div><!-- // .wrapper -->
@@ -86,10 +86,16 @@ export default {
 
     computed: {
         ...mapState({
-            userCalendars: state => state.dashboard.data.userCalendars,
-            currentId: state => state.dashboard.currentId,
-            members: state => state.dashboard.data.members,
             theme: state => state.app.theme
+        }),
+
+        ...mapState('dashboard', {
+            userCalendars: state => state.data.userCalendars,
+            currentId: state => state.currentId,
+        }),
+
+        ...mapState('member', {
+            members: state => state.data.members,
         })
     },
 

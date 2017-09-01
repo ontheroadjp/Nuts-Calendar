@@ -58,9 +58,9 @@ export default {
                 let val = this[key];
                 val.isShow = true;
                 u.clog(key + ':' + val.name + '(order: ' + val.order + ')');
-            },response.data.members);
+            }, response.data.members);
 
-            this.$store.commit('initMembers', response.data.members );
+            this.$store.commit('initMembersForUserCalendar', response.data.members );
             this.calendarService.isLoading = false;
         },
 

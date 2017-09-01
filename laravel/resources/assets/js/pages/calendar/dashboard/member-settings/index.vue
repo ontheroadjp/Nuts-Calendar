@@ -107,12 +107,15 @@ export default {
 
     computed: {
         ...mapState({
-            theme: state => state.app.theme
+            theme: state => state.app.theme,
         }),
 
         ...mapState('dashboard', {
-            members: state => state.data.members,
             userCalendars: state => state.data.userCalendars
+        }),
+
+        ...mapState('member', {
+            members: state => state.data.members,
         }),
 
         ...mapState('member/insert', {
@@ -139,6 +142,10 @@ export default {
     },
 
     methods: {
+        ...mapActions('dashboard', {
+            data: 'data'
+        }),
+
         ...mapActions('member/insert', {
             setNewName: 'setNewName',
             insert: 'insert'
@@ -192,10 +199,25 @@ export default {
         }
     },
 
-    watch: {
-        'members': function(val) {
+    beforeRouteEnter (route, redirect, next) {
+        c.ulog('!!!!!!!!!!!!!!!!!!!! ENTER !!!!!!!!!!!!!!!!!!!!!!!!');
+        next();
+    },
+
+    beforeRouteUpdate (route, redirect, next) {
+        c.ulog('!!!!!!!!!!!!!!!!!!!!! UPDATE !!!!!!!!!!!!!!!!!!!!!!!');
             const self = this;
             this.members.forEach(function(val, index) {
+                self.input.name[index] = val.name;
+            });
+            next()
+    },
+
+    watch: {
+        members: function(val) {
+            const self = this;
+            this.members.forEach(function(val, index) {
+                u.clog('index: ' + index + ', name: ' + val.name);
                 self.input.name[index] = val.name;
             });
         }
