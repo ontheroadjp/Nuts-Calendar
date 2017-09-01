@@ -27,7 +27,7 @@ export default {
             commit('start');
 
 //            const calendars = rootState.calendar.data.calendars;
-            const members = rootState.dashboard.data.members;
+            const members = rootState.member.data.members;
 
             const url = '/api/v1/member/' + members[index].id;
             http.fetchDelete(url)

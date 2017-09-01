@@ -34,7 +34,7 @@ export default {
                 .then(response => {
                     u.clog('success');
 
-                    const members = rootState.dashboard.data.members;
+                    const members = rootState.member.data.members;
                     const data = response.data;
                     commit('insert', { members, data } );
 
