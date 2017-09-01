@@ -12,7 +12,7 @@
 
 <script>
     import { mapState } from 'vuex';
-    import signboard from './signboard/index.vue';
+    import signboard from '../partials/signboard/index.vue';
     import calendarService from '../../services/calendar.js';
 
     export default {
