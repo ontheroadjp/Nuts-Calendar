@@ -15,7 +15,7 @@ export default {
             }
         });
 
-        let members = state.dashboard.data.members;
+        let members = state.member.data.members;
 
         let result = {};
         members.forEach(function(value) {
@@ -25,17 +25,6 @@ export default {
         });
         return result;
     },
-
-//    filteredMembers: (state, getters) => {
-//        let members = state.calendar.data.members;
-//        let result = {};
-//        Object.keys(members).forEach(function(memberId) {
-//            if( this[memberId].isShow ) {
-//                result[memberId] = this[memberId];
-//            }
-//        }, members);
-//        return result;
-//    },
 
     getShowMembers: (state, getters) => {
         return Object.keys(getters.filteredMembers);

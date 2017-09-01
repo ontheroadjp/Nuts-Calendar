@@ -191,6 +191,10 @@ export default {
         state.dashboard.data.userCalendars = userCalendars;
     },
 
+    initMembersForUserCalendar( state, members ) {
+        state.calendar.data.members = members;
+    },
+
     setCurrentCalendarId( state, id ) {
         state.calendar.currentId = id;
         localStorage.setItem('currentCalendarId', id);
@@ -207,12 +211,12 @@ export default {
     // ---------------------------------------------
     // members
 
-    initMembers( state, members ) {
-        state.calendar.data.members = members;
-    },
+//    initMembers( state, members ) {
+//        state.calendar.data.members = members;
+//    },
 
-    initDashboardMembers( state, members ) {
-        state.dashboard.data.members = members;
+    initMembers( state, members ) {
+        state.member.data.members = members;
     },
 
     initDashboardUserCalendarMembers( state, members ) {
