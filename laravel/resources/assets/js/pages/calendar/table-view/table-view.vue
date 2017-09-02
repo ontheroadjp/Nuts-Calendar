@@ -34,11 +34,12 @@
             >Date</th>
             <template v-for="(member, memberId) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    style="padding: 0.4rem 1rem; cursor: pointer"
+                    style="padding: 0.4rem 1rem"
                     :style="[columnWidth, textColor]"
                     >
                     <!-- <header-cell :member="member"></header-cell> -->
-                    <span @click="clickHeader(member)">{{ member.name }}({{ member.id}})</span>
+                    <!-- <span @click="clickHeader(member)">{{ member.name }}({{ member.id}})</span> -->
+                    <span>{{ member.name }}({{ member.id}})</span>
                 </th>
             </template>
         </tr>
@@ -243,11 +244,11 @@
                 dragEnd: 'dnd/dragEnd'
             }),
 
-            clickHeader(member) {
-                u.clog('clickHeader()');
-                this.prepareUpdateColumn( { editingColumn: member } );
-                this.prepareRemoveColumn( { deletingColumn: member } );
-            },
+//            clickHeader(member) {
+//                u.clog('clickHeader()');
+//                this.prepareUpdateColumn( { editingMember: member } );
+////                this.prepareRemoveColumn( { deletingMemmber: member } );
+//            },
 
             clickCell(dayIndex, memberId) {
                 u.clog('clickCell()');
