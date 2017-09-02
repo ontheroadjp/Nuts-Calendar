@@ -1,9 +1,9 @@
 <template>
 <div>
     <modal v-if="modal.isActive">
-        <!-- <button class="modal-close" @click="clickClose()"></button> -->
         <div class="modal-card">
 <!--
+            <button v-show="close" class="modal-close" @click="clickClose()"></button>
             <section v-show="modal.hasError">
                 <div class="message"> error!  </div>
             </section>
