@@ -57,10 +57,10 @@ export default {
             Object.keys(response.data.members).forEach(function(key) {
                 let val = this[key];
                 val.isShow = true;
-                u.clog(key + ':' + val.name + '(order: ' + val.order + ')');
+                u.clog(key + ':' + val.name);
             }, response.data.members);
 
-            this.$store.commit('initMembersForUserCalendar', response.data.members );
+//            this.$store.commit('initMembersForUserCalendar', response.data.members );
             this.calendarService.isLoading = false;
         },
 

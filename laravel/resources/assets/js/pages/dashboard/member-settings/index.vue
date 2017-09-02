@@ -99,7 +99,7 @@ export default {
             input: {
                 focused: [],
                 notSaved: [],
-                name: [],
+                name: {},
                 icon: []
             }
         }
@@ -207,19 +207,20 @@ export default {
     beforeRouteUpdate (route, redirect, next) {
         c.ulog('!!!!!!!!!!!!!!!!!!!!! UPDATE !!!!!!!!!!!!!!!!!!!!!!!');
             const self = this;
-            this.members.forEach(function(val, index) {
-                self.input.name[index] = val.name;
-            });
+            Object.keys(this.members).forEach(function(key) {
+                u.clog('key: ' + key + ', name: ' + this[key].name);
+                self.input.name[key] = this[key].name;
+            }, this.members);
             next()
     },
 
     watch: {
         members: function(val) {
             const self = this;
-            this.members.forEach(function(val, index) {
-                u.clog('index: ' + index + ', name: ' + val.name);
-                self.input.name[index] = val.name;
-            });
+            Object.keys(this.members).forEach(function(key) {
+                u.clog('key: ' + key + ', name: ' + this[key].name);
+                self.input.name[key] = this[key].name;
+            }, this.members);
         }
     }
 }

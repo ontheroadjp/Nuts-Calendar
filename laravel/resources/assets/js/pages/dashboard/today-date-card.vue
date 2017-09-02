@@ -16,7 +16,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import dateUtilities from '../../../mixins/date-utilities.js';
+import dateUtilities from '../../mixins/date-utilities.js';
 
 export default {
     mixins: [ dateUtilities ],

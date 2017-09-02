@@ -7,7 +7,7 @@
     <li :class="{ 'is-active': currentCalendarId === 'dashboard' }"
         @click="changeCalendar('dashboard')"
     >
-        <router-link to="/calendar" @click="changeCalendar('dashboard')">
+        <router-link to="/dashboard" @click="changeCalendar('dashboard')">
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
             </span>

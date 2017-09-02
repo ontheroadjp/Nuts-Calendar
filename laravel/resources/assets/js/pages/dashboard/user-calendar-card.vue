@@ -123,9 +123,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import modal from '../../../components/modal.vue';
-import userCalendarService from '../../../services/userCalendar.js';
-import userCalendarMemberService from '../../../services/userCalendarMember.js';
+import modal from '../../components/modal.vue';
+import userCalendarService from '../../services/userCalendar.js';
+import userCalendarMemberService from '../../services/userCalendarMember.js';
 
 export default {
     mixins: [

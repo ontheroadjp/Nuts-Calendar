@@ -105,7 +105,7 @@
                     const calDescription = cal.description;
                     self.input.name = calName;
                     self.input.description = calDescription;
-                },this.$route.path);
+                }, this.$route.path);
             } else {
                 const cal = self.$store.state.dashboard.data.userCalendars[self.currentCalendarId];
                 const calName = cal.name;

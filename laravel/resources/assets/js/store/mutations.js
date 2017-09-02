@@ -191,9 +191,9 @@ export default {
         state.dashboard.data.userCalendars = userCalendars;
     },
 
-    initMembersForUserCalendar( state, members ) {
-        state.calendar.data.members = members;
-    },
+//    initMembersForUserCalendar( state, members ) {
+//        state.calendar.data.members = members;
+//    },
 
     setCurrentCalendarId( state, id ) {
         state.calendar.currentId = id;
