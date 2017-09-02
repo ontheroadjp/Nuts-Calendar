@@ -1,4 +1,5 @@
 <template>
+<!--
 <div>
 <button class="modal-close" @click="close()"></button>
 <div class="modal-card">
@@ -11,19 +12,6 @@
             <div class="field">
                 <label class="label">Name</label>
                 <div class="control has-icon">
-<!--
-                    <input 
-                        class="nuts-input-textbox" 
-                        type="text" 
-                        style="margin-bottom: 25px;"
-                        v-model="name" 
-                        :placeholder="nameHasError ? error.name : 'Name'"
-                        v-focus
-                    >
-                    <span class="icon is-small" :style="[nameHasError ? style.error : '']">
-                        <i class="fa fa-user"></i>
-                    </span>
--->
                     <input 
                         class="nuts-input-textbox" 
                         type="text" 
@@ -55,46 +43,47 @@
             >Cancel
         </button>
     </footer>
-</div><!-- // .modal-card -->
 </div>
+</div>
+-->
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 
-export default {
-    computed: {
-        ...mapState({
-            addColumn: state => state.member.insert,
-            theme: state => state.app.theme
-        }),
-
-        inputName: {
-            get() {
-                return this.addColumn.input.name;
-            },
-            set(value) {
-                this.setName( { value } );
-            }
-        }
-    },
-
-    methods: {
-        ...mapActions('member/insert', {
-            setName: 'setName',
-            insert: 'insert',
-            reset: 'reset'
-        }),
-
-        saveButton: function() {
-            this.insert();
-        },
-
-        close: function() {
-            this.reset();
-        }
-    }
-}
+//export default {
+//    computed: {
+//        ...mapState({
+//            addColumn: state => state.member.insert,
+//            theme: state => state.app.theme
+//        }),
+//
+//        inputName: {
+//            get() {
+//                return this.addColumn.input.name;
+//            },
+//            set(value) {
+//                this.setName( { value } );
+//            }
+//        }
+//    },
+//
+//    methods: {
+//        ...mapActions('member/insert', {
+//            setName: 'setName',
+//            insert: 'insert',
+//            reset: 'reset'
+//        }),
+//
+//        saveButton: function() {
+//            this.insert();
+//        },
+//
+//        close: function() {
+//            this.reset();
+//        }
+//    }
+//}
 </script>
 
 <style lang="scss" scoped>
