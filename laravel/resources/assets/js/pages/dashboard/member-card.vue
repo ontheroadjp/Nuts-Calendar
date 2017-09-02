@@ -59,19 +59,19 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
-export default {
-    props: [
-        'member'
-    ],
-
-    computed: {
-        ...mapState({
-            'theme': state => state.app.theme
-        })
-    }
-}
+//import { mapState } from 'vuex';
+//
+//export default {
+//    props: [
+//        'member'
+//    ],
+//
+//    computed: {
+//        ...mapState({
+//            'theme': state => state.app.theme
+//        })
+//    }
+//}
 </script>
 
 <style lang="scss" scoped>
