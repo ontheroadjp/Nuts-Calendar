@@ -3,18 +3,6 @@
 <div class="columns">
 <div class="column">
     
-<!--
-        <div class="panel" v-show="error.authentication" style="
-            position: absolute;
-            top: 70px;
-            width: 100%;
-            text-align: center;
-            color: red;
-        ">
-            <p style="margin-bottom: 20px;">{{ error.authentication }}</p>
-        </div>
--->    
-    
     <form>
     <div class="box" style="padding: 60px; width: 100%;">
     
