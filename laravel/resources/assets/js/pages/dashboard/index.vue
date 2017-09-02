@@ -30,17 +30,6 @@
             </div>
         </div>
 
-        <!-- members -->
-<!--
-        <div class="columns is-multiline">
-            <template v-for="member in members">
-                <div class="column is-6">
-                    <member-card :member="member"></member-card> 
-                </div>
-            </template>
-        </div>
--->
-
     </div><!-- // v-show -->
 
     <member-settings v-if="currentId === 1"></member-settings>

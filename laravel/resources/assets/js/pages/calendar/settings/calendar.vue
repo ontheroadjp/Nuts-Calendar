@@ -74,47 +74,48 @@
 </template>
 
 <script>
-    import calendarService from '../../../services/calendar.js';
-    export default {
-        mixins: [
-            calendarService,
-        ],
+import calendarService from '../../../services/calendar.js';
 
-        computed: {
-            theme: function() {
-                return this.$store.state.app.theme;
-            },
+export default {
+    mixins: [
+        calendarService,
+    ],
 
-            currentCalendarId: function() {
-                return this.$store.state.calendar.currentId;
-            }
+    computed: {
+        theme: function() {
+            return this.$store.state.app.theme;
         },
 
-        methods: {
-            putCalendarSettings: function() {
-                this.execPutCalendarSettings(this.currentCalendarId)
-            },
-        },
+        currentCalendarId: function() {
+            return this.$store.state.calendar.currentId;
+        }
+    },
 
-        mounted() {
-            const self = this;
-            if(! this.$store.state.app.ready ) {
-                eventBus.listen('nuts.app.ready', function() {
-                    const cal = self.$store.state.dashboard.data.userCalendars[self.currentCalendarId];
-                    const calName = cal.name;
-                    const calDescription = cal.description;
-                    self.input.name = calName;
-                    self.input.description = calDescription;
-                }, this.$route.path);
-            } else {
+    methods: {
+        putCalendarSettings: function() {
+            this.execPutCalendarSettings(this.currentCalendarId)
+        },
+    },
+
+    mounted() {
+        const self = this;
+        if(! this.$store.state.app.ready ) {
+            eventBus.listen('nuts.app.ready', function() {
                 const cal = self.$store.state.dashboard.data.userCalendars[self.currentCalendarId];
                 const calName = cal.name;
                 const calDescription = cal.description;
                 self.input.name = calName;
                 self.input.description = calDescription;
-            }
-        },
-    }
+            }, this.$route.path);
+        } else {
+            const cal = self.$store.state.dashboard.data.userCalendars[self.currentCalendarId];
+            const calName = cal.name;
+            const calDescription = cal.description;
+            self.input.name = calName;
+            self.input.description = calDescription;
+        }
+    },
+}
 </script>
 
 <style lang="scss" scoped>

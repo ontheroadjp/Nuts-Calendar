@@ -7,7 +7,7 @@ import userAccountSettings from '../pages/user/settings/index.vue';
 import dashboard from '../pages/dashboard/index.vue';
 import calendar from '../pages/calendar/index.vue';
 import tableView from '../pages/calendar/table-view/index.vue';
-import calendarSettings from '../pages/calendar/settings/index.vue';
+//import calendarSettings from '../pages/calendar/settings/index.vue';
 
 export function init (router) {
 //    mapping(router);
@@ -71,24 +71,18 @@ export const routes = [
         auth: true,
         footer: true,
         children: [
-//            {
-//                path: '',
-//                component: dashboard,
-//                auth: true,
-//                footer: false
-//            },
             {
                 path: 'view',
                 component: tableView,
                 auth: true,
                 footer: false
             },
-            {
-                path: 'settings/:type',
-                component: calendarSettings,
-                auth: true,
-                footer: false
-            }
+//            {
+//                path: 'settings/:type',
+//                component: calendarSettings,
+//                auth: true,
+//                footer: false
+//            }
         ]
     }
 ];
