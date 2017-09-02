@@ -1,4 +1,5 @@
 <template>
+<!--
 <div>
 <button class="modal-close" @click="close()"></button>
 <div class="modal-card">
@@ -58,45 +59,46 @@
         <a :class="['button', theme.primary.class]" @click="ok()">Save changes</a>
         <a class="button" @click="close()">Cancel</a>
     </footer>
-</div><!-- // .modal-card -->
 </div>
+</div>
+-->
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { focus } from '../../../directives/focus.js';
 
-export default {
-    name: 'edit-column-modal-content',
-
-    directives: { focus },
-
-    computed: {
-        ...mapState({
-            members: state => state.calendar.data.members,
-            memberId: state => state.calendar.behavior.column.editingColumnId,
-            theme: state => state.app.theme
-        })
-    },
-
-    methods: {
-        ok: function() {
-            this.execUpdateMember(this.memberId, this.input.name);
-            this.close();
-        },
-
-        close: function() {
-            this.input.name = '';
-            this.input.order = '';
-
-            const payload = {
-                isEditing: false,
-                editingColumnId: null
-            }
-            this.$store.commit('toggleColumnEditing', payload);
-        }
-    }
-}
+//export default {
+//    name: 'edit-column-modal-content',
+//
+//    directives: { focus },
+//
+//    computed: {
+//        ...mapState({
+//            members: state => state.calendar.data.members,
+//            memberId: state => state.calendar.behavior.column.editingColumnId,
+//            theme: state => state.app.theme
+//        })
+//    },
+//
+//    methods: {
+//        ok: function() {
+//            this.execUpdateMember(this.memberId, this.input.name);
+//            this.close();
+//        },
+//
+//        close: function() {
+//            this.input.name = '';
+//            this.input.order = '';
+//
+//            const payload = {
+//                isEditing: false,
+//                editingColumnId: null
+//            }
+//            this.$store.commit('toggleColumnEditing', payload);
+//        }
+//    }
+//}
 </script>
 
 <style lang="scss" scoped>

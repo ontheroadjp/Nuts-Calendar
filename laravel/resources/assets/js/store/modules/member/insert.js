@@ -77,8 +77,8 @@ export default {
     
         insert( state, { members, data } ) {
             data.isShow = true;
-            const key = parseInt(members.length);
-            Vue.set(members, key, data);
+//            const key = parseInt(members.length);
+            Vue.set(members, data.id, data);
         },
 
         reset( state ) {
