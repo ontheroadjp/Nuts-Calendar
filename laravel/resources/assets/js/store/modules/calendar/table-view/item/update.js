@@ -27,17 +27,6 @@ export default {
             commit('setInputValues', { content, startTime, endTime } );
         },
 
-
-//        updateContent( { dispatch, commit }, { value } ) {
-//            commit('updateContent', { value });
-//            dispatch('update');
-//        },
-
-//        updateTimeRange( { dispatch, commit }, { start, end } ) {
-//            commit('updateTimeRange', { startTime: start, endTime: end } );
-//            dispatch('update');
-//        },
-
         update( { state, commit } ) {
             commit('start');
             u.clog('update()');
@@ -63,7 +52,6 @@ export default {
                         endTime: response.data.end_time
                     });
 
-
                     commit('notifySuccess', {
                         content: 'success update task',
                         isImportant: false
@@ -85,45 +73,6 @@ export default {
                 });
 
         },
-
-//        update( { commit }, { item } ) {
-//            u.clog('update()');
-//
-//            const url = '/api/v1/item/' + item.id;
-//            const data = {
-//                member_id: item.member_id,
-//                content: item.content,
-//                date: item.date,
-//                start_time: item.start_time,
-//                end_time: item.end_time,
-//                is_done: item.is_done,
-//            };
-//    
-//            http.fetchPut(url, data)
-//                .then( response => {
-//                    u.clog('success');
-//
-//                    commit('notifySuccess', {
-//                        content: 'success update task',
-//                        isImportant: false
-//                    }, { root: true });
-//        
-//                    commit('reset');
-//                })
-//
-//                .catch( error => {
-//                    u.clog('failed');
-//
-//                    commit('toggleTaskDone', { item });
-//                    commit('notifyDanger', {
-//                        content: 'failed update member',
-//                        isActive: true
-//                    }, { root: true});
-//
-//                    commit('reset');
-//                });
-//
-//        },
 
         reset( { commit } ) {
             commit('reset');
@@ -158,33 +107,6 @@ export default {
             state.editingItem.startTime = start_time;
             state.editingItem.endTime = end_time;
         },
-
-//        updateContent( state, { value } ) {
-//            state.editingItem.content = value;
-//            state.input.content = value;
-//        },
-
-//        updateTimeRange( state, { startTime, endTime } ) {
-//            state.editingItem.start_time = startTime;
-//            state.editingItem.end_time = endTime;
-//        },
-
-//        update( state ) {
-//// A patern
-////            const keys = Object.keys(params);
-////            keys.forEach(function(key) {
-////                item[key] = params[key];
-////            });
-//
-//// B patern
-////        const cellItems = state.calendar.data.calendars[dayIndex].items[memberId];
-////        if(cellItems instanceof Array && cellItems[itemIndex]) {
-////            const keys = Object.keys(params);
-////            keys.forEach(function(key) {
-////                cellItems[itemIndex][key] = params[key];
-////            });
-////        }
-//        },
 
         reset( state ) {
             state.isActive = false,
