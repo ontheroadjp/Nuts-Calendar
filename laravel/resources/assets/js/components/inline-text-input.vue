@@ -53,6 +53,7 @@
                         && !input.isFocused 
                         && !input.isEnter 
                         && defaultValue != input.value
+                        && !notSaved
                     "
                 class="fa fa-refresh fa-spin"></i>
         </div>
