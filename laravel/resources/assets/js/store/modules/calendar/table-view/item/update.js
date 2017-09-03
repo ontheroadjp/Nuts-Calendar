@@ -71,7 +71,6 @@ export default {
 
                     commit('reset');
                 });
-
         },
 
         reset( { commit } ) {
