@@ -1,12 +1,13 @@
 <template>
 <div>
     <modal v-if="modal.isActive">
-        <!-- <button class="modal-close" @click="clickClose()"></button> -->
         <div class="modal-card">
+<!--
+            <button v-show="close" class="modal-close" @click="clickClose()"></button>
             <section v-show="modal.hasError">
                 <div class="message"> error!  </div>
             </section>
-
+-->
             <section class="modal-card-body" style="padding: 40px;" :style="[style.bgSecondary]">
                 <button 
                     class="delete" 
@@ -14,45 +15,26 @@
                     aria-label="close" 
                     @click="clickClose()"
                 ></button>
-                <form>
-                    <input 
-                        id="name"
-                        class="title inline-text-input" 
-                        type="text" 
-                        style="margin-bottom: 0"
-                        :style="[style.bgSecondary]"
+                    <inline-text-input 
+                        id="calendar-name"
+                        inputClass="title"
+                        inputColor="#fff"
                         placeholder="Calendar Name"
-                        v-model.trim="input.name"
-                    >
-                    <a class="button" 
-                        v-show="userCalendar.name !== input.name" 
-                        @click="clickUndo()"
-                    >
-                        <i class="fa fa-undo"></i>
-                    </a>
-                    <a class="button" 
-                        v-show="userCalendar.name !== input.name"
-                        @click="clickSave()"
-                    ><i class="fa fa-floppy-o"></i></a>
-
-                    <input 
-                        id="description"
-                        class="subtitle inline-text-input" 
-                        type="text" 
-                        :style="[style.bgSecondary]"
+                        :isLoading="isLoading"
+                        :syncValue.sync="input.name"
+                        :defaultValue="userCalendar.name"
+                        :saveCallback="clickSave"
+                    ></inline-text-input>  
+                    <inline-text-input 
+                        id="calendar-description"
+                        inputClass="subtitle"
+                        inputColor="#fff"
                         placeholder="Description"
-                        v-model.trim="input.description"
-                    >
-                    <a class="button" 
-                        v-show="userCalendar.description !== input.description" 
-                        @click="clickUndo()"
-                    ><i class="fa fa-undo"></i></a>
-                    <a class="button" 
-                        v-show="userCalendar.description !== input.description"
-                        @click="clickSave()"
-                    ><i class="fa fa-floppy-o"></i></a>
-
-                </form>
+                        :isLoading="isLoading"
+                        :syncValue.sync="input.description"
+                        :defaultValue="userCalendar.description"
+                        :saveCallback="clickSave"
+                    ></inline-text-input>  
             </section> 
 
             <section class="modal-card-body" style="padding: 60px;">
@@ -127,13 +109,16 @@ import modal from '../../components/modal.vue';
 import userCalendarService from '../../services/userCalendar.js';
 import userCalendarMemberService from '../../services/userCalendarMember.js';
 
+import inlineTextInput from '../../components/inline-text-input.vue';
+
 export default {
     mixins: [
         userCalendarService, userCalendarMemberService
     ],
 
     components: {
-        'modal': modal
+        'modal': modal,
+        'inline-text-input': inlineTextInput
     },
 
     props: [
@@ -145,7 +130,7 @@ export default {
             userCalendarMemberIds: [],
             modal: {
                 isActive: false,
-                hasError: false,
+//                hasError: false,
             }
         }
     },
@@ -179,14 +164,14 @@ export default {
 
         clickSave: function() {
             u.clog('clickSave()');
-            this.modal.hasError = false;
+//            this.modal.hasError = false;
             this.update(this.userCalendar.id);
         },
 
         clickUndo: function() {
             this.input.name = this.userCalendar.name;
             this.input.description = this.userCalendar.description;
-            this.modal.hasError = false;
+//            this.modal.hasError = false;
         },
 
         changeMemberValue(elementId, userCalendarId, memberId) {
