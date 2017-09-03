@@ -15,7 +15,7 @@ const calendar = {
         currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
         data: {
             calendars: [],
-            members: []
+//            members: []
         }
     },
 
