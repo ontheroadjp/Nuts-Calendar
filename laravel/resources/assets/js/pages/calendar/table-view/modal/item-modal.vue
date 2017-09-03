@@ -17,6 +17,7 @@
                 inputColor="#fff"
                 iconColor="#fff"
                 placeholder="Title"
+                :isLoading="updateState.isLoading"
                 :syncValue.sync="input.content"
                 :defaultValue="updateState.editingItem.content"
                 :saveCallback="clickSave"

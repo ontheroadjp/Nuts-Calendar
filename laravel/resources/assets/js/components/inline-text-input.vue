@@ -31,23 +31,23 @@
             Not saved
         </span>
 
-        <span else>
-            <a class="button" 
-                v-show="isButtonShow" 
-                style="border:none; background:none; height:1rem; margin-top: 5px;"
-                :style="iconStyle"
-                @click="clickUndo()"
-                :disabled="defaultValue == input.value"
-            ><i class="fa fa-undo"></i></a>
-        
-            <a class="button" 
-                v-show="isButtonShow"
-                style="border:none; background:none; height:1rem; margin-top: 5px;"
-                :style="iconStyle"
-                @click="clickSave()"
-                :disabled="defaultValue == input.value"
-            ><i class="fa fa-floppy-o"></i></a>
-        </span>
+        <a class="button" 
+            v-show="isButtonShow && !isLoading" 
+            style="border:none; background:none; height:1rem; margin-top: 5px;"
+            :style="iconStyle"
+            @click="clickUndo()"
+            :disabled="defaultValue == input.value"
+        ><i class="fa fa-undo"></i></a>
+    
+        <a class="button" 
+            v-show="isButtonShow && !isLoading"
+            style="border:none; background:none; height:1rem; margin-top: 5px;"
+            :style="iconStyle"
+            @click="clickSave()"
+            :disabled="defaultValue == input.value"
+        ><i class="fa fa-floppy-o"></i></a>
+
+        <i v-if="isLoading" class="fa fa-refresh fa-spin"></i>
 
     </td>
 </tr>
@@ -63,6 +63,7 @@ export default {
         iconColor:      { type: String,   default: '', required: false },
         placeholder:    { type: String,   default: '', required: false },
         defaultValue:   { type: String,   default: '', required: false },
+        isLoading:      { type: Boolean,  default: false },
         syncValue:      { type: String,   required: true },
         saveCallback:   { type: Function, required: true }
     },
