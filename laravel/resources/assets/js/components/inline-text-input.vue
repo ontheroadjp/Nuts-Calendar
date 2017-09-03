@@ -16,7 +16,7 @@
             v-model.trim="input.value"
             @focus="focused(true)"
             @blur="focused(false)"
-            @keydown="changeValue()"
+            @change="changeValue()"
         >
     </td>
 
