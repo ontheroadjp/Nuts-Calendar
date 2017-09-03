@@ -1,12 +1,12 @@
 export const en = {
     state: {
         navbar: {
-            home: 'home',
-            login: 'login',
-            register: 'register',
+            home: 'Home',
+            login: 'Sign-in',
+            register: 'Register',
             dashboard: 'Dashboard',
             accountSettings: 'Account Settings', 
-            logout: 'Logout'
+            logout: 'Sign-out'
         },
         theme: {
             koiai: 'koiai',

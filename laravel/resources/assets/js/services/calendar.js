@@ -32,6 +32,8 @@ export default {
 
         fetchCalendar(calendarId) {
             u.clog('fetchCalendar(' + calendarId + ')');
+            if(calendarId === 'dashboard') return;
+
             this.calendarService.isLoading = true;
     
             const id = calendarId;
@@ -55,10 +57,10 @@ export default {
             Object.keys(response.data.members).forEach(function(key) {
                 let val = this[key];
                 val.isShow = true;
-                u.clog(key + ':' + val.name + '(order: ' + val.order + ')');
-            },response.data.members);
+                u.clog(key + ':' + val.name);
+            }, response.data.members);
 
-            this.$store.commit('initMembers', response.data.members );
+//            this.$store.commit('initMembersForUserCalendar', response.data.members );
             this.calendarService.isLoading = false;
         },
 

@@ -1,12 +1,13 @@
 <template>
 <div>
     <modal v-if="modal.isActive">
-        <!-- <button class="modal-close" @click="clickClose()"></button> -->
         <div class="modal-card">
+<!--
+            <button v-show="close" class="modal-close" @click="clickClose()"></button>
             <section v-show="modal.hasError">
                 <div class="message"> error!  </div>
             </section>
-
+-->
             <section class="modal-card-body" style="padding: 40px;" :style="[style.bgSecondary]">
                 <button 
                     class="delete" 
@@ -14,6 +15,26 @@
                     aria-label="close" 
                     @click="clickClose()"
                 ></button>
+                    <inline-text-input 
+                        id="calendar-name"
+                        inputClass="title"
+                        inputColor="#fff"
+                        placeholder="Calendar Name"
+                        :model.sync="input.name"
+                        :defaultValue="userCalendar.name"
+                        :saveCallback="clickSave"
+                    ></inline-text-input>  
+                    <inline-text-input 
+                        id="calendar-description"
+                        inputClass="subtitle"
+                        inputColor="#fff"
+                        placeholder="Description"
+                        :model.sync="input.description"
+                        :defaultValue="userCalendar.description"
+                        :saveCallback="clickSave"
+                    ></inline-text-input>  
+
+<!--
                 <form>
                     <input 
                         id="name"
@@ -51,8 +72,8 @@
                         v-show="userCalendar.description !== input.description"
                         @click="clickSave()"
                     ><i class="fa fa-floppy-o"></i></a>
-
                 </form>
+-->
             </section> 
 
             <section class="modal-card-body" style="padding: 60px;">
@@ -123,9 +144,11 @@
 
 <script>
 import { mapState } from 'vuex';
-import modal from '../../../components/modal.vue';
-import userCalendarService from '../../../services/userCalendar.js';
-import userCalendarMemberService from '../../../services/userCalendarMember.js';
+import modal from '../../components/modal.vue';
+import userCalendarService from '../../services/userCalendar.js';
+import userCalendarMemberService from '../../services/userCalendarMember.js';
+
+import inlineTextInput from '../../components/inline-text-input.vue';
 
 export default {
     mixins: [
@@ -133,7 +156,8 @@ export default {
     ],
 
     components: {
-        'modal': modal
+        'modal': modal,
+        'inline-text-input': inlineTextInput
     },
 
     props: [
@@ -145,14 +169,14 @@ export default {
             userCalendarMemberIds: [],
             modal: {
                 isActive: false,
-                hasError: false,
+//                hasError: false,
             }
         }
     },
 
     computed: {
         ...mapState({
-            members: state => state.dashboard.data.members,
+            members: state => state.member.data.members,
             userCalendarMembers: state => state.dashboard.data.userCalendarMembers,
             theme: state => state.app.theme
         }),
@@ -179,14 +203,14 @@ export default {
 
         clickSave: function() {
             u.clog('clickSave()');
-            this.modal.hasError = false;
+//            this.modal.hasError = false;
             this.update(this.userCalendar.id);
         },
 
         clickUndo: function() {
             this.input.name = this.userCalendar.name;
             this.input.description = this.userCalendar.description;
-            this.modal.hasError = false;
+//            this.modal.hasError = false;
         },
 
         changeMemberValue(elementId, userCalendarId, memberId) {

@@ -76,17 +76,9 @@
                 u.clog('success')
                 this.$store.commit('login', response.data.currentuser.name);
                 this.$store.commit('initUserCalendar', response.data.usercalendar );
-                this.$store.commit('initDashboardMembers', response.data.members );
+//                this.$store.commit('initMembersForUserCalendar', response.data.members );
+                this.$store.commit('initMembers', response.data.members );
                 this.$store.commit('initDashboardUserCalendarMembers', response.data.usercalendar_members );
-
-//                this.$store.commit('initCalendar', response.data.days );
-//                Object.keys(response.data.members).forEach(function(key) {
-//                    let val = this[key];
-//                    val.isShow = true;
-//                    u.clog(key + ':' + val.name + '(order: ' + val.order + ')');
-//                }, response.data.members);
-//                this.$store.commit('initMembers', response.data.members );
-
                 this.$store.commit('ready', true);
                 eventBus.fire('nuts.app.ready', null, 'App.vue');
             },
@@ -110,7 +102,7 @@
     
                 this.initApp();
 
-                this.$router.push('/calendar');
+                this.$router.push('/dashboard');
             }
         }
     }

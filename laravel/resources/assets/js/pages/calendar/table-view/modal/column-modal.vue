@@ -1,4 +1,5 @@
 <template>
+<!--
 <modal>
 <button class="modal-close" @click="close()"></button>
 <div class="modal-card">
@@ -66,75 +67,76 @@
             >Cancel
         </button>
     </footer>
-</div><!-- // .modal-card -->
+</div>
 </modal>
+-->
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
 
-export default {
-    name: 'column-modal-content',
-
-    components: {
-        modal
-    },
-
-    computed: {
-        ...mapState({
-            members: state => state.calendar.data.members,
-            theme: state => state.app.theme
-        }),
-
-        ...mapState('calendar/tableView/column', {
-            editColumn: state => state.update,
-            deleteColumn: state => state.remove
-        }),
-
-        inputName: {
-            get() { return this.editColumn.input.name; },
-            set(value) { this.setName( { value } ); }
-        },
-
-        inputIsShow: {
-            get() { return this.editColumn.input.isShow; },
-            set(value) { this.setIsShow( { value } ); }
-        },
-
-        inputOrder: {
-            get() { return this.editColumn.input.order; },
-            set(value) { this.setOrder( { value } ); }
-        }
-    },
-
-    methods: {
-        ...mapActions('calendar/tableView/column/update', {
-            setName: 'setName', 
-            setIsShow: 'setIsShow', 
-            setOrder: 'setOrder', 
-            update: 'update', 
-            reset: 'reset'
-        }),
-
-        ...mapActions('calendar/tableView/column/remove', {
-            remove: 'remove',
-            reset: 'reset'
-        }),
-
-        deleteButton: function() {
-            this.remove();
-        },
-
-        saveButton: function() {
-            this.update();
-        },
-
-        close: function() {
-            this.reset();
-        }
-    }
-}
+//export default {
+//    name: 'column-modal-content',
+//
+//    components: {
+//        modal
+//    },
+//
+//    computed: {
+//        ...mapState({
+//            members: state => state.calendar.data.members,
+//            theme: state => state.app.theme
+//        }),
+//
+//        ...mapState('member', {
+//            editColumn: state => state.update,
+//            deleteColumn: state => state.remove
+//        }),
+//
+//        inputName: {
+//            get() { return this.editColumn.input.name; },
+//            set(value) { this.setName( { value } ); }
+//        },
+//
+//        inputIsShow: {
+//            get() { return this.editColumn.input.isShow; },
+//            set(value) { this.setIsShow( { value } ); }
+//        },
+//
+//        inputOrder: {
+//            get() { return this.editColumn.input.order; },
+//            set(value) { this.setOrder( { value } ); }
+//        }
+//    },
+//
+//    methods: {
+//        ...mapActions('member/update', {
+//            setName: 'setName', 
+//            setIsShow: 'setIsShow', 
+//            setOrder: 'setOrder', 
+//            update: 'update', 
+//            reset: 'reset'
+//        }),
+//
+//        ...mapActions('member/remove', {
+//            remove: 'remove',
+//            reset: 'reset'
+//        }),
+//
+//        deleteButton: function() {
+//            this.remove();
+//        },
+//
+//        saveButton: function() {
+//            this.update();
+//        },
+//
+//        close: function() {
+//            this.reset();
+//        }
+//    }
+//}
 </script>
 
 <style lang="scss" scoped>

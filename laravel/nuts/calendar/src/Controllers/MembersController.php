@@ -99,8 +99,6 @@ class MembersController extends Controller
         if( $item instanceof \Illuminate\Http\JsonResponse ) return $item;
 
         $item->fill($request->only(
-            //Member::getFillable()
-            //['name','order', 'color']
             ['name']
         ));
         $item->save();
@@ -116,10 +114,15 @@ class MembersController extends Controller
     public function destroy($id)
     {
         $item = Member::findOrAbort($id);
-        $item->delete();
 
-        return \Response::json([
-            'success' => true
-        ]);
+        if( ! $item instanceof Member ) {
+            return [
+                'status' => 400,
+                'message' => 'member id does not exist'
+            ];
+        }
+
+        $item->delete();
+        return $item;
     }
 }
