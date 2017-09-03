@@ -33,47 +33,6 @@
                         :defaultValue="userCalendar.description"
                         :saveCallback="clickSave"
                     ></inline-text-input>  
-
-<!--
-                <form>
-                    <input 
-                        id="name"
-                        class="title inline-text-input" 
-                        type="text" 
-                        style="margin-bottom: 0"
-                        :style="[style.bgSecondary]"
-                        placeholder="Calendar Name"
-                        v-model.trim="input.name"
-                    >
-                    <a class="button" 
-                        v-show="userCalendar.name !== input.name" 
-                        @click="clickUndo()"
-                    >
-                        <i class="fa fa-undo"></i>
-                    </a>
-                    <a class="button" 
-                        v-show="userCalendar.name !== input.name"
-                        @click="clickSave()"
-                    ><i class="fa fa-floppy-o"></i></a>
-
-                    <input 
-                        id="description"
-                        class="subtitle inline-text-input" 
-                        type="text" 
-                        :style="[style.bgSecondary]"
-                        placeholder="Description"
-                        v-model.trim="input.description"
-                    >
-                    <a class="button" 
-                        v-show="userCalendar.description !== input.description" 
-                        @click="clickUndo()"
-                    ><i class="fa fa-undo"></i></a>
-                    <a class="button" 
-                        v-show="userCalendar.description !== input.description"
-                        @click="clickSave()"
-                    ><i class="fa fa-floppy-o"></i></a>
-                </form>
--->
             </section> 
 
             <section class="modal-card-body" style="padding: 60px;">
