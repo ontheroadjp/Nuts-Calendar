@@ -57,7 +57,7 @@ export default {
                         isImportant: false
                     }, { root: true });
         
-                    commit('reset');
+                    commit('stop');
                 })
 
                 .catch( error => {
@@ -69,7 +69,7 @@ export default {
                         isActive: true
                     }, { root: true});
 
-                    commit('reset');
+                    commit('stop');
                 });
         },
 
@@ -107,10 +107,14 @@ export default {
             state.editingItem.endTime = end_time;
         },
 
+        stop( state ) {
+            state.isLoading = false;
+        },
+
         reset( state ) {
             state.isActive = false,
-            state.isLoading = false,
             state.editingItem = '',
+            state.isLoading = false,
             state.input.content = '',
             state.input.startTime = '',
             state.input.endTime = ''
