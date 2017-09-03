@@ -57,9 +57,12 @@ export default {
                 .then( response => {
                     u.clog('success');
 
-                    state.editingItem.content = response.data.content;
-                    state.editingItem.startTime = response.data.start_time;
-                    state.editingItem.endTime = response.data.end_time;
+                    commit('update', {
+                        content: response.data.content,
+                        startTime: response.data.start_time,
+                        endTime: response.data.end_time
+                    });
+
 
                     commit('notifySuccess', {
                         content: 'success update task',
@@ -148,6 +151,12 @@ export default {
             state.input.content = content;
             state.input.startTime = startTime;
             state.input.endTime = endTime;
+        },
+
+        update( state, { content, startTime, endTime } ) {
+            state.editingItem.content = content;
+            state.editingItem.startTime = start_time;
+            state.editingItem.endTime = end_time;
         },
 
 //        updateContent( state, { value } ) {
