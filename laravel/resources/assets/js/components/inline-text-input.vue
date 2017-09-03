@@ -5,7 +5,7 @@
         @mouseleave="input.isEnter = false">
 
         <input 
-            :id="id"
+            :id="inputId"
             class="inline-text-input" 
             :class="inputClass"
             type="text" 
@@ -31,23 +31,30 @@
             Not saved
         </span>
 
-        <a class="button" 
+        <a :id="undoButtonId" 
             v-show="isButtonShow && !isLoading" 
+            class="button" 
             style="border:none; background:none; height:1rem; margin-top: 5px;"
             :style="iconStyle"
             @click="clickUndo()"
             :disabled="defaultValue == input.value"
         ><i class="fa fa-undo"></i></a>
     
-        <a class="button" 
+        <a :id="saveButtonId"
             v-show="isButtonShow && !isLoading"
+            class="button" 
             style="border:none; background:none; height:1rem; margin-top: 5px;"
             :style="iconStyle"
             @click="clickSave()"
             :disabled="defaultValue == input.value"
         ><i class="fa fa-floppy-o"></i></a>
 
-        <i v-if="isLoading" class="fa fa-refresh fa-spin"></i>
+        <i v-if="isLoading 
+                    && !input.isFocused 
+                    && !input.isEnter 
+                    && defaultValue != input.value
+                "
+            class="fa fa-refresh fa-spin"></i>
 
     </td>
 </tr>
@@ -73,7 +80,7 @@ export default {
             input: {
                 isEnter: false,
                 isFocused: false,
-                isEditing: false,
+//                isEditing: false,
                 value: ''
             },
             button: {
@@ -83,6 +90,21 @@ export default {
     },
 
     computed: {
+        inputId: function() {
+            if(this.id === '') return '';
+            return 'input-' + this.id;
+        },
+
+        saveButtonId: function() {
+            if(this.id === '') return '';
+            return 'save-button-' + this.id;
+        },
+
+        undoButtonId: function() {
+            if(this.id === '') return '';
+            return 'undo-button-' + this.id;
+        },
+
         inputStyle: function() {
             if(this.inputColor == '') return '';
 
@@ -100,9 +122,13 @@ export default {
         },
 
         isButtonShow: function() {
+//            return ( this.input.isEnter 
+//                        || ( this.button.isEnter && this.defaultValue != this.input.value )
+//                        || this.input.isFocused || this.isEditing
+//                    ) && !this.notSaved;
             return ( this.input.isEnter 
                         || ( this.button.isEnter && this.defaultValue != this.input.value )
-                        || this.input.isFocused || this.input.isEditing
+                        || this.input.isFocused || this.isLoading
                     ) && !this.notSaved;
         },
 
@@ -115,10 +141,10 @@ export default {
         focused: function(val) {
             this.input.isFocused = val;
             if(val) {
-                this.input.isEditing = true;
+//                this.isEditing = true;
             } else {
                 if(this.defaultValue == this.input.value) {
-                    this.input.isEditing = false;
+//                    this.isEditing = false;
                 }
 
                 if(this.input.value == '') {
@@ -137,13 +163,12 @@ export default {
 
         clickSave: function() {
             this.saveCallback();
-            this.input.isEditing = false;
         },
 
         clickUndo: function() {
             this.input.value = this.defaultValue;
             this.syncProps();
-            this.input.isEditing = false;
+//            this.isEditing = false;
         }
 
     },
