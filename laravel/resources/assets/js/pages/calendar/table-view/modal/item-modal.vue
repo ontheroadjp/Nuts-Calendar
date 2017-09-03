@@ -2,21 +2,7 @@
 <modal>
     <button class="modal-close" @click="clickClose()"></button>
     <div class="modal-card">
-<!--
-        <section class="modal-card-body" style="
-            border-top-left-radius: 3px;
-            border-top-right-radius: 3px;
-            padding: 60px;
-            height: 350px;
-        ">
 
-            <content-field
-                name="content"
-                :value="update.editingItem.content"
-                :action="updateContent"
-                :is-loading="update.isLoading"
-            ></content-field>
--->
         <section class="modal-card-body" style="padding: 40px;background-color: blue; color:white;">
             <button 
                 class="delete" 
@@ -31,7 +17,7 @@
                 inputColor="#fff"
                 iconColor="#fff"
                 placeholder="Title"
-                :model.sync="input.content"
+                :syncValue.sync="input.content"
                 :defaultValue="updateState.editingItem.content"
                 :saveCallback="clickSave"
             ></inline-text-input>  
@@ -83,7 +69,6 @@
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
 
-//import contentField from '../../../../components/edit-text-field.vue';
 import inlineTextInput from '../../../../components/inline-text-input.vue';
 
 //import timeRange from '../../../../components/edit-time-range.vue';
@@ -94,7 +79,6 @@ export default {
 
     components: {
         'modal': modal,
-//        'contentField': contentField,
         'inlineTextInput': inlineTextInput,
 //        'timeRange': timeRange,
         'timeRangePicker': timeRangePicker
@@ -115,22 +99,7 @@ export default {
             updateState: state => state.calendar.tableView.item.update,
             deleteItem: state => state.calendar.tableView.item.remove,
             theme: state => state.app.theme
-        }),
-
-//        input: function() {
-//            return {
-//                content: {
-//                    get() {
-//                        return this.updateState.input.content
-//                        //return this.$store.calendar.tableView.update.input.content;
-//                    },
-//    
-//                    set(value) {
-//                        //this.setInputContent({ value });
-//                    }
-//                }
-//            }
-//        }
+        })
     },
 
     methods: {
