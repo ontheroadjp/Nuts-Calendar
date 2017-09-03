@@ -20,7 +20,7 @@
                         inputClass="title"
                         inputColor="#fff"
                         placeholder="Calendar Name"
-                        :model.sync="input.name"
+                        :syncValue.sync="input.name"
                         :defaultValue="userCalendar.name"
                         :saveCallback="clickSave"
                     ></inline-text-input>  
@@ -29,7 +29,7 @@
                         inputClass="subtitle"
                         inputColor="#fff"
                         placeholder="Description"
-                        :model.sync="input.description"
+                        :syncValue.sync="input.description"
                         :defaultValue="userCalendar.description"
                         :saveCallback="clickSave"
                     ></inline-text-input>  

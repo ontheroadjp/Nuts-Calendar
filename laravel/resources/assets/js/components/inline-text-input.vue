@@ -63,7 +63,8 @@ export default {
         iconColor:      { type: String,   default: '', required: false },
         placeholder:    { type: String,   default: '', required: false },
         defaultValue:   { type: String,   default: '', required: false },
-        model:          { type: [String, Object],   required: true },
+//        model:          { type: [String, Object],   required: true },
+        syncValue:      { type: String,   required: true },
         saveCallback:   { type: Function, required: true }
     },
 
@@ -127,7 +128,7 @@ export default {
         },
 
         syncProps() {
-            this.$emit('update:model', this.input.value)
+            this.$emit('update:syncValue', this.input.value)
         },
 
         changeValue: function() {

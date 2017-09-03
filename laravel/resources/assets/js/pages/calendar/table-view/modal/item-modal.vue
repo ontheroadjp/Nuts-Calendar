@@ -31,7 +31,7 @@
                 inputColor="#fff"
                 iconColor="#fff"
                 placeholder="Title"
-                :model.sync="input.content"
+                :syncValue.sync="input.content"
                 :defaultValue="updateState.editingItem.content"
                 :saveCallback="clickSave"
             ></inline-text-input>  
