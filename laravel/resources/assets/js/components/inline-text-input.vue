@@ -35,6 +35,7 @@
             <a class="button" 
                 v-show="isButtonShow" 
                 style="border:none; background:none; height:1rem; margin-top: 5px;"
+                :style="iconStyle"
                 @click="clickUndo()"
                 :disabled="defaultValue == input.value"
             ><i class="fa fa-undo"></i></a>
@@ -42,6 +43,7 @@
             <a class="button" 
                 v-show="isButtonShow"
                 style="border:none; background:none; height:1rem; margin-top: 5px;"
+                :style="iconStyle"
                 @click="clickSave()"
                 :disabled="defaultValue == input.value"
             ><i class="fa fa-floppy-o"></i></a>
@@ -58,9 +60,10 @@ export default {
         id:             { type: String,   default: '', required: false },
         inputClass:     { type: String,   default: '', required: false },
         inputColor:     { type: String,   default: '', required: false },
+        iconColor:      { type: String,   default: '', required: false },
         placeholder:    { type: String,   default: '', required: false },
         defaultValue:   { type: String,   default: '', required: false },
-        model:          { type: String,   required: true },
+        model:          { type: [String, Object],   required: true },
         saveCallback:   { type: Function, required: true }
     },
 
@@ -84,6 +87,14 @@ export default {
 
             return {
                 color: this.inputColor
+            }
+        },
+
+        iconStyle: function() {
+            if(this.iconColor == '') return '';
+
+            return {
+                color: this.iconColor
             }
         },
 
