@@ -28,20 +28,12 @@
             <span class="icon" style="margin-right: 10px">
                 <i class="fa fa-clock-o"></i>
             </span>
-<!--
-            <time-range
-                name="content"
-                :startTime="updateState.editingItem.start_time"
-                :endTime="updateState.editingItem.end_time"
-                :action="updateTimeRange"
-                :is-loading="updateState.isLoading"
-            ></time-range>
--->
+
             <timeRangePicker 
                 minute-interval="5"
                 :startTime="updateState.editingItem.start_time"
                 :endTime="updateState.editingItem.end_time"
-                :action="updateTimeRange"
+                :action="update"
                 :isLoading="updateState.isLoading"
             ></timeRangePicker>
         </section>
@@ -70,7 +62,6 @@
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
 import inlineTextInput from '../../../../components/inline-text-input.vue';
-//import timeRange from '../../../../components/edit-time-range.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 
 export default {
@@ -79,7 +70,6 @@ export default {
     components: {
         'modal': modal,
         'inlineTextInput': inlineTextInput,
-//        'timeRange': timeRange,
         'timeRangePicker': timeRangePicker
     },
 
@@ -106,8 +96,8 @@ export default {
             setInputValues: 'setInputValues',
             update: 'update',
             updateReset: 'reset',
-            updateContent: 'updateContent',
-            updateTimeRange: 'updateTimeRange'
+//            updateContent: 'updateContent',
+//            updateTimeRange: 'updateTimeRange'
         }),
 
         ...mapActions('calendar/tableView/item/remove', {
