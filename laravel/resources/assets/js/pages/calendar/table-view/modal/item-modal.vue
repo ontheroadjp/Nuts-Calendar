@@ -12,11 +12,12 @@
             ></button>
 
             <inline-text-input 
-                id=""
+                id="item-content"
                 inputClass="title"
                 inputColor="#fff"
                 iconColor="#fff"
                 placeholder="Title"
+                :isLoading="updateState.isLoading"
                 :syncValue.sync="input.content"
                 :defaultValue="updateState.editingItem.content"
                 :saveCallback="clickSave"
@@ -68,9 +69,7 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import modal from '../../../../components/modal.vue';
-
 import inlineTextInput from '../../../../components/inline-text-input.vue';
-
 //import timeRange from '../../../../components/edit-time-range.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 
@@ -124,7 +123,6 @@ export default {
             });
 
             this.update();
-
         },
 
         clickRemove() {
