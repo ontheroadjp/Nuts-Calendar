@@ -23,15 +23,20 @@ export default {
             dispatch('update');
         },
 
-        updateContent( { dispatch, commit }, { value } ) {
-            commit('updateContent', { value });
-            dispatch('update');
+        setInputValues( { commit }, { content, startTime, endTime } ) {
+            commit('setInputValues', { content, startTime, endTime } );
         },
 
-        updateTimeRange( { dispatch, commit }, { start, end } ) {
-            commit('updateTimeRange', { startTime: start, endTime: end } );
-            dispatch('update');
-        },
+
+//        updateContent( { dispatch, commit }, { value } ) {
+//            commit('updateContent', { value });
+//            dispatch('update');
+//        },
+
+//        updateTimeRange( { dispatch, commit }, { start, end } ) {
+//            commit('updateTimeRange', { startTime: start, endTime: end } );
+//            dispatch('update');
+//        },
 
         update( { state, commit } ) {
             commit('start');
@@ -39,17 +44,22 @@ export default {
 
             const url = '/api/v1/item/' + state.editingItem.id;
             const data = {
-                member_id: state.editingItem.member_id,
-                content: state.editingItem.content,
-                date: state.editingItem.date,
-                start_time: state.editingItem.start_time,
-                end_time: state.editingItem.end_time,
-                is_done: state.editingItem.is_done,
+                member_id:  state.editingItem.member_id,
+                date:       state.editingItem.date,
+                is_done:    state.editingItem.is_done,
+
+                content:    state.input.content,
+                start_time: state.input.startTime,
+                end_time:   state.input.endTime,
             };
     
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
+
+                    state.editingItem.content = response.data.content;
+                    state.editingItem.startTime = response.data.start_time;
+                    state.editingItem.endTime = response.data.end_time;
 
                     commit('notifySuccess', {
                         content: 'success update task',
@@ -121,8 +131,8 @@ export default {
         prepare( state, { editingItem } ) {
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
-            state.input.startTime = editingItem.startTime;
-            state.input.endTime = editingItem.endTime;
+            state.input.startTime = editingItem.start_time;
+            state.input.endTime = editingItem.end_time;
             state.isActive = true;
         },
 
@@ -134,32 +144,38 @@ export default {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
 
-        updateContent( state, { value } ) {
-            state.editingItem.content = value;
-            state.input.content = value;
+        setInputValues( state, { content, startTime, endTime } ) {
+            state.input.content = content;
+            state.input.startTime = startTime;
+            state.input.endTime = endTime;
         },
 
-        updateTimeRange( state, { startTime, endTime } ) {
-            state.editingItem.start_time = startTime;
-            state.editingItem.end_time = endTime;
-        },
+//        updateContent( state, { value } ) {
+//            state.editingItem.content = value;
+//            state.input.content = value;
+//        },
 
-        update( state ) {
-// A patern
-//            const keys = Object.keys(params);
-//            keys.forEach(function(key) {
-//                item[key] = params[key];
-//            });
+//        updateTimeRange( state, { startTime, endTime } ) {
+//            state.editingItem.start_time = startTime;
+//            state.editingItem.end_time = endTime;
+//        },
 
-// B patern
-//        const cellItems = state.calendar.data.calendars[dayIndex].items[memberId];
-//        if(cellItems instanceof Array && cellItems[itemIndex]) {
-//            const keys = Object.keys(params);
-//            keys.forEach(function(key) {
-//                cellItems[itemIndex][key] = params[key];
-//            });
-//        }
-        },
+//        update( state ) {
+//// A patern
+////            const keys = Object.keys(params);
+////            keys.forEach(function(key) {
+////                item[key] = params[key];
+////            });
+//
+//// B patern
+////        const cellItems = state.calendar.data.calendars[dayIndex].items[memberId];
+////        if(cellItems instanceof Array && cellItems[itemIndex]) {
+////            const keys = Object.keys(params);
+////            keys.forEach(function(key) {
+////                cellItems[itemIndex][key] = params[key];
+////            });
+////        }
+//        },
 
         reset( state ) {
             state.isActive = false,
