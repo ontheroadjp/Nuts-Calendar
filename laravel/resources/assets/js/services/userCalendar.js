@@ -7,6 +7,7 @@ export default {
 
     data() {
         return {
+            isLoading: false,
             input: {
                 name: '',
                 description: ''
@@ -16,6 +17,7 @@ export default {
 
     methods: {
         update(calendarId) {
+            this.isLoading = true;
             const url = '/api/v1/calendar/' + calendarId;
             const data = {
                 'name': this.input.name,
@@ -29,6 +31,8 @@ export default {
 
         successUpdate(response) {
             u.clog('success');
+            this.isLoading = false;
+
             const id = response.data.id;
             const name = response.data.name;
             const description = response.data.description;
@@ -39,6 +43,7 @@ export default {
 
         failedUpdate(error) {
             u.clog('failed');
+            this.isLoading = false;
         }
     }
 }

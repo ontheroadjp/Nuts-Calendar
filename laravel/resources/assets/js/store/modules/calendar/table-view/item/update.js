@@ -27,17 +27,6 @@ export default {
             commit('setInputValues', { content, startTime, endTime } );
         },
 
-
-//        updateContent( { dispatch, commit }, { value } ) {
-//            commit('updateContent', { value });
-//            dispatch('update');
-//        },
-
-//        updateTimeRange( { dispatch, commit }, { start, end } ) {
-//            commit('updateTimeRange', { startTime: start, endTime: end } );
-//            dispatch('update');
-//        },
-
         update( { state, commit } ) {
             commit('start');
             u.clog('update()');
@@ -57,16 +46,18 @@ export default {
                 .then( response => {
                     u.clog('success');
 
-                    state.editingItem.content = response.data.content;
-                    state.editingItem.startTime = response.data.start_time;
-                    state.editingItem.endTime = response.data.end_time;
+                    commit('update', {
+                        content: response.data.content,
+                        startTime: response.data.start_time,
+                        endTime: response.data.end_time
+                    });
 
                     commit('notifySuccess', {
                         content: 'success update task',
                         isImportant: false
                     }, { root: true });
         
-                    commit('reset');
+                    commit('stop');
                 })
 
                 .catch( error => {
@@ -78,49 +69,9 @@ export default {
                         isActive: true
                     }, { root: true});
 
-                    commit('reset');
+                    commit('stop');
                 });
-
         },
-
-//        update( { commit }, { item } ) {
-//            u.clog('update()');
-//
-//            const url = '/api/v1/item/' + item.id;
-//            const data = {
-//                member_id: item.member_id,
-//                content: item.content,
-//                date: item.date,
-//                start_time: item.start_time,
-//                end_time: item.end_time,
-//                is_done: item.is_done,
-//            };
-//    
-//            http.fetchPut(url, data)
-//                .then( response => {
-//                    u.clog('success');
-//
-//                    commit('notifySuccess', {
-//                        content: 'success update task',
-//                        isImportant: false
-//                    }, { root: true });
-//        
-//                    commit('reset');
-//                })
-//
-//                .catch( error => {
-//                    u.clog('failed');
-//
-//                    commit('toggleTaskDone', { item });
-//                    commit('notifyDanger', {
-//                        content: 'failed update member',
-//                        isActive: true
-//                    }, { root: true});
-//
-//                    commit('reset');
-//                });
-//
-//        },
 
         reset( { commit } ) {
             commit('reset');
@@ -150,37 +101,20 @@ export default {
             state.input.endTime = endTime;
         },
 
-//        updateContent( state, { value } ) {
-//            state.editingItem.content = value;
-//            state.input.content = value;
-//        },
+        update( state, { content, startTime, endTime } ) {
+            state.editingItem.content = content;
+            state.editingItem.startTime = start_time;
+            state.editingItem.endTime = end_time;
+        },
 
-//        updateTimeRange( state, { startTime, endTime } ) {
-//            state.editingItem.start_time = startTime;
-//            state.editingItem.end_time = endTime;
-//        },
-
-//        update( state ) {
-//// A patern
-////            const keys = Object.keys(params);
-////            keys.forEach(function(key) {
-////                item[key] = params[key];
-////            });
-//
-//// B patern
-////        const cellItems = state.calendar.data.calendars[dayIndex].items[memberId];
-////        if(cellItems instanceof Array && cellItems[itemIndex]) {
-////            const keys = Object.keys(params);
-////            keys.forEach(function(key) {
-////                cellItems[itemIndex][key] = params[key];
-////            });
-////        }
-//        },
+        stop( state ) {
+            state.isLoading = false;
+        },
 
         reset( state ) {
             state.isActive = false,
-            state.isLoading = false,
             state.editingItem = '',
+            state.isLoading = false,
             state.input.content = '',
             state.input.startTime = '',
             state.input.endTime = ''
