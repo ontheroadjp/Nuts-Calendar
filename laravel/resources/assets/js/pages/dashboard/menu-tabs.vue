@@ -1,15 +1,29 @@
 <template>
-<div class="tabs is-toggle">
-    <ul class="flat-tabs">
-        <li v-for="(tab, index) in tabs" 
-            :class="currentId === index ? 'is-active' : ''"
-        >
-            <a @click="clickTab(index)">
-                <span class="icon is-small"><i class="fa" :class="tab.icon"></i></span>
-                <span>{{ tab.label }}</span>
-            </a>
-        </li>
-    </ul>
+<div>
+    <div class="tabs">
+        <ul class="flat-tabs" style="border-bottom: none">
+            <template v-for="(tab, index) in tabs">
+                <li v-if="currentId === index" :style="[ isActive ]" >
+                    <a @click="clickTab(index)" style="color: white;">
+                        <span class="icon is-small">
+                            <i class="fa" :class="tab.icon"></i>
+                        </span>
+                        <span>{{ tab.label }}</span>
+                    </a>
+                </li>
+        
+                <li v-else>
+                    <a @click="clickTab(index)">
+                        <span class="icon is-small">
+                            <i class="fa" :class="tab.icon"></i>
+                        </span>
+                        <span>{{ tab.label }}</span>
+                    </a>
+                </li>
+            </template>
+        </ul>
+    </div>
+    <slot></slot>
 </div>
 </template>
 
@@ -17,14 +31,25 @@
 import { mapState } from 'vuex';
 
 export default {
-    props: [
-        'tabs'
-    ],
+    props: {
+        tabs: { type: Array, required: true }
+    },
 
     computed: {
+        ...mapState({
+            theme: state => state.app.theme
+        }),
+
         ...mapState('dashboard', {
             currentId: state => state.currentId
-        })
+        }),
+
+        isActive: function() {
+            return {
+                'border-radius': '20px',
+                'background-color': this.theme.primary.code,
+            }
+        }
     },
 
     methods: {
@@ -44,9 +69,12 @@ export default {
         }
     }
 
+/*
     & li.is-active a {
         border-radius: 20px;
-        background-color: blue;
+        background-color: #fff;
+        color: #000;
     }
+*/
 }
 </style>
