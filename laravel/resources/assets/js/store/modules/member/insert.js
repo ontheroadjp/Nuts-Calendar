@@ -15,9 +15,9 @@ export default {
     },
 
     actions: {
-        prepare( { commit } ) {
-            commit('prepare'); 
-        },
+//        prepare( { commit } ) {
+//            commit('prepare'); 
+//        },
 
         setInsertValue( { commit }, { key, value } ) {
             commit('setInsertValue', { key, value });
@@ -72,9 +72,9 @@ export default {
     },
 
     mutations: {
-        prepare( state ) {
-            state.isActive = true;  
-        },
+//        prepare( state ) {
+//            state.isActive = true;  
+//        },
     
 //        setNewName( state, { value } ) {
 ////            state.input.newName = value;
