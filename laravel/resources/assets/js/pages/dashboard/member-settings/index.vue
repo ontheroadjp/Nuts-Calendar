@@ -185,10 +185,18 @@ export default {
 
         clickSave: function(index) {
             this.$set(this.input.notSaved, index, false);
-            let editingMember = this.members[index];
-            editingMember.name = this.input.name[index];
-            editingMember.isShow = true;
-            this.prepareUpdate({ editingMember })
+
+//            let editingMember = this.members[index];
+//            editingMember.name = this.input.name[index];
+//            editingMember.isShow = true;
+//            this.prepareUpdate({ editingMember })
+
+            const id = index;
+            const name = this.input.name[index];
+            const isShow = true;
+
+            this.prepareUpdate({ id, name, isShow })
+
             this.update();
         },
 
