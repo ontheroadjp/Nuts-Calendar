@@ -1,4 +1,4 @@
-import Vue from 'vue';
+//import Vue from 'vue';
 
 export default {
     namespaced: true,
@@ -8,25 +8,28 @@ export default {
     },
 
     actions: {
-        remove( { commit, state, rootState }, { index } ) {
+//        remove( { commit, state, rootState }, { index } ) {
+        remove( { commit, state }, { index } ) {
             u.clog('remove()');
             commit('start');
 
-            const members = rootState.member.data.members;
+//            const members = rootState.member.data.members;
+//            const url = '/api/v1/member/' + members[index].id;
 
-            const url = '/api/v1/member/' + members[index].id;
+            const url = '/api/v1/member/' + index;
+
             http.fetchDelete(url)
                 .then(response => {
                     u.clog('success');
 
-                    commit('remove', { members, index });
+                    commit('member/remove', { id: index }, { root: true });
 
                     commit('notifySuccess', {
                         content: 'success remove member',
                         isImportant: false
                     }, { root: true } );
 
-                    commit('reset');
+                    commit('stop');
                 })
 
                 .catch(error => {
@@ -37,13 +40,13 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-                    commit('reset');
+                    commit('stop');
                 });
         },
 
-        reset( { commit } ) {
-            commit('reset');
-        }
+//        stop( { commit } ) {
+//            commit('stop');
+//        }
     },
 
     mutations: {
@@ -51,11 +54,11 @@ export default {
             state.isLoading = true;
         },
 
-        remove( state, { members, index } ) {
-            Vue.delete(members, index);
-        },
+//        remove( state, { members, index } ) {
+//            Vue.delete(members, index);
+//        },
 
-        reset( state ) {
+        stop( state ) {
             state.isLoading = false;
         }
     }
