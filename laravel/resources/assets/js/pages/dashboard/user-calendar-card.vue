@@ -21,10 +21,10 @@
                         inputColor="#fff"
                         iconColor="#fff"
                         placeholder="Calendar Name"
-                        :isLoading="isLoading"
-                        :syncValue.sync="input.name"
+                        :isLoading="updateState.isLoading.name"
+                        :syncValue.sync="newName"
                         :defaultValue="userCalendar.name"
-                        :saveCallback="clickSave"
+                        :saveCallback="clickSaveName"
                     ></inline-text-input>  
                     <inline-text-input 
                         id="calendar-description"
@@ -32,10 +32,10 @@
                         inputColor="#fff"
                         iconColor="#fff"
                         placeholder="Description"
-                        :isLoading="isLoading"
-                        :syncValue.sync="input.description"
+                        :isLoading="updateState.isLoading.description"
+                        :syncValue.sync="newDescription"
                         :defaultValue="userCalendar.description"
-                        :saveCallback="clickSave"
+                        :saveCallback="clickSaveDescription"
                     ></inline-text-input>  
             </section> 
 
@@ -106,16 +106,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import modal from '../../components/modal.vue';
-import userCalendarService from '../../services/userCalendar.js';
+//import userCalendarService from '../../services/userCalendar.js';
 import userCalendarMemberService from '../../services/userCalendarMember.js';
 
 import inlineTextInput from '../../components/inline-text-input.vue';
 
 export default {
     mixins: [
-        userCalendarService, userCalendarMemberService
+//        userCalendarService, userCalendarMemberService
+        userCalendarMemberService
     ],
 
     components: {
@@ -144,6 +145,32 @@ export default {
             theme: state => state.app.theme
         }),
 
+        ...mapState('userCalendar', {
+            updateState: state => state.update,
+//            updateName: state => state.update.editingUserCalendar.name,
+//            updateDescription: state => state.update.editingUserCalendar.description
+        }),
+
+        newName: {
+            get() {
+                return this.$store.state.userCalendar.update.editingUserCalendar.name;
+            },
+
+            set(value) {
+                this.$store.commit('userCalendar/update/setName', { value });
+            }
+        },
+
+        newDescription: {
+            get() {
+                return this.$store.state.userCalendar.update.editingUserCalendar.description;
+            },
+
+            set(value) {
+                this.$store.commit('userCalendar/update/setDescription', { value });
+            }
+        },
+
         style: function() {
             return {
                 bgSecondary: {
@@ -155,8 +182,15 @@ export default {
     },
 
     methods: {
+        ...mapActions('userCalendar/update', {
+            prepare: 'prepare',
+            updateName: 'updateName',
+            updateDescription: 'updateDescription'
+        }),
+
         openDialog: function( userCalendar ) {
             this.modal.isActive = true;
+            this.prepare({ userCalendar });
         },
 
         clickClose: function() {
@@ -164,10 +198,16 @@ export default {
             this.initModalInput();
         },
 
-        clickSave: function() {
+        clickSaveName: function() {
             u.clog('clickSave()');
 //            this.modal.hasError = false;
-            this.update(this.userCalendar.id);
+            this.updateName(this.userCalendar.id);
+        },
+
+        clickSaveDescription: function() {
+            u.clog('clickSave()');
+//            this.modal.hasError = false;
+            this.updateDescription(this.userCalendar.id);
         },
 
         clickUndo: function() {
@@ -197,8 +237,8 @@ export default {
         },
 
         initModalInput: function() {
-            this.input.name = this.userCalendar.name;
-            this.input.description = this.userCalendar.description;
+//            this.input.name = this.userCalendar.name;
+//            this.input.description = this.userCalendar.description;
         },
 
         initUserCalendarMemberIds: function() {
