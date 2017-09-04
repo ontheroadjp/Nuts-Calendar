@@ -32,7 +32,9 @@ export default {
             http.fetchPost(url, data)
                 .then( response => {
                     u.clog("success");
-                    this.$store.commit('dashboard/addUserCalendarMember', { obj: response.data });
+                    this.$store.commit('userCalendarMember/addUserCalendarMember', { 
+                        obj: response.data 
+                    });
                     this.isLoading = false;
                 })
                 .catch( error => {
@@ -45,7 +47,9 @@ export default {
             http.fetchDelete( url, data)
                 .then( response => {
                     u.clog("success");
-                    this.$store.commit('dashboard/removeUserCalendarMember', { obj: response.data });
+                    this.$store.commit('userCalendarMember/removeUserCalendarMember', { 
+                        obj: response.data 
+                    });
                     this.isLoading = false;
                 })
                 .catch( error => {
