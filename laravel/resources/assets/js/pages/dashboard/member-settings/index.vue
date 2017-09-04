@@ -4,13 +4,11 @@
     <div class="card" style="padding: 20px 40px;">
         <form>
             <input 
-                class="inline-text-input" 
+                class="text-input" 
                 type="text" 
-                style="
-                    width:40%; 
+                style="width:40%; 
                     font-size:1rem; 
-                    line-height:2.3rem
-                "
+                    line-height:2.3rem"
                 placeholder="Add New Member"
                 v-model.trim="newName"
             >
@@ -237,7 +235,7 @@ export default {
     }
 }
 
-.inline-text-input {
+.text-input {
     border: none;
     box-shadow: none;
     width: 83%;
