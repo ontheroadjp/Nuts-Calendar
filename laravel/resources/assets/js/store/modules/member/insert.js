@@ -1,10 +1,10 @@
-import Vue from 'vue';
+//import Vue from 'vue';
 
 export default {
     namespaced: true,
 
     state: {
-        isActive: false,
+//        isActive: false,
         isLoading: false,
         insertValues: {
             name: ''
@@ -23,7 +23,7 @@ export default {
             commit('setInsertValue', { key, value });
         },
 
-        insert( { dispatch, commit, state, rootState } ) {
+        insert( { dispatch, commit, state } ) {
             u.clog('insert()');
             commit('start');
 
@@ -97,7 +97,7 @@ export default {
 
         reset( state ) {
             state.isLoading = false;
-            state.isActive = false;
+//            state.isActive = false;
 //            state.input.newName = '';
             Object.keys(state.insertValues).forEach(function(key) {
                 this[key] = '';
