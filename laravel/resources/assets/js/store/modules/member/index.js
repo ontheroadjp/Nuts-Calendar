@@ -16,6 +16,12 @@ const member = {
         }
     },
 
+    mutations: {
+        setName( state, { id, name } ) {
+            state.data.members[id].name = name;
+        }
+    },
+
     modules: {
         insert: insert,
         update: update,
