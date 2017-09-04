@@ -16,12 +16,12 @@ const member = {
             state.data.userCalendarMembers = userCalendarMembers;
         },
 
-        addUserCalendarMember(state, { obj }) {
+        add(state, { obj }) {
             const t = state.data.userCalendarMembers;
             Vue.set(t, t.length, obj); 
         },
 
-        removeUserCalendarMember(state, { obj }) {
+        remove(state, { obj }) {
             const t = state.data.userCalendarMembers;
             t.forEach( function(val, index) {
                 if((val.user_calendar_id === obj.user_calendar_id) 
