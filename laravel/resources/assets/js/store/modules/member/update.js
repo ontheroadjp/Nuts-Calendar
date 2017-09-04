@@ -7,7 +7,6 @@ export default {
         editingMember: '',
         input: {
             name: '',
-//            order: '',
             isShow: ''
         }
     },
@@ -25,10 +24,6 @@ export default {
             commit('setIsShow', { value });
         },
 
-//        setOrder( { commit }, { value } ) {
-//            commit('setOrder', { value });
-//        },
-
         update( { state, commit, rootState } ) {
             u.clog('update()');
             commit('start');
@@ -36,7 +31,6 @@ export default {
             const url = '/api/v1/member/' + state.editingMember.id;
             const data = {
                 'name': state.input.name,
-//                'order': state.input.order
             };
     
             http.fetchPut(url, data)
@@ -46,7 +40,6 @@ export default {
                     commit('update', {
                         'member': rootState.calendar.data.members[response.data.id],
                         'name': response.data.name,
-//                        'order': response.data.order
                     });
 
                     commit('notifySuccess', {
@@ -79,7 +72,6 @@ export default {
             state.isActive = true;  
             state.editingMember = editingMember;
             state.input.name = editingMember.name;
-//            state.input.order = editingMember.order;
             state.input.isShow = editingMember.isShow;
         },
     
@@ -91,18 +83,12 @@ export default {
             state.input.isShow = value;
         },
     
-//        setOrder( state, { value } ) {
-//            state.input.order = value;
-//        },
-    
         start( state ) {
             state.isLoading = true;
         },
 
-//        update( state, { member, name, order } ) {
         update( state, { member, name } ) {
             member.name = name;
-//            member.order = order;
         },
 
         reset( state ) {
@@ -110,7 +96,6 @@ export default {
             state.isActive = false;
             state.input.name = '';
             state.input.isShow = '';
-//            state.input.order = '';
         }
     }
 };
