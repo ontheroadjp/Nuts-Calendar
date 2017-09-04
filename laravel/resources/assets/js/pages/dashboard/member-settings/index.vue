@@ -4,13 +4,11 @@
     <div class="card" style="padding: 20px 40px;">
         <form>
             <input 
-                class="inline-text-input" 
+                class="text-input" 
                 type="text" 
-                style="
-                    width:40%; 
+                style="width:40%; 
                     font-size:1rem; 
-                    line-height:2.3rem
-                "
+                    line-height:2.3rem"
                 placeholder="Add New Member"
                 v-model.trim="newName"
             >
@@ -128,11 +126,14 @@ export default {
 
         newName: {
             get () {
-                return this.$store.state.member.insert.input.newName;
+                return this.$store.state.member.insert.insertValues.name;
             },
 
             set (value) {
-                this.setNewName({ value });
+                this.setInsertValue({ 
+                    key: 'name',
+                    value: value 
+                });
             }
         },
 
@@ -147,7 +148,7 @@ export default {
         }),
 
         ...mapActions('member/insert', {
-            setNewName: 'setNewName',
+            setInsertValue: 'setInsertValue',
             insert: 'insert'
         }),
 
@@ -187,10 +188,18 @@ export default {
 
         clickSave: function(index) {
             this.$set(this.input.notSaved, index, false);
-            let editingMember = this.members[index];
-            editingMember.name = this.input.name[index];
-            editingMember.isShow = true;
-            this.prepareUpdate({ editingMember })
+
+//            let editingMember = this.members[index];
+//            editingMember.name = this.input.name[index];
+//            editingMember.isShow = true;
+//            this.prepareUpdate({ editingMember })
+
+            const id = index;
+            const name = this.input.name[index];
+            const isShow = true;
+
+            this.prepareUpdate({ id, name, isShow })
+
             this.update();
         },
 
@@ -237,7 +246,7 @@ export default {
     }
 }
 
-.inline-text-input {
+.text-input {
     border: none;
     box-shadow: none;
     width: 83%;

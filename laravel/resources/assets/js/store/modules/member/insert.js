@@ -1,14 +1,17 @@
-import Vue from 'vue';
+//import Vue from 'vue';
 
 export default {
     namespaced: true,
 
     state: {
-        isActive: false,
+//        isActive: false,
         isLoading: false,
-        input: {
-            newName: ''
+        insertValues: {
+            name: ''
         }
+//        input: {
+//            newName: ''
+//        }
     },
 
     actions: {
@@ -16,27 +19,33 @@ export default {
             commit('prepare'); 
         },
 
-        setNewName( { commit }, { value } ) {
-            commit('setNewName', { value });
+        setInsertValue( { commit }, { key, value } ) {
+            commit('setInsertValue', { key, value });
         },
 
-        insert( { dispatch, commit, state, rootState } ) {
+        insert( { dispatch, commit, state } ) {
             u.clog('insert()');
             commit('start');
 
             const url = '/api/v1/member';
             
             const params = {
-                'name': state.input.newName,
+//                'name': state.input.newName,
+                'name': state.insertValues.name,
             };
             
             http.fetchPost(url, params)
                 .then(response => {
                     u.clog('success');
 
-                    const members = rootState.member.data.members;
+//                    const members = rootState.member.data.members;
                     const data = response.data;
-                    commit('insert', { members, data } );
+                    data.isShow = true;
+
+                    commit('member/add', { 
+                        id: data.id,
+                        member: data
+                    }, { root: true } );
 
                     commit('notifySuccess', {
                         content: 'success add member',
@@ -67,24 +76,32 @@ export default {
             state.isActive = true;  
         },
     
-        setNewName( state, { value } ) {
-            state.input.newName = value;
-        },
+//        setNewName( state, { value } ) {
+////            state.input.newName = value;
+//            state.insertValues.name = value;
+//        },
     
+        setInsertValue( state, { key, value } ) {
+            state.insertValues[key] = value;
+        },
+
         start( state ) {
             state.isLoading = true;
         },
     
-        insert( state, { members, data } ) {
-            data.isShow = true;
-//            const key = parseInt(members.length);
-            Vue.set(members, data.id, data);
-        },
+//        insert( state, { members, data } ) {
+//            data.isShow = true;
+////            const key = parseInt(members.length);
+//            Vue.set(members, data.id, data);
+//        },
 
         reset( state ) {
             state.isLoading = false;
-            state.isActive = false;
-            state.input.newName = '';
+//            state.isActive = false;
+//            state.input.newName = '';
+            Object.keys(state.insertValues).forEach(function(key) {
+                this[key] = '';
+            }, state.insertValues );
         }
     }
 };
