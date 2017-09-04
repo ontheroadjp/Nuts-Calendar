@@ -26,7 +26,7 @@ export default {
 
         update( { state, commit, rootState } ) {
             u.clog('update()');
-            commit('start');
+            commit('isLoading', true);
 
             const url = '/api/v1/member/' + state.updateValues.id;
             const data = {
@@ -47,6 +47,7 @@ export default {
                         isImportant: false
                     }, { root: true});
 
+                    commit('isLoading', false);
                     commit('reset');
                 })
 
@@ -58,12 +59,9 @@ export default {
                         isActive: true
                     }, { root: true});
 
+                    commit('isLoading', false);
                     commit('reset');
                 });
-        },
-
-        reset( { commit } ) {
-            commit('reset');
         }
     },
 
@@ -83,12 +81,11 @@ export default {
             state.updateValues.isShow = value;
         },
     
-        start( state ) {
-            state.isLoading = true;
+        isLoading( state, value ) {
+            state.isLoading = value;
         },
 
         reset( state ) {
-            state.isLoading = false;
             state.isActive = false;
             state.updateValues.name = '';
             state.updateValues.isShow = '';
