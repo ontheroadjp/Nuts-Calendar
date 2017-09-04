@@ -22,6 +22,10 @@ const member = {
             Vue.set(state.data.members, id, member);
         },
 
+        remove( state, { id } ) {
+            Vue.delete(state.data.members, id);
+        },
+
         setName( state, { id, name } ) {
             state.data.members[id].name = name;
         }
