@@ -4,23 +4,14 @@ export default {
     state: {
         isActive: false,
         isLoading: false,
-//        editingMember: '',
         updateValues: {
             id: '',
             name: '',
             isShow: true
         }
-//        input: {
-//            name: '',
-//            isShow: ''
-//        }
     },
 
     actions: {
-//        prepare( { commit }, { editingMember } ) {
-//            commit('prepare', { editingMember } ); 
-//        },
-
         prepare( { commit }, { id, name, isShow } ) {
             commit('prepare', { id, name, isShow } ); 
         },
@@ -37,7 +28,6 @@ export default {
             u.clog('update()');
             commit('start');
 
-//            const url = '/api/v1/member/' + state.editingMember.id;
             const url = '/api/v1/member/' + state.updateValues.id;
             const data = {
                 'name': state.updateValues.name,
@@ -46,11 +36,6 @@ export default {
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
-
-//                    commit('update', {
-//                        'member': rootState.member.data.members[response.data.id],
-//                        'name': response.data.name,
-//                    });
 
                     commit('member/setName', {
                         id: response.data.id,
@@ -83,13 +68,6 @@ export default {
     },
 
     mutations: {
-//        prepare( state, { editingMember } ) {
-//            state.isActive = true;  
-//            state.editingMember = editingMember;
-//            state.updateValues.name = editingMember.name;
-//            state.updateValues.isShow = editingMember.isShow;
-//        },
-    
         prepare( state, { id, name, isShow } ) {
             state.isActive = true;  
             state.updateValues.id = id;
@@ -108,10 +86,6 @@ export default {
         start( state ) {
             state.isLoading = true;
         },
-
-//        update( state, { member, name } ) {
-//            member.name = name;
-//        },
 
         reset( state ) {
             state.isLoading = false;
