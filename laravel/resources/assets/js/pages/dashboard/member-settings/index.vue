@@ -126,11 +126,14 @@ export default {
 
         newName: {
             get () {
-                return this.$store.state.member.insert.input.newName;
+                return this.$store.state.member.insert.insertValues.name;
             },
 
             set (value) {
-                this.setNewName({ value });
+                this.setInsertValue({ 
+                    key: 'name',
+                    value: value 
+                });
             }
         },
 
@@ -145,7 +148,7 @@ export default {
         }),
 
         ...mapActions('member/insert', {
-            setNewName: 'setNewName',
+            setInsertValue: 'setInsertValue',
             insert: 'insert'
         }),
 
