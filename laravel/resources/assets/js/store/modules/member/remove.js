@@ -8,7 +8,7 @@ export default {
     actions: {
         remove( { commit, state }, { index } ) {
             u.clog('remove()');
-            commit('start');
+            commit('isLoading', true);
 
             const url = '/api/v1/member/' + index;
 
@@ -25,7 +25,7 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-                    commit('stop');
+                    commit('isLoading', false);
                 })
 
                 .catch(error => {
@@ -36,18 +36,14 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-                    commit('stop');
+                    commit('isLoading', false);
                 });
         }
     },
 
     mutations: {
-        start( state ) {
-            state.isLoading = true;
-        },
-
-        stop( state ) {
-            state.isLoading = false;
+        isLoading( state, value ) {
+            state.isLoading = value
         }
     }
 }

@@ -25,7 +25,7 @@ export default {
 
         insert( { dispatch, commit, state } ) {
             u.clog('insert()');
-            commit('start');
+            commit('isLoading', true);
 
             const url = '/api/v1/member';
             
@@ -52,8 +52,10 @@ export default {
                         isImportant: false
                     }, { root: true });
 
+                    commit('isLoading', false);
                     commit('reset');
                 })
+
                 .catch(error => {
                     u.clog('failed');
 
@@ -62,6 +64,7 @@ export default {
                         isImportant: false
                     }, { root: true });
 
+                    commit('isLoading', false);
                     commit('reset');
                 });
         },
@@ -85,10 +88,14 @@ export default {
             state.insertValues[key] = value;
         },
 
-        start( state ) {
-            state.isLoading = true;
-        },
+//        start( state ) {
+//            state.isLoading = true;
+//        },
     
+        isLoading( state, value ) {
+            state.isLoading = value;
+        },
+
 //        insert( state, { members, data } ) {
 //            data.isShow = true;
 ////            const key = parseInt(members.length);
@@ -96,7 +103,6 @@ export default {
 //        },
 
         reset( state ) {
-            state.isLoading = false;
 //            state.isActive = false;
 //            state.input.newName = '';
             Object.keys(state.insertValues).forEach(function(key) {
