@@ -147,13 +147,13 @@ export default {
 
         ...mapState('userCalendar', {
             updateState: state => state.update,
-//            updateName: state => state.update.editingUserCalendar.name,
-//            updateDescription: state => state.update.editingUserCalendar.description
+//            updateName: state => state.update.updateValues.name,
+//            updateDescription: state => state.update.updateValues.description
         }),
 
         newName: {
             get() {
-                return this.$store.state.userCalendar.update.editingUserCalendar.name;
+                return this.$store.state.userCalendar.update.updateValues.name;
             },
 
             set(value) {
@@ -163,7 +163,7 @@ export default {
 
         newDescription: {
             get() {
-                return this.$store.state.userCalendar.update.editingUserCalendar.description;
+                return this.$store.state.userCalendar.update.updateValues.description;
             },
 
             set(value) {

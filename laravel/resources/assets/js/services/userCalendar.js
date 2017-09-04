@@ -37,8 +37,8 @@ export default {
             const name = response.data.name;
             const description = response.data.description;
 
-            this.$store.commit('setUserCalendarName', {id:id, name:name});
-            this.$store.commit('setUserCalendarDescription', {id:id, description:description});
+            this.$store.commit('userCalendar/setName', {id, name});
+            this.$store.commit('userCalendar/setDescription', {id:, description});
         },
 
         failedUpdate(error) {
