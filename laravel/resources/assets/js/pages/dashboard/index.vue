@@ -76,8 +76,11 @@ export default {
         }),
 
         ...mapState('dashboard', {
-            userCalendars: state => state.data.userCalendars,
             currentId: state => state.currentId,
+        }),
+
+        ...mapState('userCalendar', {
+            userCalendars: state => state.data.userCalendars,
         }),
 
         ...mapState('member', {

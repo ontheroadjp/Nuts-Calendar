@@ -188,7 +188,8 @@ export default {
     // user calendar
 
     initUserCalendar( state, userCalendars ) {
-        state.dashboard.data.userCalendars = userCalendars;
+//        state.dashboard.data.userCalendars = userCalendars;
+        state.userCalendar.data.userCalendars = userCalendars;
     },
 
 //    initMembersForUserCalendar( state, members ) {
@@ -200,13 +201,13 @@ export default {
         localStorage.setItem('currentCalendarId', id);
     },
 
-    setUserCalendarName( state, { id, name } ) {
-        state.dashboard.data.userCalendars[id].name = name;
-    },
-
-    setUserCalendarDescription( state, { id, description } ) {
-        state.dashboard.data.userCalendars[id].description = description;
-    },
+//    setUserCalendarName( state, { id, name } ) {
+//        state.userCalendar.data.userCalendars[id].name = name;
+//    },
+//
+//    setUserCalendarDescription( state, { id, description } ) {
+//        state.userCalendar.data.userCalendars[id].description = description;
+//    },
 
     // ---------------------------------------------
     // members

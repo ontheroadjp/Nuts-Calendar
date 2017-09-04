@@ -110,7 +110,7 @@ export default {
             theme: state => state.app.theme,
         }),
 
-        ...mapState('dashboard', {
+        ...mapState('userCalendar', {
             userCalendars: state => state.data.userCalendars
         }),
 
