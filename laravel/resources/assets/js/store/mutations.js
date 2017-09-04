@@ -220,9 +220,9 @@ export default {
 //        state.member.data.members = members;
 //    },
 
-    initDashboardUserCalendarMembers( state, members ) {
-        state.dashboard.data.userCalendarMembers = members;
-    },
+//    initDashboardUserCalendarMembers( state, members ) {
+//        state.userCalendarMember.data.userCalendarMembers = members;
+//    },
 
     // ---------------------------------------------
     // cellItems

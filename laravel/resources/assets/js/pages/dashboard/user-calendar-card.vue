@@ -109,15 +109,15 @@
 import { mapState, mapActions } from 'vuex';
 import modal from '../../components/modal.vue';
 //import userCalendarService from '../../services/userCalendar.js';
-import userCalendarMemberService from '../../services/userCalendarMember.js';
+//import userCalendarMemberService from '../../services/userCalendarMember.js';
 
 import inlineTextInput from '../../components/inline-text-input.vue';
 
 export default {
-    mixins: [
-//        userCalendarService, userCalendarMemberService
-        userCalendarMemberService
-    ],
+//    mixins: [
+////        userCalendarService, userCalendarMemberService
+//        userCalendarMemberService
+//    ],
 
     components: {
         'modal': modal,
@@ -141,7 +141,7 @@ export default {
     computed: {
         ...mapState({
             members: state => state.member.data.members,
-            userCalendarMembers: state => state.dashboard.data.userCalendarMembers,
+            userCalendarMembers: state => state.userCalendarMember.data.userCalendarMembers,
             theme: state => state.app.theme
         }),
 
@@ -188,6 +188,14 @@ export default {
             updateDescription: 'updateDescription'
         }),
 
+        ...mapActions('userCalendarMember/insert', {
+            insertUserCalendarMember: 'insert'
+        }),
+
+        ...mapActions('userCalendarMember/remove', {
+            removeUserCalendarMember: 'remove'
+        }),
+
         openDialog: function( userCalendar ) {
             this.modal.isActive = true;
             this.prepare({ userCalendar });
@@ -222,13 +230,21 @@ export default {
             u.clog('member_id: ' + memberId);
             const value = document.getElementById(elementId).checked;
             u.clog('value: ' + value);
-            this.chengeMember(userCalendarId, memberId, value);
+
+//            this.chengeMember(userCalendarId, memberId, value);
+//            if( value ) {
+//                this.userCalendarMemberIds.push(memberId);
+//            } else {
+//                const index = this.userCalendarMemberIds.indexOf(memberId);
+//                this.userCalendarMemberIds.splice(index, 1);
+//            }
+
             if( value ) {
-                this.userCalendarMemberIds.push(memberId);
+                this.insertUserCalendarMember({ userCalendarId, memberId });
             } else {
-                const index = this.userCalendarMemberIds.indexOf(memberId);
-                this.userCalendarMemberIds.splice(index, 1);
+                this.removeUserCalendarMember({ userCalendarId, memberId });
             }
+
         },
 
         clickUserCalendar: function(id) {
