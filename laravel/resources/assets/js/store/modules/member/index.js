@@ -18,6 +18,10 @@ const member = {
 //    },
 
     mutations: {
+        init( state, members) {
+            state.data.members = members;
+        },
+
         add( state, { id, member } ) {
             Vue.set(state.data.members, id, member);
         },
