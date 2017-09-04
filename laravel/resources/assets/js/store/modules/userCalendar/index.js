@@ -11,12 +11,12 @@ const userCalendar = {
     },
 
     mutations: {
-        setName( state, { id, value }) {
-            state.data.userCalendars[id].name = value;
+        setName( state, { id, name }) {
+            state.data.userCalendars[id].name = name;
         },
 
-        setDescription( state, { id, value }) {
-            state.data.userCalendars[id].description = value;
+        setDescription( state, { id, description }) {
+            state.data.userCalendars[id].description = description;
         }
     },
 

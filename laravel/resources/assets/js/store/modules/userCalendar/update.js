@@ -42,10 +42,11 @@ export default {
                     u.clog('success');
         
                     const id = response.data.id;
-                    const uCal = rootState.dashboard.data.userCalendars[id];
                     const name = response.data.name;
                     const description = response.data.description;
-                    commit('update', { uCal, name, description }); 
+
+                    commit('userCalendar/setName', { id, name }, { root: true });
+                    commit('userCalendar/setDescription', { id, description }, { root: true });
 
                     commit('notifySuccess', {
                         content: 'success update User Calendar',
@@ -80,11 +81,6 @@ export default {
 
         start( state, { property } ) {
             state.isLoading[property] = true;
-        },
-
-        update( state, { uCal, name, description } ) {
-            uCal.name = name;
-            uCal.description = description;
         },
 
         setName( state, { value }) {
