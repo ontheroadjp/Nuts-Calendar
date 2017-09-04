@@ -187,10 +187,10 @@ export default {
     // ---------------------------------------------
     // user calendar
 
-    initUserCalendar( state, userCalendars ) {
-//        state.dashboard.data.userCalendars = userCalendars;
-        state.userCalendar.data.userCalendars = userCalendars;
-    },
+//    initUserCalendar( state, userCalendars ) {
+////        state.dashboard.data.userCalendars = userCalendars;
+//        state.userCalendar.data.userCalendars = userCalendars;
+//    },
 
 //    initMembersForUserCalendar( state, members ) {
 //        state.calendar.data.members = members;
