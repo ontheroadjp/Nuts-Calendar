@@ -2,19 +2,18 @@ export default {
     namespaced: true,
 
     state: {
-        isActive: false,
+//        isActive: false,
         isLoading: false,
-        editingMember: '',
-        input: {
+        updateValues: {
+            id: '',
             name: '',
-//            order: '',
-            isShow: ''
+            isShow: true
         }
     },
 
     actions: {
-        prepare( { commit }, { editingMember } ) {
-            commit('prepare', { editingMember } ); 
+        prepare( { commit }, { id, name, isShow } ) {
+            commit('prepare', { id, name, isShow } ); 
         },
 
         setName( { commit }, { value } ) {
@@ -25,29 +24,23 @@ export default {
             commit('setIsShow', { value });
         },
 
-//        setOrder( { commit }, { value } ) {
-//            commit('setOrder', { value });
-//        },
-
         update( { state, commit, rootState } ) {
             u.clog('update()');
             commit('start');
 
-            const url = '/api/v1/member/' + state.editingMember.id;
+            const url = '/api/v1/member/' + state.updateValues.id;
             const data = {
-                'name': state.input.name,
-//                'order': state.input.order
+                'name': state.updateValues.name,
             };
     
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
 
-                    commit('update', {
-                        'member': rootState.calendar.data.members[response.data.id],
-                        'name': response.data.name,
-//                        'order': response.data.order
-                    });
+                    commit('member/setName', {
+                        id: response.data.id,
+                        name: response.data.name
+                    }, { root: true });
 
                     commit('notifySuccess', {
                         content: 'success update member',
@@ -75,42 +68,30 @@ export default {
     },
 
     mutations: {
-        prepare( state, { editingMember } ) {
+        prepare( state, { id, name, isShow } ) {
             state.isActive = true;  
-            state.editingMember = editingMember;
-            state.input.name = editingMember.name;
-//            state.input.order = editingMember.order;
-            state.input.isShow = editingMember.isShow;
+            state.updateValues.id = id;
+            state.updateValues.name = name;
+            state.updateValues.isShow = isShow;
         },
     
         setName( state, { value } ) {
-            state.input.name = value;
+            state.updateValues.name = value;
         },
     
         setIsShow( state, { value } ) {
-            state.input.isShow = value;
+            state.updateValues.isShow = value;
         },
-    
-//        setOrder( state, { value } ) {
-//            state.input.order = value;
-//        },
     
         start( state ) {
             state.isLoading = true;
         },
 
-//        update( state, { member, name, order } ) {
-        update( state, { member, name } ) {
-            member.name = name;
-//            member.order = order;
-        },
-
         reset( state ) {
             state.isLoading = false;
             state.isActive = false;
-            state.input.name = '';
-            state.input.isShow = '';
-//            state.input.order = '';
+            state.updateValues.name = '';
+            state.updateValues.isShow = '';
         }
     }
 };

@@ -9,32 +9,29 @@
         </div>
     </div>
     
-    <menu-tabs :tabs="tabs"></menu-tabs>
-
-    <div v-show="currentId === 0">
-
-        <!-- user calendars -->
-        <div class="columns is-multiline">
-            <template v-for="uCal in userCalendars">
+    <menu-tabs :tabs="tabs">
+        <div v-if="currentId === 0">
+            <div class="columns is-multiline">
+                <template v-for="uCal in userCalendars">
+                    <div class="column is-6">
+                        <user-calendar-card :userCalendar="uCal"></user-calendar-card>
+                    </div>
+                </template>
                 <div class="column is-6">
-                    <user-calendar-card :userCalendar="uCal"></user-calendar-card>
-                </div>
-            </template>
-            <div class="column is-6">
-                <div class="new-user-calendar-card" 
-                    style="height: 150px; cursor: pointer"
-                    @click="clickNewCalendar()"
-                >
-                    <div class="card-content">Create New Calendar</div>
+                    <div class="new-user-calendar-card" 
+                        style="height: 150px; cursor: pointer"
+                        @click="clickNewCalendar()">
+
+                        <div class="card-content">Create New Calendar</div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-    </div><!-- // v-show -->
-
-    <member-settings v-if="currentId === 1"></member-settings>
-    <application-settings v-if="currentId === 2"></application-settings>
-    <account-settings v-if="currentId === 3"></account-settings>
+        </div><!-- // v-show -->
+    
+        <member-settings v-else-if="currentId === 1"></member-settings>
+        <application-settings v-else-if="currentId === 2"></application-settings>
+        <account-settings v-else-if="currentId === 3"></account-settings>
+    </menu-tabs>
 
 </div><!-- // .container -->
 </div><!-- // .wrapper -->
@@ -79,8 +76,11 @@ export default {
         }),
 
         ...mapState('dashboard', {
-            userCalendars: state => state.data.userCalendars,
             currentId: state => state.currentId,
+        }),
+
+        ...mapState('userCalendar', {
+            userCalendars: state => state.data.userCalendars,
         }),
 
         ...mapState('member', {

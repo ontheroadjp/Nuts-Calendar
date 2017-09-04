@@ -6,7 +6,7 @@
         </div>
     </black-screen>
 
-    <column-modal v-if="filteredBody && isColumnModalActive"></column-modal>
+    <!-- <column-modal v-if="filteredBody && isColumnModalActive"></column-modal> -->
     <item-modal v-if="filteredBody && isItemModalActive"></item-modal>
 
 <!--
@@ -107,7 +107,7 @@
     import { mapState, mapGetters, mapActions } from 'vuex';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import blackScreen from '../../../components/black-screen.vue';
-    import columnModal from './modal/column-modal.vue';
+//    import columnModal from './modal/column-modal.vue';
     import itemModal from './modal/item-modal.vue';
     import item from './item/index.vue';
 //    import headerCell from './table-header-cell.vue';
@@ -120,7 +120,7 @@
 
         components: {
             'black-screen': blackScreen,
-            'column-modal': columnModal,
+//            'column-modal': columnModal,
             'item-modal': itemModal,
             'item': item,
             'item-insert-field': itemInsertField,
@@ -174,9 +174,9 @@
                 getRowIndex: 'getRowIndex'
             }),
 
-            ...mapGetters('member', {
-                isColumnModalActive: 'isModalActive'
-            }),
+//            ...mapGetters('member', {
+//                isColumnModalActive: 'isModalActive'
+//            }),
 
             ...mapGetters('calendar/tableView/item', {
                 isItemModalActive: 'isModalActive'
@@ -283,53 +283,53 @@
 </script>
 
 <style lang="scss" scoped>
-    .black-screen-loading {
-        position: absolute;
-        top: 5%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+.black-screen-loading {
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-    table.calendar {
-        & tbody {
-            & td {
-                color: #ccc;
-            }
-
-            & tr:hover th {
-                background-color: #eee;
-            }
+table.calendar {
+    & tbody {
+        & td {
+            color: #ccc;
         }
 
-        &:hover tbody {
-            &:hover td:hover {
-                opacity: 1;
-                background-color: rgba(145, 235, 250, 0.5);
-            }
-
-            & tr:hover td {
-                color: #666;
-                background-color: rgba(145, 235, 250, 0.1);
-            }
+        & tr:hover th {
+            background-color: #eee;
         }
     }
 
-    .date-styling {
-        font-size: 1em;
-        font-weight: bold;
-    }
+    &:hover tbody {
+        &:hover td:hover {
+            opacity: 1;
+            background-color: rgba(145, 235, 250, 0.5);
+        }
 
-    .today {
-        background-color: red;
-        color: #fff;
-        border-radius: 20px;
+        & tr:hover td {
+            color: #666;
+            background-color: rgba(145, 235, 250, 0.1);
+        }
     }
+}
 
-    .saturday {
-        background-color: rgba(240, 240, 255, 1);
-    }
+.date-styling {
+    font-size: 1em;
+    font-weight: bold;
+}
 
-    .sunday {
-        background-color: rgba(255, 240, 240, 1);
-    }
+.today {
+    background-color: red;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.saturday {
+    background-color: rgba(240, 240, 255, 1);
+}
+
+.sunday {
+    background-color: rgba(255, 240, 240, 1);
+}
 </style>

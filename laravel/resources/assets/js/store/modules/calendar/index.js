@@ -19,6 +19,20 @@ const calendar = {
         }
     },
 
+    mutations: {
+        init( state, calendars ) {
+            state.data.calendars = calendars;
+        },
+
+        setCurrentYear( state, year ) {
+            state.currentYear = year;
+        },
+    
+        setCurrentMonth( state, month ) {
+            state.currentMonth = month;
+        }
+    },
+
     modules: {
         tableView: {
             namespaced: true,
