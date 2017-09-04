@@ -172,17 +172,17 @@ export default {
     // ---------------------------------------------
     // calendar
 
-    initCalendar( state, calendars ) {
-        state.calendar.data.calendars = calendars;
-    },
+//    initCalendar( state, calendars ) {
+//        state.calendar.data.calendars = calendars;
+//    },
 
-    setCurrentYear( state, year ) {
-        state.calendar.currentYear = year;
-    },
-
-    setCurrentMonth( state, month ) {
-        state.calendar.currentMonth = month;
-    },
+//    setCurrentYear( state, year ) {
+//        state.calendar.currentYear = year;
+//    },
+//
+//    setCurrentMonth( state, month ) {
+//        state.calendar.currentMonth = month;
+//    },
 
     // ---------------------------------------------
     // user calendar
