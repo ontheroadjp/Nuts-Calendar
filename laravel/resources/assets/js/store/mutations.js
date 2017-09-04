@@ -216,9 +216,9 @@ export default {
 //        state.calendar.data.members = members;
 //    },
 
-    initMembers( state, members ) {
-        state.member.data.members = members;
-    },
+//    initMembers( state, members ) {
+//        state.member.data.members = members;
+//    },
 
     initDashboardUserCalendarMembers( state, members ) {
         state.dashboard.data.userCalendarMembers = members;
