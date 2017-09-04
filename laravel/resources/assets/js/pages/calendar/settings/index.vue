@@ -49,7 +49,7 @@
 
         computed: {
             userCalendars: function() {
-                return this.$store.state.dashboard.data.userCalendars;
+                return this.$store.state.userCalendar.data.userCalendars;
             },
         },
 

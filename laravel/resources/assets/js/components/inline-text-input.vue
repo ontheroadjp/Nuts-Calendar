@@ -25,9 +25,8 @@
         @mouseleave="button.isEnter = false">
 
         <span v-if="notSaved">
-            <div class="icon">
-                <i class="fa fa-exclamation-circle"></i>
-            </div>
+            <i class="fa fa-exclamation-circle" 
+                style="margin-top:4px"></i>
             Not saved
         </span>
 
@@ -49,12 +48,15 @@
             :disabled="defaultValue == input.value"
         ><i class="fa fa-floppy-o"></i></a>
 
-        <i v-if="isLoading 
-                    && !input.isFocused 
-                    && !input.isEnter 
-                    && defaultValue != input.value
-                "
-            class="fa fa-refresh fa-spin"></i>
+        <div class="icon is-small">
+            <i v-if="isLoading 
+                        && !input.isFocused 
+                        && !input.isEnter 
+                        && defaultValue != input.value
+                        && !notSaved
+                    "
+                class="fa fa-refresh fa-spin"></i>
+        </div>
 
     </td>
 </tr>

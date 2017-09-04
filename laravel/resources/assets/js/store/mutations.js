@@ -172,24 +172,25 @@ export default {
     // ---------------------------------------------
     // calendar
 
-    initCalendar( state, calendars ) {
-        state.calendar.data.calendars = calendars;
-    },
+//    initCalendar( state, calendars ) {
+//        state.calendar.data.calendars = calendars;
+//    },
 
-    setCurrentYear( state, year ) {
-        state.calendar.currentYear = year;
-    },
-
-    setCurrentMonth( state, month ) {
-        state.calendar.currentMonth = month;
-    },
+//    setCurrentYear( state, year ) {
+//        state.calendar.currentYear = year;
+//    },
+//
+//    setCurrentMonth( state, month ) {
+//        state.calendar.currentMonth = month;
+//    },
 
     // ---------------------------------------------
     // user calendar
 
-    initUserCalendar( state, userCalendars ) {
-        state.dashboard.data.userCalendars = userCalendars;
-    },
+//    initUserCalendar( state, userCalendars ) {
+////        state.dashboard.data.userCalendars = userCalendars;
+//        state.userCalendar.data.userCalendars = userCalendars;
+//    },
 
 //    initMembersForUserCalendar( state, members ) {
 //        state.calendar.data.members = members;
@@ -200,13 +201,13 @@ export default {
         localStorage.setItem('currentCalendarId', id);
     },
 
-    setUserCalendarName( state, { id, name } ) {
-        state.dashboard.data.userCalendars[id].name = name;
-    },
-
-    setUserCalendarDescription( state, { id, description } ) {
-        state.dashboard.data.userCalendars[id].description = description;
-    },
+//    setUserCalendarName( state, { id, name } ) {
+//        state.userCalendar.data.userCalendars[id].name = name;
+//    },
+//
+//    setUserCalendarDescription( state, { id, description } ) {
+//        state.userCalendar.data.userCalendars[id].description = description;
+//    },
 
     // ---------------------------------------------
     // members
