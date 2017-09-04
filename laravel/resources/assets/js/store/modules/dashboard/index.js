@@ -5,7 +5,6 @@ export default {
     state: {
         currentId: 0,
         data: {
-//            userCalendars: [],
             userCalendarMembers: [],
         }
     },
