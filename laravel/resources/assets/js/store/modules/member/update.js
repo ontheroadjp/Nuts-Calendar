@@ -2,7 +2,7 @@ export default {
     namespaced: true,
 
     state: {
-        isActive: false,
+//        isActive: false,
         isLoading: false,
         updateValues: {
             id: '',
