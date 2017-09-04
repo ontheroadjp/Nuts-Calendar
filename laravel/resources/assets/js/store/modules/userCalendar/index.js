@@ -11,6 +11,10 @@ const userCalendar = {
     },
 
     mutations: {
+        init( state, userCalendars ) {
+            state.data.userCalendars = userCalendars;
+        },
+
         setName( state, { id, name }) {
             state.data.userCalendars[id].name = name;
         },
