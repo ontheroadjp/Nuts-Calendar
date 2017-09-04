@@ -13,6 +13,7 @@ import dashboard    from './modules/dashboard/index.js';
 import userCalendar from './modules/userCalendar/index.js';
 import calendar     from './modules/calendar/index.js';
 import member       from './modules/member/index.js';
+import item         from './modules/item/index.js';
 
 Vue.use(Vuex);
 
@@ -30,6 +31,7 @@ export default new Vuex.Store({
         dashboard,
         userCalendar,
         calendar,
-        member
+        member,
+        item
     }
 })
