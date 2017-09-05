@@ -2,12 +2,6 @@
 <div id="tool-palette"
     style="background:#f0f0f0; padding:5px; overflow: scroll">
 
-<!--
-<add-column-modal v-if="addColumn.isActive">
-    <add-column-modal-content></add-column-modal-content>
-</add-column-modal>
--->
-
 <span class="level" style="white-space: nowrap">
     <span class="level-left">
         <span class="level-item select">
@@ -39,11 +33,6 @@
                     ({{ memberId }})
                 </button>
             </template>
-<!--
-            <button class="button" @click="clickNewColumnButton()">
-                <i class="fa fa-user"></i>Add
-            </button>
--->
         </span>
 
         <span v-show="selected === 'item'" class="level-item">
@@ -86,15 +75,11 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import searchBox from './table-search-box.vue';
-//import addColumnModalBase from '../../../components/modal.vue';
-//import addColumnModalContent from './modal/add-column-modal-content.vue';
 
 export default {
     name: 'calendar-tool-palett',
     components: {
         'search-box': searchBox,
-//        'add-column-modal': addColumnModalBase,
-//        'add-column-modal-content': addColumnModalContent,
     },
 
     data() {
@@ -110,14 +95,9 @@ export default {
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
-            //toolPalette: state => state.toolPalette,
             isEventItemShow: state => state.isEventItemShow,
             isTaskItemShow: state => state.isTaskItemShow
         }),
-
-//        ...mapState('member', {
-//            addColumn: state => state.insert
-//        }),
 
         showColumns: function() {
             return this.$store.getters.getShowMembers;
@@ -125,10 +105,6 @@ export default {
     },
 
     methods: {
-//        ...mapActions('member', {
-//            prepareInsert: 'insert/prepare'
-//        }),
-
         ...mapActions('calendar/tableView/toolPalette', {
             toggleShowHideColumn: 'toggleShowHideColumn',
             toggleShowHideEventItem: 'toggleShowHideEventItem',
@@ -149,10 +125,6 @@ export default {
             this.toggleShowHideTaskItem({ value: !this.isTaskItemShow });
         },
 
-//        clickNewColumnButton() {
-//            this.prepareInsert();
-//        },
-
         close() {
             this.toggleTableToolPalette({ value: false });
         }
@@ -161,7 +133,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .button.is-off {
-        background-color: #f0f0f0;
-    }
+.button.is-off {
+    background-color: #f0f0f0;
+}
 </style>
