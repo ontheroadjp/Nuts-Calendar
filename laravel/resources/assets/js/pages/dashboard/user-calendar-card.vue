@@ -15,6 +15,8 @@
                     aria-label="close" 
                     @click="clickClose()"
                 ></button>
+
+                <table style="width:100%">
                     <inline-text-input 
                         id="calendar-name"
                         inputClass="title"
@@ -22,7 +24,7 @@
                         iconColor="#fff"
                         placeholder="Calendar Name"
                         :isLoading="updateState.isLoading.name"
-                        :syncValue.sync="newName"
+                        :syncValue.sync="inputName"
                         :defaultValue="userCalendar.name"
                         :saveCallback="clickSaveName"
                     ></inline-text-input>  
@@ -33,10 +35,11 @@
                         iconColor="#fff"
                         placeholder="Description"
                         :isLoading="updateState.isLoading.description"
-                        :syncValue.sync="newDescription"
+                        :syncValue.sync="inputDescription"
                         :defaultValue="userCalendar.description"
                         :saveCallback="clickSaveDescription"
                     ></inline-text-input>  
+                </table>
             </section> 
 
             <section class="modal-card-body" style="padding: 60px;">
@@ -151,7 +154,7 @@ export default {
 //            updateDescription: state => state.update.updateValues.description
         }),
 
-        newName: {
+        inputName: {
             get() {
                 return this.$store.state.userCalendar.update.updateValues.name;
             },
@@ -164,7 +167,7 @@ export default {
             }
         },
 
-        newDescription: {
+        inputDescription: {
             get() {
                 return this.$store.state.userCalendar.update.updateValues.description;
             },
