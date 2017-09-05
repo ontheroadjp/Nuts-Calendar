@@ -95,6 +95,7 @@ import { mapState, mapActions } from 'vuex';
 export default {
     data() {
         return {
+            isLoading: [],
             input: {
                 focused: [],
                 notSaved: [],
@@ -209,25 +210,11 @@ export default {
         }
     },
 
-    beforeRouteEnter (route, redirect, next) {
-        c.ulog('!!!!!!!!!!!!!!!!!!!! ENTER !!!!!!!!!!!!!!!!!!!!!!!!');
-        next();
-    },
-
-    beforeRouteUpdate (route, redirect, next) {
-        c.ulog('!!!!!!!!!!!!!!!!!!!!! UPDATE !!!!!!!!!!!!!!!!!!!!!!!');
-            const self = this;
-            Object.keys(this.members).forEach(function(key) {
-                u.clog('key: ' + key + ', name: ' + this[key].name);
-                self.input.name[key] = this[key].name;
-            }, this.members);
-            next()
-    },
-
     mounted() {
         const self = this;
         Object.keys(this.members).forEach(function(key) {
             Vue.set(self.input.name, key, self.members[key].name);
+            self.isLoading[key] = false;
         });
     },
 
