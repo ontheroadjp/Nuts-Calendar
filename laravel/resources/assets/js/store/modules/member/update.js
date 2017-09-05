@@ -2,7 +2,6 @@ export default {
     namespaced: true,
 
     state: {
-//        isActive: false,
         isLoading: false,
         updateValues: {
             id: '',
@@ -19,14 +18,6 @@ export default {
         setUpdateValue( { commit }, { key, value } ) {
             commit('setUpdateValue', { key, value } );
         },
-
-//        setName( { commit }, { value } ) {
-//            commit('setName', { value });
-//        },
-//
-//        setIsShow( { commit }, { value } ) {
-//            commit('setIsShow', { value });
-//        },
 
         update( { state, commit, rootState } ) {
             u.clog('update()');
@@ -76,7 +67,6 @@ export default {
         },
 
         prepare( state, { id, name, isShow } ) {
-//            state.isActive = true;  
             state.updateValues.id = id;
             state.updateValues.name = name;
             state.updateValues.isShow = isShow;
@@ -86,22 +76,10 @@ export default {
             state.updateValues[key] = value;
         },
 
-//        setName( state, { value } ) {
-//            state.updateValues.name = value;
-//        },
-//    
-//        setIsShow( state, { value } ) {
-//            state.updateValues.isShow = value;
-//        },
-    
         reset( state ) {
-//            state.isActive = false;
             Object.keys(state.updateValues).forEach(function(key) {
                 this[key] = '';
             }, state.updateValues );
-//            state.updateValues.id = '';
-//            state.updateValues.name = '';
-//            state.updateValues.isShow = '';
         }
     }
 };
