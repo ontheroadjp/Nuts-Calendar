@@ -27,6 +27,7 @@
                         :syncValue.sync="inputName"
                         :defaultValue="userCalendar.name"
                         :saveCallback="clickSaveName"
+                        :editingId.sync="editingId"
                     ></inline-text-input>  
                     <inline-text-input 
                         id="calendar-description"
@@ -38,6 +39,7 @@
                         :syncValue.sync="inputDescription"
                         :defaultValue="userCalendar.description"
                         :saveCallback="clickSaveDescription"
+                        :editingId.sync="editingId"
                     ></inline-text-input>  
                 </table>
             </section> 
@@ -133,6 +135,7 @@ export default {
 
     data() {
         return {
+            editingId: '',
             userCalendarMemberIds: [],
             modal: {
                 isActive: false,
@@ -212,7 +215,7 @@ export default {
 
         clickClose: function() {
             this.modal.isActive = false;
-            this.initModalInput();
+//            this.initModalInput();
         },
 
         clickSaveName: function() {
@@ -277,7 +280,7 @@ export default {
     },
 
     mounted() {
-        this.initModalInput();
+//        this.initModalInput();
         this.initUserCalendarMemberIds();
     }
 }
