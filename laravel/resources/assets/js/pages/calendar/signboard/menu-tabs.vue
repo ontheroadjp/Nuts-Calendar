@@ -84,7 +84,11 @@ export default {
         changeCalendar: function(id) {
             if( this.currentCalendarId == id ) return;
             u.clog('changeCalendar(' + id + ')');
-            this.$store.commit('setCurrentCalendarId', id);
+//            this.$store.commit('setCurrentCalendarId', id);
+            this.$store.commit('calendar/setValue', {
+                key: 'currentId', 
+                value: id
+            });
         },
 
         clickTabMenu: function() {
@@ -98,9 +102,13 @@ export default {
     },
 
     created() {
-        const calId = localStorage.getItem('currentCalendarId');
-        if(calId) {
-            this.$store.commit('setCurrentCalendarId', calId);
+        const id = localStorage.getItem('currentCalendarId');
+        if(id) {
+//            this.$store.commit('setCurrentCalendarId', id);
+            this.$store.commit('calendar/setValue', {
+                key: 'currentId', 
+                value: id
+            });
         }
     },
 

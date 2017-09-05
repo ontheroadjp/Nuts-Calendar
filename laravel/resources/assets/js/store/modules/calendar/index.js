@@ -60,6 +60,9 @@ const calendar = {
 
         setValue( state, { key, value } ) {
             state[key] = value;            
+            if(key == 'currentId') {
+                localStorage.setItem('currentCalendarId', value);
+            }
         },
 
         isLoading( state, value ) {

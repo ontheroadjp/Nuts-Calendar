@@ -21,9 +21,19 @@
         </template>
 
         <template v-else>
+<!--
             <router-link 
                 to="/dashboard" 
                 @click.native="$store.commit('setCurrentCalendarId', 'dashboard')"
+                class="nav-item"
+            >{{ t('navbar.dashboard') }}
+-->
+            <router-link 
+                to="/dashboard" 
+                @click.native="$store.commit('calendar/setValue', {
+                    key: 'currentId',
+                    value: 'dashboard'
+                })"
                 class="nav-item"
             >{{ t('navbar.dashboard') }}
             </router-link>
