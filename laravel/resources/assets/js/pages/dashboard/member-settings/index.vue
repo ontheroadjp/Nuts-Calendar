@@ -12,10 +12,10 @@
                 placeholder="Add New Member"
                 v-model.trim="newName"
             >
-            <a :class="['button', theme.primary.class]" 
+            <a :class="['button', 'is-outlined', 'add-member', theme.primary.class]" 
                 @click="clickAddMember()"
-               :disabled="!newName != '' || isInsertLoading"
-            >
+               :disabled="!newName != '' || isInsertLoading">
+
                 <span v-if="!isInsertLoading">
                     Add Member
                 </span>
@@ -31,11 +31,10 @@
         <form>
         <table class="member-edit-table" style="width: 60%">
         <template v-for="member, index in members">
-            <tr 
-                @mouseenter="showEditIcon(index, true)"
+            <tr @mouseenter="showEditIcon(index, true)"
                 @mouseleave="showEditIcon(index, false)"
-                style="height: 2.5rem"
-            >
+                style="height: 2.5rem">
+
                 <td width="30px">
                     <i v-if="(!isFocused && input.icon[index]) || input.focused[index]" 
                         class="fa fa-pencil"
@@ -247,4 +246,7 @@ export default {
     outline: none;
 }
 
+a.add-member {
+    color: #fff;
+}
 </style>
