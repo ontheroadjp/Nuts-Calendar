@@ -15,10 +15,11 @@
 
     <ul class="dropdown-menu" v-show="isMenuOpen">
         <li>
-            <a :style="menuItemStyle" @click="toggle">
-                <router-link to="/me/settings/general">{{ t('navbar.accountSettings') }}</router-link>
-            </a>
+                <router-link to="/me/settings/general" :style="menuItemStyle" @click="toggle">
+                    {{ t('navbar.accountSettings') }}
+                </router-link>
         </li>
+
         <li>
             <a href="#" :style="menuItemStyle" @click="clickLogout()">
                 <span class="icon is-small">
@@ -51,6 +52,7 @@
             theme: function() {
                 return this.$store.state.app.theme;
             },
+
             menuItemStyle: function() {
                 return 'color: ' + this.theme.primary.code;
             }
@@ -63,14 +65,17 @@
                 }
                 return this.show()
             },
+
             show () {
                 this.isMenuOpen = true;
                 setTimeout(() => document.addEventListener('click', this.hide), 0);
             },
+
             hide () {
                 this.isMenuOpen = false;
                 document.removeEventListener('click', this.hide);
             },
+
             clickLogout: function() {
                 this.isMenuOpen = false;
                 this.logout();
@@ -91,6 +96,7 @@
 }
 
 .dropdown-menu {
+    display: block;
     position: absolute;
     top: 100%;
     right: 0;
