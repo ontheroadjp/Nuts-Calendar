@@ -235,7 +235,11 @@ export default {
 
         clickUserCalendar: function(id) {
             u.clog('changeCalendar(' + id + ')');
-            this.$store.commit('setCurrentCalendarId', id);
+//            this.$store.commit('setCurrentCalendarId', id);
+            this.$store.commit('calendar/setValue', {
+                key: 'currentId', id,
+                value: id
+            });
         },
 
         initUserCalendarMemberIds: function() {
