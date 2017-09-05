@@ -123,13 +123,15 @@ export default {
 
         isButtonShow: function() {
             return ( this.input.isEnter 
-                        || ( this.button.isEnter && this.defaultValue != this.input.value )
-                        || this.input.isFocused || this.isLoading
-                    ) && !this.notSaved && (this.editingId == '' || this.editingId == this.id);
+                || ( this.button.isEnter && this.defaultValue != this.input.value )
+                || this.input.isFocused || this.isLoading
+            ) && !this.notSaved && (this.editingId == '' || this.editingId == this.id);
         },
 
         notSaved: function() {
-            return this.defaultValue != this.input.value && !this.input.isFocused && !this.button.isEnter;
+            return this.defaultValue != this.input.value 
+                && !this.input.isFocused 
+                && !this.button.isEnter;
         }
     },
 
