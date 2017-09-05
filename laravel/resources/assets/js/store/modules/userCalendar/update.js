@@ -45,8 +45,17 @@ export default {
                     const name = response.data.name;
                     const description = response.data.description;
 
-                    commit('userCalendar/setName', { id, name }, { root: true });
-                    commit('userCalendar/setDescription', { id, description }, { root: true });
+                    commit('userCalendar/setValue', {
+                        id: id,
+                        key: 'name',
+                        value: name
+                    }, { root: true });
+
+                    commit('userCalendar/setValue', { 
+                        id: id,
+                        key: 'description',
+                        value: description
+                    }, { root: true });
 
                     commit('notifySuccess', {
                         content: 'success update User Calendar',
@@ -74,9 +83,6 @@ export default {
             Object.keys(state.updateValues).forEach(function(key) {
                 this[key] = userCalendar[key];
             }, state.updateValues );
-//            state.updateValues.id = userCalendar.id;
-//            state.updateValues.name = userCalendar.name;
-//            state.updateValues.description = userCalendar.description;
         },
 
         start( state, { key } ) {
@@ -86,14 +92,6 @@ export default {
         setUpdateValue( state, { key, value } ) {
             state.updateValues[key] = value;
         },
-
-//        setName( state, { value }) {
-//            state.updateValues.name = value;
-//        },
-//
-//        setDescription( state, { value }) {
-//            state.updateValues.description = value;
-//        },
 
         stop( state ) {
             Object.keys(state.isLoading).forEach(function(key) {
