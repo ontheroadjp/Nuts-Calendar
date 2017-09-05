@@ -25,7 +25,7 @@
     
     <div class="hero-foot">
         <menu-tabs 
-            :calendar-service-is-loading="calendarServiceIsLoading"
+            :calendar-is-loading="calendarIsLoading"
         ></menu-tabs>
     </div>
 </section>
@@ -43,7 +43,7 @@
         },
 
         props: [
-            'calendarServiceIsLoading',
+            'calendarIsLoading',
         ],
 
         computed: {

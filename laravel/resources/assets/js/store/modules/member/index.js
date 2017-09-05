@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import insert from './insert.js';
 import update from './update.js';
 import remove from './remove.js';
@@ -10,9 +11,22 @@ const member = {
         }
     },
 
-    getters: {
-        isModalActive: (state) => {
-            return state.update.isActive && state.remove.isActive
+    mutations: {
+        init( state, members) {
+            state.data.members = members;
+        },
+
+        add( state, { id, member } ) {
+            Vue.set(state.data.members, id, member);
+        },
+
+        remove( state, { id } ) {
+            Vue.delete(state.data.members, id);
+        },
+
+        setValue( state, { id, key, value } ) {
+            const t = state.data.members[id];
+            t[key] = value;
         }
     },
 

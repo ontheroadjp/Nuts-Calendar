@@ -6,7 +6,7 @@
         </div>
     </black-screen>
 
-    <column-modal v-if="filteredBody && isColumnModalActive"></column-modal>
+    <!-- <column-modal v-if="filteredBody && isColumnModalActive"></column-modal> -->
     <item-modal v-if="filteredBody && isItemModalActive"></item-modal>
 
 <!--
@@ -107,7 +107,7 @@
     import { mapState, mapGetters, mapActions } from 'vuex';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import blackScreen from '../../../components/black-screen.vue';
-    import columnModal from './modal/column-modal.vue';
+//    import columnModal from './modal/column-modal.vue';
     import itemModal from './modal/item-modal.vue';
     import item from './item/index.vue';
 //    import headerCell from './table-header-cell.vue';
@@ -120,7 +120,7 @@
 
         components: {
             'black-screen': blackScreen,
-            'column-modal': columnModal,
+//            'column-modal': columnModal,
             'item-modal': itemModal,
             'item': item,
             'item-insert-field': itemInsertField,
@@ -174,9 +174,9 @@
                 getRowIndex: 'getRowIndex'
             }),
 
-            ...mapGetters('member', {
-                isColumnModalActive: 'isModalActive'
-            }),
+//            ...mapGetters('member', {
+//                isColumnModalActive: 'isModalActive'
+//            }),
 
             ...mapGetters('calendar/tableView/item', {
                 isItemModalActive: 'isModalActive'

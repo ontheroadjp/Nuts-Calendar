@@ -3,22 +3,25 @@ import insert from './insert.js';
 import update from './update.js';
 import remove from './remove.js';
 
-const userCalendar = {
+const item = {
     namespaced: true,
     state: {
         data: {
-            userCalendars: [],
+            items: []
         }
     },
 
     mutations: {
-        init( state, userCalendars ) {
-            state.data.userCalendars = userCalendars;
+        init( state, items) {
+            state.data.items = items;
         },
 
-        setValue( state, { id, key, value } ) {
-            const t = state.data.userCalendars[id];
-            t[key] = value
+        add( state, { id, item } ) {
+            Vue.set(state.data.items, id, item);
+        },
+
+        remove( state, { id } ) {
+            Vue.delete(state.data.items, id);
         }
     },
 
@@ -28,5 +31,5 @@ const userCalendar = {
         remove: remove
     }
 }
-export default userCalendar;
+export default item;
 
