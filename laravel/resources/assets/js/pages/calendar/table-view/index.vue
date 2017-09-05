@@ -167,13 +167,13 @@
                 const self = this;
                 let resizing; 
 
-                window.addEventListener('resize', function (event) {
-                    if (resizing) { clearTimeout(resizing); }
-                    resizing = setTimeout(function() {
-                        u.clog('window resized');
-                        self.updateHeight();
-                    }, 500);
-                });
+//                window.addEventListener('resize', function (event) {
+//                    if (resizing) { clearTimeout(resizing); }
+//                    resizing = setTimeout(function() {
+//                        u.clog('window resized');
+//                        self.updateHeight();
+//                    }, 500);
+//                });
     
                 document.onscroll = function(e) {
                     self.position = document.documentElement.scrollTop || document.body.scrollTop;
@@ -182,7 +182,11 @@
                 this.elements.tableHeader = document.getElementById('table-view-header');
                 this.elements.tableBody = document.getElementById('table-view-body');
             });
-        }
+        },
+
+//        destroyed() {
+//            window.removeEventListener('resize', () => {},false);
+//        }
     }
 </script>
 
