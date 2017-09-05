@@ -16,6 +16,7 @@
             @focus="focused(true)"
             @blur="focused(false)"
             @change="changeValue()"
+            :disabled="editingId != '' && id != editingId"
         >
     </td>
 
@@ -30,7 +31,7 @@
         </span>
 
         <a :id="undoButtonId" 
-            v-show="isButtonShow && !isLoading" 
+            v-show="isButtonShow && !isLoading"
             class="button" 
             style="border:none; background:none; height:1rem; margin-top: 5px;"
             :style="iconStyle"
@@ -71,7 +72,8 @@ export default {
         defaultValue:   { type: String,   default: '', required: false },
         isLoading:      { type: Boolean,  default: false },
         syncValue:      { type: String,   required: true },
-        saveCallback:   { type: Function, required: true }
+        saveCallback:   { type: Function, required: true },
+        editingId:      { type: String,   default: '', required: false }
     },
 
     data() {
@@ -121,19 +123,27 @@ export default {
 
         isButtonShow: function() {
             return ( this.input.isEnter 
-                        || ( this.button.isEnter && this.defaultValue != this.input.value )
-                        || this.input.isFocused || this.isLoading
-                    ) && !this.notSaved;
+                || ( this.button.isEnter && this.defaultValue != this.input.value )
+                || this.input.isFocused || this.isLoading
+            ) && !this.notSaved && (this.editingId == '' || this.editingId == this.id);
         },
 
         notSaved: function() {
-            return this.defaultValue != this.input.value && !this.input.isFocused && !this.button.isEnter;
+            return this.defaultValue != this.input.value 
+                && !this.input.isFocused 
+                && !this.button.isEnter;
         }
     },
 
     methods: {
         focused: function(val) {
             this.input.isFocused = val;
+
+            if(val || this.notSaved) {
+                this.$emit('update:editingId', this.id);
+            } else {
+                this.$emit('update:editingId', '');
+            }
 
             if(!val && this.input.value == '') {
                 this.input.value = this.defaultValue;
