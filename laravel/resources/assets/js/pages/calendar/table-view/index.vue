@@ -115,7 +115,7 @@
                     }
 
                     // sort cell items
-                    this.$store.commit('sortCellItemsByStartTime', data);
+                    this.$store.commit('calendar/tableView/sortCellItemsByStartTime', data);
 
                     return data;
                 }
