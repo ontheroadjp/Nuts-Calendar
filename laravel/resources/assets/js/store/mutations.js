@@ -196,10 +196,10 @@ export default {
 //        state.calendar.data.members = members;
 //    },
 
-    setCurrentCalendarId( state, id ) {
-        state.calendar.currentId = id;
-        localStorage.setItem('currentCalendarId', id);
-    },
+//    setCurrentCalendarId( state, id ) {
+//        state.calendar.currentId = id;
+//        localStorage.setItem('currentCalendarId', id);
+//    },
 
 //    setUserCalendarName( state, { id, name } ) {
 //        state.userCalendar.data.userCalendars[id].name = name;
