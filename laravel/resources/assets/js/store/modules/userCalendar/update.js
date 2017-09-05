@@ -20,12 +20,12 @@ export default {
         },
 
         updateName( { commit, dispatch } ) {
-            commit('start', { property: 'name' });
+            commit('start', { key: 'name' });
             dispatch('update');
         },
 
         updateDescription( { commit, dispatch } ) {
-            commit('start', { property: 'description' });
+            commit('start', { key: 'description' });
             dispatch('update');
         },
 
@@ -55,6 +55,7 @@ export default {
 
                     commit('stop');
                 })
+
                 .catch( error => {
                     u.clog('failed');
 
@@ -70,22 +71,29 @@ export default {
 
     mutations: {
         prepare( state, { userCalendar } ) {
-            state.updateValues.id = userCalendar.id;
-            state.updateValues.name = userCalendar.name;
-            state.updateValues.description = userCalendar.description;
+            Object.keys(state.updateValues).forEach(function(key) {
+                this[key] = userCalendar[key];
+            }, state.updateValues );
+//            state.updateValues.id = userCalendar.id;
+//            state.updateValues.name = userCalendar.name;
+//            state.updateValues.description = userCalendar.description;
         },
 
-        start( state, { property } ) {
-            state.isLoading[property] = true;
+        start( state, { key } ) {
+            state.isLoading[key] = true;
         },
 
-        setName( state, { value }) {
-            state.updateValues.name = value;
+        setUpdateValue( state, { key, value } ) {
+            state.updateValues[key] = value;
         },
 
-        setDescription( state, { value }) {
-            state.updateValues.description = value;
-        },
+//        setName( state, { value }) {
+//            state.updateValues.name = value;
+//        },
+//
+//        setDescription( state, { value }) {
+//            state.updateValues.description = value;
+//        },
 
         stop( state ) {
             Object.keys(state.isLoading).forEach(function(key) {
