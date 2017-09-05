@@ -82,7 +82,6 @@ export default {
             input: {
                 isEnter: false,
                 isFocused: false,
-//                isEditing: false,
                 value: ''
             },
             button: {
@@ -124,10 +123,6 @@ export default {
         },
 
         isButtonShow: function() {
-//            return ( this.input.isEnter 
-//                        || ( this.button.isEnter && this.defaultValue != this.input.value )
-//                        || this.input.isFocused || this.isEditing
-//                    ) && !this.notSaved;
             return ( this.input.isEnter 
                         || ( this.button.isEnter && this.defaultValue != this.input.value )
                         || this.input.isFocused || this.isLoading
@@ -142,16 +137,8 @@ export default {
     methods: {
         focused: function(val) {
             this.input.isFocused = val;
-            if(val) {
-//                this.isEditing = true;
-            } else {
-                if(this.defaultValue == this.input.value) {
-//                    this.isEditing = false;
-                }
-
-                if(this.input.value == '') {
-                    this.input.value = this.defaultValue;
-                }
+            if(!val && this.input.value == '') {
+                this.input.value = this.defaultValue;
             }
         },
 
@@ -170,7 +157,6 @@ export default {
         clickUndo: function() {
             this.input.value = this.defaultValue;
             this.syncProps();
-//            this.isEditing = false;
         }
 
     },
