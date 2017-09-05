@@ -53,7 +53,7 @@
                 <td>
                     <input 
                         id="name"
-                        class="inline-text-input input-icon" 
+                        class="text-input input-icon" 
                         type="text" 
                         style="
                             width:95%; 
