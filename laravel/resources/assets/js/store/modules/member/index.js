@@ -30,9 +30,14 @@ const member = {
             Vue.delete(state.data.members, id);
         },
 
-        setName( state, { id, name } ) {
-            state.data.members[id].name = name;
+        setValue( state, { id, key, value } ) {
+            const t = state.data.members[id];
+            t[key] = value;
         }
+
+//        setName( state, { id, name } ) {
+//            state.data.members[id].name = name;
+//        }
     },
 
     modules: {
