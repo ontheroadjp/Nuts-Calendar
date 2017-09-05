@@ -2,7 +2,6 @@ export default {
     namespaced: true,
 
     state: {
-//        isActive: false,
         isLoading: false,
         updateValues: {
             id: '',
@@ -16,17 +15,13 @@ export default {
             commit('prepare', { id, name, isShow } ); 
         },
 
-        setName( { commit }, { value } ) {
-            commit('setName', { value });
-        },
-
-        setIsShow( { commit }, { value } ) {
-            commit('setIsShow', { value });
+        setUpdateValue( { commit }, { key, value } ) {
+            commit('setUpdateValue', { key, value } );
         },
 
         update( { state, commit, rootState } ) {
             u.clog('update()');
-            commit('start');
+            commit('isLoading', true);
 
             const url = '/api/v1/member/' + state.updateValues.id;
             const data = {
@@ -37,8 +32,9 @@ export default {
                 .then( response => {
                     u.clog('success');
 
-                    commit('member/setName', {
+                    commit('member/setValue', {
                         id: response.data.id,
+                        key: 'name',
                         name: response.data.name
                     }, { root: true });
 
@@ -47,6 +43,7 @@ export default {
                         isImportant: false
                     }, { root: true});
 
+                    commit('isLoading', false);
                     commit('reset');
                 })
 
@@ -58,40 +55,31 @@ export default {
                         isActive: true
                     }, { root: true});
 
+                    commit('isLoading', false);
                     commit('reset');
                 });
-        },
-
-        reset( { commit } ) {
-            commit('reset');
         }
     },
 
     mutations: {
+        isLoading( state, value ) {
+            state.isLoading = value;
+        },
+
         prepare( state, { id, name, isShow } ) {
-            state.isActive = true;  
             state.updateValues.id = id;
             state.updateValues.name = name;
             state.updateValues.isShow = isShow;
         },
     
-        setName( state, { value } ) {
-            state.updateValues.name = value;
-        },
-    
-        setIsShow( state, { value } ) {
-            state.updateValues.isShow = value;
-        },
-    
-        start( state ) {
-            state.isLoading = true;
+        setUpdateValue( state, { key, value } ) {
+            state.updateValues[key] = value;
         },
 
         reset( state ) {
-            state.isLoading = false;
-            state.isActive = false;
-            state.updateValues.name = '';
-            state.updateValues.isShow = '';
+            Object.keys(state.updateValues).forEach(function(key) {
+                this[key] = '';
+            }, state.updateValues );
         }
     }
 };

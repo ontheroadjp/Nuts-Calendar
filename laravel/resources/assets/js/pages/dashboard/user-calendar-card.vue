@@ -15,6 +15,8 @@
                     aria-label="close" 
                     @click="clickClose()"
                 ></button>
+
+                <table style="width:100%">
                     <inline-text-input 
                         id="calendar-name"
                         inputClass="title"
@@ -22,7 +24,7 @@
                         iconColor="#fff"
                         placeholder="Calendar Name"
                         :isLoading="updateState.isLoading.name"
-                        :syncValue.sync="newName"
+                        :syncValue.sync="inputName"
                         :defaultValue="userCalendar.name"
                         :saveCallback="clickSaveName"
                     ></inline-text-input>  
@@ -33,10 +35,11 @@
                         iconColor="#fff"
                         placeholder="Description"
                         :isLoading="updateState.isLoading.description"
-                        :syncValue.sync="newDescription"
+                        :syncValue.sync="inputDescription"
                         :defaultValue="userCalendar.description"
                         :saveCallback="clickSaveDescription"
                     ></inline-text-input>  
+                </table>
             </section> 
 
             <section class="modal-card-body" style="padding: 60px;">
@@ -109,15 +112,15 @@
 import { mapState, mapActions } from 'vuex';
 import modal from '../../components/modal.vue';
 //import userCalendarService from '../../services/userCalendar.js';
-import userCalendarMemberService from '../../services/userCalendarMember.js';
+//import userCalendarMemberService from '../../services/userCalendarMember.js';
 
 import inlineTextInput from '../../components/inline-text-input.vue';
 
 export default {
-    mixins: [
-//        userCalendarService, userCalendarMemberService
-        userCalendarMemberService
-    ],
+//    mixins: [
+////        userCalendarService, userCalendarMemberService
+//        userCalendarMemberService
+//    ],
 
     components: {
         'modal': modal,
@@ -151,23 +154,29 @@ export default {
 //            updateDescription: state => state.update.updateValues.description
         }),
 
-        newName: {
+        inputName: {
             get() {
                 return this.$store.state.userCalendar.update.updateValues.name;
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setName', { value });
+                this.$store.commit('userCalendar/update/setUpdateValue', { 
+                    key: 'name', 
+                    value: value 
+                });
             }
         },
 
-        newDescription: {
+        inputDescription: {
             get() {
                 return this.$store.state.userCalendar.update.updateValues.description;
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setDescription', { value });
+                this.$store.commit('userCalendar/update/setUpdateValue', {
+                    key: 'description',
+                    value: value
+                });
             }
         },
 
@@ -186,6 +195,14 @@ export default {
             prepare: 'prepare',
             updateName: 'updateName',
             updateDescription: 'updateDescription'
+        }),
+
+        ...mapActions('userCalendarMember/insert', {
+            insertUserCalendarMember: 'insert'
+        }),
+
+        ...mapActions('userCalendarMember/remove', {
+            removeUserCalendarMember: 'remove'
         }),
 
         openDialog: function( userCalendar ) {
@@ -222,13 +239,21 @@ export default {
             u.clog('member_id: ' + memberId);
             const value = document.getElementById(elementId).checked;
             u.clog('value: ' + value);
-            this.chengeMember(userCalendarId, memberId, value);
+
+//            this.chengeMember(userCalendarId, memberId, value);
+//            if( value ) {
+//                this.userCalendarMemberIds.push(memberId);
+//            } else {
+//                const index = this.userCalendarMemberIds.indexOf(memberId);
+//                this.userCalendarMemberIds.splice(index, 1);
+//            }
+
             if( value ) {
-                this.userCalendarMemberIds.push(memberId);
+                this.insertUserCalendarMember({ userCalendarId, memberId });
             } else {
-                const index = this.userCalendarMemberIds.indexOf(memberId);
-                this.userCalendarMemberIds.splice(index, 1);
+                this.removeUserCalendarMember({ userCalendarId, memberId });
             }
+
         },
 
         clickUserCalendar: function(id) {

@@ -53,7 +53,7 @@
                 <td>
                     <input 
                         id="name"
-                        class="inline-text-input input-icon" 
+                        class="text-input input-icon" 
                         type="text" 
                         style="
                             width:95%; 
@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState, mapActions } from 'vuex';
 
 export default {
@@ -223,11 +224,17 @@ export default {
             next()
     },
 
+    mounted() {
+        const self = this;
+        Object.keys(this.members).forEach(function(key) {
+            Vue.set(self.input.name, key, self.members[key].name);
+        });
+    },
+
     watch: {
         members: function(val) {
             const self = this;
             Object.keys(this.members).forEach(function(key) {
-                u.clog('key: ' + key + ', name: ' + this[key].name);
                 self.input.name[key] = this[key].name;
             }, this.members);
         }
