@@ -19,6 +19,39 @@ const calendar = {
         }
     },
 
+    actions: {
+        fetchCalendar( { state, commit }, calendarId) {
+            u.clog('fetchCalendar(' + calendarId + ')');
+            if(calendarId === 'dashboard') return;
+
+            commit('isLoading', true);
+    
+            const id = calendarId;
+            const y = state.currentYear;
+            const m = state.currentMonth;
+            const url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
+    
+            http.fetchGet(url)
+                .then( response => {
+                    u.clog('success');
+                    commit('init', response.data.days );
+        
+                    Object.keys(response.data.members).forEach(function(key) {
+                        let val = this[key];
+                        val.isShow = true;
+//                        u.clog(key + ':' + val.name);
+                    }, response.data.members);
+        
+                    commit('isLoading', false);
+                })
+
+                .catch( error => {
+                    u.clog('failed');
+                    commit('isLoading', false);
+                });
+            }
+    },
+
     mutations: {
         init( state, calendars ) {
             state.data.calendars = calendars;
@@ -30,6 +63,10 @@ const calendar = {
     
         setCurrentMonth( state, month ) {
             state.currentMonth = month;
+        },
+
+        isLoading( state, value ) {
+            state.isLoading = value;
         }
     },
 

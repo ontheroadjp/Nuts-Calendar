@@ -9,7 +9,7 @@
         :class="['main-calendar-panel-header', {sticky: isFixed}]"
         ><table-view 
             :filtered-columns="filteredColumns"
-            :is-black-screen-show="calendarServiceIsLoading"
+            :is-black-screen-show="calendarIsLoading"
             :is-fixed="isFixed"
         ></table-view>
     </div>
@@ -19,7 +19,7 @@
          @scroll="onScrollBody()"
         ><table-view 
             :filtered-body="filteredCalendar" 
-            :is-black-screen-show="calendarServiceIsLoading"
+            :is-black-screen-show="calendarIsLoading"
         ></table-view>
     </div>
 
@@ -52,7 +52,7 @@
         ],
 
         props: [
-            'calendarServiceIsLoading'
+            'calendarIsLoading'
         ],
 
         data() {
