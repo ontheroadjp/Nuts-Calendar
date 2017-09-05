@@ -15,9 +15,12 @@
 
     <ul class="dropdown-menu" v-show="isMenuOpen">
         <li>
-                <router-link to="/me/settings/general" :style="menuItemStyle" @click="toggle">
-                    {{ t('navbar.accountSettings') }}
-                </router-link>
+            <router-link to="/me/settings/general" :style="menuItemStyle" @click="toggle">
+                <span class="icon is-small">
+                    <i class="fa fa-gear"></i>
+                </span>
+                {{ t('navbar.accountSettings') }}
+            </router-link>
         </li>
 
         <li>
@@ -102,7 +105,7 @@
     right: 0;
     z-index: 1000;
     float: left;
-    min-width: 160px;
+    min-width: 180px;
     padding: 5px 0;
     margin: 2px 0 0;
     list-style: none;

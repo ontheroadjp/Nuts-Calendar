@@ -45,7 +45,7 @@
         <lang-changer></lang-changer>
 
         <span class="nav-item">
-            <a :class="['button', theme.primary.class, 'is-inverted']" >
+            <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']" >
                 <span class="icon">
                     <i class="fa fa-twitter"></i>
                 </span>
