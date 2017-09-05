@@ -10,7 +10,7 @@ export default {
         let currentCalendarId = state.calendar.currentId;
         let ids = [];
 
-        state.dashboard.data.userCalendarMembers.forEach( function( val ) {
+        state.userCalendarMember.data.userCalendarMembers.forEach( function( val ) {
             if(val.user_calendar_id == currentCalendarId) {
                 ids.push(val.member_id);
             }

@@ -74,12 +74,15 @@
 
             successInit(response) {
                 u.clog('success')
+//                this.$store.commit('initUserCalendar', response.data.usercalendar );
+//                this.$store.commit('initDashboardUserCalendarMembers', response.data.usercalendar_members );
+//                this.$store.commit('initMembersForUserCalendar', response.data.members );
+//                this.$store.commit('initMembers', response.data.members );
+
                 this.$store.commit('login', response.data.currentuser.name);
                 this.$store.commit('userCalendar/init', response.data.usercalendar );
-//                this.$store.commit('initUserCalendar', response.data.usercalendar );
-//                this.$store.commit('initMembersForUserCalendar', response.data.members );
-                this.$store.commit('initMembers', response.data.members );
-                this.$store.commit('initDashboardUserCalendarMembers', response.data.usercalendar_members );
+                this.$store.commit('userCalendarMember/init', response.data.usercalendar_members );
+                this.$store.commit('member/init', response.data.members );
                 this.$store.commit('ready', true);
                 eventBus.fire('nuts.app.ready', null, 'App.vue');
             },

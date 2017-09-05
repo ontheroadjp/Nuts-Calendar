@@ -65,10 +65,6 @@ export default {
 
                     commit('stop');
                 });
-        },
-
-        reset( { commit } ) {
-            commit('reset');
         }
     },
 
@@ -95,9 +91,6 @@ export default {
             Object.keys(state.isLoading).forEach(function(key) {
                 this[key] = false;
             }, state.isLoading );
-        },
-
-        reset( state ) {
         }
     }
 }
