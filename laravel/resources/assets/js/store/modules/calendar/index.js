@@ -8,6 +8,7 @@ const now = new Date();
 
 const calendar = {
     namespaced: true,
+
     state: {
         isLoading: false,
         currentId: 'dashboard',
@@ -57,12 +58,8 @@ const calendar = {
             state.data.calendars = calendars;
         },
 
-        setCurrentYear( state, year ) {
-            state.currentYear = year;
-        },
-    
-        setCurrentMonth( state, month ) {
-            state.currentMonth = month;
+        setValue( state, { key, value } ) {
+            state[key] = value;            
         },
 
         isLoading( state, value ) {
