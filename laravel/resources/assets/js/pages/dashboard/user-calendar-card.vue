@@ -157,7 +157,10 @@ export default {
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setName', { value });
+                this.$store.commit('userCalendar/update/setUpdateValue', { 
+                    key: 'name', 
+                    value: value 
+                });
             }
         },
 
@@ -167,7 +170,10 @@ export default {
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setDescription', { value });
+                this.$store.commit('userCalendar/update/setUpdateValue', {
+                    key: 'description',
+                    value: value
+                });
             }
         },
 
