@@ -17,13 +17,18 @@ const userCalendar = {
             state.data.userCalendars = userCalendars;
         },
 
-        setName( state, { id, name }) {
-            state.data.userCalendars[id].name = name;
-        },
-
-        setDescription( state, { id, description }) {
-            state.data.userCalendars[id].description = description;
+        setValue( state, { id, key, value } ) {
+            const t = state.data.userCalendars[id];
+            t[key] = value
         }
+
+//        setName( state, { id, name }) {
+//            state.data.userCalendars[id].name = name;
+//        },
+//
+//        setDescription( state, { id, description }) {
+//            state.data.userCalendars[id].description = description;
+//        }
     },
 
     modules: {
