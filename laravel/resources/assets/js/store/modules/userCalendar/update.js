@@ -45,14 +45,6 @@ export default {
                     const name = response.data.name;
                     const description = response.data.description;
 
-//                    commit('userCalendar/setName', {
-//                        id, name
-//                    }, { root: true });
-
-//                    commit('userCalendar/setDescription', { 
-//                        id, description
-//                    }, { root: true });
-
                     commit('userCalendar/setValue', {
                         id: id,
                         key: 'name',
