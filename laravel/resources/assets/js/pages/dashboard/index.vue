@@ -40,8 +40,6 @@ import { mapState } from 'vuex';
 import userCalendarCard from './user-calendar-card.vue';
 import menuTabs from './menu-tabs.vue';
 import memberSettings from './member-settings/index.vue';
-import applicationSettings from './application-settings/index.vue';
-import accountSettings from './account-settings/index.vue';
 import todayDateCard from './today-date-card.vue';
 
 export default {
@@ -50,8 +48,6 @@ export default {
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
         'member-settings': memberSettings,
-        'application-settings': applicationSettings,
-        'account-settings': accountSettings,
         'today-date-card': todayDateCard
     },
 
