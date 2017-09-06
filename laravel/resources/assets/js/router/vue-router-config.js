@@ -19,63 +19,81 @@ export const routes = [
     {
         path: '/',
         component: root,
-        auth: false,
-        footer: false
+        meta: {
+            auth: false,
+            footer: false
+        }
     },
     
     {
         path: '/login',
         component: login,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
 
     { 
         path: '/password/email',
         component: passwordEmail,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
     
     {
         path: '/password/reset/:token',
         component: passwordReset,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
 
     { 
         path: '/register',
         component: register,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
 
     { 
         path: '/me/settings/:type',
         component: userAccountSettings,
-        auth: true,
-        footer: true
+        meta: {
+            auth: true,
+            footer: true
+        }
     },
 
     {
         path: '/dashboard',
         component: dashboard,
-        auth: true,
-        footer: true,
+        meta: {
+            auth: true,
+            footer: true,
+        }
     },
 
     { 
         path: '/calendar',
         component: calendar,
-        auth: true,
-        footer: true,
+        meta: {
+            auth: true,
+            footer: true,
+        },
         children: [
             {
                 path: 'view',
                 component: tableView,
-                auth: true,
-                footer: false
+                meta: {
+                    auth: true,
+                    footer: false
+                }
             },
 //            {
 //                path: 'settings/:type',
