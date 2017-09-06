@@ -26,11 +26,9 @@
                     </div>
                 </div>
             </div>
-        </div><!-- // v-show -->
+        </div><!-- // v-if -->
     
         <member-settings v-else-if="currentId === 1"></member-settings>
-        <application-settings v-else-if="currentId === 2"></application-settings>
-        <account-settings v-else-if="currentId === 3"></account-settings>
     </menu-tabs>
 
 </div><!-- // .container -->
@@ -40,11 +38,8 @@
 <script>
 import { mapState } from 'vuex';
 import userCalendarCard from './user-calendar-card.vue';
-import memberCard from './member-card.vue';
 import menuTabs from './menu-tabs.vue';
 import memberSettings from './member-settings/index.vue';
-import applicationSettings from './application-settings/index.vue';
-import accountSettings from './account-settings/index.vue';
 import todayDateCard from './today-date-card.vue';
 
 export default {
@@ -52,10 +47,7 @@ export default {
     components: {
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
-        'member-card': memberCard,
         'member-settings': memberSettings,
-        'application-settings': applicationSettings,
-        'account-settings': accountSettings,
         'today-date-card': todayDateCard
     },
 
@@ -64,8 +56,6 @@ export default {
             tabs: [
                 { label: 'Calendars', icon: 'fa-calendar' },
                 { label: 'Member Settings', icon: 'fa-gear' },
-                { label: 'Application Settings', icon: 'fa-gear' },
-                { label: 'Account Settings', icon: 'fa-gear' }
             ]
         }
     },

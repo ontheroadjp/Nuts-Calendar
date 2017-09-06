@@ -108,9 +108,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import modal from '../../components/modal.vue';
-
 import inlineTextInput from '../../components/inline-text-input.vue';
 
 export default {
@@ -119,9 +118,9 @@ export default {
         'inline-text-input': inlineTextInput
     },
 
-    props: [
-        'userCalendar'
-    ],
+    props: {
+        userCalendar: { type: Object, required: true }
+    },
 
     data() {
         return {
@@ -135,8 +134,6 @@ export default {
 
     computed: {
         ...mapState({
-            members: state => state.member.data.members,
-            userCalendarMembers: state => state.userCalendarMember.data.userCalendarMembers,
             theme: state => state.app.theme
         }),
 
@@ -144,29 +141,35 @@ export default {
             updateState: state => state.update,
         }),
 
+        ...mapState('member', {
+            members: state => state.data.members,
+        }),
+
+        ...mapState('userCalendarMember', {
+            userCalendarMembers: state => state.data.userCalendarMembers,
+        }),
+
         inputName: {
             get() {
-                return this.$store.state.userCalendar.update.updateValues.name;
+//                return this.$store.state.userCalendar.update.updateValues.name;
+                return this.updateState.updateValues.name;
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setUpdateValue', { 
-                    key: 'name', 
-                    value: value 
-                });
+//                this.$store.commit('userCalendar/update/setUpdateValue', { 
+                this.setUpdateValue({ key: 'name', value: value });
             }
         },
 
         inputDescription: {
             get() {
-                return this.$store.state.userCalendar.update.updateValues.description;
+//                return this.$store.state.userCalendar.update.updateValues.description;
+                return this.updateState.updateValues.description;
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setUpdateValue', {
-                    key: 'description',
-                    value: value
-                });
+//                this.$store.commit('userCalendar/update/setUpdateValue', {
+                this.setUpdateValue({ key: 'description', value: value });
             }
         },
 
@@ -181,6 +184,10 @@ export default {
     },
 
     methods: {
+        ...mapMutations('userCalendar/update', {
+            setUpdateValue: 'setUpdateValue'
+        }),
+
         ...mapActions('userCalendar/update', {
             prepare: 'prepare',
             updateName: 'updateName',
