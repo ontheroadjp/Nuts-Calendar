@@ -38,7 +38,6 @@
 <script>
 import { mapState } from 'vuex';
 import userCalendarCard from './user-calendar-card.vue';
-import memberCard from './member-card.vue';
 import menuTabs from './menu-tabs.vue';
 import memberSettings from './member-settings/index.vue';
 import applicationSettings from './application-settings/index.vue';
@@ -50,7 +49,6 @@ export default {
     components: {
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
-        'member-card': memberCard,
         'member-settings': memberSettings,
         'application-settings': applicationSettings,
         'account-settings': accountSettings,
