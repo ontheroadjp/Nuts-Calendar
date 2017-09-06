@@ -26,11 +26,9 @@
                     </div>
                 </div>
             </div>
-        </div><!-- // v-show -->
+        </div><!-- // v-if -->
     
         <member-settings v-else-if="currentId === 1"></member-settings>
-        <application-settings v-else-if="currentId === 2"></application-settings>
-        <account-settings v-else-if="currentId === 3"></account-settings>
     </menu-tabs>
 
 </div><!-- // .container -->
@@ -64,8 +62,6 @@ export default {
             tabs: [
                 { label: 'Calendars', icon: 'fa-calendar' },
                 { label: 'Member Settings', icon: 'fa-gear' },
-                { label: 'Application Settings', icon: 'fa-gear' },
-                { label: 'Account Settings', icon: 'fa-gear' }
             ]
         }
     },
