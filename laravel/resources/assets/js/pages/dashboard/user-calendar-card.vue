@@ -65,9 +65,12 @@
             </section>
         </div>
     </modal>
-    
+<!-- 
     <div :class="['card', 'is-clickable', theme.primary.class]"
         style="height: 150px; background-image: linear-gradient(-135deg, rgb(112, 88, 163) 40px, transparent 0);">
+-->
+    <div :class="['card', 'is-clickable', theme.primary.class]"
+        :style="style.calendarCard">
 
         <div class="card-content">
         <div class="media">
@@ -174,10 +177,15 @@ export default {
 
         style: function() {
             return {
+                calendarCard: {
+                    'height': '150px',
+                    'background-image': 'linear-gradient(-135deg, ' + this.theme.secondary.code + ' 40px, transparent 0)'
+                },
+
                 bgSecondary: {
                     'background-color': this.theme.secondary.code,
                     'color': 'white'
-                }
+                },
             }
         }
     },
