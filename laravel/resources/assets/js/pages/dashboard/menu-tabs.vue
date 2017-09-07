@@ -4,8 +4,7 @@
         <ul style="border-bottom: none">
             <template v-for="(tab, uri) in tabs">
                 <li :style="$route.path === uri ? isActive : ''">
-                    <router-link 
-                        :to="uri" 
+                    <router-link :to="uri" 
                         :style="$route.path === uri ? isActive : ''">
 
                         <span class="icon is-small">
@@ -32,10 +31,6 @@ export default {
     computed: {
         ...mapState({
             theme: state => state.app.theme
-        }),
-
-        ...mapState('dashboard', {
-            currentId: state => state.currentId
         }),
 
         isActive: function() {
