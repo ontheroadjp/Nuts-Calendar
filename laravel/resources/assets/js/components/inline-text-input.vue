@@ -130,7 +130,8 @@ export default {
         notSaved: function() {
             return this.defaultValue != this.input.value 
                 && !this.input.isFocused 
-                && !this.button.isEnter;
+                && !this.button.isEnter
+                && !this.isLoading;
         }
     },
 
