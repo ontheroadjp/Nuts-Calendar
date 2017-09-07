@@ -4,8 +4,7 @@
         <ul style="border-bottom: none">
             <template v-for="(tab, uri) in tabs">
                 <li :style="$route.path === uri ? isActive : ''">
-                    <router-link 
-                        :to="uri" 
+                    <router-link :to="uri" 
                         :style="$route.path === uri ? isActive : ''">
 
                         <span class="icon is-small">
@@ -26,7 +25,6 @@ import { mapState } from 'vuex';
 
 export default {
     props: {
-//        tabs: { type: Array, required: true },
         tabs: { type: Object, required: true },
     },
 
@@ -35,15 +33,8 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('dashboard', {
-            currentId: state => state.currentId
-        }),
-
         isActive: function() {
             return {
-//                'border-radius': '20px',
-//                'background-color': this.theme.primary.code,
-//                'color': '#fff',
                 'color': this.theme.primary.code,
                 'border-bottom': '1px solid ' + this.theme.primary.code,
                 'cursor': 'default'
