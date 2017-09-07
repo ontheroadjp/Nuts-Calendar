@@ -84,9 +84,15 @@ export default {
     beforeRouteEnter(to, from, next) {
         const types = ['', 'members'];
 
+//        if( typeof to.params.type === 'undefined' ) {
+//            next();
+//        } else if( Object.keys(to.params.type).length !== 0 ) {
+//            next({path: '/dashboard'});
+//        }
+
         if( typeof to.params.type === 'undefined' ) {
             next();
-        } else if( Object.keys(to.params.type).length !== 0 ) {
+        } else if( types.indexOf(to.params.type) === -1 ) {
             next({path: '/dashboard'});
         }
 
