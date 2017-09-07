@@ -32,10 +32,11 @@
             <general-pane></general-pane>
         </div>
     
+<!--
         <div class="pain" v-else-if="selected == 'theme'">
             <theme-pane></theme-pane>
         </div>
-    
+--> 
         <div class="pain" v-else-if="selected == 'password'">
             <password-pane></password-pane>
         </div>
@@ -48,14 +49,14 @@
 import core from '../../../mixins/core.js';
 import hero from '../../partials/hero.vue';
 import generalPane from './general.vue';
-import themePane from './theme.vue';
+//import themePane from './theme.vue';
 import passwordPane from './password.vue';
 
 export default {
     components: {
         'hero': hero,
         'general-pane': generalPane,
-        'theme-pane': themePane,
+//        'theme-pane': themePane,
         'password-pane': passwordPane
     },
 
