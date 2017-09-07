@@ -67,7 +67,7 @@
     </modal>
     
     <div :class="['card', 'is-clickable', theme.primary.class]"
-        style="height: 150px;">
+        style="height: 150px; background-image: linear-gradient(-135deg, rgb(112, 88, 163) 40px, transparent 0);">
 
         <div class="card-content">
         <div class="media">
@@ -92,13 +92,12 @@
                     {{ userCalendar.description }}
                 </p>
     
-                <div class="icon"
-                    style="position: absolute; top: 20px; right: 20px;">
+                <a @click="openDialog(userCalendar)" style="transition: color 0.3s">
+                    <div class="icon" style="position: absolute; top: 6px; right: 3px; color: #fff">
+                        <i class="fa fa-gear" style="margin-right: 5px"></i>
+                    </div>
+                </a>
 
-                    <a @click="openDialog(userCalendar)">
-                        <i class="fa fa-gear"></i>
-                    </a>
-                </div>
             </div>
     
         </div><!-- // .media -->
