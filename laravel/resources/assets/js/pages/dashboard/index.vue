@@ -10,7 +10,7 @@
     </div>
     
     <menu-tabs :tabs="tabs">
-        <div v-if="currentId === 0">
+        <div v-if="$route.path === '/dashboard'">
             <div class="columns is-multiline">
                 <template v-for="uCal in userCalendars">
                     <div class="column is-6">
@@ -26,11 +26,9 @@
                     </div>
                 </div>
             </div>
-        </div><!-- // v-show -->
+        </div><!-- // v-if -->
     
-        <member-settings v-else-if="currentId === 1"></member-settings>
-        <application-settings v-else-if="currentId === 2"></application-settings>
-        <account-settings v-else-if="currentId === 3"></account-settings>
+        <member-settings v-else-if="$route.path === '/dashboard/members'"></member-settings>
     </menu-tabs>
 
 </div><!-- // .container -->
@@ -38,13 +36,11 @@
 </template>
 
 <script>
+import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import userCalendarCard from './user-calendar-card.vue';
-import memberCard from './member-card.vue';
 import menuTabs from './menu-tabs.vue';
 import memberSettings from './member-settings/index.vue';
-import applicationSettings from './application-settings/index.vue';
-import accountSettings from './account-settings/index.vue';
 import todayDateCard from './today-date-card.vue';
 
 export default {
@@ -52,31 +48,22 @@ export default {
     components: {
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
-        'member-card': memberCard,
         'member-settings': memberSettings,
-        'application-settings': applicationSettings,
-        'account-settings': accountSettings,
         'today-date-card': todayDateCard
     },
 
     data() {
         return {
-            tabs: [
-                { label: 'Calendars', icon: 'fa-calendar' },
-                { label: 'Member Settings', icon: 'fa-gear' },
-                { label: 'Application Settings', icon: 'fa-gear' },
-                { label: 'Account Settings', icon: 'fa-gear' }
-            ]
+            tabs: {
+                '/dashboard': { label: 'Calendars', icon: 'fa-calendar'},
+                '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
+            }
         }
     },
 
     computed: {
         ...mapState({
             theme: state => state.app.theme
-        }),
-
-        ...mapState('dashboard', {
-            currentId: state => state.currentId,
         }),
 
         ...mapState('userCalendar', {
@@ -92,6 +79,24 @@ export default {
         clickNewCalendar: function() {
             u.clog('New Calendar Button');
         }
+    },
+
+    beforeRouteEnter(to, from, next) {
+        const types = ['', 'members'];
+
+//        if( typeof to.params.type === 'undefined' ) {
+//            next();
+//        } else if( Object.keys(to.params.type).length !== 0 ) {
+//            next({path: '/dashboard'});
+//        }
+
+        if( typeof to.params.type === 'undefined' ) {
+            next();
+        } else if( types.indexOf(to.params.type) === -1 ) {
+            next({path: '/dashboard'});
+        }
+
+        next();
     }
 }
 </script>

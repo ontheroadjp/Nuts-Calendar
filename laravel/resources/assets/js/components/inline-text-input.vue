@@ -49,11 +49,10 @@
 
         <div class="icon is-small">
             <i v-if="isLoading 
-                        && !input.isFocused 
-                        && !input.isEnter 
-                        && defaultValue != input.value
-                        && !notSaved
-                    "
+                    && !input.isFocused 
+                    && !input.isEnter 
+                    && defaultValue != input.value
+                    && !notSaved"
                 class="fa fa-refresh fa-spin"></i>
         </div>
 
@@ -131,7 +130,8 @@ export default {
         notSaved: function() {
             return this.defaultValue != this.input.value 
                 && !this.input.isFocused 
-                && !this.button.isEnter;
+                && !this.button.isEnter
+                && !this.isLoading;
         }
     },
 

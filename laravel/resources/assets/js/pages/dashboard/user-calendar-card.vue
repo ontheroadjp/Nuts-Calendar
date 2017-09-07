@@ -65,9 +65,12 @@
             </section>
         </div>
     </modal>
-    
+<!-- 
     <div :class="['card', 'is-clickable', theme.primary.class]"
-        style="height: 150px;">
+        style="height: 150px; background-image: linear-gradient(-135deg, rgb(112, 88, 163) 40px, transparent 0);">
+-->
+    <div :class="['card', 'is-clickable', theme.primary.class]"
+        :style="style.calendarCard">
 
         <div class="card-content">
         <div class="media">
@@ -92,13 +95,12 @@
                     {{ userCalendar.description }}
                 </p>
     
-                <div class="icon"
-                    style="position: absolute; top: 20px; right: 20px;">
+                <a @click="openDialog(userCalendar)" style="transition: color 0.3s">
+                    <div class="icon" style="position: absolute; top: 6px; right: 3px; color: #fff">
+                        <i class="fa fa-gear" style="margin-right: 5px"></i>
+                    </div>
+                </a>
 
-                    <a @click="openDialog(userCalendar)">
-                        <i class="fa fa-gear"></i>
-                    </a>
-                </div>
             </div>
     
         </div><!-- // .media -->
@@ -108,9 +110,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import modal from '../../components/modal.vue';
-
 import inlineTextInput from '../../components/inline-text-input.vue';
 
 export default {
@@ -119,9 +120,9 @@ export default {
         'inline-text-input': inlineTextInput
     },
 
-    props: [
-        'userCalendar'
-    ],
+    props: {
+        userCalendar: { type: Object, required: true }
+    },
 
     data() {
         return {
@@ -135,8 +136,6 @@ export default {
 
     computed: {
         ...mapState({
-            members: state => state.member.data.members,
-            userCalendarMembers: state => state.userCalendarMember.data.userCalendarMembers,
             theme: state => state.app.theme
         }),
 
@@ -144,43 +143,58 @@ export default {
             updateState: state => state.update,
         }),
 
+        ...mapState('member', {
+            members: state => state.data.members,
+        }),
+
+        ...mapState('userCalendarMember', {
+            userCalendarMembers: state => state.data.userCalendarMembers,
+        }),
+
         inputName: {
             get() {
-                return this.$store.state.userCalendar.update.updateValues.name;
+//                return this.$store.state.userCalendar.update.updateValues.name;
+                return this.updateState.updateValues.name;
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setUpdateValue', { 
-                    key: 'name', 
-                    value: value 
-                });
+//                this.$store.commit('userCalendar/update/setUpdateValue', { 
+                this.setUpdateValue({ key: 'name', value: value });
             }
         },
 
         inputDescription: {
             get() {
-                return this.$store.state.userCalendar.update.updateValues.description;
+//                return this.$store.state.userCalendar.update.updateValues.description;
+                return this.updateState.updateValues.description;
             },
 
             set(value) {
-                this.$store.commit('userCalendar/update/setUpdateValue', {
-                    key: 'description',
-                    value: value
-                });
+//                this.$store.commit('userCalendar/update/setUpdateValue', {
+                this.setUpdateValue({ key: 'description', value: value });
             }
         },
 
         style: function() {
             return {
+                calendarCard: {
+                    'height': '150px',
+                    'background-image': 'linear-gradient(-135deg, ' + this.theme.secondary.code + ' 40px, transparent 0)'
+                },
+
                 bgSecondary: {
                     'background-color': this.theme.secondary.code,
                     'color': 'white'
-                }
+                },
             }
         }
     },
 
     methods: {
+        ...mapMutations('userCalendar/update', {
+            setUpdateValue: 'setUpdateValue'
+        }),
+
         ...mapActions('userCalendar/update', {
             prepare: 'prepare',
             updateName: 'updateName',

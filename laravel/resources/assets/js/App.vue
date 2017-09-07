@@ -3,7 +3,7 @@
         <navbar></navbar>
         <notification></notification>
         <router-view></router-view>
-        <page-footer v-if="$route.footer"></page-footer>
+        <page-footer v-if="$route.meta.footer"></page-footer>
     </div>
 </template>
 
