@@ -1,21 +1,15 @@
 <template>
 <div>
     <div class="tabs">
-        <ul class="flat-tabs" style="border-bottom: none">
+        <ul style="border-bottom: none">
             <template v-for="(tab, uri) in tabs">
-                <li v-if="$route.path === uri" :style="[ isActive ]" >
-                    <a style="color:white">
+                <li :style="$route.path === uri ? isActive : ''">
+                    <router-link 
+                        :to="uri" 
+                        :style="$route.path === uri ? isActive : ''">
+
                         <span class="icon is-small">
-                            <i class="fa" :class="tab.icon"></i>
-                        </span>
-                        <span>{{ tab.label }}</span>
-                    </a>
-                </li>
-        
-                <li v-else>
-                    <router-link :to="uri">
-                        <span class="icon is-small">
-                            <i class="fa" :class="tab.icon"></i>
+                            <i :class="['fa', tab.icon]"></i>
                         </span>
                         <span>{{ tab.label }}</span>
                     </router-link>
@@ -47,8 +41,12 @@ export default {
 
         isActive: function() {
             return {
-                'border-radius': '20px',
-                'background-color': this.theme.primary.code,
+//                'border-radius': '20px',
+//                'background-color': this.theme.primary.code,
+//                'color': '#fff',
+                'color': this.theme.primary.code,
+                'border-bottom': '1px solid ' + this.theme.primary.code,
+                'cursor': 'default'
             }
         }
     },
@@ -56,12 +54,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.flat-tabs {
-    & li a {
-        border: none;
-        &:hover {
-            border-radius: 20px;
-        }
-    }
-}
+    /* empty */
 </style>
