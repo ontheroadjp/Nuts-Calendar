@@ -10,7 +10,7 @@
     </div>
     
     <menu-tabs :tabs="tabs">
-        <div v-if="currentId === 0">
+        <div v-if="$route.path === '/dashboard'">
             <div class="columns is-multiline">
                 <template v-for="uCal in userCalendars">
                     <div class="column is-6">
@@ -28,7 +28,7 @@
             </div>
         </div><!-- // v-if -->
     
-        <member-settings v-else-if="currentId === 1"></member-settings>
+        <member-settings v-else-if="$route.path === '/dashboard/members'"></member-settings>
     </menu-tabs>
 
 </div><!-- // .container -->
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import userCalendarCard from './user-calendar-card.vue';
 import menuTabs from './menu-tabs.vue';
@@ -53,20 +54,16 @@ export default {
 
     data() {
         return {
-            tabs: [
-                { label: 'Calendars', icon: 'fa-calendar' },
-                { label: 'Member Settings', icon: 'fa-gear' },
-            ]
+            tabs: {
+                '/dashboard': { label: 'Calendars', icon: 'fa-calendar'},
+                '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
+            }
         }
     },
 
     computed: {
         ...mapState({
             theme: state => state.app.theme
-        }),
-
-        ...mapState('dashboard', {
-            currentId: state => state.currentId,
         }),
 
         ...mapState('userCalendar', {
@@ -82,6 +79,18 @@ export default {
         clickNewCalendar: function() {
             u.clog('New Calendar Button');
         }
+    },
+
+    beforeRouteEnter(to, from, next) {
+        const types = ['', 'members'];
+
+        if( typeof to.params.type === 'undefined' ) {
+            next();
+        } else if( Object.keys(to.params.type).length !== 0 ) {
+            next({path: '/dashboard'});
+        }
+
+        next();
     }
 }
 </script>

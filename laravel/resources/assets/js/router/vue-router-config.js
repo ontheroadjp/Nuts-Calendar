@@ -76,7 +76,17 @@ export const routes = [
         meta: {
             auth: true,
             footer: true,
-        }
+        },
+        children: [
+            {
+                path: ':type',
+                component: dashboard,
+                meta: {
+                    auth: true,
+                    footer: true,
+                }
+            }
+        ]
     },
 
     { 
