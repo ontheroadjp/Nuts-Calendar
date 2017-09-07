@@ -49,11 +49,10 @@
 
         <div class="icon is-small">
             <i v-if="isLoading 
-                        && !input.isFocused 
-                        && !input.isEnter 
-                        && defaultValue != input.value
-                        && !notSaved
-                    "
+                    && !input.isFocused 
+                    && !input.isEnter 
+                    && defaultValue != input.value
+                    && !notSaved"
                 class="fa fa-refresh fa-spin"></i>
         </div>
 

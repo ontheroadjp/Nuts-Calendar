@@ -23,7 +23,10 @@
         <template v-else>
             <router-link 
                 to="/dashboard" 
-                @click.native="$store.commit('setCurrentCalendarId', 'dashboard')"
+                @click.native="$store.commit('calendar/setValue', {
+                    key: 'currentId',
+                    value: 'dashboard'
+                })"
                 class="nav-item"
             >{{ t('navbar.dashboard') }}
             </router-link>
@@ -35,7 +38,7 @@
         <lang-changer></lang-changer>
 
         <span class="nav-item">
-            <a :class="['button', theme.primary.class, 'is-inverted']" >
+            <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']" >
                 <span class="icon">
                     <i class="fa fa-twitter"></i>
                 </span>

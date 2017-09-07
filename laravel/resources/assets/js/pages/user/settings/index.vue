@@ -1,20 +1,29 @@
 <template>
 <div>
-    <hero :title="t('userSettingsIndex.title')" :subtitle="t('userSettingsIndex.subtitle')"></hero>
+    <hero :title="t('userSettingsIndex.title')" 
+        :subtitle="t('userSettingsIndex.subtitle')">
+    </hero>
+
     <div style="width: 100%; height: 100vh; background: #fff;">
     
         <div class="tabs is-boxed">
             <ul>
                 <li :class="{'is-active': selected == 'general'}">
-                    <router-link to="/me/settings/general">{{ t('userSettingsIndex.generalInfomation') }}</router-link>
+                    <router-link to="/me/settings/general">
+                        {{ t('userSettingsIndex.generalInfomation') }}
+                    </router-link>
                 </li>
     
                 <li :class="{'is-active': selected == 'theme'}">
-                    <router-link to="/me/settings/theme">{{ t('userSettingsIndex.themeSettings') }}</router-link>
+                    <router-link to="/me/settings/theme">
+                        {{ t('userSettingsIndex.themeSettings') }}
+                    </router-link>
                 </li>
     
                 <li :class="{'is-active': selected == 'password'}">
-                    <router-link to="/me/settings/password">{{ t('userSettingsIndex.passwordChange') }}</router-link>
+                    <router-link to="/me/settings/password">
+                        {{ t('userSettingsIndex.passwordChange') }}
+                    </router-link>
                 </li>
             </ul>
         </div>

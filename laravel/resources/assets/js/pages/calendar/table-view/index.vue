@@ -9,7 +9,7 @@
         :class="['main-calendar-panel-header', {sticky: isFixed}]"
         ><table-view 
             :filtered-columns="filteredColumns"
-            :is-black-screen-show="calendarServiceIsLoading"
+            :is-black-screen-show="calendarIsLoading"
             :is-fixed="isFixed"
         ></table-view>
     </div>
@@ -19,7 +19,7 @@
          @scroll="onScrollBody()"
         ><table-view 
             :filtered-body="filteredCalendar" 
-            :is-black-screen-show="calendarServiceIsLoading"
+            :is-black-screen-show="calendarIsLoading"
         ></table-view>
     </div>
 
@@ -52,7 +52,7 @@
         ],
 
         props: [
-            'calendarServiceIsLoading'
+            'calendarIsLoading'
         ],
 
         data() {
@@ -115,7 +115,7 @@
                     }
 
                     // sort cell items
-                    this.$store.commit('sortCellItemsByStartTime', data);
+                    this.$store.commit('calendar/tableView/sortCellItemsByStartTime', data);
 
                     return data;
                 }
@@ -167,13 +167,13 @@
                 const self = this;
                 let resizing; 
 
-                window.addEventListener('resize', function (event) {
-                    if (resizing) { clearTimeout(resizing); }
-                    resizing = setTimeout(function() {
-                        u.clog('window resized');
-                        self.updateHeight();
-                    }, 500);
-                });
+//                window.addEventListener('resize', function (event) {
+//                    if (resizing) { clearTimeout(resizing); }
+//                    resizing = setTimeout(function() {
+//                        u.clog('window resized');
+//                        self.updateHeight();
+//                    }, 500);
+//                });
     
                 document.onscroll = function(e) {
                     self.position = document.documentElement.scrollTop || document.body.scrollTop;
@@ -182,7 +182,11 @@
                 this.elements.tableHeader = document.getElementById('table-view-header');
                 this.elements.tableBody = document.getElementById('table-view-body');
             });
-        }
+        },
+
+//        destroyed() {
+//            window.removeEventListener('resize', () => {},false);
+//        }
     }
 </script>
 
