@@ -11,7 +11,7 @@ import tableView from '../pages/calendar/table-view/index.vue';
 
 export function init (router) {
 //    mapping(router);
-    beforRooting(router);
+    registGuards(router);
     return router;
 }
 
@@ -106,8 +106,8 @@ export const routes = [
 ];
 
 
-function beforRooting(router){
-    router.beforeEach(function (to, from, next) {
+function registGuards(router){
+    router.beforeResolve(function (to, from, next) {
         u.clog( '------- ' + to.path + ' -------' );
         const token = jwtToken.getLocalToken();
         if(! token) {
@@ -119,7 +119,7 @@ function beforRooting(router){
 }
             
 function handleNoLogedIn(to, from, next) {
-    u.clog('handleNoLogedIn@app.vue');
+    u.clog('handleNoLogedIn@vue-router-config');
     if(to.matched.some(record => record.meta.auth)) {
         next({path: '/login'});
     }
@@ -128,7 +128,7 @@ function handleNoLogedIn(to, from, next) {
 }
             
 function handleAlreadyLogedIn(to, from, next, token) {
-    u.clog('handleAlreadyLogedIn@app.vue');
+    u.clog('handleAlreadyLogedIn@vue-router-config');
 
     jwtToken.setLocalToken(token);
 
