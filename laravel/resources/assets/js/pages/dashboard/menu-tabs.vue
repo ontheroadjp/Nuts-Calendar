@@ -26,7 +26,6 @@ import { mapState } from 'vuex';
 
 export default {
     props: {
-//        tabs: { type: Array, required: true },
         tabs: { type: Object, required: true },
     },
 
@@ -41,9 +40,6 @@ export default {
 
         isActive: function() {
             return {
-//                'border-radius': '20px',
-//                'background-color': this.theme.primary.code,
-//                'color': '#fff',
                 'color': this.theme.primary.code,
                 'border-bottom': '1px solid ' + this.theme.primary.code,
                 'cursor': 'default'
