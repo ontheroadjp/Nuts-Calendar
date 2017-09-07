@@ -13,13 +13,13 @@
                         {{ t('userSettingsIndex.generalInfomation') }}
                     </router-link>
                 </li>
-    
+<!-- 
                 <li :class="{'is-active': selected == 'theme'}">
                     <router-link to="/me/settings/theme">
                         {{ t('userSettingsIndex.themeSettings') }}
                     </router-link>
                 </li>
-    
+-->    
                 <li :class="{'is-active': selected == 'password'}">
                     <router-link to="/me/settings/password">
                         {{ t('userSettingsIndex.passwordChange') }}
@@ -32,10 +32,11 @@
             <general-pane></general-pane>
         </div>
     
+<!--
         <div class="pain" v-else-if="selected == 'theme'">
             <theme-pane></theme-pane>
         </div>
-    
+--> 
         <div class="pain" v-else-if="selected == 'password'">
             <password-pane></password-pane>
         </div>
@@ -48,14 +49,14 @@
 import core from '../../../mixins/core.js';
 import hero from '../../partials/hero.vue';
 import generalPane from './general.vue';
-import themePane from './theme.vue';
+//import themePane from './theme.vue';
 import passwordPane from './password.vue';
 
 export default {
     components: {
         'hero': hero,
         'general-pane': generalPane,
-        'theme-pane': themePane,
+//        'theme-pane': themePane,
         'password-pane': passwordPane
     },
 
@@ -64,6 +65,12 @@ export default {
     data() {
         return {
             selected: 'general'
+        }
+    },
+
+    computed: {
+        theme: function() {
+            return this.$store.state.app.theme;
         }
     },
 
@@ -77,10 +84,16 @@ export default {
         this.selected = this.$route.params.type;
     },
 
-    computed: {
-        theme: function() {
-            return this.$store.state.app.theme;
+    beforeRouteEnter(to, from, next) {
+        const types = ['general', 'password'];
+
+        if( typeof to.params.type === 'undefined' ) {
+            next();
+        } else if( types.indexOf(to.params.type) === -1 ) {
+            next({path: '/me/settings/general'});
         }
+
+        next();
     }
 }
 </script>
