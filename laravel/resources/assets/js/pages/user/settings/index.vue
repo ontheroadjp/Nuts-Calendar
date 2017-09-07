@@ -13,13 +13,13 @@
                         {{ t('userSettingsIndex.generalInfomation') }}
                     </router-link>
                 </li>
-    
+<!-- 
                 <li :class="{'is-active': selected == 'theme'}">
                     <router-link to="/me/settings/theme">
                         {{ t('userSettingsIndex.themeSettings') }}
                     </router-link>
                 </li>
-    
+-->    
                 <li :class="{'is-active': selected == 'password'}">
                     <router-link to="/me/settings/password">
                         {{ t('userSettingsIndex.passwordChange') }}
@@ -67,6 +67,12 @@ export default {
         }
     },
 
+    computed: {
+        theme: function() {
+            return this.$store.state.app.theme;
+        }
+    },
+
     watch: {
         '$route' (to, from) {
             this.selected = this.$route.params.type;
@@ -77,10 +83,16 @@ export default {
         this.selected = this.$route.params.type;
     },
 
-    computed: {
-        theme: function() {
-            return this.$store.state.app.theme;
+    beforeRouteEnter(to, from, next) {
+        const types = ['general', 'password'];
+
+        if( typeof to.params.type === 'undefined' ) {
+            next();
+        } else if( types.indexOf(to.params.type) === -1 ) {
+            next({path: '/me/settings/general'});
         }
+
+        next();
     }
 }
 </script>
