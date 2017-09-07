@@ -11,8 +11,14 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     <style>
-        body { font-family: 'Lato'; background: #f0f0f1; }
+        body { font-family: 'Lato'; font-weight: 200; background: #f0f0f1; }
+    </style>
+-->
+    <style>
+        body { background: #f0f0f1; }
     </style>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
