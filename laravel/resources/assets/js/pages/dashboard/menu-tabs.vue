@@ -2,9 +2,9 @@
 <div>
     <div class="tabs">
         <ul class="flat-tabs" style="border-bottom: none">
-            <template v-for="(tab, index) in tabs">
-                <li v-if="currentId === index" :style="[ isActive ]" >
-                    <a @click="clickTab(index)" style="color: white;">
+            <template v-for="(tab, uri) in tabs">
+                <li v-if="$route.path === uri" :style="[ isActive ]" >
+                    <a style="color:white">
                         <span class="icon is-small">
                             <i class="fa" :class="tab.icon"></i>
                         </span>
@@ -13,12 +13,12 @@
                 </li>
         
                 <li v-else>
-                    <a @click="clickTab(index)">
+                    <router-link :to="uri">
                         <span class="icon is-small">
                             <i class="fa" :class="tab.icon"></i>
                         </span>
                         <span>{{ tab.label }}</span>
-                    </a>
+                    </router-link>
                 </li>
             </template>
         </ul>
@@ -32,7 +32,8 @@ import { mapState } from 'vuex';
 
 export default {
     props: {
-        tabs: { type: Array, required: true }
+//        tabs: { type: Array, required: true },
+        tabs: { type: Object, required: true },
     },
 
     computed: {
@@ -51,12 +52,6 @@ export default {
             }
         }
     },
-
-    methods: {
-        clickTab: function(id) {
-            this.$store.commit('dashboard/setCurrentId', {id: id});
-        }
-    }
 }
 </script>
 
@@ -68,13 +63,5 @@ export default {
             border-radius: 20px;
         }
     }
-
-/*
-    & li.is-active a {
-        border-radius: 20px;
-        background-color: #fff;
-        color: #000;
-    }
-*/
 }
 </style>
