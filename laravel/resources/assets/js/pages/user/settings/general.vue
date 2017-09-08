@@ -42,6 +42,7 @@
                 style="width: 25%" 
                 disabled
             >{{ t('userSettingsGeneral.save') }}</button>
+
             <button 
                 v-show="isNameChanged && ! isLoading"
                 type="submit"
@@ -50,6 +51,7 @@
                 style="width: 25%" 
                 @click.prevent="putSettings"
                 >{{ t('userSettingsGeneral.save') }}</button>
+
             <button 
                 v-show="isLoading" 
                 class="button" 

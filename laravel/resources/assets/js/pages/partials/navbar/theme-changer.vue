@@ -1,21 +1,21 @@
 <template>
-    <span class="nav-item">
-        <p class="control is-expanded">
+<div class="nav-item">
+    <p class="control is-expanded">
         <span class="select is-fullwidth">
             <select 
+                class="thin"
                 :style="selectStyle" 
                 v-model="selectedTheme" 
                 @change="setTheme()"
-                style="border: none"
                 ><option 
                     v-for="option in options" 
                     :value="option.value"
-                    >{{ option.text }}
+                    >{{ option.label }}
                 </option>
             </select>
         </span>
-        </p>
-    </span>
+    </p>
+</div>
 </template>
 
 <script>
@@ -35,17 +35,18 @@ export default {
     computed: {
         options: function() {
             return [
-                { value: "koiai", text: this.t('theme.koiai') },
-                { value: "nadeshiko", text: this.t('theme.nadeshiko') },
-                { value: "mikan", text: this.t('theme.mikan') },
-                { value: "sumire", text: this.t('theme.sumire') },
-                { value: "moegi", text: this.t('theme.moegi') }
+                { value: "koiai", label: this.t('theme.koiai') },
+                { value: "nadeshiko", label: this.t('theme.nadeshiko') },
+                { value: "mikan", label: this.t('theme.mikan') },
+                { value: "sumire", label: this.t('theme.sumire') },
+                { value: "moegi", label: this.t('theme.moegi') }
             ];
         },
         selectStyle: function() {
             return {
                 background: 'none',
-                color: this.theme.primary.codeInvert
+                border: 'none',
+                color: this.theme.primary.codeInvert,
             }
         }
     },

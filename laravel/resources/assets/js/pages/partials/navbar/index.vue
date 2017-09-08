@@ -13,39 +13,40 @@
 
     <div class="nav-right nav-menu" style="overflow:visible">
 
-        <router-link to="/" class="nav-item">{{ t('navbar.home') }}</router-link>
+        <router-link to="/" class="nav-item thin">{{ t('navbar.home') }}</router-link>
 
         <template v-if="! $store.state.user.name">
-            <router-link to="/login" class="nav-item">{{ t('navbar.login') }}</router-link>
-            <router-link to="/register" class="nav-item">{{ t('navbar.register') }}</router-link>
+            <router-link to="/login" class="nav-item thin">
+                {{ t('navbar.login') }}
+            </router-link>
+
+            <router-link to="/register" class="nav-item thin">
+                {{ t('navbar.register') }}
+            </router-link>
         </template>
 
         <template v-else>
-<!--
-            <router-link 
-                to="/dashboard" 
-                @click.native="$store.commit('setCurrentCalendarId', 'dashboard')"
-                class="nav-item"
-            >{{ t('navbar.dashboard') }}
--->
             <router-link 
                 to="/dashboard" 
                 @click.native="$store.commit('calendar/setValue', {
                     key: 'currentId',
                     value: 'dashboard'
                 })"
-                class="nav-item"
+                class="nav-item thin"
             >{{ t('navbar.dashboard') }}
             </router-link>
 
             <user-account-dropdown></user-account-dropdown>
         </template>
 
-        <theme-changer></theme-changer>
-        <lang-changer></lang-changer>
+        <theme-dropdown></theme-dropdown>
+        <lang-dropdown></lang-dropdown>
+
+        <!-- <theme-changer></theme-changer> -->
+        <!-- <lang-changer></lang-changer> -->
 
         <span class="nav-item">
-            <a :class="['button', theme.primary.class, 'is-inverted']" >
+            <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']" >
                 <span class="icon">
                     <i class="fa fa-twitter"></i>
                 </span>
@@ -64,16 +65,20 @@
     import core from '../../../mixins/core.js';
     import hamburgerMenu from './hamburger-menu.vue';
     import userAccountDropdown from './user-account-dropdown.vue';
-    import themeChanger from './theme-changer.vue';
-    import langChanger from './lang-changer.vue';
+    import themeDropdown from './theme-dropdown.vue';
+    import langDropdown from './lang-dropdown.vue';
+//    import themeChanger from './theme-changer.vue';
+//    import langChanger from './lang-changer.vue';
     
     export default {
         name: 'navbar-index',
         components: {
             'hamburgerMenu': hamburgerMenu,
-            'userAccountDropdown': userAccountDropdown,
-            'themeChanger': themeChanger,
-            'langChanger': langChanger
+            'user-account-dropdown': userAccountDropdown,
+            'theme-dropdown': themeDropdown,
+            'lang-dropdown': langDropdown,
+//            'themeChanger': themeChanger,
+//            'langChanger': langChanger
         },
 
         mixins: [

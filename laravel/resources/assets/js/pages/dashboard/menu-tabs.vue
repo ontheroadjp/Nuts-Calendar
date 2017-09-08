@@ -1,24 +1,17 @@
 <template>
 <div>
-    <div class="tabs">
-        <ul class="flat-tabs" style="border-bottom: none">
-            <template v-for="(tab, index) in tabs">
-                <li v-if="currentId === index" :style="[ isActive ]" >
-                    <a @click="clickTab(index)" style="color: white;">
+    <div class="tabs thin">
+        <ul style="border-bottom: none">
+            <template v-for="(tab, uri) in tabs">
+                <li :style="$route.path === uri ? isActive : ''">
+                    <router-link :to="uri" 
+                        :style="$route.path === uri ? isActive : ''">
+
                         <span class="icon is-small">
-                            <i class="fa" :class="tab.icon"></i>
+                            <i :class="['fa', tab.icon]"></i>
                         </span>
                         <span>{{ tab.label }}</span>
-                    </a>
-                </li>
-        
-                <li v-else>
-                    <a @click="clickTab(index)">
-                        <span class="icon is-small">
-                            <i class="fa" :class="tab.icon"></i>
-                        </span>
-                        <span>{{ tab.label }}</span>
-                    </a>
+                    </router-link>
                 </li>
             </template>
         </ul>
@@ -32,7 +25,7 @@ import { mapState } from 'vuex';
 
 export default {
     props: {
-        tabs: { type: Array, required: true }
+        tabs: { type: Object, required: true },
     },
 
     computed: {
@@ -40,41 +33,17 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('dashboard', {
-            currentId: state => state.currentId
-        }),
-
         isActive: function() {
             return {
-                'border-radius': '20px',
-                'background-color': this.theme.primary.code,
+                'color': this.theme.primary.code,
+                'border-bottom': '1px solid ' + this.theme.primary.code,
+                'cursor': 'default'
             }
         }
     },
-
-    methods: {
-        clickTab: function(id) {
-            this.$store.commit('dashboard/setCurrentId', {id: id});
-        }
-    }
 }
 </script>
 
 <style lang="scss" scoped>
-.flat-tabs {
-    & li a {
-        border: none;
-        &:hover {
-            border-radius: 20px;
-        }
-    }
-
-/*
-    & li.is-active a {
-        border-radius: 20px;
-        background-color: #fff;
-        color: #000;
-    }
-*/
-}
+    /* empty */
 </style>

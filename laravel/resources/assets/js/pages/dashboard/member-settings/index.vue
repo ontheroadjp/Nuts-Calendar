@@ -52,8 +52,8 @@
                 <td>
                     <input 
                         id="name"
-                        class="text-input input-icon" 
                         type="text" 
+                        class="text-input input-icon" 
                         style="
                             width:95%; 
                             font-size:1rem; 
@@ -244,6 +244,7 @@ export default {
     box-shadow: none;
     width: 83%;
     outline: none;
+    font-weight: 100;
 }
 
 a.add-member {
