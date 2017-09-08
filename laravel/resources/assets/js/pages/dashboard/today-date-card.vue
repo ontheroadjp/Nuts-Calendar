@@ -36,7 +36,7 @@ export default {
                 'padding': '0 40px',
                 'height': '180px',
                 'position': 'relative',
-                'font-weight': 500
+                'font-weight': 400
             }
         },
         upper: function() {

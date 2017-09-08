@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="tabs">
+    <div class="tabs thin">
         <ul style="border-bottom: none">
             <template v-for="(tab, uri) in tabs">
                 <li :style="$route.path === uri ? isActive : ''">

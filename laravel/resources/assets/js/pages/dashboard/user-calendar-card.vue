@@ -14,12 +14,37 @@
                     @click="clickClose()"
                 ></button>
 
+<!--
+                <a class="fa-stack fa-lg header-icon" 
+                    style="margin-right: 10px;
+                            width: 100px;
+                            height: 100px;
+                            border-radius: 25px;
+                            ">
+                    <i class="fa fa-calendar fa-3x" 
+                        style="margin-left: 19px;
+                        color: rgb(25, 96, 183);
+                        margin-top: 16px;">
+                    </i>
+                </a>
+
+                <br />
+                <br />
+-->
                 <table style="width:100%">
+                    <tr>
+                        <td rowspan="3" style="width: 70px">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-calendar fa-2x" 
+                                    style="margin-left:1px; color: #fff"></i>
+                            </span>
+                        </td>
+                    </tr>
                     <inline-text-input 
                         id="calendar-name"
-                        inputClass="title"
-                        inputColor="#fff"
-                        iconColor="#fff"
+                        inputClass="title thin-200"
+                        inputStyle="color: #fff"
+                        iconStyle="color: #fff"
                         placeholder="Calendar Name"
                         :isLoading="updateState.isLoading.name"
                         :syncValue.sync="inputName"
@@ -29,9 +54,9 @@
                     ></inline-text-input>  
                     <inline-text-input 
                         id="calendar-description"
-                        inputClass="subtitle"
-                        inputColor="#fff"
-                        iconColor="#fff"
+                        inputClass="subtitle thin"
+                        inputStyle="color: #fff"
+                        iconStyle="color: #fff"
                         placeholder="Description"
                         :isLoading="updateState.isLoading.description"
                         :syncValue.sync="inputDescription"
@@ -42,8 +67,8 @@
                 </table>
             </section> 
 
-            <section class="modal-card-body" style="padding: 60px;">
-                <label class="label">Members</label>
+            <section class="modal-card-body thin" style="padding: 60px">
+                <label class="label thin-400">Members</label>
                 <ul class="members">
                     <li v-for="member in members" class="member">
                         <input :id="member.name" 
@@ -85,13 +110,13 @@
                 <p style="margin-bottom: 10px;">
                     <router-link
                         to="/calendar/view"
-                        class="title" 
+                        class="title thin-200" 
                         @click.native="clickUserCalendar(userCalendar.id)"
                     >{{ userCalendar.name }}
                     </router-link>
                 </p>
     
-                <p class="subtitle">
+                <p class="subtitle thin">
                     {{ userCalendar.description }}
                 </p>
     
@@ -273,18 +298,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.message {
-    background-color: red;
+.header-icon {
+    background-color: #fff;
+    border-radius: 30px;
+    &:hover {
+        background-color: #9a9a9a;
+    }
 }
-
-/*
-.inline-text-input {
-    border: none;
-    box-shadow: none;
-    width: 83%;
-    outline: none;
-}
-*/
 
 .members {
     margin: 10px 20px;
