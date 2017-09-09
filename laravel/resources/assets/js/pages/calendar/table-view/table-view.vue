@@ -6,7 +6,19 @@
         </div>
     </black-screen>
 
-    <item-modal v-if="filteredBody && isItemModalActive"></item-modal>
+    <popup-menu 
+        v-if="filteredBody"
+        :x="editItem.x" :y="editItem.y" 
+        :isActive="editItem.isActive" 
+        :onClose="popupMenuClose"
+    >
+        <div style="margin:0; width:100%; height:100%; background-color: orange;">
+            <span>This is a popup menu</span>
+        </div>
+    </popup-menu>
+
+    <black-screen v-if="!filteredBody && editItem.isActive"></black-screen>
+    <!-- <item-modal v-if="filteredBody && isItemModalActive"></item-modal> -->
 
     <div class="panel" :style="isBlackScreenShow ? 'height: 100vh' : ''">
     <table class="table is-bordered"
@@ -88,158 +100,173 @@
 </template>
 
 <script>
-    import { mapState, mapGetters, mapActions } from 'vuex';
-    import dateUtilities from '../../../mixins/date-utilities.js';
-    import blackScreen from '../../../components/black-screen.vue';
-    import itemModal from './modal/item-modal.vue';
-    import item from './item/index.vue';
-    import itemInsertField from './item-insert-field.vue';
-    import miniCalBar from './footer-bar/mini-cal-bar.vue';
-    import chroma from 'chroma-js';
+import { mapState, mapGetters, mapActions } from 'vuex';
+import dateUtilities from '../../../mixins/date-utilities.js';
+import blackScreen from '../../../components/black-screen.vue';
+import popupMenu from '../../../components/popup-menu.vue';
+//import itemModal from './modal/item-modal.vue';
+import item from './item/index.vue';
+import itemInsertField from './item-insert-field.vue';
+import miniCalBar from './footer-bar/mini-cal-bar.vue';
+import chroma from 'chroma-js';
 
-    export default {
-        name: 'table-view-content',
+export default {
+    name: 'table-view-content',
 
-        components: {
-            'black-screen': blackScreen,
-            'item-modal': itemModal,
-            'item': item,
-            'item-insert-field': itemInsertField,
-            'mini-cal-bar': miniCalBar
-        },
+    components: {
+        'black-screen': blackScreen,
+        'popup-menu': popupMenu,
+//        'item-modal': itemModal,
+        'item': item,
+        'item-insert-field': itemInsertField,
+        'mini-cal-bar': miniCalBar
+    },
 
-        mixins: [ dateUtilities ],
+    mixins: [ dateUtilities ],
 
-        props: {
-            filteredColumns:    { type: Object,     required: false }, 
-            filteredBody:       { type: Array,      required: false }, 
-            isBlackScreenShow:  { type: Boolean,    required: false },
-            isFixed:            { type: Boolean,    required: false }
-        },
+    props: {
+        filteredColumns:    { type: Object,     required: false }, 
+        filteredBody:       { type: Array,      required: false }, 
+        isBlackScreenShow:  { type: Boolean,    required: false },
+        isFixed:            { type: Boolean,    required: false }
+    },
 
-        data() {
+    data() {
+        return {
+            selectedMiniCalPopper: '',
+        }
+    },
+
+    computed: {
+        ...mapState({
+            currentYear: state => state.calendar.currentYear,
+            currentMonth: state => state.calendar.currentMonth,
+            lang: state => state.app.lang,
+            theme: state => state.app.theme
+        }),
+
+        ...mapState('calendar/tableView/toolPalette', {
+            isEventItem: state => state.isEventItemShow,
+            isTaskItem: state => state.isTaskItemShow
+        }),
+
+//        ...mapState('member', {
+//            editColumn: state => state.update,
+//            deleteColumn: state => state.remove
+//        }),
+
+        ...mapState('calendar/tableView/item', {
+            addItem: state => state.insert,
+            editItem: state => state.update,
+            deleteItem: state => state.remove,
+            dragItem: state => state.dnd
+        }),
+
+        ...mapGetters({
+            showColumns: 'getShowMembers',
+            getCellAddress: 'getCellAddress',
+            getRowIndex: 'getRowIndex'
+        }),
+
+//        ...mapGetters('calendar/tableView/item', {
+//            isItemModalActive: 'isModalActive'
+//        }),
+
+        columnWidth: function() {
+            let length = 0;
+
+            if(this.showColumns) {
+                length = this.showColumns.length;
+            } else if(this.filteredColumns) {
+                length = Object.keys(this.filteredColumns).length;
+            } else {
+                length = Object.keys(this.filteredBody[0].items).length;
+            }
+
             return {
-                selectedMiniCalPopper: ''
+                width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
+                minWidth: '206px'
             }
         },
 
-        computed: {
-            ...mapState({
-                currentYear: state => state.calendar.currentYear,
-                currentMonth: state => state.calendar.currentMonth,
-                lang: state => state.app.lang,
-                theme: state => state.app.theme
-            }),
+        textColor: function(){
+            if(!this.isFixed) return;
 
-            ...mapState('calendar/tableView/toolPalette', {
-                isEventItem: state => state.isEventItemShow,
-                isTaskItem: state => state.isTaskItemShow
-            }),
-
-            ...mapState('member', {
-                editColumn: state => state.update,
-                deleteColumn: state => state.remove
-            }),
-
-            ...mapState('calendar/tableView/item', {
-                addItem: state => state.insert,
-                editItem: state => state.update,
-                deleteItem: state => state.remove,
-                dragItem: state => state.dnd
-            }),
-
-            ...mapGetters({
-                showColumns: 'getShowMembers',
-                getCellAddress: 'getCellAddress',
-                getRowIndex: 'getRowIndex'
-            }),
-
-            ...mapGetters('calendar/tableView/item', {
-                isItemModalActive: 'isModalActive'
-            }),
-
-            columnWidth: function() {
-                let length = 0;
-
-                if(this.showColumns) {
-                    length = this.showColumns.length;
-                } else if(this.filteredColumns) {
-                    length = Object.keys(this.filteredColumns).length;
-                } else {
-                    length = Object.keys(this.filteredBody[0].items).length;
-                }
-
-                return {
-                    width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
-                    minWidth: '206px'
-                }
-            },
-
-            textColor: function(){
-                if(!this.isFixed) return;
-
-                return {
-                    color: 'white'
-                }
-            },
-
-            dragEnterStyle: function() {
-                return { 
-                    border: '2px solid ' + this.theme.secondary.code
-                }
-            },
-
-            style: function() {
-                return {
-                    table: {
-                        'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl'),
-                        'width': '100%'
-                    },
-                    dayColumnWidth: {
-                        'width': '8%',
-                        'min-width': '110px',
-                        'max-width': '110px'
-                    }
-                }
+            return {
+                color: 'white'
             }
         },
 
-        methods: {
-            ...mapActions('calendar/tableView/item', {
-                prepareInsertItem: 'insert/prepare',
-                dragStart: 'dnd/dragStart',
-                dragEnter: 'dnd/dragEnter',
-                dragOver: 'dnd/dragOver',
-                drop: 'dnd/drop',
-                dragEnd: 'dnd/dragEnd'
-            }),
+        dragEnterStyle: function() {
+            return { 
+                border: '2px solid ' + this.theme.secondary.code
+            }
+        },
 
-            clickCell(dayIndex, memberId) {
-                u.clog('clickCell()');
-                this.prepareInsertItem( { dayIndex, memberId } );
-            },
-
-            handleDragStart(draggingItem) {
-                this.dragStart({ draggingItem });
-            },
-    
-            handleDragEnter(dayString, memberId) {
-                this.dragEnter({ dayString, memberId });
-            },
-
-            handleDragOver(e) {
-                this.dragOver({ e });
-            },
-    
-            handleDrop() {
-                this.drop();
-            },
-    
-            handleDragEnd() {
-                this.dragEnd();
+        style: function() {
+            return {
+                table: {
+                    'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl'),
+                    'width': '100%'
+                },
+                dayColumnWidth: {
+                    'width': '8%',
+                    'min-width': '110px',
+                    'max-width': '110px'
+                }
             }
         }
+    },
+
+    methods: {
+        ...mapActions('calendar/tableView/item', {
+            prepareInsertItem: 'insert/prepare',
+            dragStart: 'dnd/dragStart',
+            dragEnter: 'dnd/dragEnter',
+            dragOver: 'dnd/dragOver',
+            drop: 'dnd/drop',
+            dragEnd: 'dnd/dragEnd'
+        }),
+
+        ...mapActions('calendar/tableView/item/update', {
+            updateReset: 'reset'
+        }),
+
+        ...mapActions('calendar/tableView/item/remove', {
+            removeReset: 'reset'
+        }),
+
+        clickCell(dayIndex, memberId) {
+            u.clog('clickCell()');
+            this.prepareInsertItem( { dayIndex, memberId } );
+        },
+
+        popupMenuClose() {
+            this.updateReset();
+            this.removeReset();
+        },
+
+        handleDragStart(draggingItem) {
+            this.dragStart({ draggingItem });
+        },
+
+        handleDragEnter(dayString, memberId) {
+            this.dragEnter({ dayString, memberId });
+        },
+
+        handleDragOver(e) {
+            this.dragOver({ e });
+        },
+
+        handleDrop() {
+            this.drop();
+        },
+
+        handleDragEnd() {
+            this.dragEnd();
+        }
     }
+}
 </script>
 
 <style lang="scss" scoped>
