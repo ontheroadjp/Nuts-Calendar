@@ -5,10 +5,3 @@
         <span>Account</span>
     </span>
 </template>
-
-<script>
-</script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

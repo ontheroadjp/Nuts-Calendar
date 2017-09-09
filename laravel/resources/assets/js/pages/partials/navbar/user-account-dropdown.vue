@@ -1,6 +1,10 @@
 <template>
 <div class="nav-item">
-    <dropdown-menu :backIconStyle="backIconStyle">
+    <dropdown-menu 
+        id="user-account-dropdown-menu"
+        :backIconStyle="backIconStyle"
+        :menuHeight="parseInt(66)"
+    >
         <li>
             <router-link to="/me/settings/general" class="thin" :style="menuItemStyle"> 
                 <span class="icon is-small">
@@ -25,7 +29,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import userService from '../../../services/user.js';
-import dropdownMenu from '../../../components/dropdown-menu.vue';
+import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {
     components: {
@@ -59,7 +63,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-    /* empty */
-</style>

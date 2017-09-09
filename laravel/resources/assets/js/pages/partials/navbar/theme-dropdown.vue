@@ -1,6 +1,12 @@
 <template>
 <div class="nav-item">
-    <dropdown-menu :label="t('theme.' + selectedTheme)" icon="" :backIconStyle="backIconStyle">
+    <dropdown-menu 
+        id="theme-dropdown-menu"
+        :label="t('theme.' + selectedTheme)" 
+        icon="" 
+        :backIconStyle="backIconStyle"
+        :menuHeight="parseInt(145)"
+    >
         <template v-for="item in menuItems">
             <li v-if="selectedTheme == item.value" :style="selectedStyle">
                 <span style="
@@ -31,7 +37,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import dropdownMenu from '../../../components/dropdown-menu.vue';
+import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {
     components: {
@@ -80,7 +86,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-    /* empty */
-</style>

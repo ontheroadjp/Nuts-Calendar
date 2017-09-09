@@ -1,6 +1,6 @@
 <template>
 <div class="wrapper">
-<div class="container" style="width: 100%; height: 100vh">
+<div class="container" style="width: 100%;">
 
     <!-- infomation -->
     <div class="columns is-multiline">

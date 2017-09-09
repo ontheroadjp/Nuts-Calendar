@@ -1,6 +1,12 @@
 <template>
 <div class="nav-item">
-    <dropdown-menu :label="menuItems[selectedLang].label" icon="" :backIconStyle="backIconStyle">
+    <dropdown-menu 
+        id="lang-dropdown-menu"
+        :label="menuItems[selectedLang].label" 
+        icon="" 
+        :backIconStyle="backIconStyle"
+        :menuHeight="parseInt(40)"
+    >
         <template v-for="item in menuItems">
             <li v-if="selectedLang != item.value">
                 <a class="thin" :style="menuItemStyle" @click="clickMenuItem(item.value)">
@@ -17,7 +23,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import dropdownMenu from '../../../components/dropdown-menu.vue';
+import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {
     components: {
@@ -63,7 +69,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-    /* empty */
-</style>
