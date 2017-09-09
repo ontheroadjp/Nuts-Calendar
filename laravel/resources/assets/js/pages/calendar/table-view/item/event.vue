@@ -1,5 +1,5 @@
 <template>
-    <span class="item is-event" @click.stop="clickItem()">
+    <span class="item is-event" @click.stop="clickItem($event)">
         <strong v-show="item.start_time" style="margin-right: 8px;">
             {{ item.start_time | timeFormatter }} 
             <template v-show="item.end_time !== null">
@@ -36,10 +36,10 @@ export default {
             prepareRemoveItem: 'remove/prepare'
         }),
 
-        clickItem() {
+        clickItem(e) {
             u.clog('clickItem()');
-            this.prepareUpdateItem( { editingItem: this.item } );
-            this.prepareRemoveItem( { deletingItem: this.item } );
+            this.prepareUpdateItem( { event: e, editingItem: this.item } );
+            this.prepareRemoveItem( { event: e, deletingItem: this.item } );
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
-<transition name="box">
+<transition name="popup-menu">
     <black-screen v-show="isActive">
-        <div v-show="isActive" :style="box">
+        <div :style="box">
             <button class="modal-close is-large" aria-label="close"
                 style="position: absolute; 
                         top: 20px;
