@@ -1,14 +1,20 @@
 <template>
 <div class="wrapper">
-<div class="container" style="width: 100%;" @click="click($event)">
 
+<!--
+<div class="container" style="width: 100%;" @click="click($event)">
     <popup-menu 
         :x="x" :y="y" 
         :isActive.sync="isBoxActive" 
         :onClose="popupMenuClose"
     >
-        <span>This is a popup menu</span>
+        <div style="margin:0; width:100%; height:100%; background-color: orange;">
+            <span>This is a popup menu</span>
+        </div>
     </popup-menu>
+-->
+
+<div class="container" style="width: 100%;">
 
     <!-- infomation -->
     <div class="columns is-multiline">
@@ -62,7 +68,7 @@ import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
 import userCalendarCard from './user-calendar-card.vue';
 import memberSettingsPane from './member-settings/index.vue';
-import popupMenu from '../../components/popup-menu.vue';
+//import popupMenu from '../../components/popup-menu.vue';
 
 export default {
 
@@ -71,7 +77,7 @@ export default {
         'user-calendar-card': userCalendarCard,
         'member-settings': memberSettingsPane,
         'today-date-card': todayDateCard,
-        'popup-menu': popupMenu
+//        'popup-menu': popupMenu
     },
 
     data() {
@@ -81,9 +87,9 @@ export default {
                 '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
             },
                 
-            x: 0,
-            y: 0,
-            isBoxActive: false
+//            x: 0,
+//            y: 0,
+//            isBoxActive: false
         }
     },
 
@@ -106,15 +112,15 @@ export default {
             u.clog('New Calendar Button');
         },
 
-        click(e) {
-            this.isBoxActive = true;
-            this.x = e.pageX;
-            this.y = e.pageY;
-        },
-
-        popupMenuClose() {
-            this.isBoxActive = false;
-        }
+//        click(e) {
+//            this.isBoxActive = true;
+//            this.x = e.pageX;
+//            this.y = e.pageY;
+//        },
+//
+//        popupMenuClose() {
+//            this.isBoxActive = false;
+//        }
     },
 
     beforeRouteEnter(to, from, next) {
