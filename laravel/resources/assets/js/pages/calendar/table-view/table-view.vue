@@ -29,11 +29,13 @@
     >
     <thead v-if="filteredColumns">
         <tr>
-            <th style="padding: 0.4rem 1rem"
+            <th class="thin-500" 
+                style="padding: 0.4rem 1rem"
                 :style="[style.dayColumnWidth, textColor]"
-            >Date</th>
+            ></th>
             <template v-for="(member, memberId) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
+                    class="thin-500"
                     style="padding: 0.4rem 1rem"
                     :style="[columnWidth, textColor]"
                     >
@@ -50,7 +52,7 @@
             :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }"
             >
 
-            <td class="date-styling" :style="[style.dayColumnWidth]">
+            <td class="date-styling thin-500" :style="[style.dayColumnWidth]">
                 <span>
                     <!-- // temp :class="[ 'is-pulled-right', { today: isToday(day.date) } ]" -->
                     {{ getDateAndDay(day.date) }}
@@ -306,17 +308,16 @@ table.calendar {
             opacity: 1;
             background-color: rgba(145, 235, 250, 0.5);
         }
-
         & tr:hover td {
             color: #666;
             background-color: rgba(145, 235, 250, 0.1);
         }
+
     }
 }
 
 .date-styling {
     font-size: 1em;
-    font-weight: bold;
 }
 
 .today {
@@ -326,10 +327,12 @@ table.calendar {
 }
 
 .saturday {
-    background-color: rgba(240, 240, 255, 1);
+    /* background-color: rgba(240, 240, 255, 1); */
+    background-color: rgb(228, 247, 255);
 }
 
 .sunday {
-    background-color: rgba(255, 240, 240, 1);
+    /* background-color: rgba(255, 240, 240, 1); */
+    background-color: rgb(253, 231, 231);
 }
 </style>

@@ -91,7 +91,8 @@ $koiai-secondary-invert: findColorInvert($koiai-secondary) !default
 
 $nadeshiko: #F6ADC6 !default
 $nadeshiko-secondary: #ee6896 !default
-$nadeshiko-invert: findColorInvert($nadeshiko) !default
+//$nadeshiko-invert: findColorInvert($nadeshiko) !default
+$nadeshiko-invert: rgba(204, 3, 72, 1) !default
 $nadeshiko-secondary-invert: findColorInvert($nadeshiko-secondary) !default
 
 $mikan: #f08300 !default
@@ -106,7 +107,8 @@ $sumire-secondary-invert: findColorInvert($sumire-secondary) !default
 
 $moegi: #aacf53 !default
 $moegi-secondary: #aacf53 !default
-$moegi-invert: findColorInvert($moegi) !default
+//$moegi-invert: findColorInvert($moegi) !default
+$moegi-invert: rgb(26, 88, 1) !default
 $moegi-secondary-invert: findColorInvert($moegi-secondary) !default
 
 $colors: (
