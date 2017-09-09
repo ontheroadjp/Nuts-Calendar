@@ -35,11 +35,11 @@
 <script>
 export default {
     props: {
-        id:             { type: String,  required: true },
-        icon:           { type: String,  default: 'fa-user' },
-        label:          { type: String,  default: '' },
-        frontIconStyle: { type: Object,  default: () => { color: '#fff' } },
-        backIconStyle:  { type: Object,  default: () => { color: '#000' } },
+        id:             { type: String, required: true },
+        icon:           { type: String, default: 'fa-user' },
+        label:          { type: String, default: '' },
+        frontIconStyle: { type: Object, default: () => { color: '#fff' } },
+        backIconStyle:  { type: Object, default: () => { color: '#000' } },
         menuHeight:     { type: Number, default: 40 }
 //        isOpen:         { type: Boolean, default: false }
     },

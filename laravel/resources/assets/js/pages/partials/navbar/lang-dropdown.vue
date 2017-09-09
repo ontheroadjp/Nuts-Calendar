@@ -23,7 +23,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import dropdownMenu from '../../../components/dropdown-menu.vue';
+import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {
     components: {
