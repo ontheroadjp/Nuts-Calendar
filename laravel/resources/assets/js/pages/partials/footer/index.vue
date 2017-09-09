@@ -16,10 +16,3 @@
         </div>
     </footer>
 </template>
-
-<scripts>
-</scripts>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>
