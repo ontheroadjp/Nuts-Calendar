@@ -6,21 +6,7 @@
         </div>
     </black-screen>
 
-    <!-- <column-modal v-if="filteredBody && isColumnModalActive"></column-modal> -->
     <item-modal v-if="filteredBody && isItemModalActive"></item-modal>
-
-<!--
-    <div :class="['trash', { 'trash-entered': dragItem.enterTrash } ]"
-        v-show="dragItem.draggingItem && ! dragItem.isDropped" 
-        @dragenter="dragItem.enterTrash = true"
-        @dragover="handleDragOver($event)"
-        @dragleave="dragItem.enterTrash = false"
-        @drop.stop="handleDropInTrash()"
-        ><span class="icon is-large">
-            <i class="fa fa-trash"></i>
-        </span>
-    </div>
--->
 
     <div class="panel" :style="isBlackScreenShow ? 'height: 100vh' : ''">
     <table class="table is-bordered"
@@ -38,10 +24,7 @@
                     class="thin-500"
                     style="padding: 0.4rem 1rem"
                     :style="[columnWidth, textColor]"
-                    >
-                    <!-- <header-cell :member="member"></header-cell> -->
-                    <!-- <span @click="clickHeader(member)">{{ member.name }}({{ member.id}})</span> -->
-                    <span>{{ member.name }}({{ member.id}})</span>
+                    ><span>{{ member.name }}({{ member.id}})</span>
                 </th>
             </template>
         </tr>
@@ -54,7 +37,6 @@
 
             <td class="date-styling thin-500" :style="[style.dayColumnWidth]">
                 <span>
-                    <!-- // temp :class="[ 'is-pulled-right', { today: isToday(day.date) } ]" -->
                     {{ getDateAndDay(day.date) }}
                 </span>
             </td>
@@ -109,10 +91,8 @@
     import { mapState, mapGetters, mapActions } from 'vuex';
     import dateUtilities from '../../../mixins/date-utilities.js';
     import blackScreen from '../../../components/black-screen.vue';
-//    import columnModal from './modal/column-modal.vue';
     import itemModal from './modal/item-modal.vue';
     import item from './item/index.vue';
-//    import headerCell from './table-header-cell.vue';
     import itemInsertField from './item-insert-field.vue';
     import miniCalBar from './footer-bar/mini-cal-bar.vue';
     import chroma from 'chroma-js';
@@ -122,11 +102,9 @@
 
         components: {
             'black-screen': blackScreen,
-//            'column-modal': columnModal,
             'item-modal': itemModal,
             'item': item,
             'item-insert-field': itemInsertField,
-//            'header-cell': headerCell,
             'mini-cal-bar': miniCalBar
         },
 
@@ -175,10 +153,6 @@
                 getCellAddress: 'getCellAddress',
                 getRowIndex: 'getRowIndex'
             }),
-
-//            ...mapGetters('member', {
-//                isColumnModalActive: 'isModalActive'
-//            }),
 
             ...mapGetters('calendar/tableView/item', {
                 isItemModalActive: 'isModalActive'
@@ -231,26 +205,14 @@
         },
 
         methods: {
-            ...mapActions('member', {
-                prepareUpdateColumn: 'update/prepare',
-                prepareRemoveColumn: 'remove/prepare'
-            }),
-
             ...mapActions('calendar/tableView/item', {
                 prepareInsertItem: 'insert/prepare',
                 dragStart: 'dnd/dragStart',
                 dragEnter: 'dnd/dragEnter',
                 dragOver: 'dnd/dragOver',
                 drop: 'dnd/drop',
-//                dropInTrash: 'dnd/dropInTrash',
                 dragEnd: 'dnd/dragEnd'
             }),
-
-//            clickHeader(member) {
-//                u.clog('clickHeader()');
-//                this.prepareUpdateColumn( { editingMember: member } );
-////                this.prepareRemoveColumn( { deletingMemmber: member } );
-//            },
 
             clickCell(dayIndex, memberId) {
                 u.clog('clickCell()');
@@ -272,10 +234,6 @@
             handleDrop() {
                 this.drop();
             },
-    
-//            handleDropInTrash() {
-//                this.dropInTrash();
-//            },
     
             handleDragEnd() {
                 this.dragEnd();
