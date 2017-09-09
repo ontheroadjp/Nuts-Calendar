@@ -1,14 +1,20 @@
 <template>
 <div class="wrapper">
-<div class="container" style="width: 100%;" @click="click($event)">
 
+<!--
+<div class="container" style="width: 100%;" @click="click($event)">
     <popup-menu 
         :x="x" :y="y" 
         :isActive.sync="isBoxActive" 
         :onClose="popupMenuClose"
     >
-        <span>This is a popup menu</span>
+        <div style="margin:0; width:100%; height:100%; background-color: orange;">
+            <span>This is a popup menu</span>
+        </div>
     </popup-menu>
+-->
+
+<div class="container" style="width: 100%;">
 
     <!-- infomation -->
     <div class="columns is-multiline">
@@ -62,8 +68,7 @@ import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
 import userCalendarCard from './user-calendar-card.vue';
 import memberSettingsPane from './member-settings/index.vue';
-//import blackScreen from '../../components/black-screen.vue';
-import popupMenu from '../../components/popup-menu.vue';
+//import popupMenu from '../../components/popup-menu.vue';
 
 export default {
 
@@ -72,8 +77,7 @@ export default {
         'user-calendar-card': userCalendarCard,
         'member-settings': memberSettingsPane,
         'today-date-card': todayDateCard,
-//        blackScreen
-        'popup-menu': popupMenu
+//        'popup-menu': popupMenu
     },
 
     data() {
@@ -83,9 +87,9 @@ export default {
                 '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
             },
                 
-            x: 0,
-            y: 0,
-            isBoxActive: false
+//            x: 0,
+//            y: 0,
+//            isBoxActive: false
         }
     },
 
@@ -101,37 +105,6 @@ export default {
         ...mapState('member', {
             members: state => state.data.members,
         }),
-
-//        xPosition: function() {
-//            const clickPoint = (this.x - 20);
-//            if((clickPoint + 240)> window.innerWidth) {
-//                return window.innerWidth - 240 - 50;
-//            }
-//            
-//            return clickPoint;
-//        },
-//
-//        yPosition: function() {
-//            const clickPoint = (this.y - 62 - 320);
-//            if(clickPoint < 0) {
-//                return 10;
-//            }
-//            
-//            return clickPoint;
-//        },
-//
-//        box: function() {
-//            return {
-//                position: 'absolute',
-//                top: this.yPosition + 'px',
-//                left: this.xPosition + 'px',
-//                'background-color': 'blue',
-//                height: '320px',
-//                width: '240px',
-//                color: '#fff',
-//                'z-index': 999
-//            }
-//        }
     },
 
     methods: {
@@ -139,15 +112,15 @@ export default {
             u.clog('New Calendar Button');
         },
 
-        click(e) {
-            this.isBoxActive = true;
-            this.x = e.pageX;
-            this.y = e.pageY;
-        },
-
-        popupMenuClose() {
-            this.isBoxActive = false;
-        }
+//        click(e) {
+//            this.isBoxActive = true;
+//            this.x = e.pageX;
+//            this.y = e.pageY;
+//        },
+//
+//        popupMenuClose() {
+//            this.isBoxActive = false;
+//        }
     },
 
     beforeRouteEnter(to, from, next) {
@@ -204,22 +177,4 @@ export default {
         border: 1px solid rgba(170, 207, 83, 0.5);
     }
 }
-
-/*
-.box-enter,
-.box-leave-to {
-    opacity: 0;    
-}
-
-.box-enter-to,
-.box-leave {
-    opacity: 1
-}
-
-.box-enter-active,
-.box-leave-active {
-    transition: all 0.3s ease;
-}
-*/
 </style>
-
