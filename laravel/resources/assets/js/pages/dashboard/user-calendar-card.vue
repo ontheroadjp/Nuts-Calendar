@@ -23,6 +23,7 @@
                             </span>
                         </td>
                     </tr>
+
                     <inline-text-input 
                         id="calendar-name"
                         inputClass="title thin-200"
@@ -35,6 +36,7 @@
                         :saveCallback="clickSaveName"
                         :editingId.sync="editingId"
                     ></inline-text-input>  
+
                     <inline-text-input 
                         id="calendar-description"
                         inputClass="subtitle thin"
@@ -79,7 +81,7 @@
 
         <div class="card-content">
         <div class="media">
-    
+
             <div class="media-left">
                 <span class="icon">
                     <i class="fa fa-calendar"></i>
@@ -105,7 +107,6 @@
                         <i class="fa fa-gear" style="margin-right: 5px"></i>
                     </div>
                 </a>
-
             </div>
     
         </div><!-- // .media -->
