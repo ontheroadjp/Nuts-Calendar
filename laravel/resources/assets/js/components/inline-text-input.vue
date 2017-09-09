@@ -30,24 +30,24 @@
             Not saved
         </span>
 
-        <a :id="undoButtonId" 
-            v-show="isButtonShow && !isLoading"
-            class="button" 
-            style="border:none; background:none; height:1rem; margin-top: 5px;"
-            :style="iconStyle"
-            @click="clickUndo()"
-        ><i class="fa fa-undo"></i></a>
-    
-        <a :id="saveButtonId"
-            v-show="isButtonShow && !isLoading"
-            class="button" 
-            style="border:none; background:none; height:1rem; margin-top: 5px;"
-            :style="iconStyle"
-            @click="clickSave()"
-            :disabled="defaultValue == input.value"
-        ><i class="fa fa-floppy-o"></i></a>
-
         <div class="icon is-small">
+            <a :id="undoButtonId" 
+                v-show="isButtonShow && !isLoading"
+                class="button" 
+                style="border:none; background:none; height:1rem; margin-top: 5px;"
+                :style="iconStyle"
+                @click="clickUndo()"
+            ><i class="fa fa-undo"></i></a>
+        
+            <a :id="saveButtonId"
+                v-show="isButtonShow && !isLoading"
+                class="button" 
+                style="border:none; background:none; height:1rem; margin-top: 5px;"
+                :style="iconStyle"
+                @click="clickSave()"
+                :disabled="defaultValue == input.value"
+            ><i class="fa fa-floppy-o"></i></a>
+
             <i v-if="isLoading 
                     && !input.isFocused 
                     && !input.isEnter 

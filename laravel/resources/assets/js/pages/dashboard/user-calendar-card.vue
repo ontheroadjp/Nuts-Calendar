@@ -5,7 +5,7 @@
 
             <section class="modal-card-body" 
                 style="padding: 40px;" 
-                :style="[style.bgSecondary]">
+                :style="[style.bgPrimary]">
 
                 <button 
                     class="delete" 
@@ -207,8 +207,8 @@ export default {
                     'background-image': 'linear-gradient(-135deg, ' + this.theme.secondary.code + ' 40px, transparent 0)'
                 },
 
-                bgSecondary: {
-                    'background-color': this.theme.secondary.code,
+                bgPrimary: {
+                    'background-color': this.theme.primary.code,
                     'color': 'white'
                 },
             }
