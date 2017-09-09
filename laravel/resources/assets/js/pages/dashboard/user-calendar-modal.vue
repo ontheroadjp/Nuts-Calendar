@@ -1,5 +1,8 @@
 <template>
-<modal v-if="isActive">
+<icon-header-modal v-if="isActive" :onClose="clickClose">
+
+<!--
+<icon-header-modal :isActive="isActive" :isActiveSync.sync="isActiveSync">
     <div class="modal-card">
 
         <section class="modal-card-body" 
@@ -22,7 +25,8 @@
                         </span>
                     </td>
                 </tr>
-
+-->
+            <div slot="header">
                 <inline-text-input 
                     id="calendar-name"
                     inputClass="title thin-200"
@@ -48,10 +52,14 @@
                     :saveCallback="clickSaveDescription"
                     :editingId.sync="editingId"
                 ></inline-text-input>  
+            </div>
+<!--
             </table>
         </section> 
 
         <section class="modal-card-body thin" style="padding: 60px">
+-->
+        <div slot="body">
             <label class="label thin-400">Members</label>
             <ul class="members">
                 <li v-for="member in members" class="member">
@@ -71,19 +79,23 @@
                     >{{ member.name }}</label>
                 </li>
             </ul>
+        </div>
+<!--
         </section>
     </div>
-</modal>
+-->
+</icon-header-modal>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import modal from '../../components/modal.vue';
+//import modal from '../../components/modal.vue';
+import iconHeaderModal from '../../components/icon-header-modal.vue';
 import inlineTextInput from '../../components/inline-text-input.vue';
 
 export default {
     components: {
-        modal,
+        iconHeaderModal,
         inlineTextInput
     },
 
@@ -96,6 +108,7 @@ export default {
         return {
             editingId: '',
             userCalendarMemberIds: [],
+//            isActiveSync: '',
         }
     },
 
@@ -136,14 +149,14 @@ export default {
             }
         },
 
-        style: function() {
-            return {
-                bgPrimary: {
-                    'background-color': this.theme.primary.code,
-                    'color': 'white'
-                }
-            }
-        }
+//        style: function() {
+//            return {
+//                bgPrimary: {
+//                    'background-color': this.theme.primary.code,
+//                    'color': 'white'
+//                }
+//            }
+//        }
 
     },
 
@@ -207,6 +220,12 @@ export default {
             });
         }
     },
+
+//    watch: {
+//        isActiveSync: function(value) {
+//            this.$emit('update:isActive', false);
+//        }
+//    },
 
     mounted() {
         this.initUserCalendarMemberIds();
