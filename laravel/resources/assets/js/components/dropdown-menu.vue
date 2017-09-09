@@ -23,8 +23,8 @@
         </a>
     </template>
 
-    <transition name="dropdown">
-        <ul class="dropdown-menu" v-show="isOpen">
+    <transition :name="id">
+        <ul :id="id" class="dropdown-menu" v-show="isOpen">
             <slot></slot>
         </ul>
     </transition>
@@ -35,10 +35,12 @@
 <script>
 export default {
     props: {
+        id:             { type: String,  required: true },
         icon:           { type: String,  default: 'fa-user' },
         label:          { type: String,  default: '' },
         frontIconStyle: { type: Object,  default: () => { color: '#fff' } },
         backIconStyle:  { type: Object,  default: () => { color: '#000' } },
+        menuHeight:     { type: Number, default: 40 }
 //        isOpen:         { type: Boolean, default: false }
     },
 
@@ -64,8 +66,35 @@ export default {
         hide () {
             this.isOpen = false;
             document.removeEventListener('click', this.hide);
-        },
+        }
+    },
 
+    mounted() {
+        const doc = window.document;
+        const css = doc.createElement('style');
+        const rule = document.createTextNode(`
+            .${this.id}-enter-active,
+            .${this.id}-leave-active {
+                transition: all 0.25s ease;
+            }
+            
+            .${this.id}-enter,
+            .${this.id}-leave-to {
+                height: 0;
+                opacity: 0;
+            }
+
+            .${this.id}-enter-to,
+            .${this.id}-leave {
+                height: ${this.menuHeight}px;
+                overflow: hidden;
+            }
+        `);
+
+        css.id = this.id;
+        css.type = 'text/css';
+        css.appendChild(rule);
+        doc.getElementsByTagName('head')[0].appendChild(css);
     }
 }
 </script>
@@ -111,18 +140,5 @@ export default {
         color: #262626;
         background-color: #f5f5f5;
     }
-}
-
-.dropdown-enter-active,
-.dropdown-leave-active {
-    transition: all 0.1s ease;
-    height: 40px;
-    overflow: hidden;
-}
-
-.dropdown-enter,
-.dropdown-leave-to {
-    height: 0;
-    opacity: 0;
 }
 </style>

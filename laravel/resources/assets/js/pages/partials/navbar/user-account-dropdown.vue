@@ -1,6 +1,10 @@
 <template>
 <div class="nav-item">
-    <dropdown-menu :backIconStyle="backIconStyle">
+    <dropdown-menu 
+        id="user-account-dropdown-menu"
+        :backIconStyle="backIconStyle"
+        :menuHeight="parseInt(66)"
+    >
         <li>
             <router-link to="/me/settings/general" class="thin" :style="menuItemStyle"> 
                 <span class="icon is-small">
