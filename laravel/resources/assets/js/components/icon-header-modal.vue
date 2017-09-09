@@ -1,26 +1,23 @@
 <template>
-<!--
-<modal v-if="isActive">
--->
 <modal>
     <div class="modal-card">
 
-        <section class="modal-card-body" 
-            style="padding: 40px;" 
-            :style="[style.bgPrimary]">
+        <section class="modal-card-header" 
+            style="padding: 50px;" 
+            :style="[headerStyle]">
 
             <button 
                 class="delete" 
                 style="position: absolute; top: 20px; right: 20px;"
                 aria-label="close" 
-                @click="clickClose()"
+                @click="onClose()"
             ></button>
 
             <table style="width:100%">
                 <tr>
                     <td rowspan="3" style="width: 70px">
                         <span class="fa-stack fa-lg">
-                            <i class="fa fa-calendar fa-2x" 
+                            <i class="fa fa-2x" :class="icon"
                                 style="margin-left:1px; color: #fff"></i>
                         </span>
                     </td>
@@ -37,40 +34,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+//import { mapState } from 'vuex';
 import modal from './modal.vue';
 
 export default {
-    components: {
-        modal
-    },
+    components: { modal },
 
     props: {
-//        isActive: { type: Boolean, required: true },
-//        isActiveSync: { type: Boolean, required: true },
-        onClose: { type: Function, required: true }
+        icon:        { type: String, default: 'fa-user' },
+        headerStyle: { type: String, default: 'background-color: #546e7a; color: #fff;' },
+        opacity:     { type: Nubmer, default: 0.85 },
+        onClose:     { type: Function, required: true }
     },
 
-    computed: {
-        ...mapState({
-            theme: state => state.app.theme
-        }),
-
-        style: function() {
-            return {
-                bgPrimary: {
-                    'background-color': this.theme.primary.code,
-                    'color': 'white'
-                }
-            }
-        }
-    },
-
-    methods: {
-        clickClose: function() {
-            this.onClose();
-//            this.$emit('update:isActiveSync', !this.isActiveSync);
-        },
-    }
+//    computed: {
+////        ...mapState({
+////            theme: state => state.app.theme
+////        }),
+//
+////        headerColor: function() {
+////            return {
+////                this.headerColor
+//////                    'background-color': this.theme.primary.code,
+//////                    'background-color': '#546e7a',
+//////                    'color': 'white'
+////            }
+////        }
+//    }
 } 
 </script>
