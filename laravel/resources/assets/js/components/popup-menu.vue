@@ -35,13 +35,6 @@ export default {
         onClose:  { type: Function, required: true }
     },
 
-//    data() {
-//        return {
-//            x: 0,
-//            y: 0
-//        }
-//    },
-
     computed: {
         xPosition: function() {
             const clickPoint = (this.x - 20);
@@ -76,12 +69,6 @@ export default {
     },
 
     methods: {
-//        click(e) {
-//            this.isActive = !this.isActive;
-//            this.x = e.pageX;
-//            this.y = e.pageY;
-//        },
-
         close() {
             this.$emit('update:isActive', false);
         }

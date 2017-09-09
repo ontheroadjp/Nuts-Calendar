@@ -62,7 +62,6 @@ import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
 import userCalendarCard from './user-calendar-card.vue';
 import memberSettingsPane from './member-settings/index.vue';
-//import blackScreen from '../../components/black-screen.vue';
 import popupMenu from '../../components/popup-menu.vue';
 
 export default {
@@ -72,7 +71,6 @@ export default {
         'user-calendar-card': userCalendarCard,
         'member-settings': memberSettingsPane,
         'today-date-card': todayDateCard,
-//        blackScreen
         'popup-menu': popupMenu
     },
 
@@ -101,37 +99,6 @@ export default {
         ...mapState('member', {
             members: state => state.data.members,
         }),
-
-//        xPosition: function() {
-//            const clickPoint = (this.x - 20);
-//            if((clickPoint + 240)> window.innerWidth) {
-//                return window.innerWidth - 240 - 50;
-//            }
-//            
-//            return clickPoint;
-//        },
-//
-//        yPosition: function() {
-//            const clickPoint = (this.y - 62 - 320);
-//            if(clickPoint < 0) {
-//                return 10;
-//            }
-//            
-//            return clickPoint;
-//        },
-//
-//        box: function() {
-//            return {
-//                position: 'absolute',
-//                top: this.yPosition + 'px',
-//                left: this.xPosition + 'px',
-//                'background-color': 'blue',
-//                height: '320px',
-//                width: '240px',
-//                color: '#fff',
-//                'z-index': 999
-//            }
-//        }
     },
 
     methods: {
@@ -204,22 +171,4 @@ export default {
         border: 1px solid rgba(170, 207, 83, 0.5);
     }
 }
-
-/*
-.box-enter,
-.box-leave-to {
-    opacity: 0;    
-}
-
-.box-enter-to,
-.box-leave {
-    opacity: 1
-}
-
-.box-enter-active,
-.box-leave-active {
-    transition: all 0.3s ease;
-}
-*/
 </style>
-
