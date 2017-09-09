@@ -9,6 +9,7 @@
         </div>
     </div>
     
+    <!-- tab menu -->
     <menu-tabs :tabs="tabs">
         <div v-if="$route.path === '/dashboard'">
             <div class="columns is-multiline">
@@ -19,10 +20,21 @@
                 </template>
                 <div class="column is-6">
                     <div class="new-user-calendar-card" 
-                        style="height: 150px; cursor: pointer"
+                        style="text-align: center; cursor: pointer"
                         @click="clickNewCalendar()">
 
-                        <div class="card-content">Create New Calendar</div>
+                        <div class="card-content" style="font-weight: 100">
+
+                            <a class="fa-stack fa-lg create-new-icon" 
+                                style="margin-right: 10px">
+
+                                <i class="fa fa-calendar-plus-o fa-stack-1x" 
+                                    style="margin-left:1px; color: #fff"></i>
+                            </a>
+                            <a href="">
+                                <span>Create New Calendar</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,17 +50,17 @@
 <script>
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
-import userCalendarCard from './user-calendar-card.vue';
-import menuTabs from './menu-tabs.vue';
-import memberSettings from './member-settings/index.vue';
 import todayDateCard from './today-date-card.vue';
+import menuTabs from './menu-tabs.vue';
+import userCalendarCard from './user-calendar-card.vue';
+import memberSettingsPane from './member-settings/index.vue';
 
 export default {
 
     components: {
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
-        'member-settings': memberSettings,
+        'member-settings': memberSettingsPane,
         'today-date-card': todayDateCard
     },
 
@@ -84,12 +96,6 @@ export default {
     beforeRouteEnter(to, from, next) {
         const types = ['', 'members'];
 
-//        if( typeof to.params.type === 'undefined' ) {
-//            next();
-//        } else if( Object.keys(to.params.type).length !== 0 ) {
-//            next({path: '/dashboard'});
-//        }
-
         if( typeof to.params.type === 'undefined' ) {
             next();
         } else if( types.indexOf(to.params.type) === -1 ) {
@@ -109,6 +115,15 @@ export default {
     max-width: 100%;
     position: relative;
     border: 4px dotted rgba(10, 10, 10, 0.24);
+    box-shadow: none;
+}
+
+.create-new-icon {
+    background-color: #c0c0c0;
+    border-radius: 30px;
+    &:hover {
+        background-color: #9a9a9a;
+    }
 }
 
 .card-fover {
@@ -133,3 +148,4 @@ export default {
     }
 }
 </style>
+
