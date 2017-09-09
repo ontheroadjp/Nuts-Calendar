@@ -96,9 +96,6 @@ export default {
         return {
             editingId: '',
             userCalendarMemberIds: [],
-//            modal: {
-//                isActive: false,
-//            }
         }
     },
 
@@ -170,7 +167,6 @@ export default {
 
         clickClose: function() {
             this.$emit('update:isActive', false);
-//            this.modal.isActive = false;
         },
 
         clickSaveName: function() {
