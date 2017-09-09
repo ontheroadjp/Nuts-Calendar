@@ -14,23 +14,6 @@
                     @click="clickClose()"
                 ></button>
 
-<!--
-                <a class="fa-stack fa-lg header-icon" 
-                    style="margin-right: 10px;
-                            width: 100px;
-                            height: 100px;
-                            border-radius: 25px;
-                            ">
-                    <i class="fa fa-calendar fa-3x" 
-                        style="margin-left: 19px;
-                        color: rgb(25, 96, 183);
-                        margin-top: 16px;">
-                    </i>
-                </a>
-
-                <br />
-                <br />
--->
                 <table style="width:100%">
                     <tr>
                         <td rowspan="3" style="width: 70px">
@@ -90,10 +73,7 @@
             </section>
         </div>
     </modal>
-<!-- 
-    <div :class="['card', 'is-clickable', theme.primary.class]"
-        style="height: 150px; background-image: linear-gradient(-135deg, rgb(112, 88, 163) 40px, transparent 0);">
--->
+
     <div :class="['card', 'is-clickable', theme.primary.class]"
         :style="style.calendarCard">
 
@@ -178,24 +158,20 @@ export default {
 
         inputName: {
             get() {
-//                return this.$store.state.userCalendar.update.updateValues.name;
                 return this.updateState.updateValues.name;
             },
 
             set(value) {
-//                this.$store.commit('userCalendar/update/setUpdateValue', { 
                 this.setUpdateValue({ key: 'name', value: value });
             }
         },
 
         inputDescription: {
             get() {
-//                return this.$store.state.userCalendar.update.updateValues.description;
                 return this.updateState.updateValues.description;
             },
 
             set(value) {
-//                this.$store.commit('userCalendar/update/setUpdateValue', {
                 this.setUpdateValue({ key: 'description', value: value });
             }
         },
@@ -274,7 +250,6 @@ export default {
 
         clickUserCalendar: function(id) {
             u.clog('changeCalendar(' + id + ')');
-//            this.$store.commit('setCurrentCalendarId', id);
             this.$store.commit('calendar/setValue', {
                 key: 'currentId', id,
                 value: id
