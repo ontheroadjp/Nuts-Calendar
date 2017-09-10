@@ -26,8 +26,6 @@
         overlayId="table-view-header"
     ></black-screen>
 
-    <!-- <item-modal v-if="filteredBody && isItemModalActive"></item-modal> -->
-
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
     <table 
         class="table is-bordered"
@@ -113,7 +111,6 @@ import { mapState, mapGetters, mapActions } from 'vuex';
 import dateUtilities from '../../../mixins/date-utilities.js';
 import blackScreen from '../../../components/black-screen.vue';
 import popupMenu from '../../../components/popup-menu.vue';
-//import itemModal from './modal/item-modal.vue';
 import item from './item/index.vue';
 import itemInsertField from './item-insert-field.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
@@ -125,7 +122,6 @@ export default {
     components: {
         'black-screen': blackScreen,
         'popup-menu': popupMenu,
-//        'item-modal': itemModal,
         'item': item,
         'item-insert-field': itemInsertField,
         'mini-cal-bar': miniCalBar
@@ -143,17 +139,8 @@ export default {
         scrollPositionY:     { type: Number,     required: false }
     },
 
-//    data() {
-//        return {
-//            selectedMiniCalPopper: '',
-//        }
-//    },
-
     computed: {
         ...mapState({
-//            currentYear: state => state.calendar.currentYear,
-//            currentMonth: state => state.calendar.currentMonth,
-//            lang: state => state.app.lang,
             theme: state => state.app.theme
         }),
 
@@ -162,15 +149,9 @@ export default {
             isTaskItem: state => state.isTaskItemShow
         }),
 
-//        ...mapState('member', {
-//            editColumn: state => state.update,
-//            deleteColumn: state => state.remove
-//        }),
-
         ...mapState('calendar/tableView/item', {
             addItem: state => state.insert,
             editItem: state => state.update,
-            //deleteItem: state => state.remove,
             dragItem: state => state.dnd
         }),
 
@@ -179,10 +160,6 @@ export default {
             getCellAddress: 'getCellAddress',
             getRowIndex: 'getRowIndex'
         }),
-
-//        ...mapGetters('calendar/tableView/item', {
-//            isItemModalActive: 'isModalActive'
-//        }),
 
         columnWidth: function() {
             let length = 0;
@@ -231,15 +208,6 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item', {
-//            prepareInsertItem: 'insert/prepare',
-//            dragStart: 'dnd/dragStart',
-//            dragEnter: 'dnd/dragEnter',
-//            dragOver: 'dnd/dragOver',
-//            drop: 'dnd/drop',
-//            dragEnd: 'dnd/dragEnd'
-        }),
-
         ...mapActions('calendar/tableView/item/insert', {
             prepareInsertItem: 'prepare',
         }),
