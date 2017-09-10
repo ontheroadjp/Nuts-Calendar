@@ -26,7 +26,7 @@
             </table>
         </section> 
 
-        <section class="modal-card-body thin" style="padding: 60px">
+        <section class="modal-card-body" style="padding: 60px">
             <slot name="body"></slot>
         </section>
     </div>
