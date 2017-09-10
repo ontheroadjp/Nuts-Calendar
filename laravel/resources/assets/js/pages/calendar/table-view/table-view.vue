@@ -7,22 +7,29 @@
     </black-screen>
 
     <popup-menu 
-        v-if="filteredBody"
-        :x="editItem.x" :y="editItem.y" 
+        v-if="filteredBody && editItem.isActive"
+        :clickX="editItem.clickX" :clickY="editItem.clickY" 
         :isActive="editItem.isActive" 
         :onClose="popupMenuClose"
+        overlayId="table-view-body"
+        :offsetY="topPosition"
+        :scrollX="scrollPositionX"
+        :scrollY="scrollPositionY"
     >
         <div style="margin:0; width:100%; height:100%; background-color: orange;">
             <span>This is a popup menu</span>
         </div>
     </popup-menu>
 
-    <black-screen v-if="!filteredBody && editItem.isActive"></black-screen>
+    <black-screen 
+        v-if="!filteredBody && editItem.isActive" 
+        overlayId="table-view-header"
+    ></black-screen>
+
     <!-- <item-modal v-if="filteredBody && isItemModalActive"></item-modal> -->
 
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
     <table 
-        :id="typeof filteredColumns !== 'undefined' ? 'table-view-columns' : 'table-view-body'"
         class="table is-bordered"
         style="width: 100%;"
         :style="isFixed ? style.table : ''"
@@ -130,7 +137,10 @@ export default {
         filteredColumns:    { type: Object,     required: false }, 
         filteredBody:       { type: Array,      required: false }, 
         isLoading:          { type: Boolean,    default: false },
-        isFixed:            { type: Boolean,    default: false }
+        isFixed:            { type: Boolean,    default: false },
+        topPosition:        { type: Number,     required: false },
+        scrollPositionX:     { type: Number,     required: false },
+        scrollPositionY:     { type: Number,     required: false }
     },
 
 //    data() {

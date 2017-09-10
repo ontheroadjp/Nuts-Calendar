@@ -5,8 +5,8 @@ export default {
         isActive: false,
         isLoading: false,
         editingItem: '',
-        x: 0,
-        y: 0,
+        clickX: 0,
+        clickY: 0,
         input: {
             content: '',
             startTime: '',
@@ -82,8 +82,8 @@ export default {
 
     mutations: {
         prepare( state, { event, editingItem } ) {
-            state.x = event.pageX;
-            state.y = event.pageY;
+            state.clickX = event.pageX;
+            state.clickY = event.pageY;
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;
