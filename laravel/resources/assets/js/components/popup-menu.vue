@@ -1,6 +1,6 @@
 <template>
 <transition name="popup-menu">
-    <black-screen v-show="isActive">
+    <black-screen v-show="isActive" :overlayId="overlayId">
         <div :style="box">
             <button class="modal-close is-large" aria-label="close"
                 style="position: absolute; 
@@ -26,32 +26,46 @@ export default {
     },
 
     props: {
-//        id:       { type: String,  required: true },
-        clickX:        { type: Number, required: true },
-        clickY:        { type: Number, required: true },
-        height:   { type: Number,  default: 320 },
-        width:    { type: Number,  default: 240 },
-        isActive: { type: Boolean, required: true },
-        onClose:  { type: Function, required: true }
+//        id:          { type: String,   required: true },
+        clickX:      { type: Number,   required: true },
+        clickY:      { type: Number,   required: true },
+//        offsetX:     { type: Number,   default: 0 },
+        offsetY:     { type: Number,   default: 0 },
+        scrollX:     { type: Number,   required: false }, 
+        scrollY:     { type: Number,   required: false }, 
+        height:      { type: Number,   default: 320 },
+        width:       { type: Number,   default: 240 },
+        isActive:    { type: Boolean,  required: true },
+        onClose:     { type: Function, required: true },
+        overlayId:   { type: String,   default: '' }
     },
 
     computed: {
         xPosition: function() {
-            const clickPoint = (this.clickX - 20);
-            if((clickPoint + this.width)> window.innerWidth) {
-                return window.innerWidth - this.width - 50;
+            const rightEdge = window.innerWidth + this.scrollX;
+
+            if( (this.clickX + this.width + this.scrollX) > rightEdge ) {
+                return rightEdge - this.width - 10;
             }
-            
-            return clickPoint;
+
+            return this.clickX + this.scrollX;
         },
 
         yPosition: function() {
-            const clickPoint = (this.clickY - 62 - this.height);
-            if(clickPoint < 0) {
+            // clickY is a absolute position, but the return value(y) must be relative position
+            const y = this.clickY - this.offsetY - this.height;
+
+            const isScroll = (this.scrollY > this.offsetY);
+
+            if( !isScroll && y < 10 ) {
                 return 10;
-            }
+            } 
             
-            return clickPoint;
+            if( isScroll && y < this.scrollY - this.offsetY ) {
+                return scrollY - this.offsetY + 10;
+            }
+
+            return y;
         },
 
         box: function() {
