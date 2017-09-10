@@ -103,6 +103,6 @@ export default {
 
 .popup-menu-enter-active,
 .popup-menu-leave-active {
-    transition: all 0.1s ease;
+    transition: opacity .1s ease;
 }
 </style>
