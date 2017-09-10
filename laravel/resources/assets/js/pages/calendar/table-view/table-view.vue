@@ -1,6 +1,6 @@
 <template id="calendar">
 <div>
-    <black-screen v-if="isBlackScreenShow">
+    <black-screen v-if="isLoading">
         <div v-show="filteredBody" class="has-text-centered black-screen-loading">
             <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
         </div>
@@ -20,8 +20,10 @@
     <black-screen v-if="!filteredBody && editItem.isActive"></black-screen>
     <!-- <item-modal v-if="filteredBody && isItemModalActive"></item-modal> -->
 
-    <div class="panel" :style="isBlackScreenShow ? 'height: 100vh' : ''">
-    <table class="table is-bordered"
+    <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
+    <table 
+        :id="typeof filteredColumns !== 'undefined' ? 'table-view-columns' : 'table-view-body'"
+        class="table is-bordered"
         style="width: 100%;"
         :style="isFixed ? style.table : ''"
     >
@@ -127,21 +129,21 @@ export default {
     props: {
         filteredColumns:    { type: Object,     required: false }, 
         filteredBody:       { type: Array,      required: false }, 
-        isBlackScreenShow:  { type: Boolean,    required: false },
-        isFixed:            { type: Boolean,    required: false }
+        isLoading:          { type: Boolean,    default: false },
+        isFixed:            { type: Boolean,    default: false }
     },
 
-    data() {
-        return {
-            selectedMiniCalPopper: '',
-        }
-    },
+//    data() {
+//        return {
+//            selectedMiniCalPopper: '',
+//        }
+//    },
 
     computed: {
         ...mapState({
-            currentYear: state => state.calendar.currentYear,
-            currentMonth: state => state.calendar.currentMonth,
-            lang: state => state.app.lang,
+//            currentYear: state => state.calendar.currentYear,
+//            currentMonth: state => state.calendar.currentMonth,
+//            lang: state => state.app.lang,
             theme: state => state.app.theme
         }),
 
@@ -158,7 +160,7 @@ export default {
         ...mapState('calendar/tableView/item', {
             addItem: state => state.insert,
             editItem: state => state.update,
-            deleteItem: state => state.remove,
+            //deleteItem: state => state.remove,
             dragItem: state => state.dnd
         }),
 
@@ -220,12 +222,16 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item', {
-            prepareInsertItem: 'insert/prepare',
-            dragStart: 'dnd/dragStart',
-            dragEnter: 'dnd/dragEnter',
-            dragOver: 'dnd/dragOver',
-            drop: 'dnd/drop',
-            dragEnd: 'dnd/dragEnd'
+//            prepareInsertItem: 'insert/prepare',
+//            dragStart: 'dnd/dragStart',
+//            dragEnter: 'dnd/dragEnter',
+//            dragOver: 'dnd/dragOver',
+//            drop: 'dnd/drop',
+//            dragEnd: 'dnd/dragEnd'
+        }),
+
+        ...mapActions('calendar/tableView/item/insert', {
+            prepareInsertItem: 'prepare',
         }),
 
         ...mapActions('calendar/tableView/item/update', {
@@ -234,6 +240,14 @@ export default {
 
         ...mapActions('calendar/tableView/item/remove', {
             removeReset: 'reset'
+        }),
+
+        ...mapActions('calendar/tableView/item/dnd', {
+            dragStart: 'dragStart',
+            dragEnter: 'dragEnter',
+            dragOver: 'dragOver',
+            drop: 'drop',
+            dragEnd: 'dragEnd'
         }),
 
         clickCell(dayIndex, memberId) {

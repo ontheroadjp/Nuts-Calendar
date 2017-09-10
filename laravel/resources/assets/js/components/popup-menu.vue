@@ -60,8 +60,8 @@ export default {
                 top: this.yPosition + 'px',
                 left: this.xPosition + 'px',
                 'background-color': 'blue',
-                height: '320px',
-                width: '240px',
+                height: this.height + 'px',
+                width: this.width + 'px',
                 color: '#fff',
                 'z-index': 999
             }
@@ -89,6 +89,6 @@ export default {
 
 .popup-menu-enter-active,
 .popup-menu-leave-active {
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
 }
 </style>
