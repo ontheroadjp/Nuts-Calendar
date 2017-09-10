@@ -305,11 +305,11 @@ table.calendar {
 
 .saturday {
     /* background-color: rgba(240, 240, 255, 1); */
-    background-color: rgb(228, 247, 255);
+    background-color: rgb(228, 247, 255) !important;
 }
 
 .sunday {
     /* background-color: rgba(255, 240, 240, 1); */
-    background-color: rgb(253, 231, 231);
+    background-color: rgb(253, 231, 231) !important;
 }
 </style>
