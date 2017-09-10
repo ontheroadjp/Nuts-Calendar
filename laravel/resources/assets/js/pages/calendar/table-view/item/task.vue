@@ -34,19 +34,21 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item', {
-            prepareUpdateItem: 'update/prepare',
-            prepareRemoveItem: 'remove/prepare',
+            insertReset: 'insert/reset',
+            updatePrepare: 'update/prepare',
+            removePrepare: 'remove/prepare',
             toggleTaskDone: 'update/toggleTaskDone'
         }),
 
         clickItem(e) {
             u.clog('clickItem()');
-            this.prepareUpdateItem( { event: e, editingItem: this.item } );
-            this.prepareRemoveItem( { event: e, deletingItem: this.item } );
+            this.updatePrepare( { event: e, editingItem: this.item } );
+            this.removePrepare( { event: e, deletingItem: this.item } );
+            this.insertReset();
         },
 
         clickDone(e) {
-            this.prepareUpdateItem( { event: e, editingItem: this.item } );
+            this.updatePrepare( { event: e, editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
 

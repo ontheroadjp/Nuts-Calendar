@@ -209,7 +209,7 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item/insert', {
-            prepareInsertItem: 'prepare',
+            inertPrepare: 'prepare',
         }),
 
         ...mapActions('calendar/tableView/item/update', {
@@ -230,7 +230,7 @@ export default {
 
         clickCell(dayIndex, memberId) {
             u.clog('clickCell()');
-            this.prepareInsertItem( { dayIndex, memberId } );
+            this.inertPrepare( { dayIndex, memberId } );
         },
 
         popupMenuClose() {
