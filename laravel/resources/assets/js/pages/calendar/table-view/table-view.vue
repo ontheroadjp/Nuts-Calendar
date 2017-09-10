@@ -21,7 +21,9 @@
     <!-- <item-modal v-if="filteredBody && isItemModalActive"></item-modal> -->
 
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
-    <table class="table is-bordered"
+    <table 
+        :id="typeof filteredColumns !== 'undefined' ? 'table-view-columns' : 'table-view-body'"
+        class="table is-bordered"
         style="width: 100%;"
         :style="isFixed ? style.table : ''"
     >
@@ -127,8 +129,8 @@ export default {
     props: {
         filteredColumns:    { type: Object,     required: false }, 
         filteredBody:       { type: Array,      required: false }, 
-        isLoading:          { type: Boolean,    required: false },
-        isFixed:            { type: Boolean,    required: false }
+        isLoading:          { type: Boolean,    default: false },
+        isFixed:            { type: Boolean,    default: false }
     },
 
 //    data() {
