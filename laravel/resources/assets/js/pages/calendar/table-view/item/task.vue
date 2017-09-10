@@ -1,7 +1,11 @@
 <template>
     <span class="item is-task" @click.stop="clickItem($event)">
         <span :class="{'task-done': item.is_done}">
-            <input id="item.id" type="checkbox" style="margin-right: 8px" @click.stop="clickDone()" :checked="item.is_done"> 
+            <input id="item.id" 
+                type="checkbox" 
+                style="margin-right: 8px" 
+                @click.stop="clickDone($event)" 
+                :checked="item.is_done"> 
             <span>
                 {{ item.content }}
             </span>
@@ -41,8 +45,8 @@ export default {
             this.prepareRemoveItem( { event: e, deletingItem: this.item } );
         },
 
-        clickDone() {
-            this.prepareUpdateItem( { editingItem: this.item } );
+        clickDone(e) {
+            this.prepareUpdateItem( { event: e, editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
 
