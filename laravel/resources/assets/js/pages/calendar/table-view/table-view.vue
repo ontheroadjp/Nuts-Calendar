@@ -8,7 +8,7 @@
 
     <popup-menu 
         v-if="filteredBody"
-        :x="editItem.x" :y="editItem.y" 
+        :clickX="editItem.clickX" :clickY="editItem.clickY" 
         :isActive="editItem.isActive" 
         :onClose="popupMenuClose"
     >

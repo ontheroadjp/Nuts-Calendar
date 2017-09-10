@@ -27,8 +27,8 @@ export default {
 
     props: {
 //        id:       { type: String,  required: true },
-        x:        { type: Number, required: true },
-        y:        { type: Number, required: true },
+        clickX:        { type: Number, required: true },
+        clickY:        { type: Number, required: true },
         height:   { type: Number,  default: 320 },
         width:    { type: Number,  default: 240 },
         isActive: { type: Boolean, required: true },
@@ -37,7 +37,7 @@ export default {
 
     computed: {
         xPosition: function() {
-            const clickPoint = (this.x - 20);
+            const clickPoint = (this.clickX - 20);
             if((clickPoint + this.width)> window.innerWidth) {
                 return window.innerWidth - this.width - 50;
             }
@@ -46,7 +46,7 @@ export default {
         },
 
         yPosition: function() {
-            const clickPoint = (this.y - 62 - this.height);
+            const clickPoint = (this.clickY - 62 - this.height);
             if(clickPoint < 0) {
                 return 10;
             }
