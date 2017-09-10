@@ -3,7 +3,7 @@
     <dropdown-menu 
         id="user-account-dropdown-menu"
         :backIconStyle="backIconStyle"
-        :menuHeight="parseInt(66)"
+        :menuHeight="66"
     >
         <li>
             <router-link to="/me/settings/general" class="thin" :style="menuItemStyle"> 

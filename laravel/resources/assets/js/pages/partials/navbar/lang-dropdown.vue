@@ -5,7 +5,7 @@
         :label="menuItems[selectedLang].label" 
         icon="" 
         :backIconStyle="backIconStyle"
-        :menuHeight="parseInt(40)"
+        :menuHeight="40"
     >
         <template v-for="item in menuItems">
             <li v-if="selectedLang != item.value">

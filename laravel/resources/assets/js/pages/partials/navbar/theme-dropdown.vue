@@ -5,7 +5,7 @@
         :label="t('theme.' + selectedTheme)" 
         icon="" 
         :backIconStyle="backIconStyle"
-        :menuHeight="parseInt(145)"
+        :menuHeight="145"
     >
         <template v-for="item in menuItems">
             <li v-if="selectedTheme == item.value" :style="selectedStyle">
