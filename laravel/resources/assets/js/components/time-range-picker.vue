@@ -128,12 +128,6 @@ export default {
         },
     },
 
-//    watch: {
-//        'input.end.HH': function() {
-//            this.input.end.mm === '' ? this.input.end.mm = '00' : '';
-//        }
-//    },
-
     mounted: function() {
         if( this.startTime ) {
             u.clog('init startTime');
@@ -150,12 +144,5 @@ export default {
             this.input.end.mm = this.initial.end.mm;
         }
     }
-
 }
 </script>
-
-<style lang="scss" scoped>
-.time-range-picker {
-
-}
-</style>
