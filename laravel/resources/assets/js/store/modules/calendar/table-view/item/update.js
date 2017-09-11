@@ -115,8 +115,8 @@ export default {
 
         update( state, { content, startTime, endTime } ) {
             state.editingItem.content = content;
-            state.editingItem.startTime = start_time;
-            state.editingItem.endTime = end_time;
+            state.editingItem.start_time = startTime;
+            state.editingItem.end_time = endTime;
         },
 
         stop( state ) {
