@@ -5,13 +5,14 @@
         <div class="time-range">
 
             <timeRangePicker 
-                minute-interval="5"
+                :minute-interval="5"
                 :startTime="updateState.editingItem.start_time"
                 :endTime="updateState.editingItem.end_time"
                 :action="update"
                 :isLoading="updateState.isLoading"
                 :inputWidth="80"
                 :menuHeight="280"
+                :ready.sync="ready.timeRange"
             ></timeRangePicker>
 
         </div>
@@ -19,7 +20,7 @@
     </div>
 
     <div class="popup-footer">
-        <a class="button strip">Save</a>
+        <a class="button strip" :disabled="!isAllReady">Save</a>
         <a class="button strip">Delete</a>
     </div>
 </div>
@@ -40,6 +41,10 @@ export default {
                 content: '',
                 startTime: '',
                 endTime: ''
+            },
+
+            ready: {
+                timeRange: false
             }
         }
     },
@@ -47,7 +52,18 @@ export default {
     computed: {
         ...mapState('calendar/tableView/item', {
             updateState: 'update'
-        })
+        }),
+
+        isAllReady: function() {
+            let result = true;
+            Object.keys(this.ready).forEach((key) => {
+                if( this.ready[key] === false ) {
+                    result = false;
+                }
+            });
+
+            return result;
+        }
     },
 
     methods: {

@@ -23,6 +23,7 @@
             :hasError.sync="error.end"
         ></endTimePicker>
 
+        <!--
         <button
             class="button"
             @click="clickSave"
@@ -36,6 +37,7 @@
                 <i v-if="!isLoading" class="fa fa-floppy-o"></i>
                 <i v-else class="fa fa-refresh fa-spin"></i>
         </button> 
+        -->
     </span>
 </template>
 
@@ -49,15 +51,26 @@ export default {
         'endTimePicker': endTimePicker
     },
 
-    props: [
-        'minuteInterval',
-        'startTime',
-        'endTime',
-        'action',
-        'isLoading',
-        'inputWidth',
-        'menuHeight'
-    ],
+//    props: [
+//        'minuteInterval',
+//        'startTime',
+//        'endTime',
+//        'action',
+//        'isLoading',
+//        'inputWidth',
+//        'menuHeight'
+//    ],
+
+    props: {
+        minuteInterval: { type: Number },
+        startTime:      { type: String }, // HH:mm:ss
+        endTime:        { type: String }, // HH:mm:ss
+        action:         { type: Function },
+        isLoading:      { type: Boolean },
+        inputWidth:     { type: Number, default: 80 },
+        menuHeight:     { type: Number, default: 280 },
+        ready:          { type: Boolean, required: true }
+    },
 
     data() {
         return {
@@ -82,57 +95,75 @@ export default {
 
     computed: {
         startTimeResult: function() {
+            if( this.error.start ) return '';
+            if( this.input.start.HH == '' && this.input.start.mm == '' ) return '';
             return this.input.start.HH + ':' + this.input.start.mm;
         },
         
         endTimeResult: function() {
+            if( this.error.end ) return '';
+            if( this.input.end.HH == '' && this.input.end.mm == '' ) return '';
             return this.input.end.HH + ':' + this.input.end.mm;
         },
 
         hasError: function() {
-            if( this.isDropdownOpen ) {
-                return false;
-            }
+            if( this.isDropdownOpen ) { return false; }
 
-            if( this.input.start.HH == '' 
-                    || this.input.start.mm == '' 
-                    || this.input.end.HH == '' 
-                    || this.input.end.mm == '' ) {
-                return false;
-            }
+            const startHH = this.input.start.HH;
+            const startMM = this.input.start.mm;
+            const endHH = this.input.end.HH;
+            const endMM = this.input.end.mm;
 
-            if( this.input.start.HH < this.input.end.HH ) {
-                return false;
-            }
+            if( (this.error.start || this.error.end) ||
+                (startHH == '' && endHH != '') ||
+                (endHH != '' && startHH > endHH) ||
+                ((startHH != '' && endHH != '') && ((startHH == endHH) && (startMM >= endMM)))
+            ) { return true; }
 
-            if( this.input.start.HH > this.input.end.HH ) {
-                return true;
-            }
-
-            if( this.input.start.mm >= this.input.end.mm ) {
-                return true;
-            }
+            return false;
         }
     },
 
     methods: {
         onDropdownOpen(value) {
             this.isDropdownOpen = value;
-        },
 
-        clickSave() {
-            this.action({ 
-                start: this.startTimeResult, 
-                end: this.endTimeResult 
+            if( value === true ) return;
+
+            this.$nextTick(() => {
+                this.$emit('update:ready', !this.hasError);
             });
         },
+
+//        clickSave() {
+//            this.action({ 
+//                start: this.startTimeResult, 
+//                end: this.endTimeResult 
+//            });
+//        },
     },
 
-//    watch: {
-//        'input.end.HH': function() {
-//            this.input.end.mm === '' ? this.input.end.mm = '00' : '';
-//        }
-//    },
+    watch: {
+        'input.start.HH': function() {
+            if(!this.isDropdownOpen)
+                this.$emit('update:ready', !this.hasError);
+        },
+
+        'input.start.mm': function() {
+            if(!this.isDropdownOpen)
+                this.$emit('update:ready', !this.hasError);
+        },
+
+        'input.end.HH': function() {
+            if(!this.isDropdownOpen)
+                this.$emit('update:ready', !this.hasError);
+        },
+
+        'input.end.mm': function() {
+            if(!this.isDropdownOpen)
+                this.$emit('update:ready', !this.hasError);
+        },
+    },
 
     mounted: function() {
         if( this.startTime ) {
@@ -149,13 +180,8 @@ export default {
             this.input.end.HH = this.initial.end.HH;
             this.input.end.mm = this.initial.end.mm;
         }
-    }
 
+        this.$emit('update:ready', !this.hasError);
+    }
 }
 </script>
-
-<style lang="scss" scoped>
-.time-range-picker {
-
-}
-</style>
