@@ -567,6 +567,12 @@ export default {
         bottom: 0;
     }
 
+    & .error-message {
+        font-size: 0.8em;
+        color: red;
+        text-align: center;
+    }
+
     & .dropdown {
         position: absolute;
         z-index: 5;
@@ -578,6 +584,12 @@ export default {
         width: 10em;
         height: 10em;
         font-weight: normal;
+
+        & .hint {
+            color: #a5a5a5;
+            cursor: default;
+            font-size: 0.8em;
+        }
 
         & .select-list {
             width: 10em;
@@ -597,17 +609,42 @@ export default {
             flex: 1;
             overflow-x: hidden;
             overflow-y: auto;
+
+            &.minutes,
+            &.seconds,
+            &.apms {
+                border-left: 1px solid #fff;
+            }
+
+            & li {
+                text-align: center;
+                padding: 0.3em 0;
+                color: #161616;
+
+                &:not(.hint):hover {
+                    background: rgba(0,0,0,.08);
+                    color: #161616;
+                    cursor: pointer;
+                }
+
+                &.active,
+                &.active:hover {
+                    background: rgba(104, 127, 137, 0.6);
+                    color: #fff;
+                }
+            }
         }
     }
 }
 
+
+/*
 .error-message {
     font-size: 0.8em;
     color: red;
     text-align: center;
 }
 
-/*
 .time-picker * {
     box-sizing: border-box;
 }
@@ -674,12 +711,6 @@ export default {
     overflow-y: auto;
 }
 
-*/
-.time-picker .dropdown ul.minutes,
-.time-picker .dropdown ul.seconds,
-.time-picker .dropdown ul.apms{
-    border-left: 1px solid #fff;
-}
 
 .time-picker .dropdown ul li {
     text-align: center;
@@ -704,4 +735,5 @@ export default {
     cursor: default;
     font-size: 0.8em;
 }
+*/
 </style>
