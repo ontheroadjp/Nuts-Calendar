@@ -567,6 +567,12 @@ export default {
         bottom: 0;
     }
 
+    & .error-message {
+        font-size: 0.8em;
+        color: red;
+        text-align: center;
+    }
+
     & .dropdown {
         position: absolute;
         z-index: 5;
@@ -578,6 +584,12 @@ export default {
         width: 10em;
         height: 10em;
         font-weight: normal;
+
+        & .hint {
+            color: #a5a5a5;
+            cursor: default;
+            font-size: 0.8em;
+        }
 
         & .select-list {
             width: 10em;
@@ -597,111 +609,31 @@ export default {
             flex: 1;
             overflow-x: hidden;
             overflow-y: auto;
+
+            &.minutes,
+            &.seconds,
+            &.apms {
+                border-left: 1px solid #fff;
+            }
+
+            & li {
+                text-align: center;
+                padding: 0.3em 0;
+                color: #161616;
+
+                &:not(.hint):hover {
+                    background: rgba(0,0,0,.08);
+                    color: #161616;
+                    cursor: pointer;
+                }
+
+                &.active,
+                &.active:hover {
+                    background: rgba(104, 127, 137, 0.6);
+                    color: #fff;
+                }
+            }
         }
     }
-}
-
-.error-message {
-    font-size: 0.8em;
-    color: red;
-    text-align: center;
-}
-
-/*
-.time-picker * {
-    box-sizing: border-box;
-}
-
-.time-picker input.display-time {
-    border: 1px solid #d2d2d2;
-    width: 10em;
-    height: 2.2em;
-    padding: 0.3em 0.5em;
-    font-size: 1em;
-}
-
-.time-picker .clear-btn {
-    position: absolute;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    margin-top: -0.15em;
-    z-index: 3;
-    font-size: 1.1em;
-    line-height: 1em;
-    vertical-align: middle;
-    width: 1.3em;
-    color: #d2d2d2;
-    background: rgba(255,255,255,0);
-    text-align: center;
-    font-style: normal;
-    transition: color .2s;
-}
-
-.time-picker .dropdown {
-    position: absolute;
-    z-index: 5;
-    top: calc(2.2em + 2px);
-    left: 0;
-    background: #fff;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.15);
-    width: 10em;
-    height: 10em;
-    font-weight: normal;
-
-}
-.time-picker .dropdown .select-list {
-    width: 10em;
-    height: 10em;
-    overflow: hidden;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: stretch;
-    justify-content: space-between;
-}
-
-.time-picker .dropdown ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-
-    flex: 1;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-*/
-.time-picker .dropdown ul.minutes,
-.time-picker .dropdown ul.seconds,
-.time-picker .dropdown ul.apms{
-    border-left: 1px solid #fff;
-}
-
-.time-picker .dropdown ul li {
-    text-align: center;
-    padding: 0.3em 0;
-    color: #161616;
-}
-
-.time-picker .dropdown ul li:not(.hint):hover {
-    background: rgba(0,0,0,.08);
-    color: #161616;
-    cursor: pointer;
-}
-
-.time-picker .dropdown ul li.active,
-.time-picker .dropdown ul li.active:hover {
-    background: rgba(104, 127, 137, 0.6);
-    color: #fff;
-}
-
-.time-picker .dropdown .hint {
-    color: #a5a5a5;
-    cursor: default;
-    font-size: 0.8em;
 }
 </style>
