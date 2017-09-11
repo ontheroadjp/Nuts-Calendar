@@ -15,13 +15,7 @@
         :offsetY="topPosition"
         :scrollX="scrollPositionX"
         :scrollY="scrollPositionY"
-    >
-        <div style="margin:0; width:100%; height:100%; 
-                background-color: #fff;
-                box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
-            ">
-            <span>This is a popup menu</span>
-        </div>
+        ><item-edit-popup-content></item-edit-popup-content>
     </popup-menu>
 
     <black-screen 
@@ -116,6 +110,7 @@ import blackScreen from '../../../components/black-screen.vue';
 import popupMenu from '../../../components/popup-menu.vue';
 import item from './item/index.vue';
 import itemInsertField from './item-insert-field.vue';
+import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
 import chroma from 'chroma-js';
 
@@ -127,6 +122,7 @@ export default {
         'popup-menu': popupMenu,
         'item': item,
         'item-insert-field': itemInsertField,
+        'item-edit-popup-content': itemEditPopupContent,
         'mini-cal-bar': miniCalBar
     },
 
