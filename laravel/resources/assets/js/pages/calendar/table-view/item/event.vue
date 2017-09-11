@@ -34,12 +34,14 @@ export default {
         ...mapActions('calendar/tableView/item', {
             insertReset: 'insert/reset',
             updatePrepare: 'update/prepare',
+            updatePrepareModal: 'update/prepareModal',
             removePrepare: 'remove/prepare'
         }),
 
         clickItem(e) {
             u.clog('clickItem()');
-            this.updatePrepare( { event: e, editingItem: this.item } );
+            this.updatePrepare( { editingItem: this.item } );
+            this.updatePrepareModal( { event: e } );
             this.removePrepare( { event: e, deletingItem: this.item } );
             this.insertReset();
         }
