@@ -138,6 +138,13 @@ export default {
         scrollPositionY:     { type: Number,     required: false }
     },
 
+    data() {
+        return {
+            fixedScrollPositionX: 0,
+            fixedScrollPositionY: 0
+        }
+    },
+
     computed: {
         ...mapState({
             theme: state => state.app.theme
@@ -202,6 +209,20 @@ export default {
                     'min-width': '110px',
                     'max-width': '110px'
                 }
+            }
+        }
+    },
+
+    watch: {
+        'scrollPositionY': function() {
+            if(this.editItem.isActive) {
+                document.body.scrollTop = this.fixedScrollPositionY;
+            }
+        },
+
+        'editItem.isActive': function() {
+            if(this.editItem.isActive) {
+                this.fixedScrollPositionY = this.scrollPositionY;
             }
         }
     },
