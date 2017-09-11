@@ -30,12 +30,13 @@ export default {
             dispatch('update');
         },
 
-        setInputValues( { commit }, { content, startTime, endTime } ) {
-            commit('setInputValues', { content, startTime, endTime } );
-        },
+//        setInputValues( { commit }, { content, startTime, endTime } ) {
+//            commit('setInputValues', { content, startTime, endTime } );
+//        },
 
         update( { state, commit } ) {
-            commit('start');
+//            commit('start');
+            commit('isLoading', true);
             u.clog('update()');
 
             const url = '/api/v1/item/' + state.editingItem.id;
@@ -64,7 +65,8 @@ export default {
                         isImportant: false
                     }, { root: true });
         
-                    commit('stop');
+//                    commit('stop');
+                    commit('isLoading', false);
                 })
 
                 .catch( error => {
@@ -76,7 +78,8 @@ export default {
                         isActive: true
                     }, { root: true});
 
-                    commit('stop');
+//                    commit('stop');
+                    commit('isLoading', false);
                 });
         },
 
@@ -99,19 +102,23 @@ export default {
             state.isActive = true;
         },
 
-        start( state ) {
-            state.isLoading = true;
+        isLoading( state, { value } ) {
+            state.isLoading = value;
         },
+
+//        start( state ) {
+//            state.isLoading = true;
+//        },
 
         toggleTaskDone( state ) {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
 
-        setInputValues( state, { content, startTime, endTime } ) {
-            state.input.content = content;
-            state.input.startTime = startTime;
-            state.input.endTime = endTime;
-        },
+//        setInputValues( state, { content, startTime, endTime } ) {
+//            state.input.content = content;
+//            state.input.startTime = startTime;
+//            state.input.endTime = endTime;
+//        },
 
         update( state, { content, startTime, endTime } ) {
             state.editingItem.content = content;
@@ -119,9 +126,9 @@ export default {
             state.editingItem.end_time = endTime;
         },
 
-        stop( state ) {
-            state.isLoading = false;
-        },
+//        stop( state ) {
+//            state.isLoading = false;
+//        },
 
         reset( state ) {
             state.isActive = false,

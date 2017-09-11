@@ -1,30 +1,71 @@
 // This file is forked from phoenixwong/vue2-timepicker
 <template>
-    <span class="time-picker">
-        <input class="display-time" :id="id" v-model="displayTime" @click.stop="toggleDropdown" type="text" readonly />
-        <span class="clear-btn" v-if="!hideClearButton" v-show="!showDropdown && showClearBtn" @click.stop="clearTime">&times;</span>
-        <div class="time-picker-overlay" v-if="showDropdown" @click.stop="toggleDropdown"></div>
-        <div class="dropdown" v-show="showDropdown">
-            <div class="select-list">
-                <ul class="hours">
-                    <li class="hint" v-text="hourType"></li>
-                    <li v-for="hr in hours" v-text="hr" :class="{active: hour === hr}" @click.stop="select('hour', hr)"></li>
-                </ul>
-                <ul class="minutes">
-                    <li class="hint" v-text="minuteType"></li>
-                    <li v-for="m in minutes" v-text="m" :class="{active: minute === m}" @click.stop="select('minute', m)"></li>
-                </ul>
-                <ul class="seconds" v-if="secondType">
-                    <li class="hint" v-text="secondType"></li>
-                    <li v-for="s in seconds" v-text="s" :class="{active: second === s}" @click.stop="select('second', s)"></li>
-                </ul>
-                <ul class="apms" v-if="apmType">
-                    <li class="hint" v-text="apmType"></li>
-                    <li v-for="a in apms" v-text="a" :class="{active: apm === a}" @click.stop="select('apm', a)"></li>
-                </ul>
-            </div>
+<span class="time-picker">
+
+    <input class="display-time" 
+        :id="id" 
+        type="text" 
+        :style="[style.input]" 
+        v-model="displayTime" 
+        @click.stop="toggleDropdown" 
+        readonly />
+
+    <div v-show="hasError" class="error-message">Error</div>
+
+    <span class="clear-btn" 
+        v-if="!hideClearButton" 
+        v-show="!showDropdown && showClearBtn" 
+        @click.stop="clearTime"
+    >&times;</span>
+
+    <div class="time-picker-overlay" 
+        v-if="showDropdown" 
+        @click.stop="toggleDropdown"
+    ></div>
+
+    <div v-show="showDropdown" class="dropdown" :style="[style.dropdown]">
+        <div class="select-list" :style="[style.selectList]">
+            <ul class="hours">
+                <li class="hint" v-text="hourType"></li>
+                <li v-for="hr in hours" 
+                    v-text="hr" 
+                    :class="{active: hour === hr}" 
+                    @click.stop="select('hour', hr)"
+                ></li>
+            </ul>
+            <ul class="minutes">
+                <li class="hint" v-text="minuteType"></li>
+                <li v-for="m in minutes" 
+                    v-text="m" 
+                    :class="{active: minute === m}" 
+                    @click.stop="select('minute', m)"
+                ></li>
+            </ul>
+            <ul class="seconds" v-if="secondType">
+                <li class="hint" v-text="secondType"></li>
+                <li v-for="s in seconds" 
+                    v-text="s" 
+                    :class="{active: second === s}" 
+                    @click.stop="select('second', s)"
+                ></li>
+            </ul>
+            <ul class="apms" v-if="apmType">
+                <li class="hint" v-text="apmType"></li>
+                <li v-for="a in apms" 
+                    v-text="a" 
+                    :class="{active: apm === a}" 
+                    @click.stop="select('apm', a)"
+                ></li>
+            </ul>
+        </div><!-- / .select-list -->
+
+        <div :style="[style.dropdownFooter]" @click.stop="toggleDropdown">
+            done
         </div>
-    </span>
+
+    </div><!-- // .dropdown -->
+
+</span><!-- // .time-pocker -->
 </template>
 
 <script>
@@ -39,12 +80,20 @@ export default {
     name: 'VueTimepicker',
 
     props: {
-        value: {type: Object},
-        hideClearButton: {type: Boolean},
-        format: {type: String},
-        minuteInterval: {type: Number},
-        secondInterval: {type: Number},
-        id: {type: String}
+        value:              { type: Object },
+        hideClearButton:    { type: Boolean },
+        format:             { type: String },
+        minuteInterval:     { type: Number },
+        secondInterval:     { type: Number },
+        id:                 { type: String },
+        menuHeight:         { type: Number },
+        inputWidth:         { type: Number },
+        menuPosition:       { type: String, default: 'right', 
+                                validation: function(val) {
+                                    return val === 'right' || 'left'; 
+                                }, default: 'right'
+                            },
+        hasError:           { type: Boolean, default: false }
     },
 
     data () {
@@ -84,11 +133,48 @@ export default {
             }
             return formatString
         },
+
         showClearBtn () {
             if ((this.hour && this.hour !== '') || (this.minute && this.minute !== '')) {
                 return true
             }
             return false
+        },
+
+        menuPositionValue: function() {
+            if(this.menuPosition === 'right') return '0px'
+            if(this.menuPosition === 'left') return (this.inputWidth * -1) + 'px'
+        },
+
+        style: function(){
+            return {
+                dropdown: {
+                    height: this.menuHeight + 'px',
+                    left: this.menuPositionValue
+                },
+
+                selectList: {
+                    height: this.menuHeight + 'px'
+                },
+
+                input: {
+                    width: this.inputWidth + 'px'
+                },
+
+                dropdownFooter: {
+                    'position': 'absolute',
+                    'top': `calc(${this.menuHeight}px + 10px)`,
+                    'left': `calc(((${this.inputWidth}px + ${this.inputWidth}px + 4px)/2) - (${this.inputWidth}px * 1.2) / 2)`,
+                    'width': this.inputWidth * 1.2 + 'px',
+                    'padding': '3px',
+                    'background-color': 'rgb(104, 127, 137)',
+                    'color': '#fff',
+                    'text-align': 'center',
+                    'cursor': 'pointer',
+                    'border-radius': '5px',
+                    'z-index': '99'
+                }
+            }
         }
     },
 
@@ -97,9 +183,11 @@ export default {
         minuteInterval (newInteval) {
             this.renderList('minute', newInteval)
         },
+
         secondInterval (newInteval) {
             this.renderList('second', newInteval)
         },
+
         'value': 'readValues',
         'displayTime': 'fillValues'
     },
@@ -127,7 +215,10 @@ export default {
         },
 
         checkAcceptingType (validValues, formatString, fallbackValue) {
-            if (!validValues || !formatString || !formatString.length) { return '' }
+            if (!validValues || !formatString || !formatString.length) { 
+                return '' 
+            }
+
             for (let i = 0; i < validValues.length; i++) {
                 if (formatString.indexOf(validValues[i]) > -1) {
                     return validValues[i]
@@ -219,8 +310,8 @@ export default {
 
             const timeValue = JSON.parse(JSON.stringify(this.value || {}))
 
-                const values = Object.keys(timeValue)
-                if (values.length === 0) { return }
+            const values = Object.keys(timeValue);
+            if (values.length === 0) { return }
 
             if (values.indexOf(this.hourType) > -1) {
                 this.hour = timeValue[this.hourType]
@@ -371,7 +462,25 @@ export default {
         },
 
         toggleDropdown () {
-            this.showDropdown = !this.showDropdown
+            this.showDropdown = !this.showDropdown;
+            this.$emit('dropdown-open', this.showDropdown);
+
+            if( this.showDropdown ) {
+                this.$emit('update:hasError', false);
+                return;
+            }
+
+            if( this.hour == '' && this.minute != '' ) {
+                this.$emit('update:hasError', true);
+                return;
+            }
+
+            if( this.hour != '' && this.minute == '' ) {
+                this.$emit('update:hasError', true);
+                return;
+            }
+
+            this.$emit('update:hasError', false);
         },
 
         select (type, value) {
@@ -405,11 +514,99 @@ export default {
     display: inline-block;
     position: relative;
     font-size: 1em;
-    width: 10em;
+    /* width: 10em; */
     font-family: sans-serif;
-    vertical-align: middle;
+    vertical-align: top;
+
+    & * {
+        box-sizing: border-box;
+    }
+
+    & input.display-time {
+        border: 1px solid #d2d2d2;
+        width: 10em;
+        height: 2.2em;
+        padding: 0.3em 0.5em;
+        font-size: 1em;
+    }
+
+    & .clear-btn {
+        position: absolute;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin-top: -0.15em;
+        z-index: 3;
+        font-size: 1.1em;
+        line-height: 1em;
+        vertical-align: middle;
+        width: 1.3em;
+        color: #d2d2d2;
+        background: rgba(255,255,255,0);
+        text-align: center;
+        font-style: normal;
+        transition: color .2s;
+
+        &:hover {
+            color: #797979;
+            cursor: pointer;
+        }
+    }
+
+    & .time-picker-overlay {
+        z-index: 2;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    & .dropdown {
+        position: absolute;
+        z-index: 5;
+        top: calc(2.2em + 2px);
+        left: 0;
+        /* 'left': `calc(-10em + ${this.inputWidth}px)` */
+        background: #fff;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+        width: 10em;
+        height: 10em;
+        font-weight: normal;
+
+        & .select-list {
+            width: 10em;
+            height: 10em;
+            overflow: hidden;
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: stretch;
+            justify-content: space-between;
+        }
+        
+        & ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    }
 }
 
+.error-message {
+    font-size: 0.8em;
+    color: red;
+    text-align: center;
+}
+
+/*
 .time-picker * {
     box-sizing: border-box;
 }
@@ -441,23 +638,7 @@ export default {
     background: rgba(255,255,255,0);
     text-align: center;
     font-style: normal;
-
-    -webkit-transition: color .2s;
     transition: color .2s;
-}
-
-.time-picker .clear-btn:hover {
-    color: #797979;
-    cursor: pointer;
-}
-
-.time-picker .time-picker-overlay {
-    z-index: 2;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 
 .time-picker .dropdown {
@@ -470,8 +651,8 @@ export default {
     width: 10em;
     height: 10em;
     font-weight: normal;
-}
 
+}
 .time-picker .dropdown .select-list {
     width: 10em;
     height: 10em;
@@ -492,6 +673,7 @@ export default {
     overflow-y: auto;
 }
 
+*/
 .time-picker .dropdown ul.minutes,
 .time-picker .dropdown ul.seconds,
 .time-picker .dropdown ul.apms{
@@ -512,7 +694,7 @@ export default {
 
 .time-picker .dropdown ul li.active,
 .time-picker .dropdown ul li.active:hover {
-    background: #41B883;
+    background: rgba(104, 127, 137, 0.6);
     color: #fff;
 }
 

@@ -4,6 +4,10 @@
             :minute-interval="5"
             v-model="input.start"
             format="HH:mm"
+            :inputWidth="inputWidth"
+            :menuHeight="menuHeight"
+            @dropdown-open="onDropdownOpen"
+            :hasError.sync="error.start"
         ></startTimePicker>
 
         <span style="margin: 0 5px;">to</span>
@@ -12,6 +16,11 @@
             :minute-interval="5"
             v-model="input.end"
             format="HH:mm"
+            :inputWidth="inputWidth"
+            :menuHeight="menuHeight"
+            menuPosition="left"
+            @dropdown-open="onDropdownOpen"
+            :hasError.sync="error.end"
         ></endTimePicker>
 
         <button
@@ -45,7 +54,9 @@ export default {
         'startTime',
         'endTime',
         'action',
-        'isLoading'
+        'isLoading',
+        'inputWidth',
+        'menuHeight'
     ],
 
     data() {
@@ -58,7 +69,14 @@ export default {
             input: {
                 start: { HH: "", mm: "" },
                 end  : { HH: "", mm: "" }
-            }
+            },
+
+            error: {
+                start: false,
+                end: false
+            },
+
+            isDropdownOpen: false
         }
     },
 
@@ -69,10 +87,39 @@ export default {
         
         endTimeResult: function() {
             return this.input.end.HH + ':' + this.input.end.mm;
+        },
+
+        hasError: function() {
+            if( this.isDropdownOpen ) {
+                return false;
+            }
+
+            if( this.input.start.HH == '' 
+                    || this.input.start.mm == '' 
+                    || this.input.end.HH == '' 
+                    || this.input.end.mm == '' ) {
+                return false;
+            }
+
+            if( this.input.start.HH < this.input.end.HH ) {
+                return false;
+            }
+
+            if( this.input.start.HH > this.input.end.HH ) {
+                return true;
+            }
+
+            if( this.input.start.mm >= this.input.end.mm ) {
+                return true;
+            }
         }
     },
 
     methods: {
+        onDropdownOpen(value) {
+            this.isDropdownOpen = value;
+        },
+
         clickSave() {
             this.action({ 
                 start: this.startTimeResult, 
