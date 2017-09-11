@@ -20,12 +20,12 @@ export default {
         },
 
         updateName( { commit, dispatch } ) {
-            commit('start', { property: 'name' });
+            commit('start', { key: 'name' });
             dispatch('update');
         },
 
         updateDescription( { commit, dispatch } ) {
-            commit('start', { property: 'description' });
+            commit('start', { key: 'description' });
             dispatch('update');
         },
 
@@ -45,8 +45,17 @@ export default {
                     const name = response.data.name;
                     const description = response.data.description;
 
-                    commit('userCalendar/setName', { id, name }, { root: true });
-                    commit('userCalendar/setDescription', { id, description }, { root: true });
+                    commit('userCalendar/setValue', {
+                        id: id,
+                        key: 'name',
+                        value: name
+                    }, { root: true });
+
+                    commit('userCalendar/setValue', { 
+                        id: id,
+                        key: 'description',
+                        value: description
+                    }, { root: true });
 
                     commit('notifySuccess', {
                         content: 'success update User Calendar',
@@ -55,6 +64,7 @@ export default {
 
                     commit('stop');
                 })
+
                 .catch( error => {
                     u.clog('failed');
 
@@ -70,21 +80,17 @@ export default {
 
     mutations: {
         prepare( state, { userCalendar } ) {
-            state.updateValues.id = userCalendar.id;
-            state.updateValues.name = userCalendar.name;
-            state.updateValues.description = userCalendar.description;
+            Object.keys(state.updateValues).forEach(function(key) {
+                this[key] = userCalendar[key];
+            }, state.updateValues );
         },
 
-        start( state, { property } ) {
-            state.isLoading[property] = true;
+        start( state, { key } ) {
+            state.isLoading[key] = true;
         },
 
-        setName( state, { value }) {
-            state.updateValues.name = value;
-        },
-
-        setDescription( state, { value }) {
-            state.updateValues.description = value;
+        setUpdateValue( state, { key, value } ) {
+            state.updateValues[key] = value;
         },
 
         stop( state ) {

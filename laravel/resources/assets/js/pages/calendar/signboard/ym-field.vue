@@ -68,7 +68,10 @@ export default {
                 return this.$store.state.calendar.currentYear;
             },
             set(value) {
-                this.$store.commit('calendar/setCurrentYear', value);
+                this.$store.commit('calendar/setValue', {
+                    key: 'currentYear', 
+                    value: value
+                });
             }
         },
 
@@ -77,7 +80,10 @@ export default {
                 return this.$store.state.calendar.currentMonth;
             },
             set(value) {
-                this.$store.commit('calendar/setCurrentMonth', value);
+                this.$store.commit('calendar/setValue', {
+                    key: 'currentMonth', 
+                    value: value
+                });
             }
         },
 
@@ -97,7 +103,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

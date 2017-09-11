@@ -22,12 +22,12 @@
     >
         <router-link to="/calendar/view">
             <span class="icon is-small">
-                <i v-if="! calendarServiceIsLoading" class="fa fa-calendar"></i>
-                <i v-if="calendarServiceIsLoading && currentCalendarId !== uCalendar.id" class="fa fa-calendar"></i>
-                <i v-if="calendarServiceIsLoading && currentCalendarId === uCalendar.id" class="fa fa-refresh fa-spin"></i>
+                <i v-if="!calendarIsLoading" class="fa fa-calendar"></i>
+                <i v-if="calendarIsLoading && currentCalendarId !== uCalendar.id" class="fa fa-calendar"></i>
+                <i v-if="calendarIsLoading && currentCalendarId === uCalendar.id" class="fa fa-refresh fa-spin"></i>
             </span>
                 {{ uCalendar.name }}
-            <span class="icon is-small" v-show="currentCalendarId == uCalendar.id && ! calendarServiceIsLoading">
+            <span class="icon is-small" v-show="currentCalendarId == uCalendar.id && ! calendarIsLoading">
                 <i class="fa fa-navicon" @click="toggleToolPalet()"></i>
             </span>
         </router-link>
@@ -52,7 +52,7 @@ import { mapState, mapActions } from 'vuex';
 import core from '../../../mixins/core.js';
 
 export default {
-    props: [ 'calendarServiceIsLoading', ],
+    props: [ 'calendarIsLoading', ],
 
     mixins: [ core ],
 
@@ -84,7 +84,11 @@ export default {
         changeCalendar: function(id) {
             if( this.currentCalendarId == id ) return;
             u.clog('changeCalendar(' + id + ')');
-            this.$store.commit('setCurrentCalendarId', id);
+//            this.$store.commit('setCurrentCalendarId', id);
+            this.$store.commit('calendar/setValue', {
+                key: 'currentId', 
+                value: id
+            });
         },
 
         clickTabMenu: function() {
@@ -98,9 +102,13 @@ export default {
     },
 
     created() {
-        const calId = localStorage.getItem('currentCalendarId');
-        if(calId) {
-            this.$store.commit('setCurrentCalendarId', calId);
+        const id = localStorage.getItem('currentCalendarId');
+        if(id) {
+//            this.$store.commit('setCurrentCalendarId', id);
+            this.$store.commit('calendar/setValue', {
+                key: 'currentId', 
+                value: id
+            });
         }
     },
 

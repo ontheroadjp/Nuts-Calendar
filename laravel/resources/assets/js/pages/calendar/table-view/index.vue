@@ -5,22 +5,27 @@
         <tool-palette v-show="isToolPaletteOpen"></tool-palette>
     </transition>
 
-    <div id="table-view-header" 
-        :class="['main-calendar-panel-header', {sticky: isFixed}]"
-        ><table-view 
-            :filtered-columns="filteredColumns"
-            :is-black-screen-show="calendarServiceIsLoading"
-            :is-fixed="isFixed"
-        ></table-view>
-    </div>
-
-    <div id="table-view-body" 
-         :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]" 
-         @scroll="onScrollBody()"
-        ><table-view 
-            :filtered-body="filteredCalendar" 
-            :is-black-screen-show="calendarServiceIsLoading"
-        ></table-view>
+    <div id="table-view">
+        <div id="table-view-header" 
+            :class="['main-calendar-panel-header', {sticky: isFixed}]"
+            ><table-view 
+                :filtered-columns="filteredColumns"
+                :isLoading="calendarIsLoading"
+                :is-fixed="isFixed"
+            ></table-view>
+        </div>
+    
+        <div id="table-view-body" 
+             :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]" 
+             @scroll="onScrollBody()"
+            ><table-view 
+                :filtered-body="filteredCalendar" 
+                :isLoading="calendarIsLoading"
+                :topPosition="(height.headerNav + height.signboard + height.toolPalette)"
+                :scrollPositionY="scrollPositionY"
+                :scrollPositionX="scrollPositionX"
+            ></table-view>
+        </div>
     </div>
 
     <!-- jump to the page top button -->
@@ -28,7 +33,7 @@
         class="button" 
         style="position: fixed; bottom: 30px; right: 30px" 
         :style="'color: white; background-color: ' + theme.primary.code"
-        v-show="position > fixedHeight && !draggingItem" 
+        v-show="scrollPositionY > fixedHeight && !draggingItem" 
         >{{ t('calendar.jumpToTop') }}
     </a>
 </div>
@@ -52,12 +57,13 @@
         ],
 
         props: [
-            'calendarServiceIsLoading'
+            'calendarIsLoading'
         ],
 
         data() {
             return {
-                position: 0,
+                scrollPositionY: 0,
+                scrollPositionX: 0,
                 height: {
                     headerNav: 0,
                     signboard: 0,
@@ -66,7 +72,7 @@
                 elements: {
                     tableHeader: '',
                     tableBody: ''
-                }
+                },
             }
         },
         
@@ -82,7 +88,7 @@
             }),
 
             isFixed: function() {
-                return this.position > this.fixedHeight;
+                return this.scrollPositionY > this.fixedHeight;
             },
 
             fixedHeight: function() {
@@ -115,7 +121,7 @@
                     }
 
                     // sort cell items
-                    this.$store.commit('sortCellItemsByStartTime', data);
+                    this.$store.commit('calendar/tableView/sortCellItemsByStartTime', data);
 
                     return data;
                 }
@@ -151,6 +157,7 @@
 
             onScrollBody: function() {
                 this.elements.tableHeader.scrollLeft = this.elements.tableBody.scrollLeft;
+                this.scrollPositionX = this.elements.tableBody.scrollLeft;
             }
         },
 
@@ -165,24 +172,28 @@
                 this.updateHeight();
     
                 const self = this;
-                let resizing; 
 
-                window.addEventListener('resize', function (event) {
-                    if (resizing) { clearTimeout(resizing); }
-                    resizing = setTimeout(function() {
-                        u.clog('window resized');
-                        self.updateHeight();
-                    }, 500);
-                });
+//                let resizing; 
+//                window.addEventListener('resize', function (event) {
+//                    if (resizing) { clearTimeout(resizing); }
+//                    resizing = setTimeout(function() {
+//                        u.clog('window resized');
+//                        self.updateHeight();
+//                    }, 500);
+//                });
     
                 document.onscroll = function(e) {
-                    self.position = document.documentElement.scrollTop || document.body.scrollTop;
+                    self.scrollPositionY = document.documentElement.scrollTop || document.body.scrollTop;
                 };
     
                 this.elements.tableHeader = document.getElementById('table-view-header');
                 this.elements.tableBody = document.getElementById('table-view-body');
             });
-        }
+        },
+
+//        destroyed() {
+//            window.removeEventListener('resize', () => {},false);
+//        }
     }
 </script>
 

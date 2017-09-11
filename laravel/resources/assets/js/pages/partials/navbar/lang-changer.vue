@@ -1,20 +1,21 @@
 <template>
-    <span class="nav-item">
-        <p class="control is-expanded">
+<div class="nav-item">
+    <p class="control is-expanded">
         <span class="select is-fullwidth">
             <select 
+                class="thin"
                 style="border: none"
                 :style="selectStyle" 
                 v-model="selectedVal" 
                 @change="setVal()"
                 >
                 <option v-for="lang in langs" :value="lang.value">
-                    {{ lang.text }}
+                    {{ lang.label }}
                 </option>
             </select>
         </span>
-        </p>
-    </span>
+    </p>
+</div>
 </template>
 
 <script>
@@ -24,8 +25,8 @@ export default {
     data() {
         return {
             langs: [
-                { value: "en", text: 'English' },
-                { value: "ja", text: 'Japanese' }
+                { value: "en", label: 'English' },
+                { value: "ja", label: 'Japanese' }
             ],
             selectedVal: ''
         }
@@ -43,7 +44,7 @@ export default {
         selectStyle: function() {
             return {
                 background: 'none',
-                color: this.theme.primary.codeInvert
+                color: this.theme.primary.codeInvert,
             }
         }
     },
@@ -61,7 +62,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

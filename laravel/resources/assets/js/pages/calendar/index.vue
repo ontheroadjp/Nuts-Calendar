@@ -1,19 +1,19 @@
 <template>
     <div id="calendar">
         <signboard 
-            :calendar-service-is-loading="calendarService.isLoading"
+            :calendar-is-loading="isLoading"
         ></signboard>
     
         <router-view 
-            :calendar-service-is-loading="calendarService.isLoading"
+            :calendar-is-loading="isLoading"
         ></router-view>
     </div>
 </template>
 
 <script>
-    import { mapState } from 'vuex';
+    import { mapState, mapActions } from 'vuex';
     import signboard from './signboard/index.vue';
-    import calendarService from '../../services/calendar.js';
+//    import calendarService from '../../services/calendar.js';
 
     export default {
         name: 'calendar-root',
@@ -22,17 +22,27 @@
             'signboard': signboard,
         },
 
-        mixins: [
-            calendarService,
-        ],
+//        mixins: [
+//            calendarService,
+//        ],
 
         computed: {
             ...mapState({
                 appReady: state => state.app.ready,
-                currentCalendarId: state => state.calendar.currentId,
-                currentYear: state => state.calendar.currentYear,
-                currentMonth: state => state.calendar.currentMonth
             }),
+
+            ...mapState('calendar', {
+                currentCalendarId: state => state.currentId,
+                currentYear: state => state.currentYear,
+                currentMonth: state => state.currentMonth,
+                isLoading: state => state.isLoading
+            })
+        },
+
+        methods: {
+            ...mapActions('calendar', {
+                fetchCalendar: 'fetchCalendar'
+            })
         },
 
         watch: {
@@ -77,7 +87,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

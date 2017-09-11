@@ -5,6 +5,8 @@ export default {
         isActive: false,
         isLoading: false,
         editingItem: '',
+        clickX: 0,
+        clickY: 0,
         input: {
             content: '',
             startTime: '',
@@ -13,9 +15,9 @@ export default {
     },
 
     actions: {
-        prepare( { commit }, { editingItem } ) {
+        prepare( { commit }, { event, editingItem } ) {
             u.clog('prepare()');
-            commit('prepare', { editingItem } );
+            commit('prepare', { event, editingItem } );
         },
 
         toggleTaskDone( { dispatch, commit } ) {
@@ -79,7 +81,9 @@ export default {
     },
 
     mutations: {
-        prepare( state, { editingItem } ) {
+        prepare( state, { event, editingItem } ) {
+            state.clickX = event.pageX;
+            state.clickY = event.pageY;
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;

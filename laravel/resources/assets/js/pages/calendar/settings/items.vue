@@ -33,11 +33,11 @@
 </template>
 
 <script>
-    import calendarService from '../../../services/calendar.js';
+//    import calendarService from '../../../services/calendar.js';
     export default {
-        mixins: [
-            calendarService,
-        ],
+//        mixins: [
+//            calendarService,
+//        ],
 
         computed: {
             theme: function() {
@@ -50,7 +50,3 @@
         },
     }
 </script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

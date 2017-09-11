@@ -11,7 +11,7 @@ import tableView from '../pages/calendar/table-view/index.vue';
 
 export function init (router) {
 //    mapping(router);
-    beforRooting(router);
+    registGuards(router);
     return router;
 }
 
@@ -19,63 +19,91 @@ export const routes = [
     {
         path: '/',
         component: root,
-        auth: false,
-        footer: false
+        meta: {
+            auth: false,
+            footer: false
+        }
     },
     
     {
         path: '/login',
         component: login,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
 
     { 
         path: '/password/email',
         component: passwordEmail,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
     
     {
         path: '/password/reset/:token',
         component: passwordReset,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
 
     { 
         path: '/register',
         component: register,
-        auth: false,
-        footer: true
+        meta: {
+            auth: false,
+            footer: true
+        }
     },
 
     { 
         path: '/me/settings/:type',
         component: userAccountSettings,
-        auth: true,
-        footer: true
+        meta: {
+            auth: true,
+            footer: true
+        }
     },
 
     {
         path: '/dashboard',
         component: dashboard,
-        auth: true,
-        footer: true,
+        meta: {
+            auth: true,
+            footer: true,
+        },
+        children: [
+            {
+                path: ':type',
+                component: dashboard,
+                meta: {
+                    auth: true,
+                    footer: true,
+                }
+            }
+        ]
     },
 
     { 
         path: '/calendar',
         component: calendar,
-        auth: true,
-        footer: true,
+        meta: {
+            auth: true,
+            footer: true,
+        },
         children: [
             {
                 path: 'view',
                 component: tableView,
-                auth: true,
-                footer: false
+                meta: {
+                    auth: true,
+                    footer: false
+                }
             },
 //            {
 //                path: 'settings/:type',
@@ -88,8 +116,8 @@ export const routes = [
 ];
 
 
-function beforRooting(router){
-    router.beforeEach(function (to, from, next) {
+function registGuards(router){
+    router.beforeResolve(function (to, from, next) {
         u.clog( '------- ' + to.path + ' -------' );
         const token = jwtToken.getLocalToken();
         if(! token) {
@@ -101,7 +129,7 @@ function beforRooting(router){
 }
             
 function handleNoLogedIn(to, from, next) {
-    u.clog('handleNoLogedIn@app.vue');
+    u.clog('handleNoLogedIn@vue-router-config');
     if(to.matched.some(record => record.meta.auth)) {
         next({path: '/login'});
     }
@@ -110,7 +138,7 @@ function handleNoLogedIn(to, from, next) {
 }
             
 function handleAlreadyLogedIn(to, from, next, token) {
-    u.clog('handleAlreadyLogedIn@app.vue');
+    u.clog('handleAlreadyLogedIn@vue-router-config');
 
     jwtToken.setLocalToken(token);
 
