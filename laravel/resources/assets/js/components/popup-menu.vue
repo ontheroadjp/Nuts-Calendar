@@ -7,6 +7,7 @@
                     top: -8px;
                     right: -8px;
                     background-color: rgb(84, 110, 122);
+                    z-index: 999;
                 "
                 @click.stop="onClose()"
             ></button>
