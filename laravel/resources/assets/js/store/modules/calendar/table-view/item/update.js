@@ -20,6 +20,11 @@ export default {
             commit('prepare', { event, editingItem } );
         },
 
+        prepareModal( { commit }, { event } ) {
+            u.clog('prepareModal()');
+            commit('prepareModal', { event } );
+        },
+
         toggleTaskDone( { dispatch, commit } ) {
             commit('toggleTaskDone');
             dispatch('update');
@@ -81,13 +86,16 @@ export default {
     },
 
     mutations: {
-        prepare( state, { event, editingItem } ) {
-            state.clickX = event.pageX;
-            state.clickY = event.pageY;
+        prepare( state, { editingItem } ) {
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;
             state.input.endTime = editingItem.end_time;
+        },
+
+        prepareModal( state, { event } ) {
+            state.clickX = event.pageX;
+            state.clickY = event.pageY;
             state.isActive = true;
         },
 
