@@ -2,11 +2,11 @@
 <transition name="popup-menu">
     <black-screen v-show="isActive" :overlayId="overlayId">
         <div :style="box">
-            <button class="modal-close is-large" aria-label="close"
+            <button class="modal-close" aria-label="close"
                 style="position: absolute; 
-                        top: 20px;
-                        right: 20px;
-                        background-color: rgba(84, 110, 122, 0.5);
+                    top: -8px;
+                    right: -8px;
+                    background-color: rgb(84, 110, 122);
                 "
                 @click.stop="onClose()"
             ></button>
