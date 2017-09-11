@@ -496,10 +496,11 @@ export default {
         },
 
         clearTime () {
-            this.hour = ''
-                this.minute = ''
-                this.second = ''
-                this.apm = ''
+            this.hour = '';
+            this.minute = '';
+            this.second = '';
+            this.apm = '';
+            this.$emit('update:hasError', false);
         }
     },
 
