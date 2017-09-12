@@ -6,7 +6,7 @@
             :minute-interval="minuteInterval"
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
-            @change="onChangeStart"
+            @changeValue="onChangeStart"
         ></startTimePicker>
 
         <span style="margin: 0 5px;">to</span>
@@ -18,7 +18,7 @@
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
             menuPosition="left"
-            @change="onChangeEnd"
+            @changeValue="onChangeEnd"
         ></endTimePicker>
 
     </span>
@@ -56,7 +56,7 @@ export default {
                 end: false
             },
 
-            isChildReady: {
+            readyState: {
                 start: false,
                 end: false
             },
@@ -96,7 +96,9 @@ export default {
         },
 
         isReadyToUpdate: function() {
-            return (this.isChildReady.start || this.isChildReady.end) && !this.isDropdownOpened;
+            const values = Object.values(this.readyState);
+            return (values.indexOf(true) !== -1) && !this.hasError && !this.isDropdownOpened;
+//            return (this.readyState.start || this.readyState.end) && !this.isDropdownOpened;
         }
     },
 
@@ -111,7 +113,7 @@ export default {
             this.input.start.HH = data.inputValue.HH;
             this.input.start.mm = data.inputValue.mm;
             this.error.start = data.hasError;
-            this.isChildReady.start = data.isReadyToUpdate;
+            this.readyState.start = data.isReadyToUpdate;
             this.isDropdownOpened = data.isDropdownOpened;
             this.fireEvents();
         },
@@ -126,7 +128,7 @@ export default {
             this.input.end.HH = data.inputValue.HH;
             this.input.end.mm = data.inputValue.mm;
             this.error.end = data.hasError;
-            this.isChildReady.end = data.isReadyToUpdate;
+            this.readyState.end = data.isReadyToUpdate;
             this.isDropdownOpened = data.isDropdownOpened;
             this.fireEvents();
         },
@@ -156,7 +158,7 @@ export default {
                 isReadyToUpdate: this.isReadyToUpdate,
             }
 
-            this.$emit('change', data);
+            this.$emit('changeValue', data);
         }
     },
 

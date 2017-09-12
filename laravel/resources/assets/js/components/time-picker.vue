@@ -2,7 +2,7 @@
 <template>
 <span class="time-picker">
 
-    <input class="display-time" 
+    <input class="display-time thin" 
         type="text" 
         :style="[style.input]" 
         v-model="displayTime" 
@@ -23,7 +23,7 @@
     ></div>
 
     <div v-show="showDropdown" class="dropdown" :style="[style.dropdown]">
-        <div class="select-list" :style="[style.selectList]">
+        <div class="select-list thin" :style="[style.selectList]">
             <ul class="hours">
                 <li class="hint" v-text="hourType"></li>
                 <li v-for="hr in hours" 
@@ -58,9 +58,10 @@
             </ul>
         </div><!-- / .select-list -->
 
-        <div :style="[style.dropdownFooter]" @click.stop="toggleDropdown($event)">
-            done
-        </div>
+        <div class="thin" 
+            :style="[style.dropdownFooter]" 
+            @click.stop="toggleDropdown($event)"
+        >done</div>
 
     </div><!-- // .dropdown -->
 
@@ -500,7 +501,7 @@ export default {
                 isDropdownOpened: this.showDropdown
             }
 
-            this.$emit('change', data);
+            this.$emit('changeValue', data);
         },
 
         isTwelveHours (token) {
