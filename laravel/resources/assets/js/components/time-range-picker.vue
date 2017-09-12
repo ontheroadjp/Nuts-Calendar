@@ -1,7 +1,6 @@
 <template>
     <span class="time-range-picker">
         <startTimePicker 
-            v-model="input.start"
             format="HH:mm"
             :initialValue="initial.start"
             :minute-interval="minuteInterval"
@@ -13,9 +12,8 @@
         <span style="margin: 0 5px;">to</span>
 
         <endTimePicker 
-            v-model="input.end"
             format="HH:mm"
-            :initialValue="initial.start"
+            :initialValue="initial.end"
             :minute-interval="minuteInterval"
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
@@ -163,17 +161,17 @@ export default {
     },
 
     mounted: function() {
-        if( this.startTime ) {
+        if( this.initialStartTime ) {
             u.clog('init startTime');
-            this.initial.start.HH = this.startTime.split(':')[0];
-            this.initial.start.mm = this.startTime.split(':')[1];
+            this.initial.start.HH = this.initialStartTime.split(':')[0];
+            this.initial.start.mm = this.initialStartTime.split(':')[1];
             this.input.start.HH = this.initial.start.HH;
             this.input.start.mm = this.initial.start.mm;
         }
-        if( this.endTime ) {
+        if( this.initialEndTime ) {
             u.clog('init endTime');
-            this.initial.end.HH = this.endTime.split(':')[0];
-            this.initial.end.mm = this.endTime.split(':')[1];
+            this.initial.end.HH = this.initialEndTime.split(':')[0];
+            this.initial.end.mm = this.initialEndTime.split(':')[1];
             this.input.end.HH = this.initial.end.HH;
             this.input.end.mm = this.initial.end.mm;
         }
