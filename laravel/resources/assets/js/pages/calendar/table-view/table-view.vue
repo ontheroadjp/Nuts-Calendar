@@ -8,10 +8,11 @@
 
     <popup-menu 
         v-if="filteredBody && editItem.isActive"
-        :clickX="editItem.clickX" :clickY="editItem.clickY" 
+        overlayId="table-view-body"
+        :clickX="editItem.clickX" 
+        :clickY="editItem.clickY" 
         :isActive="editItem.isActive" 
         :onClose="popupMenuClose"
-        overlayId="table-view-body"
         :offsetY="topPosition"
         :scrollX="scrollPositionX"
         :scrollY="scrollPositionY"
@@ -223,6 +224,8 @@ export default {
         'editItem.isActive': function() {
             if(this.editItem.isActive) {
                 this.fixedScrollPositionY = this.scrollPositionY;
+            } else {
+                this.fixedScrollPositionY = 0;
             }
         }
     },
