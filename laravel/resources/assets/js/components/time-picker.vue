@@ -3,7 +3,6 @@
 <span class="time-picker">
 
     <input class="display-time" 
-        :id="id" 
         type="text" 
         :style="[style.input]" 
         v-model="displayTime" 
@@ -85,7 +84,6 @@ export default {
         format:             { type: String },
         minuteInterval:     { type: Number },
         secondInterval:     { type: Number },
-        id:                 { type: String },
         menuHeight:         { type: Number },
         inputHeight:        { type: Number, default: 35 },
         inputWidth:         { type: Number, default: 100 },
