@@ -3,7 +3,7 @@
         <navbar></navbar>
         <notification></notification>
         <router-view></router-view>
-        <page-footer v-if="$route.footer"></page-footer>
+        <page-footer v-if="$route.meta.footer"></page-footer>
     </div>
 </template>
 
@@ -74,11 +74,15 @@
 
             successInit(response) {
                 u.clog('success')
+//                this.$store.commit('initUserCalendar', response.data.usercalendar );
+//                this.$store.commit('initDashboardUserCalendarMembers', response.data.usercalendar_members );
+//                this.$store.commit('initMembersForUserCalendar', response.data.members );
+//                this.$store.commit('initMembers', response.data.members );
+
                 this.$store.commit('login', response.data.currentuser.name);
-                this.$store.commit('initUserCalendar', response.data.usercalendar );
-                this.$store.commit('initMembersForUserCalendar', response.data.members );
-                this.$store.commit('initMembers', response.data.members );
-                this.$store.commit('initDashboardUserCalendarMembers', response.data.usercalendar_members );
+                this.$store.commit('userCalendar/init', response.data.usercalendar );
+                this.$store.commit('userCalendarMember/init', response.data.usercalendar_members );
+                this.$store.commit('member/init', response.data.members );
                 this.$store.commit('ready', true);
                 eventBus.fire('nuts.app.ready', null, 'App.vue');
             },
@@ -108,6 +112,15 @@
     }
 </script>
 
-<style lang="scss" scoped>
-    /* empty */
+<style>
+a {
+    color: rgb(25, 96, 183);
+}
+
+.thin { font-weight: 100; }
+.thin-200 { font-weight: 200; }
+.thin-300 { font-weight: 300; }
+.thin-400 { font-weight: 400; }
+.thin-500 { font-weight: 500; }
+.thin-600 { font-weight: 600; }
 </style>

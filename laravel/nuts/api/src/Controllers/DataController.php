@@ -43,7 +43,7 @@ class DataController extends BaseController
 //            ->where('users.id', '=', $userId)
 //            ->get();
 
-        $members = Member::all();
+        $members = Member::all()->keyBy('id')->sort();
         $userCalendarMembers = UserCalendarMember::all();
 
         // calendar

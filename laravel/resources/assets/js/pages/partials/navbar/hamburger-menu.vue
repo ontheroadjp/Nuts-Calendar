@@ -1,14 +1,7 @@
 <template>
     <span class="nav-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span>Home</span>
+        <span>Dashboard</span>
+        <span>Account</span>
     </span>
 </template>
-
-<script>
-</script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

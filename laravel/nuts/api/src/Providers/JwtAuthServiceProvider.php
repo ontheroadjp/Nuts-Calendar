@@ -85,6 +85,7 @@ class JwtAuthServiceProvider extends ServiceProvider
             //Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
                 Route::get('/me/settings/{type}', 'JwtUserController@getSettings');
                 Route::get('/dashboard', 'PagesController@index');
+                Route::get('/dashboard/{type}', 'PagesController@index');
                 Route::get('/calendar', 'PagesController@index');
                 Route::get('/calendar/view', 'PagesController@index');
                 Route::get('/calendar/settings/{type}', 'PagesController@index');
