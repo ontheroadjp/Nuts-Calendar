@@ -1,43 +1,28 @@
 <template>
     <span class="time-range-picker">
         <startTimePicker 
-            :minute-interval="5"
             v-model="input.start"
             format="HH:mm"
+            :initialValue="initial.start"
+            :minute-interval="5"
             :inputWidth="inputWidth"
-            :menuHeight="menuHeight"
-            @dropdown-open="onDropdownOpen"
-            :hasError.sync="error.start"
+            :dropdownHeight="dropdownHeight"
+            @change="onChangeStart"
         ></startTimePicker>
 
         <span style="margin: 0 5px;">to</span>
 
         <endTimePicker 
-            :minute-interval="5"
             v-model="input.end"
             format="HH:mm"
+            :initialValue="initial.start"
+            :minute-interval="5"
             :inputWidth="inputWidth"
-            :menuHeight="menuHeight"
+            :dropdownHeight="dropdownHeight"
             menuPosition="left"
-            @dropdown-open="onDropdownOpen"
-            :hasError.sync="error.end"
+            @change="onChangeEnd"
         ></endTimePicker>
 
-        <!--
-        <button
-            class="button"
-            @click="clickSave"
-            :disabled="isLoading 
-                        || initial.start.HH === input.start.HH 
-                        && ( initial.start.mm === input.start.mm 
-                        && initial.end.HH === input.end.HH 
-                        && initial.end.mm === input.end.mm )
-                        "
-            >
-                <i v-if="!isLoading" class="fa fa-floppy-o"></i>
-                <i v-else class="fa fa-refresh fa-spin"></i>
-        </button> 
-        -->
     </span>
 </template>
 
@@ -46,10 +31,7 @@ import startTimePicker from './time-picker.vue';
 import endTimePicker from './time-picker.vue';
 
 export default {
-    components: {
-        'startTimePicker': startTimePicker, 
-        'endTimePicker': endTimePicker
-    },
+    components: { startTimePicker, endTimePicker },
 
 //    props: [
 //        'minuteInterval',
@@ -62,14 +44,14 @@ export default {
 //    ],
 
     props: {
-        minuteInterval: { type: Number },
-        startTime:      { type: String }, // HH:mm:ss
-        endTime:        { type: String }, // HH:mm:ss
-        action:         { type: Function },
-        isLoading:      { type: Boolean },
-        inputWidth:     { type: Number, default: 80 },
-        menuHeight:     { type: Number, default: 280 },
-        ready:          { type: Boolean, required: true }
+        minuteInterval:     { type: Number },
+        startTime:          { type: String }, // HH:mm:ss
+        endTime:            { type: String }, // HH:mm:ss
+        action:             { type: Function },
+        isLoading:          { type: Boolean },
+        inputWidth:         { type: Number, default: 80 },
+        dropdownHeight:     { type: Number, default: 280 },
+        ready:              { type: Boolean, required: true }
     },
 
     data() {
@@ -89,7 +71,12 @@ export default {
                 end: false
             },
 
-            isDropdownOpen: false
+            isChildReady: {
+                start: false,
+                end: false
+            },
+
+            isDropdownOpened: false
         }
     },
 
@@ -121,19 +108,81 @@ export default {
             ) { return true; }
 
             return false;
+        },
+
+        isReadyToUpdate: function() {
+            return (this.isChildReady.start || this.isChildReady.end) && !this.isDropdownOpened;
         }
     },
 
     methods: {
-        onDropdownOpen(value) {
-            this.isDropdownOpen = value;
+//        onDropdownOpen(value) {
+//            this.isDropdownOpen = value;
+//
+//            if( value === true ) return;
+//
+//            this.$nextTick(() => {
+//                this.$emit('update:ready', !this.hasError);
+//            });
+//        },
 
-            if( value === true ) return;
-
-            this.$nextTick(() => {
-                this.$emit('update:ready', !this.hasError);
-            });
+        onChangeStart(data) {
+            u.clog('------------------- onChange Start Value() ---------------');
+            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
+            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
+            u.clog('hasError: ' + data.hasError);
+            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
+            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
+            this.input.start.HH = data.inputValue.HH;
+            this.input.start.mm = data.inputValue.mm;
+            this.error.start = data.hasError;
+            this.isChildReady.end = data.isReadyToUpdate;
+            this.isDropdownOpened = data.isDropdownOpened;
+            this.fireEvents();
         },
+
+        onChangeEnd(data) {
+            u.clog('------------------- onChange End Value() ---------------');
+            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
+            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
+            u.clog('hasError: ' + data.hasError);
+            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
+            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
+            this.input.end.HH = data.inputValue.HH;
+            this.input.end.mm = data.inputValue.mm;
+            this.error.end = data.hasError;
+            this.isChildReady.end = data.isReadyToUpdate;
+            this.isDropdownOpened = data.isDropdownOpened;
+            this.fireEvents();
+        },
+        
+        fireEvents() {
+            const data = {
+                value: {
+                    start: {
+                        HH: this.input.start.HH,
+                        mm: this.input.start.mm,
+                    },
+
+                    end: {
+                        HH: this.input.end.HH,
+                        mm: this.input.end.mm,
+                    }
+                },
+
+                formattedValue: [
+                    { 
+                        start: this.startTimeResult,
+                        end: this.endTimeResult
+                    }
+                ],
+
+                hasError: this.hasError,
+                isReadyToUpdate: this.isReadyToUpdate,
+            }
+
+            this.$emit('change', data);
+        }
 
 //        clickSave() {
 //            this.action({ 
@@ -143,27 +192,27 @@ export default {
 //        },
     },
 
-    watch: {
-        'input.start.HH': function() {
-            if(!this.isDropdownOpen)
-                this.$emit('update:ready', !this.hasError);
-        },
-
-        'input.start.mm': function() {
-            if(!this.isDropdownOpen)
-                this.$emit('update:ready', !this.hasError);
-        },
-
-        'input.end.HH': function() {
-            if(!this.isDropdownOpen)
-                this.$emit('update:ready', !this.hasError);
-        },
-
-        'input.end.mm': function() {
-            if(!this.isDropdownOpen)
-                this.$emit('update:ready', !this.hasError);
-        },
-    },
+//    watch: {
+//        'input.start.HH': function() {
+//            if(!this.isDropdownOpen)
+//                this.$emit('update:ready', !this.hasError);
+//        },
+//
+//        'input.start.mm': function() {
+//            if(!this.isDropdownOpen)
+//                this.$emit('update:ready', !this.hasError);
+//        },
+//
+//        'input.end.HH': function() {
+//            if(!this.isDropdownOpen)
+//                this.$emit('update:ready', !this.hasError);
+//        },
+//
+//        'input.end.mm': function() {
+//            if(!this.isDropdownOpen)
+//                this.$emit('update:ready', !this.hasError);
+//        },
+//    },
 
     mounted: function() {
         if( this.startTime ) {
@@ -181,7 +230,7 @@ export default {
             this.input.end.mm = this.initial.end.mm;
         }
 
-        this.$emit('update:ready', !this.hasError);
+//        this.$emit('update:ready', !this.hasError);
     }
 }
 </script>

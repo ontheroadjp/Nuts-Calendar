@@ -17,7 +17,7 @@
                 :action="update"
                 :isLoading="updateState.isLoading"
                 :inputWidth="80"
-                :menuHeight="280"
+                :dropdownHeight="280"
                 :ready.sync="ready.timeRange"
             ></timeRangePicker>
         </div>
