@@ -1,10 +1,9 @@
 <template>
     <span class="time-range-picker">
         <startTimePicker 
-            v-model="input.start"
             format="HH:mm"
             :initialValue="initial.start"
-            :minute-interval="5"
+            :minute-interval="minuteInterval"
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
             @change="onChangeStart"
@@ -13,10 +12,9 @@
         <span style="margin: 0 5px;">to</span>
 
         <endTimePicker 
-            v-model="input.end"
             format="HH:mm"
-            :initialValue="initial.start"
-            :minute-interval="5"
+            :initialValue="initial.end"
+            :minute-interval="minuteInterval"
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
             menuPosition="left"
@@ -33,25 +31,12 @@ import endTimePicker from './time-picker.vue';
 export default {
     components: { startTimePicker, endTimePicker },
 
-//    props: [
-//        'minuteInterval',
-//        'startTime',
-//        'endTime',
-//        'action',
-//        'isLoading',
-//        'inputWidth',
-//        'menuHeight'
-//    ],
-
     props: {
-        minuteInterval:     { type: Number },
-        startTime:          { type: String }, // HH:mm:ss
-        endTime:            { type: String }, // HH:mm:ss
-        action:             { type: Function },
-        isLoading:          { type: Boolean },
+        minuteInterval:     { type: Number, default: 5 },
+        initialStartTime:   { type: String, default: '' }, // HH:mm:ss or ''
+        initialEndTime:     { type: String, default: '' }, // HH:mm:ss or ''
         inputWidth:         { type: Number, default: 80 },
         dropdownHeight:     { type: Number, default: 280 },
-        ready:              { type: Boolean, required: true }
     },
 
     data() {
@@ -116,38 +101,28 @@ export default {
     },
 
     methods: {
-//        onDropdownOpen(value) {
-//            this.isDropdownOpen = value;
-//
-//            if( value === true ) return;
-//
-//            this.$nextTick(() => {
-//                this.$emit('update:ready', !this.hasError);
-//            });
-//        },
-
         onChangeStart(data) {
-            u.clog('------------------- onChange Start Value() ---------------');
-            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
-            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
-            u.clog('hasError: ' + data.hasError);
-            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
-            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
+//            u.clog('------------------- onChange Start Value() ---------------');
+//            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
+//            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
+//            u.clog('hasError: ' + data.hasError);
+//            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
+//            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
             this.input.start.HH = data.inputValue.HH;
             this.input.start.mm = data.inputValue.mm;
             this.error.start = data.hasError;
-            this.isChildReady.end = data.isReadyToUpdate;
+            this.isChildReady.start = data.isReadyToUpdate;
             this.isDropdownOpened = data.isDropdownOpened;
             this.fireEvents();
         },
 
         onChangeEnd(data) {
-            u.clog('------------------- onChange End Value() ---------------');
-            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
-            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
-            u.clog('hasError: ' + data.hasError);
-            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
-            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
+//            u.clog('------------------- onChange End Value() ---------------');
+//            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
+//            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
+//            u.clog('hasError: ' + data.hasError);
+//            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
+//            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
             this.input.end.HH = data.inputValue.HH;
             this.input.end.mm = data.inputValue.mm;
             this.error.end = data.hasError;
@@ -183,54 +158,23 @@ export default {
 
             this.$emit('change', data);
         }
-
-//        clickSave() {
-//            this.action({ 
-//                start: this.startTimeResult, 
-//                end: this.endTimeResult 
-//            });
-//        },
     },
 
-//    watch: {
-//        'input.start.HH': function() {
-//            if(!this.isDropdownOpen)
-//                this.$emit('update:ready', !this.hasError);
-//        },
-//
-//        'input.start.mm': function() {
-//            if(!this.isDropdownOpen)
-//                this.$emit('update:ready', !this.hasError);
-//        },
-//
-//        'input.end.HH': function() {
-//            if(!this.isDropdownOpen)
-//                this.$emit('update:ready', !this.hasError);
-//        },
-//
-//        'input.end.mm': function() {
-//            if(!this.isDropdownOpen)
-//                this.$emit('update:ready', !this.hasError);
-//        },
-//    },
-
     mounted: function() {
-        if( this.startTime ) {
+        if( this.initialStartTime ) {
             u.clog('init startTime');
-            this.initial.start.HH = this.startTime.split(':')[0];
-            this.initial.start.mm = this.startTime.split(':')[1];
+            this.initial.start.HH = this.initialStartTime.split(':')[0];
+            this.initial.start.mm = this.initialStartTime.split(':')[1];
             this.input.start.HH = this.initial.start.HH;
             this.input.start.mm = this.initial.start.mm;
         }
-        if( this.endTime ) {
+        if( this.initialEndTime ) {
             u.clog('init endTime');
-            this.initial.end.HH = this.endTime.split(':')[0];
-            this.initial.end.mm = this.endTime.split(':')[1];
+            this.initial.end.HH = this.initialEndTime.split(':')[0];
+            this.initial.end.mm = this.initialEndTime.split(':')[1];
             this.input.end.HH = this.initial.end.HH;
             this.input.end.mm = this.initial.end.mm;
         }
-
-//        this.$emit('update:ready', !this.hasError);
     }
 }
 </script>

@@ -79,19 +79,21 @@ export default {
     name: 'VueTimepicker',
 
     props: {
-        value:              { type: Object },
-        initialValue:       { type: Object },
-        hideClearButton:    { type: Boolean },
-        format:             { type: String },
-        minuteInterval:     { type: Number },
-        secondInterval:     { type: Number },
-        dropdownHeight:     { type: Number },
-        inputHeight:        { type: Number, default: 35 },
-        inputWidth:         { type: Number, default: 100 },
+//        value:              { type: Object },
+        initialValue:       { type: Object, default: {} },
+        hideClearButton:    { type: Boolean, default: false },
+        format:             { type: String, default: 'HH:mm' },
+        minuteInterval:     { type: Number, default: 5 },
+        secondInterval:     { type: Number, default: 10 },
+        dropdownHeight:     { type: Number, default: 280 }, // by px
+        inputHeight:        { type: Number, default: 35 },  // by px
+        inputWidth:         { type: Number, default: 100 }, // by px
     },
 
     data() {
         return {
+//            value: {},
+            inputValue: {},
             hours: [],
             minutes: [],
             seconds: [],
@@ -138,11 +140,6 @@ export default {
             }
             return false
         },
-
-//        menuPositionValue: function() {
-//            if(this.menuPosition === 'right') return '0px'
-//            if(this.menuPosition === 'left') return (this.inputWidth * -1) + 'px'
-//        },
 
         hasError: function() {
             if( (this.hour == '' && this.minute != '') 
@@ -196,7 +193,8 @@ export default {
             this.renderList('second', newInteval)
         },
 
-        'value': 'readValues',
+//        'value': 'readValues',
+        'inputValue': 'readValues',
         'displayTime': 'fillValues'
     },
 
@@ -210,15 +208,15 @@ export default {
                 case 'HH':
                 case 'mm':
                 case 'ss':
-                        return i < 10 ? `0${i}` : String(i)
+                    return i < 10 ? `0${i}` : String(i)
                 case 'h':
                 case 'k':
-                            return String(i + 1)
+                    return String(i + 1)
                 case 'hh':
                 case 'kk':
-                                return (i + 1) < 10 ? `0${i + 1}` : String(i + 1)
+                    return (i + 1) < 10 ? `0${i + 1}` : String(i + 1)
                 default:
-                                    return ''
+                    return ''
             }
         },
 
@@ -237,38 +235,38 @@ export default {
 
         renderFormat (newFormat) {
             newFormat = newFormat || this.format
-                if (!newFormat || !newFormat.length) {
-                    newFormat = 'HH:mm'
-                }
+            if (!newFormat || !newFormat.length) {
+                newFormat = 'HH:mm'
+            }
 
             this.hourType = this.checkAcceptingType(CONFIG.HOUR_TOKENS, newFormat, 'HH')
-                this.minuteType = this.checkAcceptingType(CONFIG.MINUTE_TOKENS, newFormat, 'mm')
-                this.secondType = this.checkAcceptingType(CONFIG.SECOND_TOKENS, newFormat)
-                this.apmType = this.checkAcceptingType(CONFIG.APM_TOKENS, newFormat)
+            this.minuteType = this.checkAcceptingType(CONFIG.MINUTE_TOKENS, newFormat, 'mm')
+            this.secondType = this.checkAcceptingType(CONFIG.SECOND_TOKENS, newFormat)
+            this.apmType = this.checkAcceptingType(CONFIG.APM_TOKENS, newFormat)
 
-                this.renderHoursList()
-                this.renderList('minute')
+            this.renderHoursList()
+            this.renderList('minute')
 
-                if (this.secondType) {
-                    this.renderList('second')
-                }
+            if (this.secondType) {
+                this.renderList('second')
+            }
 
             if (this.apmType) {
                 this.renderApmList()
             }
 
             const self = this
-                this.$nextTick(() => {
-                    self.readValues()
-                })
+            this.$nextTick(() => {
+                self.readValues()
+            })
         },
 
         renderHoursList () {
             const hoursCount = (this.hourType === 'h' || this.hourType === 'hh') ? 12 : 24
-                this.hours = []
-                for (let i = 0; i < hoursCount; i++) {
-                    this.hours.push(this.formatValue(this.hourType, i))
-                }
+            this.hours = []
+            for (let i = 0; i < hoursCount; i++) {
+                this.hours.push(this.formatValue(this.hourType, i))
+            }
         },
 
         renderList (listType, interval) {
@@ -284,10 +282,10 @@ export default {
                 interval = 60
             } else if (interval > 60) {
                 window.console.warn('`' + listType + '-interval` should be less than 60. Current value is', interval)
-                    interval = 1
+                interval = 1
             } else if (interval < 1) {
                 window.console.warn('`' + listType + '-interval` should be NO less than 1. Current value is', interval)
-                    interval = 1
+                interval = 1
             } else if (!interval) {
                 interval = 1
             }
@@ -309,14 +307,16 @@ export default {
 
         renderApmList () {
             this.apms = []
-                if (!this.apmType) { return }
+            if (!this.apmType) { return }
             this.apms = this.apmType === 'A' ? ['AM', 'PM'] : ['am', 'pm']
         },
 
         readValues () {
-            if (!this.value || this.muteWatch) { return }
+//            if (!this.value || this.muteWatch) { return }
+            if (!this.inputValue || this.muteWatch) { return }
 
-            const timeValue = JSON.parse(JSON.stringify(this.value || {}))
+//            const timeValue = JSON.parse(JSON.stringify(this.value || {}))
+            const timeValue = JSON.parse(JSON.stringify(this.inputValue || {}))
 
             const values = Object.keys(timeValue);
             if (values.length === 0) { return }
@@ -355,7 +355,7 @@ export default {
             CONFIG.HOUR_TOKENS.forEach((token) => {
                 if (token === baseHourType) {
                     fullValues[token] = baseHour
-                        return
+                    return
                 }
 
                 let value
@@ -365,48 +365,61 @@ export default {
                     case 'HH':
                         if (!String(hourValue).length) {
                             fullValues[token] = ''
-                                return
+                            return
+
                         } else if (baseOnTwelveHours) {
                             if (apmValue === 'pm') {
                                 value = hourValue < 12 ? hourValue + 12 : hourValue
                             } else {
                                 value = hourValue % 12
                             }
+
                         } else {
                             value = hourValue % 24
                         }
-                        fullValues[token] = (token === 'HH' && value < 10) ? `0${value}` : String(value)
+
+                        fullValues[token] = (token === 'HH' && value < 10) 
+                            ? `0${value}` 
+                            : String(value)
                             break
+
                     case 'k':
                     case 'kk':
                         if (!String(hourValue).length) {
                             fullValues[token] = ''
-                                return
+                            return
+
                         } else if (baseOnTwelveHours) {
                             if (apmValue === 'pm') {
                                 value = hourValue < 12 ? hourValue + 12 : hourValue
                             } else {
                                 value = hourValue === 12 ? 24 : hourValue
                             }
+
                         } else {
                             value = hourValue === 0 ? 24 : hourValue
                         }
+
                         fullValues[token] = (token === 'kk' && value < 10) ? `0${value}` : String(value)
-                            break
+                        break
+
                     case 'h':
                     case 'hh':
                         if (apmValue) {
                             value = hourValue
-                                apm = apmValue || 'am'
+                            apm = apmValue || 'am'
+
                         } else {
                             if (!String(hourValue).length) {
                                 fullValues[token] = ''
-                                    fullValues.a = ''
-                                    fullValues.A = ''
-                                    return
+                                fullValues.a = ''
+                                fullValues.A = ''
+                                return
+
                             } else if (hourValue > 11) {
                                 apm = 'pm'
-                                    value = hourValue === 12 ? 12 : hourValue % 12
+                                value = hourValue === 12 ? 12 : hourValue % 12
+
                             } else {
                                 if (baseOnTwelveHours) {
                                     apm = ''
@@ -416,29 +429,30 @@ export default {
                                 value = hourValue % 12 === 0 ? 12 : hourValue
                             }
                         }
+
                         fullValues[token] = (token === 'hh' && value < 10) ? `0${value}` : String(value)
-                            fullValues.a = apm
-                            fullValues.A = apm.toUpperCase()
-                            break
+                        fullValues.a = apm
+                        fullValues.A = apm.toUpperCase()
+                        break
                     }
             })
 
             if (this.minute || this.minute === 0) {
                 const minuteValue = Number(this.minute)
-                    fullValues.m = String(minuteValue)
-                    fullValues.mm = minuteValue < 10 ? `0${minuteValue}` : String(minuteValue)
+                fullValues.m = String(minuteValue)
+                fullValues.mm = minuteValue < 10 ? `0${minuteValue}` : String(minuteValue)
             } else {
                 fullValues.m = ''
-                    fullValues.mm = ''
+                fullValues.mm = ''
             }
 
             if (this.second || this.second === 0) {
                 const secondValue = Number(this.second)
-                    fullValues.s = String(secondValue)
-                    fullValues.ss = secondValue < 10 ? `0${secondValue}` : String(secondValue)
+                fullValues.s = String(secondValue)
+                fullValues.ss = secondValue < 10 ? `0${secondValue}` : String(secondValue)
             } else {
                 fullValues.s = ''
-                    fullValues.ss = ''
+                fullValues.ss = ''
             }
 
             this.fullValues = fullValues
@@ -449,14 +463,15 @@ export default {
         updateTimeValue (fullValues) {
             this.muteWatch = true
             const self = this
-            const baseTimeValue = JSON.parse(JSON.stringify(this.value || {}))
+//            const baseTimeValue = JSON.parse(JSON.stringify(this.value || {}))
+            const baseTimeValue = JSON.parse(JSON.stringify(this.inputValue || {}))
             let timeValue = {}
 
             Object.keys(baseTimeValue).forEach((key) => {
                 timeValue[key] = fullValues[key]
             })
 
-            this.$emit('input', timeValue)
+//            this.$emit('input', timeValue)
             this.fireEvents();
 
             this.$nextTick(() => {
@@ -467,7 +482,7 @@ export default {
         fireEvents() {
             const ready = !this.hasError 
                     && ( (this.hour != this.initialValue.HH) 
-                            || (this.minute != this.initialValue.mm) );
+                    || (this.minute != this.initialValue.mm) );
 
             const data = {
                 hasError: this.hasError,
@@ -476,12 +491,15 @@ export default {
                     HH: this.initialValue.HH,
                     mm: this.initialValue.mm
                 },
+
                 inputValue: {
                     HH: this.hour,
                     mm: this.minute
                 },
+
                 isDropdownOpened: this.showDropdown
             }
+
             this.$emit('change', data);
         },
 
@@ -539,7 +557,6 @@ export default {
 
             this.showDropdown = !this.showDropdown;
             this.fireEvents();
-//            this.$emit('dropdown-open', this.showDropdown);
         },
 
         select (type, value) {
@@ -564,7 +581,9 @@ export default {
     },
 
     mounted () {
-        this.renderFormat()
+//        this.value = this.initialValue;
+        this.inputValue = this.initialValue;
+        this.renderFormat();
     }
 }
 </script>
