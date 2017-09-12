@@ -111,7 +111,7 @@ export default {
             this.input.start.HH = data.inputValue.HH;
             this.input.start.mm = data.inputValue.mm;
             this.error.start = data.hasError;
-            this.isChildReady.end = data.isReadyToUpdate;
+            this.isChildReady.start = data.isReadyToUpdate;
             this.isDropdownOpened = data.isDropdownOpened;
             this.fireEvents();
         },
