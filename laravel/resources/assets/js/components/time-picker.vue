@@ -80,14 +80,14 @@ export default {
 
     props: {
 //        value:              { type: Object },
-        initialValue:       { type: Object },
+        initialValue:       { type: Object, default: {} },
         hideClearButton:    { type: Boolean, default: false },
         format:             { type: String, default: 'HH:mm' },
         minuteInterval:     { type: Number, default: 5 },
         secondInterval:     { type: Number, default: 10 },
-        dropdownHeight:     { type: Number, default: 280 },
-        inputHeight:        { type: Number, default: 35 },
-        inputWidth:         { type: Number, default: 100 },
+        dropdownHeight:     { type: Number, default: 280 }, // by px
+        inputHeight:        { type: Number, default: 35 },  // by px
+        inputWidth:         { type: Number, default: 100 }, // by px
     },
 
     data() {
