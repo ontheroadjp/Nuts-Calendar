@@ -92,7 +92,8 @@ export default {
 
     data() {
         return {
-            value: {},
+//            value: {},
+            inputValue: {},
             hours: [],
             minutes: [],
             seconds: [],
@@ -192,7 +193,8 @@ export default {
             this.renderList('second', newInteval)
         },
 
-        'value': 'readValues',
+//        'value': 'readValues',
+        'inputValue': 'readValues',
         'displayTime': 'fillValues'
     },
 
@@ -310,9 +312,11 @@ export default {
         },
 
         readValues () {
-            if (!this.value || this.muteWatch) { return }
+//            if (!this.value || this.muteWatch) { return }
+            if (!this.inputValue || this.muteWatch) { return }
 
-            const timeValue = JSON.parse(JSON.stringify(this.value || {}))
+//            const timeValue = JSON.parse(JSON.stringify(this.value || {}))
+            const timeValue = JSON.parse(JSON.stringify(this.inputValue || {}))
 
             const values = Object.keys(timeValue);
             if (values.length === 0) { return }
@@ -459,7 +463,8 @@ export default {
         updateTimeValue (fullValues) {
             this.muteWatch = true
             const self = this
-            const baseTimeValue = JSON.parse(JSON.stringify(this.value || {}))
+//            const baseTimeValue = JSON.parse(JSON.stringify(this.value || {}))
+            const baseTimeValue = JSON.parse(JSON.stringify(this.inputValue || {}))
             let timeValue = {}
 
             Object.keys(baseTimeValue).forEach((key) => {
@@ -576,7 +581,8 @@ export default {
     },
 
     mounted () {
-        this.value = this.initialValue;
+//        this.value = this.initialValue;
+        this.inputValue = this.initialValue;
         this.renderFormat();
     }
 }
