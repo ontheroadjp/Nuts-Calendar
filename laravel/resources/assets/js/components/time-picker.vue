@@ -79,7 +79,7 @@ export default {
     name: 'VueTimepicker',
 
     props: {
-        value:              { type: Object },
+//        value:              { type: Object },
         initialValue:       { type: Object },
         hideClearButton:    { type: Boolean, default: false },
         format:             { type: String, default: 'HH:mm' },
@@ -92,6 +92,7 @@ export default {
 
     data() {
         return {
+            value: {},
             hours: [],
             minutes: [],
             seconds: [],
@@ -465,7 +466,7 @@ export default {
                 timeValue[key] = fullValues[key]
             })
 
-            this.$emit('input', timeValue)
+//            this.$emit('input', timeValue)
             this.fireEvents();
 
             this.$nextTick(() => {
@@ -575,7 +576,8 @@ export default {
     },
 
     mounted () {
-        this.renderFormat()
+        this.value = this.initialValue;
+        this.renderFormat();
     }
 }
 </script>
