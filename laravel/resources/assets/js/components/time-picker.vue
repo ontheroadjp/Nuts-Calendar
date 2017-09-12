@@ -7,7 +7,7 @@
         type="text" 
         :style="[style.input]" 
         v-model="displayTime" 
-        @click.stop="toggleDropdown" 
+        @click.stop="toggleDropdown($event)" 
         readonly />
 
     <div v-show="hasError" class="error-message">Error</div>
@@ -20,7 +20,7 @@
 
     <div class="time-picker-overlay" 
         v-if="showDropdown" 
-        @click.stop="toggleDropdown"
+        @click.stop="toggleDropdown($event)"
     ></div>
 
     <div v-show="showDropdown" class="dropdown" :style="[style.dropdown]">
@@ -59,7 +59,7 @@
             </ul>
         </div><!-- / .select-list -->
 
-        <div :style="[style.dropdownFooter]" @click.stop="toggleDropdown">
+        <div :style="[style.dropdownFooter]" @click.stop="toggleDropdown($event)">
             done
         </div>
 
@@ -87,16 +87,17 @@ export default {
         secondInterval:     { type: Number },
         id:                 { type: String },
         menuHeight:         { type: Number },
-        inputWidth:         { type: Number },
-        menuPosition:       { type: String, default: 'right', 
-                                validation: function(val) {
-                                    return val === 'right' || 'left'; 
-                                }, default: 'right'
-                            },
+        inputHeight:        { type: Number, default: 35 },
+        inputWidth:         { type: Number, default: 100 },
+//        menuPosition:       { type: String, default: 'right', 
+//                                validation: function(val) {
+//                                    return val === 'right' || 'left'; 
+//                                }, default: 'right'
+//                            },
         hasError:           { type: Boolean, default: false }
     },
 
-    data () {
+    data() {
         return {
             hours: [],
             minutes: [],
@@ -112,7 +113,11 @@ export default {
             minute: '',
             second: '',
             apm: '',
-            fullValues: undefined
+            fullValues: undefined,
+            dropdownPosition: {
+                top: '0px',
+                left: '0px'
+            }
         }
     },
 
@@ -141,16 +146,17 @@ export default {
             return false
         },
 
-        menuPositionValue: function() {
-            if(this.menuPosition === 'right') return '0px'
-            if(this.menuPosition === 'left') return (this.inputWidth * -1) + 'px'
-        },
+//        menuPositionValue: function() {
+//            if(this.menuPosition === 'right') return '0px'
+//            if(this.menuPosition === 'left') return (this.inputWidth * -1) + 'px'
+//        },
 
         style: function(){
             return {
                 dropdown: {
                     height: this.menuHeight + 'px',
-                    left: this.menuPositionValue
+                    top: this.dropdownPosition.top,
+                    left: this.dropdownPosition.left
                 },
 
                 selectList: {
@@ -158,6 +164,7 @@ export default {
                 },
 
                 input: {
+                    height: this.inputHeight + 'px',
                     width: this.inputWidth + 'px'
                 },
 
@@ -461,7 +468,54 @@ export default {
             return token === 'h' || token === 'hh'
         },
 
-        toggleDropdown () {
+        setDropdownPositionX(e) {
+            const x = e.pageX;
+            const rightEdge = window.innerWidth;
+            const dropdownWidth = this.inputWidth * 2;
+            const margin = rightEdge - x - dropdownWidth;
+
+            if( margin < ((this.inputWidth * -1)) ) {
+                this.dropdownPosition.left = ((this.inputWidth * -1) + 10) + 'px';
+            } else if( margin < 10 ) {
+                this.dropdownPosition.left = (margin - 10) + 'px';
+            } else {
+                this.dropdownPosition.left = '0px';
+            }
+
+        },
+
+        setDropdownPositionY(e) {
+            const y = e.pageY;
+            const scrollPositionY = document.body.scrollTop;
+            const bottomEdge = window.innerHeight + scrollPositionY;
+            const dropdownFooterHeigh = 30; // visually estimate value;
+            const margin = bottomEdge - y - this.inputHeight - this.menuHeight - dropdownFooterHeigh;
+
+//            u.clog('-----------------------');
+//            u.clog('y: ' + y);
+//            u.clog('scrollPositionY: ' + scrollPositionY);
+//            u.clog('window.innerHeight: ' + window.innerHeight);
+//            u.clog('bottomEdge: ' + bottomEdge);
+//            u.clog('inputHeight: ' + this.inputHeight);
+//            u.clog('dropdownHeight: ' + this.menuHeight);
+//            u.clog('dropdownFooterHeigh: ' + dropdownFooterHeigh);
+//            u.clog('margin: ' + margin);
+
+            if( margin < 0 ) {
+                this.dropdownPosition.top = (this.inputHeight + 5) + (margin - 5) + 'px';
+            } else if( margin < 5 ) {
+                this.dropdownPosition.top = (this.inputHeight + 5) - (5 - margin) + 'px';
+            } else {
+                this.dropdownPosition.top = (this.inputHeight + 5) + 'px';
+            }
+
+            u.clog('this.dropdownPosition.top: ' + this.dropdownPosition.top);
+        },
+
+        toggleDropdown (e) {
+            this.setDropdownPositionX(e);
+            this.setDropdownPositionY(e);
+
             this.showDropdown = !this.showDropdown;
             this.$emit('dropdown-open', this.showDropdown);
 
