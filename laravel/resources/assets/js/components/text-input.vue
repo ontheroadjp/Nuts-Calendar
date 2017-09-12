@@ -51,13 +51,15 @@ export default {
     methods: {
         onKeyup: function() {
             const isReady = !this.hasError && this.input.value !== this.initialValue;
-            if( isReady ) {
-                this.$emit('readyValue', this.input.value);
-            } else {
-                this.$emit('readyValue', "");
+
+            const data = {
+                initialValue: this.initialValue,
+                inputValue: this.input.value,
+                hasError: this.hasError,
+                isReady: isReady
             }
-            this.$emit('hasError', this.hasError);
-            this.$emit('ready', isReady);
+
+            this.$emit('valueChange', data);
         }
     },
 

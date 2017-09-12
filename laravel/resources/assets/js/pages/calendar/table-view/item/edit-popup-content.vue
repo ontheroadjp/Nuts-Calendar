@@ -5,7 +5,7 @@
             <text-input 
                 :initialValue="updateState.editingItem.content"
                 placeholder="Title"
-                @readyValue="contentChanged"
+                @valueChange="onContentValueChanged"
             ></text-input>
         </div>
 
@@ -78,8 +78,12 @@ export default {
             u.clog('update ------------------');
         },
 
-        contentChanged(value) {
-            u.clog('Ready value: ' + value);
+        onContentValueChanged(data) {
+            u.clog('-----------------------------------------------');
+            u.clog('initial value: ' + data.initialValue);
+            u.clog('input value: ' + data.inputValue);
+            u.clog('hasError: ' + data.hasError);
+            u.clog('isReady: ' + data.isReady);
         }
     },
 
