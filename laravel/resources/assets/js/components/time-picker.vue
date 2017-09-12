@@ -1,9 +1,8 @@
-// This file is forked from phoenixwong/vue2-timepicker
+// This file is based on phoenixwong/vue2-timepicker
 <template>
 <span class="time-picker">
 
     <input class="display-time" 
-        :id="id" 
         type="text" 
         :style="[style.input]" 
         v-model="displayTime" 
@@ -81,20 +80,14 @@ export default {
 
     props: {
         value:              { type: Object },
+        initialValue:       { type: Object },
         hideClearButton:    { type: Boolean },
         format:             { type: String },
         minuteInterval:     { type: Number },
         secondInterval:     { type: Number },
-        id:                 { type: String },
-        menuHeight:         { type: Number },
+        dropdownHeight:     { type: Number },
         inputHeight:        { type: Number, default: 35 },
         inputWidth:         { type: Number, default: 100 },
-//        menuPosition:       { type: String, default: 'right', 
-//                                validation: function(val) {
-//                                    return val === 'right' || 'left'; 
-//                                }, default: 'right'
-//                            },
-        hasError:           { type: Boolean, default: false }
     },
 
     data() {
@@ -151,16 +144,24 @@ export default {
 //            if(this.menuPosition === 'left') return (this.inputWidth * -1) + 'px'
 //        },
 
+        hasError: function() {
+            if( (this.hour == '' && this.minute != '') 
+                || (this.hour != '' && this.minute == '') 
+            ) { return true; }
+
+            return false;
+        },
+
         style: function(){
             return {
                 dropdown: {
-                    height: this.menuHeight + 'px',
+                    height: this.dropdownHeight + 'px',
                     top: this.dropdownPosition.top,
                     left: this.dropdownPosition.left
                 },
 
                 selectList: {
-                    height: this.menuHeight + 'px'
+                    height: this.dropdownHeight + 'px'
                 },
 
                 input: {
@@ -170,7 +171,7 @@ export default {
 
                 dropdownFooter: {
                     'position': 'absolute',
-                    'top': `calc(${this.menuHeight}px + 10px)`,
+                    'top': `calc(${this.dropdownHeight}px + 10px)`,
                     'left': `calc(((${this.inputWidth}px + ${this.inputWidth}px + 4px)/2) - (${this.inputWidth}px * 1.2) / 2)`,
                     'width': this.inputWidth * 1.2 + 'px',
                     'padding': '3px',
@@ -345,82 +346,82 @@ export default {
             let fullValues = {}
 
             const baseHour = this.hour
-                const baseHourType = this.hourType
+            const baseHourType = this.hourType
 
-                const hourValue = baseHour || baseHour === 0 ? Number(baseHour) : ''
-                const baseOnTwelveHours = this.isTwelveHours(baseHourType)
-                const apmValue = (baseOnTwelveHours && this.apm) ? String(this.apm).toLowerCase() : false
+            const hourValue = baseHour || baseHour === 0 ? Number(baseHour) : ''
+            const baseOnTwelveHours = this.isTwelveHours(baseHourType)
+            const apmValue = (baseOnTwelveHours && this.apm) ? String(this.apm).toLowerCase() : false
 
-                CONFIG.HOUR_TOKENS.forEach((token) => {
-                    if (token === baseHourType) {
-                        fullValues[token] = baseHour
-                            return
-                    }
+            CONFIG.HOUR_TOKENS.forEach((token) => {
+                if (token === baseHourType) {
+                    fullValues[token] = baseHour
+                        return
+                }
 
-                    let value
-                        let apm
-                        switch (token) {
-                            case 'H':
-                            case 'HH':
-                                if (!String(hourValue).length) {
-                                    fullValues[token] = ''
-                                        return
-                                } else if (baseOnTwelveHours) {
-                                    if (apmValue === 'pm') {
-                                        value = hourValue < 12 ? hourValue + 12 : hourValue
-                                    } else {
-                                        value = hourValue % 12
-                                    }
-                                } else {
-                                    value = hourValue % 24
-                                }
-                                fullValues[token] = (token === 'HH' && value < 10) ? `0${value}` : String(value)
-                                    break
-                            case 'k':
-                            case 'kk':
-                                    if (!String(hourValue).length) {
-                                        fullValues[token] = ''
-                                            return
-                                    } else if (baseOnTwelveHours) {
-                                        if (apmValue === 'pm') {
-                                            value = hourValue < 12 ? hourValue + 12 : hourValue
-                                        } else {
-                                            value = hourValue === 12 ? 24 : hourValue
-                                        }
-                                    } else {
-                                        value = hourValue === 0 ? 24 : hourValue
-                                    }
-                                    fullValues[token] = (token === 'kk' && value < 10) ? `0${value}` : String(value)
-                                        break
-                            case 'h':
-                            case 'hh':
-                                        if (apmValue) {
-                                            value = hourValue
-                                                apm = apmValue || 'am'
-                                        } else {
-                                            if (!String(hourValue).length) {
-                                                fullValues[token] = ''
-                                                    fullValues.a = ''
-                                                    fullValues.A = ''
-                                                    return
-                                            } else if (hourValue > 11) {
-                                                apm = 'pm'
-                                                    value = hourValue === 12 ? 12 : hourValue % 12
-                                            } else {
-                                                if (baseOnTwelveHours) {
-                                                    apm = ''
-                                                } else {
-                                                    apm = 'am'
-                                                }
-                                                value = hourValue % 12 === 0 ? 12 : hourValue
-                                            }
-                                        }
-                                        fullValues[token] = (token === 'hh' && value < 10) ? `0${value}` : String(value)
-                                            fullValues.a = apm
-                                            fullValues.A = apm.toUpperCase()
-                                            break
+                let value
+                let apm
+                switch (token) {
+                    case 'H':
+                    case 'HH':
+                        if (!String(hourValue).length) {
+                            fullValues[token] = ''
+                                return
+                        } else if (baseOnTwelveHours) {
+                            if (apmValue === 'pm') {
+                                value = hourValue < 12 ? hourValue + 12 : hourValue
+                            } else {
+                                value = hourValue % 12
+                            }
+                        } else {
+                            value = hourValue % 24
                         }
-                })
+                        fullValues[token] = (token === 'HH' && value < 10) ? `0${value}` : String(value)
+                            break
+                    case 'k':
+                    case 'kk':
+                        if (!String(hourValue).length) {
+                            fullValues[token] = ''
+                                return
+                        } else if (baseOnTwelveHours) {
+                            if (apmValue === 'pm') {
+                                value = hourValue < 12 ? hourValue + 12 : hourValue
+                            } else {
+                                value = hourValue === 12 ? 24 : hourValue
+                            }
+                        } else {
+                            value = hourValue === 0 ? 24 : hourValue
+                        }
+                        fullValues[token] = (token === 'kk' && value < 10) ? `0${value}` : String(value)
+                            break
+                    case 'h':
+                    case 'hh':
+                        if (apmValue) {
+                            value = hourValue
+                                apm = apmValue || 'am'
+                        } else {
+                            if (!String(hourValue).length) {
+                                fullValues[token] = ''
+                                    fullValues.a = ''
+                                    fullValues.A = ''
+                                    return
+                            } else if (hourValue > 11) {
+                                apm = 'pm'
+                                    value = hourValue === 12 ? 12 : hourValue % 12
+                            } else {
+                                if (baseOnTwelveHours) {
+                                    apm = ''
+                                } else {
+                                    apm = 'am'
+                                }
+                                value = hourValue % 12 === 0 ? 12 : hourValue
+                            }
+                        }
+                        fullValues[token] = (token === 'hh' && value < 10) ? `0${value}` : String(value)
+                            fullValues.a = apm
+                            fullValues.A = apm.toUpperCase()
+                            break
+                    }
+            })
 
             if (this.minute || this.minute === 0) {
                 const minuteValue = Number(this.minute)
@@ -441,27 +442,47 @@ export default {
             }
 
             this.fullValues = fullValues
-                this.updateTimeValue(fullValues)
-                this.$emit('change', {data: fullValues})
+            this.updateTimeValue(fullValues)
+//            this.$emit('change', {data: fullValues})
         },
 
         updateTimeValue (fullValues) {
             this.muteWatch = true
-
-                const self = this
-
-                const baseTimeValue = JSON.parse(JSON.stringify(this.value || {}))
-                let timeValue = {}
+            const self = this
+            const baseTimeValue = JSON.parse(JSON.stringify(this.value || {}))
+            let timeValue = {}
 
             Object.keys(baseTimeValue).forEach((key) => {
                 timeValue[key] = fullValues[key]
             })
 
             this.$emit('input', timeValue)
+            this.fireEvents();
 
-                this.$nextTick(() => {
-                    self.muteWatch = false
-                })
+            this.$nextTick(() => {
+                self.muteWatch = false
+            })
+        },
+
+        fireEvents() {
+            const ready = !this.hasError 
+                    && ( (this.hour != this.initialValue.HH) 
+                            || (this.minute != this.initialValue.mm) );
+
+            const data = {
+                hasError: this.hasError,
+                isReadyToUpdate: ready,
+                initialValue: {
+                    HH: this.initialValue.HH,
+                    mm: this.initialValue.mm
+                },
+                inputValue: {
+                    HH: this.hour,
+                    mm: this.minute
+                },
+                isDropdownOpened: this.showDropdown
+            }
+            this.$emit('change', data);
         },
 
         isTwelveHours (token) {
@@ -489,7 +510,7 @@ export default {
             const scrollPositionY = document.body.scrollTop;
             const bottomEdge = window.innerHeight + scrollPositionY;
             const dropdownFooterHeigh = 30; // visually estimate value;
-            const margin = bottomEdge - y - this.inputHeight - this.menuHeight - dropdownFooterHeigh;
+            const margin = bottomEdge - y - this.inputHeight - this.dropdownHeight - dropdownFooterHeigh;
 
 //            u.clog('-----------------------');
 //            u.clog('y: ' + y);
@@ -497,7 +518,7 @@ export default {
 //            u.clog('window.innerHeight: ' + window.innerHeight);
 //            u.clog('bottomEdge: ' + bottomEdge);
 //            u.clog('inputHeight: ' + this.inputHeight);
-//            u.clog('dropdownHeight: ' + this.menuHeight);
+//            u.clog('dropdownHeight: ' + this.dropdownHeight);
 //            u.clog('dropdownFooterHeigh: ' + dropdownFooterHeigh);
 //            u.clog('margin: ' + margin);
 
@@ -517,24 +538,8 @@ export default {
             this.setDropdownPositionY(e);
 
             this.showDropdown = !this.showDropdown;
-            this.$emit('dropdown-open', this.showDropdown);
-
-            if( this.showDropdown ) {
-                this.$emit('update:hasError', false);
-                return;
-            }
-
-            if( this.hour == '' && this.minute != '' ) {
-                this.$emit('update:hasError', true);
-                return;
-            }
-
-            if( this.hour != '' && this.minute == '' ) {
-                this.$emit('update:hasError', true);
-                return;
-            }
-
-            this.$emit('update:hasError', false);
+            this.fireEvents();
+//            this.$emit('dropdown-open', this.showDropdown);
         },
 
         select (type, value) {
@@ -554,7 +559,7 @@ export default {
             this.minute = '';
             this.second = '';
             this.apm = '';
-            this.$emit('update:hasError', false);
+            this.fireEvents();
         }
     },
 

@@ -1,9 +1,15 @@
 <template>
 <div class="card thin" style="height: 100%; background-color: #fff;">
     <div class="main">
-        <div class="content thin-400">{{ input.content }}</div>
-        <div class="time-range">
+        <div class="content">
+            <text-input 
+                :initialValue="updateState.editingItem.content"
+                placeholder="Title"
+                @valueChange="onContentValueChanged"
+            ></text-input>
+        </div>
 
+        <div class="time-range">
             <timeRangePicker 
                 :minute-interval="5"
                 :startTime="updateState.editingItem.start_time"
@@ -11,10 +17,9 @@
                 :action="update"
                 :isLoading="updateState.isLoading"
                 :inputWidth="80"
-                :menuHeight="280"
+                :dropdownHeight="280"
                 :ready.sync="ready.timeRange"
             ></timeRangePicker>
-
         </div>
 
     </div>
@@ -28,10 +33,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import textInput from '../../../../components/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 
 export default {
     components: {
+        textInput,
         timeRangePicker
     },
 
@@ -69,6 +76,14 @@ export default {
     methods: {
         update() {
             u.clog('update ------------------');
+        },
+
+        onContentValueChanged(data) {
+            u.clog('-----------------------------------------------');
+            u.clog('initial value: ' + data.initialValue);
+            u.clog('input value: ' + data.inputValue);
+            u.clog('hasError: ' + data.hasError);
+            u.clog('isReady: ' + data.isReady);
         }
     },
 
@@ -90,6 +105,7 @@ export default {
     border-radius: 0;
     box-shadow: none;
     background: none;
+    outline: none;
     &:hover {
         border-bottom: 1px solid #red
     }
