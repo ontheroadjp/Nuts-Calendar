@@ -12,13 +12,10 @@
         <div class="time-range">
             <timeRangePicker 
                 :minute-interval="5"
-                :startTime="updateState.editingItem.start_time"
-                :endTime="updateState.editingItem.end_time"
-                :action="update"
-                :isLoading="updateState.isLoading"
+                :initialStartTime="updateState.editingItem.start_time"
+                :initialEndTime="updateState.editingItem.end_time"
                 :inputWidth="80"
                 :dropdownHeight="280"
-                :ready.sync="ready.timeRange"
             ></timeRangePicker>
         </div>
 

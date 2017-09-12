@@ -4,7 +4,7 @@
             v-model="input.start"
             format="HH:mm"
             :initialValue="initial.start"
-            :minute-interval="5"
+            :minute-interval="minuteInterval"
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
             @change="onChangeStart"
@@ -16,7 +16,7 @@
             v-model="input.end"
             format="HH:mm"
             :initialValue="initial.start"
-            :minute-interval="5"
+            :minute-interval="minuteInterval"
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
             menuPosition="left"
@@ -34,14 +34,11 @@ export default {
     components: { startTimePicker, endTimePicker },
 
     props: {
-        minuteInterval:     { type: Number },
-        startTime:          { type: String }, // HH:mm:ss
-        endTime:            { type: String }, // HH:mm:ss
-        action:             { type: Function },
-        isLoading:          { type: Boolean },
+        minuteInterval:     { type: Number, default: 5 },
+        initialStartTime:   { type: String, default: '' }, // HH:mm:ss or ''
+        initialEndTime:     { type: String, default: '' }, // HH:mm:ss or ''
         inputWidth:         { type: Number, default: 80 },
         dropdownHeight:     { type: Number, default: 280 },
-        ready:              { type: Boolean, required: true }
     },
 
     data() {
