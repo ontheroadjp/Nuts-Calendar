@@ -5,7 +5,7 @@
             <text-input 
                 :initialValue="updateState.editingItem.content"
                 placeholder="Title"
-                @valueChange="onContentValueChanged"
+                @valueChange="onChangeContent"
             ></text-input>
         </div>
 
@@ -16,13 +16,17 @@
                 :initialEndTime="updateState.editingItem.end_time"
                 :inputWidth="80"
                 :dropdownHeight="280"
+                @changeValue="onChangeTimeRange"
             ></timeRangePicker>
         </div>
 
-    </div>
+        <span class="label thin" style="font-size: 0.8em;">Memo</span>
+        <textarea style=""></textarea>
+
+    </div><!-- // .main -->
 
     <div class="popup-footer">
-        <a class="button strip" :disabled="!isAllReady">Save</a>
+        <a class="button strip" :disabled="!isReadyToUpdate">Save</a>
         <a class="button strip">Delete</a>
     </div>
 </div>
@@ -34,10 +38,7 @@ import textInput from '../../../../components/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 
 export default {
-    components: {
-        textInput,
-        timeRangePicker
-    },
+    components: { textInput, timeRangePicker },
 
     data() {
         return {
@@ -47,7 +48,13 @@ export default {
                 endTime: ''
             },
 
-            ready: {
+            hasError: {
+                content: false,
+                timeRange: false
+            },
+
+            readyState: {
+                content: false,
                 timeRange: false
             }
         }
@@ -58,15 +65,9 @@ export default {
             updateState: 'update'
         }),
 
-        isAllReady: function() {
-            let result = true;
-            Object.keys(this.ready).forEach((key) => {
-                if( this.ready[key] === false ) {
-                    result = false;
-                }
-            });
-
-            return result;
+        isReadyToUpdate: function() {
+            const values = Object.values(this.readyState);
+            return (values.indexOf(true) !== -1) && !this.hasError;
         }
     },
 
@@ -75,12 +76,16 @@ export default {
             u.clog('update ------------------');
         },
 
-        onContentValueChanged(data) {
+        onChangeContent(data) {
             u.clog('-----------------------------------------------');
             u.clog('initial value: ' + data.initialValue);
             u.clog('input value: ' + data.inputValue);
             u.clog('hasError: ' + data.hasError);
             u.clog('isReady: ' + data.isReady);
+        },
+
+        onChangeTimeRange(data) {
+            this.readyState.timeRange = data.isReadyToUpdate;
         }
     },
 
@@ -111,12 +116,19 @@ export default {
 .content {
     margin-bottom: 20px;
 } 
-.start-time {
-    margin-bottom: 10px;
-} 
-.end-time {
-    margin-bottom: 10px;
-} 
+
+.time-range {
+    margin-bottom: 12px;
+}
+
+textarea {
+    height: 110px;
+    width: 100%; 
+    padding: 1em;
+    border: 1px solid #e6e6e6;
+    outline: none;
+    resize: none;
+}
 
 .popup-footer {
     position: absolute;
