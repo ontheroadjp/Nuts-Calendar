@@ -4,7 +4,7 @@
             <input id="item.id" 
                 type="checkbox" 
                 style="margin-right: 8px" 
-                @click.stop="clickDone($event)" 
+                @click.stop="clickDone()" 
                 :checked="item.is_done"> 
             <span>
                 {{ item.content }}
@@ -36,19 +36,21 @@ export default {
         ...mapActions('calendar/tableView/item', {
             insertReset: 'insert/reset',
             updatePrepare: 'update/prepare',
+            updatePrepareModal: 'update/prepareModal',
             removePrepare: 'remove/prepare',
             toggleTaskDone: 'update/toggleTaskDone'
         }),
 
         clickItem(e) {
             u.clog('clickItem()');
-            this.updatePrepare( { event: e, editingItem: this.item } );
+            this.updatePrepare( { editingItem: this.item} );
             this.removePrepare( { event: e, deletingItem: this.item } );
+            this.updatePrepareModal( { event: e } );
             this.insertReset();
         },
 
-        clickDone(e) {
-            this.updatePrepare( { event: e, editingItem: this.item } );
+        clickDone() {
+            this.updatePrepare( { editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
 

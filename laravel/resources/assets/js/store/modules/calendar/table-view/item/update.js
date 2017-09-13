@@ -20,17 +20,23 @@ export default {
             commit('prepare', { event, editingItem } );
         },
 
+        prepareModal( { commit }, { event } ) {
+            u.clog('prepareModal()');
+            commit('prepareModal', { event } );
+        },
+
         toggleTaskDone( { dispatch, commit } ) {
             commit('toggleTaskDone');
             dispatch('update');
         },
 
-        setInputValues( { commit }, { content, startTime, endTime } ) {
-            commit('setInputValues', { content, startTime, endTime } );
-        },
+//        setInputValues( { commit }, { content, startTime, endTime } ) {
+//            commit('setInputValues', { content, startTime, endTime } );
+//        },
 
         update( { state, commit } ) {
-            commit('start');
+//            commit('start');
+            commit('isLoading', true);
             u.clog('update()');
 
             const url = '/api/v1/item/' + state.editingItem.id;
@@ -59,7 +65,8 @@ export default {
                         isImportant: false
                     }, { root: true });
         
-                    commit('stop');
+//                    commit('stop');
+                    commit('isLoading', false);
                 })
 
                 .catch( error => {
@@ -71,7 +78,8 @@ export default {
                         isActive: true
                     }, { root: true});
 
-                    commit('stop');
+//                    commit('stop');
+                    commit('isLoading', false);
                 });
         },
 
@@ -81,39 +89,46 @@ export default {
     },
 
     mutations: {
-        prepare( state, { event, editingItem } ) {
-            state.clickX = event.pageX;
-            state.clickY = event.pageY;
+        prepare( state, { editingItem } ) {
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;
             state.input.endTime = editingItem.end_time;
+        },
+
+        prepareModal( state, { event } ) {
+            state.clickX = event.pageX;
+            state.clickY = event.pageY;
             state.isActive = true;
         },
 
-        start( state ) {
-            state.isLoading = true;
+        isLoading( state, { value } ) {
+            state.isLoading = value;
         },
+
+//        start( state ) {
+//            state.isLoading = true;
+//        },
 
         toggleTaskDone( state ) {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
 
-        setInputValues( state, { content, startTime, endTime } ) {
-            state.input.content = content;
-            state.input.startTime = startTime;
-            state.input.endTime = endTime;
-        },
+//        setInputValues( state, { content, startTime, endTime } ) {
+//            state.input.content = content;
+//            state.input.startTime = startTime;
+//            state.input.endTime = endTime;
+//        },
 
         update( state, { content, startTime, endTime } ) {
             state.editingItem.content = content;
-            state.editingItem.startTime = start_time;
-            state.editingItem.endTime = end_time;
+            state.editingItem.start_time = startTime;
+            state.editingItem.end_time = endTime;
         },
 
-        stop( state ) {
-            state.isLoading = false;
-        },
+//        stop( state ) {
+//            state.isLoading = false;
+//        },
 
         reset( state ) {
             state.isActive = false,

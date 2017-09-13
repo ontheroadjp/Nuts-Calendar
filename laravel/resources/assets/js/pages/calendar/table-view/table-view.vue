@@ -8,17 +8,15 @@
 
     <popup-menu 
         v-if="filteredBody && editItem.isActive"
-        :clickX="editItem.clickX" :clickY="editItem.clickY" 
+        overlayId="table-view-body"
+        :clickX="editItem.clickX" 
+        :clickY="editItem.clickY" 
         :isActive="editItem.isActive" 
         :onClose="popupMenuClose"
-        overlayId="table-view-body"
         :offsetY="topPosition"
         :scrollX="scrollPositionX"
         :scrollY="scrollPositionY"
-    >
-        <div style="margin:0; width:100%; height:100%; background-color: orange;">
-            <span>This is a popup menu</span>
-        </div>
+        ><item-edit-popup-content></item-edit-popup-content>
     </popup-menu>
 
     <black-screen 
@@ -113,6 +111,7 @@ import blackScreen from '../../../components/black-screen.vue';
 import popupMenu from '../../../components/popup-menu.vue';
 import item from './item/index.vue';
 import itemInsertField from './item-insert-field.vue';
+import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
 import chroma from 'chroma-js';
 
@@ -124,6 +123,7 @@ export default {
         'popup-menu': popupMenu,
         'item': item,
         'item-insert-field': itemInsertField,
+        'item-edit-popup-content': itemEditPopupContent,
         'mini-cal-bar': miniCalBar
     },
 
@@ -137,6 +137,13 @@ export default {
         topPosition:        { type: Number,     required: false },
         scrollPositionX:     { type: Number,     required: false },
         scrollPositionY:     { type: Number,     required: false }
+    },
+
+    data() {
+        return {
+            fixedScrollPositionX: 0,
+            fixedScrollPositionY: 0
+        }
     },
 
     computed: {
@@ -203,6 +210,22 @@ export default {
                     'min-width': '110px',
                     'max-width': '110px'
                 }
+            }
+        }
+    },
+
+    watch: {
+        'scrollPositionY': function() {
+            if(this.editItem.isActive) {
+                document.body.scrollTop = this.fixedScrollPositionY;
+            }
+        },
+
+        'editItem.isActive': function() {
+            if(this.editItem.isActive) {
+                this.fixedScrollPositionY = this.scrollPositionY;
+            } else {
+                this.fixedScrollPositionY = 0;
             }
         }
     },

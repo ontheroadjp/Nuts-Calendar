@@ -1,12 +1,13 @@
 <template>
 <transition name="popup-menu">
-    <black-screen v-show="isActive" :overlayId="overlayId">
+    <black-screen v-show="isActive" :overlayId="overlayId" @click.stop="onClose()">
         <div :style="box">
-            <button class="modal-close is-large" aria-label="close"
+            <button class="modal-close" aria-label="close"
                 style="position: absolute; 
-                        top: 20px;
-                        right: 20px;
-                        background-color: rgba(84, 110, 122, 0.5);
+                    top: -8px;
+                    right: -8px;
+                    background-color: rgb(84, 110, 122);
+                    z-index: 5;
                 "
                 @click.stop="onClose()"
             ></button>
