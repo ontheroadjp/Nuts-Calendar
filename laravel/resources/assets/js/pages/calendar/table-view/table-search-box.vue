@@ -7,6 +7,7 @@
                 type="text" 
                 v-model="searchQuery" 
                 placeholder="Search"
+                :disabled="disabled"
             >
             <span class="icon is-small">
                 <i class="fa fa-search"></i>
@@ -26,6 +27,10 @@ export default {
     computed: {
         ...mapState({
             theme: state => state.app.theme
+        }),
+
+        ...mapState('dashboard', {
+            disabled: state => state.disabled
         }),
 
         searchQuery: {

@@ -5,7 +5,7 @@
 <span class="level" style="white-space: nowrap">
     <span class="level-left">
         <span class="level-item select">
-            <select v-model="selected">
+            <select v-model="selected" :disabled="disabled">
                 <option value="date" selected>Date</option>
                 <option value="member">Member</option>
                 <option value="item">Item</option>
@@ -13,19 +13,20 @@
         </span>
 
         <span v-show="selected === 'date'" class="level-item">
-            <button class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
-            <button class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
-            <button class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
-            <button class="button" @click="setInternalQuery({ value: '2' })">Tue</button>
-            <button class="button" @click="setInternalQuery({ value: '3' })">Wed</button>
-            <button class="button" @click="setInternalQuery({ value: '4' })">Thu</button>
-            <button class="button" @click="setInternalQuery({ value: '5' })">Fri</button>
-            <button class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '2' })">Tue</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '3' })">Wed</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '4' })">Thu</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '5' })">Fri</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
         </span>
 
         <span v-show="selected === 'member'" class="level-item">
             <template v-for="(member, memberId) in members">
                 <button  :class="['button', {'is-off': !member.isShow}]" 
+                    :disabled="disabled"
                     @click="clickColumnButton(memberId, !member.isShow)"
                     >
                     <i v-show="member.isShow" class="fa fa-user"></i>
@@ -37,6 +38,7 @@
 
         <span v-show="selected === 'item'" class="level-item">
             <button :class="[ 'button', { 'is-off': !isEventItemShow } ]" 
+                    :disabled="disabled"
                     @click="clickEventItemButton()">
                 <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
                 <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
@@ -44,6 +46,7 @@
             </button>
 
             <button :class="['button', { 'is-off': !isTaskItemShow }]" 
+                    :disabled="disabled"
                     @click="clickTaskItemButton()">
                 <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
                 <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
@@ -92,6 +95,10 @@ export default {
         ...mapState({
             members: state => state.member.data.members,
             theme: state => state.app.theme
+        }),
+
+        ...mapState('dashboard', {
+            disabled: state => state.disabled
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
