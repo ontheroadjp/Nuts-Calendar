@@ -260,6 +260,9 @@ export default {
         popupMenuClose() {
             this.updateReset();
             this.removeReset();
+            this.$store.commit('dashboard/setValue', {
+                key: 'disabled', value: false
+            });
         },
 
         handleDragStart(draggingItem) {

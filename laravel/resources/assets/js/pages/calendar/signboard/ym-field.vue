@@ -3,7 +3,7 @@
     <transition name="ym-picker">
         <span v-if="!editing" 
             class="thin" 
-            style="font-size: 1.8em; color: #fff"
+            :style="displayStyle"
             @click="togglePicker" 
         >{{ getYearAndMonth(currentYear + '-' + currentMonth + '-01') }}</span>
 
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import dateUtilities from '../../../mixins/date-utilities.js';
 
 export default {
@@ -57,6 +58,10 @@ export default {
     },
 
     computed: {
+        ...mapState('dashboard', {
+            disabled: state => state.disabled
+        }),
+
         currentYear: {
             get() {
                 return this.$store.state.calendar.currentYear;
@@ -80,6 +85,20 @@ export default {
                     key: 'currentMonth', 
                     value: value
                 });
+            }
+        },
+
+        displayStyle: function() {
+            if( this.disabled ) {
+                return {
+                    fontSize: '1.8em',
+                    color: 'rgba(242, 242, 242, .3)'
+                }
+            }
+
+            return {
+                fontSize: '1.8em',
+                color: 'rgb(242, 242, 242)'
             }
         },
 

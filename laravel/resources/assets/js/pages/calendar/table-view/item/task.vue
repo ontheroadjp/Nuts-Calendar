@@ -47,6 +47,9 @@ export default {
             this.removePrepare( { event: e, deletingItem: this.item } );
             this.updatePrepareModal( { event: e } );
             this.insertReset();
+            this.$store.commit('dashboard/setValue', {
+                key: 'disabled', value: true
+            });
         },
 
         clickDone() {
