@@ -3,6 +3,7 @@
     <dropdown-menu 
         id="lang-dropdown-menu"
         :label="menuItems[selectedLang].label" 
+        :labelStyle="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
         icon="" 
         :backIconStyle="backIconStyle"
         :menuHeight="40"
@@ -36,6 +37,10 @@ export default {
             selectedLang: state => state.app.lang
         }),
 
+        ...mapState('dashboard', {
+            disabled: state => state.disabled
+        }),
+
         ...mapGetters({
             t: 'i18nText'
         }),
@@ -57,6 +62,16 @@ export default {
 
         menuItemStyle: function() {
             return { color: this.theme.primary.code };
+        },
+
+        linkColorStyle: function() {
+            if( this.disabled ) return "rgba(242, 242, 242, 0.3)";
+            return "";
+        },
+
+        pointerEventsStyle: function() {
+            if( this.disabled ) return 'none';
+            return 'auto';
         }
     },
 
