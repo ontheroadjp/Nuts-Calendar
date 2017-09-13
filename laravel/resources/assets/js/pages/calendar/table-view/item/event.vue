@@ -1,5 +1,5 @@
 <template>
-    <span class="item is-event" @click.stop="clickItem()">
+    <span class="item is-event" @click.stop="clickItem($event)">
         <strong v-show="item.start_time" style="margin-right: 8px;">
             {{ item.start_time | timeFormatter }} 
             <template v-show="item.end_time !== null">
@@ -32,19 +32,22 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item', {
-            prepareUpdateItem: 'update/prepare',
-            prepareRemoveItem: 'remove/prepare'
+            insertReset: 'insert/reset',
+            updatePrepare: 'update/prepare',
+            updatePrepareModal: 'update/prepareModal',
+            removePrepare: 'remove/prepare'
         }),
 
-        clickItem() {
+        clickItem(e) {
             u.clog('clickItem()');
-            this.prepareUpdateItem( { editingItem: this.item } );
-            this.prepareRemoveItem( { deletingItem: this.item } );
+            this.updatePrepare( { editingItem: this.item } );
+            this.updatePrepareModal( { event: e } );
+            this.removePrepare( { event: e, deletingItem: this.item } );
+            this.insertReset();
+            this.$store.commit('dashboard/setValue', {
+                key: 'disabled', value: true
+            });
         }
     }
 }
 </script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

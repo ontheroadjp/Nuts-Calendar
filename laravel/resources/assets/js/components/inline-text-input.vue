@@ -5,9 +5,9 @@
 
         <input 
             :id="inputId"
+            type="text" 
             class="inline-text-input" 
             :class="inputClass"
-            type="text" 
             style="margin-bottom: 0; width: 95%"
             :style="inputStyle"
             :placeholder="placeholder"
@@ -30,24 +30,24 @@
             Not saved
         </span>
 
-        <a :id="undoButtonId" 
-            v-show="isButtonShow && !isLoading"
-            class="button" 
-            style="border:none; background:none; height:1rem; margin-top: 5px;"
-            :style="iconStyle"
-            @click="clickUndo()"
-        ><i class="fa fa-undo"></i></a>
-    
-        <a :id="saveButtonId"
-            v-show="isButtonShow && !isLoading"
-            class="button" 
-            style="border:none; background:none; height:1rem; margin-top: 5px;"
-            :style="iconStyle"
-            @click="clickSave()"
-            :disabled="defaultValue == input.value"
-        ><i class="fa fa-floppy-o"></i></a>
-
         <div class="icon is-small">
+            <a :id="undoButtonId" 
+                v-show="isButtonShow && !isLoading"
+                class="button" 
+                style="border:none; background:none; height:1rem; margin-top: 5px;"
+                :style="iconStyle"
+                @click="clickUndo()"
+            ><i class="fa fa-undo"></i></a>
+        
+            <a :id="saveButtonId"
+                v-show="isButtonShow && !isLoading"
+                class="button" 
+                style="border:none; background:none; height:1rem; margin-top: 5px;"
+                :style="iconStyle"
+                @click="clickSave()"
+                :disabled="defaultValue == input.value"
+            ><i class="fa fa-floppy-o"></i></a>
+
             <i v-if="isLoading 
                     && !input.isFocused 
                     && !input.isEnter 
@@ -63,16 +63,18 @@
 <script>
 export default {
     props: {
-        id:             { type: String,   default: '', required: false },
-        inputClass:     { type: String,   default: '', required: false },
-        inputColor:     { type: String,   default: '', required: false },
-        iconColor:      { type: String,   default: '', required: false },
-        placeholder:    { type: String,   default: '', required: false },
-        defaultValue:   { type: String,   default: '', required: false },
+        id:             { type: String,   required: false },
+        inputClass:     { type: String,   required: false },
+//        inputColor:     { type: String,   default: '', required: false },
+//        iconColor:      { type: String,   required: false },
+        inputStyle:     { type: String,   required: false },
+        iconStyle:      { type: String,   required: false },
+        placeholder:    { type: String,   required: false },
+        defaultValue:   { type: String,   required: false },
         isLoading:      { type: Boolean,  default: false },
         syncValue:      { type: String,   required: true },
         saveCallback:   { type: Function, required: true },
-        editingId:      { type: String,   default: '', required: false }
+        editingId:      { type: String,   required: false }
     },
 
     data() {
@@ -104,21 +106,21 @@ export default {
             return 'undo-button-' + this.id;
         },
 
-        inputStyle: function() {
-            if(this.inputColor == '') return '';
+//        inputStyle: function() {
+//            if(this.inputColor == '') return '';
+//
+//            return {
+//                color: this.inputColor
+//            }
+//        },
 
-            return {
-                color: this.inputColor
-            }
-        },
-
-        iconStyle: function() {
-            if(this.iconColor == '') return '';
-
-            return {
-                color: this.iconColor
-            }
-        },
+//        iconStyle: function() {
+//            if(this.iconColor == '') return '';
+//
+//            return {
+//                color: this.iconColor
+//            }
+//        },
 
         isButtonShow: function() {
             return ( this.input.isEnter 

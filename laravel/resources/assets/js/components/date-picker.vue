@@ -186,13 +186,13 @@ export default {
 
     watch: {
         'format': 'renderFormat',
-        minuteInterval (newInteval) {
-            this.renderList('minute', newInteval)
-        },
-
-        secondInterval (newInteval) {
-            this.renderList('second', newInteval)
-        },
+//        minuteInterval (newInteval) {
+//            this.renderList('minute', newInteval)
+//        },
+//
+//        secondInterval (newInteval) {
+//            this.renderList('second', newInteval)
+//        },
 
 //        'value': 'readValues',
         'inputValue': 'readValues',

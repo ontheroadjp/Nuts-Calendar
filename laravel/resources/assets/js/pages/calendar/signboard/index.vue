@@ -5,12 +5,7 @@
     
         <div id="mc_embed_signup" class="columns is-vcentered">
             <div class="column is-one-third is-left">
-                <p class="title" :style="style.title">Nuts <strong>Calendar</strong></p>
-                <p class="subtitle" style="color: #fff">
-                    <small>
-                        Manage your task & events in easily, quickly and a fun!
-                    </small>
-                </p>
+                <hero-title></hero-title>
             </div>
     
             <div class="column">
@@ -33,35 +28,21 @@
 
 <script>
     import { mapState } from 'vuex';
+    import heroTitle from '../../partials/hero-title.vue';
     import ymField from './ym-field.vue';
     import menuTabs from './menu-tabs.vue';
 
     export default {
-        components: {
-            'menu-tabs': menuTabs,
-            'ym-field': ymField,
-        },
+        components: { heroTitle, menuTabs, ymField },
 
-        props: [
-            'calendarIsLoading',
-        ],
+        props: {
+            calendarIsLoading: { type: Boolean, default: false }
+        },
 
         computed: {
             ...mapState({
-                theme: state => state.app.theme,
-            }),
-
-            style: function() {
-                return {
-                    title: {
-                        'color': this.theme.secondary.code,
-                    }
-                }
-            }
-        },
+                theme: state => state.app.theme
+            })
+        }
     } 
 </script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>

@@ -1,36 +1,46 @@
 <template>
 <div class="container">
 <nav class="tabs is-boxed">
-<ul>
+<ul class="thin">
 
     <!-- DASHBOARD -->
     <li :class="{ 'is-active': currentCalendarId === 'dashboard' }"
-        @click="changeCalendar('dashboard')"
-    >
-        <router-link to="/dashboard" @click="changeCalendar('dashboard')">
+        @click="changeCalendar('dashboard')">
+
+        <router-link to="/dashboard" 
+            :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+            @click="changeCalendar('dashboard')" 
+        >
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
             </span>
             <span>{{ t('calendarMenu.dashboard') }}</span>
         </router-link>
+
     </li>
 
     <!-- USER CALENDARS -->
     <li v-for="uCalendar in userCalendars" 
-        :class="{'is-active': currentCalendarId == uCalendar.id}"
-        @click="changeCalendar(uCalendar.id)"
-    >
-        <router-link to="/calendar/view">
+        :class="{'is-active': currentCalendarId == uCalendar.id && !disabled}"
+        @click="changeCalendar(uCalendar.id)">
+
+        <router-link to="/calendar/view" 
+            :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+        >
             <span class="icon is-small">
                 <i v-if="!calendarIsLoading" class="fa fa-calendar"></i>
-                <i v-if="calendarIsLoading && currentCalendarId !== uCalendar.id" class="fa fa-calendar"></i>
-                <i v-if="calendarIsLoading && currentCalendarId === uCalendar.id" class="fa fa-refresh fa-spin"></i>
+                <i v-if="calendarIsLoading && currentCalendarId !== uCalendar.id" 
+                    class="fa fa-calendar"></i>
+                <i v-if="calendarIsLoading && currentCalendarId === uCalendar.id" 
+                    class="fa fa-refresh fa-spin"></i>
             </span>
                 {{ uCalendar.name }}
-            <span class="icon is-small" v-show="currentCalendarId == uCalendar.id && ! calendarIsLoading">
+            <span v-show="currentCalendarId == uCalendar.id && ! calendarIsLoading"
+                class="icon is-small">
                 <i class="fa fa-navicon" @click="toggleToolPalet()"></i>
             </span>
         </router-link>
+
     </li>
 <!--
     <li :class="">
@@ -57,23 +67,43 @@ export default {
     mixins: [ core ],
 
     computed: {
-        ...mapState({
-            userCalendars: state => state.userCalendar.data.userCalendars,
-            currentCalendarId: state => state.calendar.currentId,
-            theme: state => state.app.theme,
+//        ...mapState({
+//            theme: state => state.app.theme,
+//        }),
+
+        ...mapState('dashboard', {
+            disabled: state => state.disabled,
+        }),
+
+        ...mapState('userCalendar', {
+            userCalendars: state => state.data.userCalendars,
+        }),
+
+        ...mapState('calendar', {
+            currentCalendarId: state => state.currentId,
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
             isToolPaletteOpen: state => state.toolPalette.isActive,
         }),
 
-        menuItemStyle: function() {
-            return 'color: ' + this.theme.primary.code;
+//        menuItemStyle: function() {
+//            return 'color: ' + this.theme.primary.code;
+//        },
+
+//        calendar: function() {
+//            return this.userCalendars[this.currentCalendarId];
+//        },
+
+        linkColorStyle: function() {
+            if( this.disabled ) return "rgba(242, 242, 242, 0.3)";
+            return "";
         },
 
-        calendar: function() {
-            return this.userCalendars[this.currentCalendarId];
-        },
+        pointerEventsStyle: function() {
+            if( this.disabled ) return 'none';
+            return 'auto';
+        }
     },
 
     methods: {
@@ -91,10 +121,10 @@ export default {
             });
         },
 
-        clickTabMenu: function() {
-            u.clog('clickTabMenu()');
-            this.toggle();
-        },
+//        clickTabMenu: function() {
+//            u.clog('clickTabMenu()');
+//            this.toggle();
+//        },
 
         toggleToolPalet() {
             this.toggleTableToolPalette({ value: !this.isToolPaletteOpen }); 
@@ -117,6 +147,7 @@ export default {
 <style lang="scss" scoped>
 /** A fork of https://github.com/twbs/bootstrap.  */
 
+/*
 #tabs-dropdown-menu {
     display: block;
     position: absolute;
@@ -153,6 +184,7 @@ export default {
         background-color: #f5f5f5;
     }
 }
+*/
 
 .hero.is-nadeshiko .tabs.is-boxed li.is-active a,
 .hero.is-mikan .tabs.is-boxed li.is-active a,
@@ -161,9 +193,11 @@ export default {
     border-color: #fff !important;
 }
 
+/*
 #tabs-dropdown-menu > li > a:hover,
 #tabs-dropdown-menu > li > a:focus {
     text-decoration: none !important;
     background-color: #f5f5f5 !important;
 }
+*/
 </style>

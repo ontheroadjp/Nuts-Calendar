@@ -1,89 +1,100 @@
 <template>
 <div>
+    <div class="columns">
+
+        <!-- add new members -->
+        <div class="card column is-12" style="padding: 20px 40px; margin-bottom: 20px;">
+            <form>
+                <input 
+                    class="text-input" 
+                    type="text" 
+                    style=" font-size:1rem; line-height:2.3rem"
+                    placeholder="Add New Member"
+                    v-model.trim="newName"
+                >
+                <a :class="['button', 'is-outlined', 'add-member', theme.primary.class]" 
+                    @click="clickAddMember()"
+                   :disabled="!newName != '' || isInsertLoading">
+    
+                    <span v-if="!isInsertLoading">
+                        Add Member
+                    </span>
+    
+                    <span class="icon is-small" v-else>
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </span>
+                </a>
+            </form>
+        </div>
+    </div>
+    
     <!-- members -->
-    <div class="card" style="padding: 20px 40px;">
-        <form>
-            <input 
-                class="text-input" 
-                type="text" 
-                style="width:40%; 
-                    font-size:1rem; 
-                    line-height:2.3rem"
-                placeholder="Add New Member"
-                v-model.trim="newName"
-            >
-            <a :class="['button', 'is-outlined', 'add-member', theme.primary.class]" 
-                @click="clickAddMember()"
-               :disabled="!newName != '' || isInsertLoading">
+    <template v-for="member, index in members">
+    <div class="columns">
 
-                <span v-if="!isInsertLoading">
-                    Add Member
-                </span>
+        <div class="card column is-6" style="padding: 5px 40px; margin-bottom: 5px;" draggable>
+            <div class="icon is-pulled-right" style="margin-top: 8px; margin-right: -25px; cursor: move;">
+                <i class="fa fa-align-justify"></i>
+            </div>
+    
+            <form>
+            <table class="member-edit-table" style="width: 100%;">
+                <tr @mouseenter="showEditIcon(index, true)"
+                    @mouseleave="showEditIcon(index, false)"
+                    style="height: 2.5rem">
+    
+                    <td width="30px">
+                        <i v-if="(!isFocused && input.icon[index]) || input.focused[index]" 
+                            class="fa fa-pencil"
+                            style="display:inline;"></i>
+                        <i v-else-if="input.notSaved[index]" 
+                            class="fa fa-exclamation-circle"
+                            style="color:red; display:inline"></i>
+    <!--
+                        <i v-else-if="isUpdateLoading && input.focused[index]" 
+                            class="fa fa-refresh fa-spin"
+                            style="display:inline"></i>
+    -->
+                    </td>
+    
+                    <td>
+                        <input 
+                            id="name"
+                            type="text" 
+                            class="text-input input-icon" 
+                            style="
+                                width:95%; 
+                                font-size:1rem; 
+                                line-height:1.5rem
+                            "
+                            placeholder="Name"
+                            v-model.trim="input.name[index]"
+                            @focus="focused(index, true)"
+                            @blur="focused(index, false)"
+                        >
+                    </td>
+                    <td style="width: 160px">
+                        <a class="button no-border" 
+                           v-show="(!isFocused && input.icon[index]) || input.focused[index]"
+                           :disabled="input.name[index] === members[index].name || input.name[index] === ''"
+                        ><i class="fa fa-undo" @click="clickUndo(index)"></i>
+                        </a>
+                        <a class="button no-border" 
+                           v-show="(!isFocused && input.icon[index]) || input.focused[index]"
+                           :disabled="!isUpdateLoading && (input.name[index] === members[index].name || input.name[index] === '')"
+                        ><i class="fa fa-floppy-o" @click="clickSave(index)"></i></a>
+                        <a class="button no-border" 
+                           v-show="(!isFocused && input.icon[index]) || input.focused[index]"
+                        ><i class="fa fa-trash" @click="clickRemove(index)"></i></a>
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div><!-- / .card -->
 
-                <span class="icon is-small" v-else>
-                    <i class="fa fa-refresh fa-spin"></i>
-                </span>
-            </a>
-        </form>
-    </div>
+    </div><!-- / .columns -->
+    </template>
 
-    <div class="card" style="padding: 20px 40px;">
-        <form>
-        <table class="member-edit-table" style="width: 60%">
-        <template v-for="member, index in members">
-            <tr @mouseenter="showEditIcon(index, true)"
-                @mouseleave="showEditIcon(index, false)"
-                style="height: 2.5rem">
-
-                <td width="30px">
-                    <i v-if="(!isFocused && input.icon[index]) || input.focused[index]" 
-                        class="fa fa-pencil"
-                        style="display:inline;"></i>
-                    <i v-else-if="input.notSaved[index]" 
-                        class="fa fa-exclamation-circle"
-                        style="color:red; display:inline"></i>
-<!--
-                    <i v-else-if="isUpdateLoading && input.focused[index]" 
-                        class="fa fa-refresh fa-spin"
-                        style="display:inline"></i>
--->
-                </td>
-
-                <td>
-                    <input 
-                        id="name"
-                        class="text-input input-icon" 
-                        type="text" 
-                        style="
-                            width:95%; 
-                            font-size:1rem; 
-                            line-height:1.5rem
-                        "
-                        placeholder="Name"
-                        v-model.trim="input.name[index]"
-                        @focus="focused(index, true)"
-                        @blur="focused(index, false)"
-                    >
-                </td>
-                <td style="width: 160px">
-                    <a class="button no-border" 
-                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
-                       :disabled="input.name[index] === members[index].name || input.name[index] === ''"
-                    ><i class="fa fa-undo" @click="clickUndo(index)"></i>
-                    </a>
-                    <a class="button no-border" 
-                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
-                       :disabled="!isUpdateLoading && (input.name[index] === members[index].name || input.name[index] === '')"
-                    ><i class="fa fa-floppy-o" @click="clickSave(index)"></i></a>
-                    <a class="button no-border" 
-                       v-show="(!isFocused && input.icon[index]) || input.focused[index]"
-                    ><i class="fa fa-trash" @click="clickRemove(index)"></i></a>
-                </td>
-            </tr>
-        </template>
-        </table>
-        </form>
-    </div>
 </div>
 </template>
 
@@ -244,6 +255,7 @@ export default {
     box-shadow: none;
     width: 83%;
     outline: none;
+    font-weight: 100;
 }
 
 a.add-member {

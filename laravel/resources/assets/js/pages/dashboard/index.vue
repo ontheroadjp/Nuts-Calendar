@@ -1,6 +1,20 @@
 <template>
 <div class="wrapper">
-<div class="container" style="width: 100%; height: 100vh">
+
+<!--
+<div class="container" style="width: 100%;" @click="click($event)">
+    <popup-menu 
+        :x="x" :y="y" 
+        :isActive.sync="isBoxActive" 
+        :onClose="popupMenuClose"
+    >
+        <div style="margin:0; width:100%; height:100%; background-color: orange;">
+            <span>This is a popup menu</span>
+        </div>
+    </popup-menu>
+-->
+
+<div class="container" style="width: 100%;">
 
     <!-- infomation -->
     <div class="columns is-multiline">
@@ -9,6 +23,7 @@
         </div>
     </div>
     
+    <!-- tab menu -->
     <menu-tabs :tabs="tabs">
         <div v-if="$route.path === '/dashboard'">
             <div class="columns is-multiline">
@@ -19,10 +34,21 @@
                 </template>
                 <div class="column is-6">
                     <div class="new-user-calendar-card" 
-                        style="height: 150px; cursor: pointer"
+                        style="text-align: center; cursor: pointer"
                         @click="clickNewCalendar()">
 
-                        <div class="card-content">Create New Calendar</div>
+                        <div class="card-content" style="font-weight: 100">
+
+                            <a class="fa-stack fa-lg create-new-icon" 
+                                style="margin-right: 10px">
+
+                                <i class="fa fa-calendar-plus-o fa-stack-1x" 
+                                    style="margin-left:1px; color: #fff"></i>
+                            </a>
+                            <a href="">
+                                <span>Create New Calendar</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -38,18 +64,20 @@
 <script>
 import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
-import userCalendarCard from './user-calendar-card.vue';
-import menuTabs from './menu-tabs.vue';
-import memberSettings from './member-settings/index.vue';
 import todayDateCard from './today-date-card.vue';
+import menuTabs from './menu-tabs.vue';
+import userCalendarCard from './user-calendar-card.vue';
+import memberSettingsPane from './member-settings/index.vue';
+//import popupMenu from '../../components/popup-menu.vue';
 
 export default {
 
     components: {
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
-        'member-settings': memberSettings,
-        'today-date-card': todayDateCard
+        'member-settings': memberSettingsPane,
+        'today-date-card': todayDateCard,
+//        'popup-menu': popupMenu
     },
 
     data() {
@@ -57,7 +85,11 @@ export default {
             tabs: {
                 '/dashboard': { label: 'Calendars', icon: 'fa-calendar'},
                 '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
-            }
+            },
+                
+//            x: 0,
+//            y: 0,
+//            isBoxActive: false
         }
     },
 
@@ -72,23 +104,27 @@ export default {
 
         ...mapState('member', {
             members: state => state.data.members,
-        })
+        }),
     },
 
     methods: {
         clickNewCalendar: function() {
             u.clog('New Calendar Button');
-        }
+        },
+
+//        click(e) {
+//            this.isBoxActive = true;
+//            this.x = e.pageX;
+//            this.y = e.pageY;
+//        },
+//
+//        popupMenuClose() {
+//            this.isBoxActive = false;
+//        }
     },
 
     beforeRouteEnter(to, from, next) {
         const types = ['', 'members'];
-
-//        if( typeof to.params.type === 'undefined' ) {
-//            next();
-//        } else if( Object.keys(to.params.type).length !== 0 ) {
-//            next({path: '/dashboard'});
-//        }
 
         if( typeof to.params.type === 'undefined' ) {
             next();
@@ -109,6 +145,15 @@ export default {
     max-width: 100%;
     position: relative;
     border: 4px dotted rgba(10, 10, 10, 0.24);
+    box-shadow: none;
+}
+
+.create-new-icon {
+    background-color: #c0c0c0;
+    border-radius: 30px;
+    &:hover {
+        background-color: #9a9a9a;
+    }
 }
 
 .card-fover {

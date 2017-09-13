@@ -1,7 +1,11 @@
 <template>
-    <span class="item is-task" @click.stop="clickItem()">
+    <span class="item is-task" @click.stop="clickItem($event)">
         <span :class="{'task-done': item.is_done}">
-            <input id="item.id" type="checkbox" style="margin-right: 8px" @click.stop="clickDone()" :checked="item.is_done"> 
+            <input id="item.id" 
+                type="checkbox" 
+                style="margin-right: 8px" 
+                @click.stop="clickDone()" 
+                :checked="item.is_done"> 
             <span>
                 {{ item.content }}
             </span>
@@ -30,19 +34,26 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item', {
-            prepareUpdateItem: 'update/prepare',
-            prepareRemoveItem: 'remove/prepare',
+            insertReset: 'insert/reset',
+            updatePrepare: 'update/prepare',
+            updatePrepareModal: 'update/prepareModal',
+            removePrepare: 'remove/prepare',
             toggleTaskDone: 'update/toggleTaskDone'
         }),
 
-        clickItem() {
+        clickItem(e) {
             u.clog('clickItem()');
-            this.prepareUpdateItem( { editingItem: this.item } );
-            this.prepareRemoveItem( { deletingItem: this.item } );
+            this.updatePrepare( { editingItem: this.item} );
+            this.removePrepare( { event: e, deletingItem: this.item } );
+            this.updatePrepareModal( { event: e } );
+            this.insertReset();
+            this.$store.commit('dashboard/setValue', {
+                key: 'disabled', value: true
+            });
         },
 
         clickDone() {
-            this.prepareUpdateItem( { editingItem: this.item } );
+            this.updatePrepare( { editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
 
