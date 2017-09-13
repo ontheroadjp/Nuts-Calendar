@@ -7,7 +7,10 @@
     <li :class="{ 'is-active': currentCalendarId === 'dashboard' }"
         @click="changeCalendar('dashboard')">
 
-        <router-link to="/dashboard" @click="changeCalendar('dashboard')">
+        <router-link to="/dashboard" 
+            :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+            @click="changeCalendar('dashboard')" 
+        >
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
             </span>
@@ -18,10 +21,12 @@
 
     <!-- USER CALENDARS -->
     <li v-for="uCalendar in userCalendars" 
-        :class="{'is-active': currentCalendarId == uCalendar.id}"
+        :class="{'is-active': currentCalendarId == uCalendar.id && !disabled}"
         @click="changeCalendar(uCalendar.id)">
 
-        <router-link to="/calendar/view">
+        <router-link to="/calendar/view" 
+            :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+        >
             <span class="icon is-small">
                 <i v-if="!calendarIsLoading" class="fa fa-calendar"></i>
                 <i v-if="calendarIsLoading && currentCalendarId !== uCalendar.id" 
@@ -66,6 +71,10 @@ export default {
 //            theme: state => state.app.theme,
 //        }),
 
+        ...mapState('dashboard', {
+            disabled: state => state.disabled,
+        }),
+
         ...mapState('userCalendar', {
             userCalendars: state => state.data.userCalendars,
         }),
@@ -85,6 +94,16 @@ export default {
 //        calendar: function() {
 //            return this.userCalendars[this.currentCalendarId];
 //        },
+
+        linkColorStyle: function() {
+            if( this.disabled ) return "rgba(242, 242, 242, 0.5)";
+            return "";
+        },
+
+        pointerEventsStyle: function() {
+            if( this.disabled ) return 'none';
+            return 'auto';
+        }
     },
 
     methods: {
