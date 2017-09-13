@@ -26,21 +26,21 @@
 
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
     <table 
-        class="table is-bordered"
+        class="table is-bordered thin"
         style="width: 100%;"
         :style="isFixed ? style.table : ''"
     >
     <thead v-if="filteredColumns">
         <tr>
-            <th class="thin-500" 
+            <th class="header-styling thin" 
                 style="padding: 0.4rem 1rem"
-                :style="[style.dayColumnWidth, textColor]"
+                :style="[style.dayColumnWidth]"
             ></th>
             <template v-for="(member, memberId) in filteredColumns">
                 <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    class="thin-500"
+                    class="header-styling thin"
                     style="padding: 0.4rem 1rem"
-                    :style="[columnWidth, textColor]"
+                    :style="[columnWidth]"
                     ><span>{{ member.name }}({{ member.id}})</span>
                 </th>
             </template>
@@ -52,7 +52,7 @@
             :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }"
             >
 
-            <td class="date-styling thin-500" :style="[style.dayColumnWidth]">
+            <td class="date-styling" :style="[style.dayColumnWidth]">
                 <span>
                     {{ getDateAndDay(day.date) }}
                 </span>
@@ -185,13 +185,13 @@ export default {
             }
         },
 
-        textColor: function(){
-            if(!this.isFixed) return;
-
-            return {
-                color: 'white'
-            }
-        },
+//        textColor: function(){
+//            if(!this.isFixed) return;
+//
+//            return {
+//                color: 'white'
+//            }
+//        },
 
         dragEnterStyle: function() {
             return { 
@@ -202,13 +202,14 @@ export default {
         style: function() {
             return {
                 table: {
-                    'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl'),
+//                    'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl'),
                     'width': '100%'
                 },
                 dayColumnWidth: {
                     'width': '8%',
                     'min-width': '110px',
-                    'max-width': '110px'
+                    'max-width': '110px',
+//                    'border-right': '1px solid ' + this.theme.primary.code
                 }
             }
         }
@@ -316,8 +317,15 @@ table.calendar {
     }
 }
 
+$tableFrameBackgroundColor: rgba(240, 240, 240, 0.85);
+
+.header-styling {
+    background-color: $tableFrameBackgroundColor;
+}
+
 .date-styling {
     font-size: 1em;
+    background-color: $tableFrameBackgroundColor;
 }
 
 .today {
