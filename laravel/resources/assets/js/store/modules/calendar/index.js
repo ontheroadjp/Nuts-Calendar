@@ -120,11 +120,11 @@ const calendar = {
 
                 item: {
                     namespaced: true,
-                    getters: {
-                        isModalActive: ( state, getters, rootState ) => {
-                            return state.update.isActive && state.remove.isActive;
-                        }
-                    },
+//                    getters: {
+//                        isModalActive: ( state, getters, rootState ) => {
+//                            return state.update.isActive && state.remove.isActive;
+//                        }
+//                    },
 
                     modules: {
                         insert: insert,

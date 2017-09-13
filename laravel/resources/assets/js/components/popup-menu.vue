@@ -1,12 +1,13 @@
 <template>
-<transition name="box">
-    <black-screen v-show="isActive">
-        <div v-show="isActive" :style="box">
-            <button class="modal-close is-large" aria-label="close"
+<transition name="popup-menu">
+    <black-screen v-show="isActive" :overlayId="overlayId" @click.stop="onClose()">
+        <div :style="box">
+            <button class="modal-close" aria-label="close"
                 style="position: absolute; 
-                        top: 20px;
-                        right: 20px;
-                        background-color: rgba(84, 110, 122, 0.5);
+                    top: -8px;
+                    right: -8px;
+                    background-color: rgb(84, 110, 122);
+                    z-index: 5;
                 "
                 @click.stop="onClose()"
             ></button>
@@ -26,32 +27,46 @@ export default {
     },
 
     props: {
-//        id:       { type: String,  required: true },
-        x:        { type: Number, required: true },
-        y:        { type: Number, required: true },
-        height:   { type: Number,  default: 320 },
-        width:    { type: Number,  default: 240 },
-        isActive: { type: Boolean, required: true },
-        onClose:  { type: Function, required: true }
+//        id:          { type: String,   required: true },
+        clickX:      { type: Number,   required: true },
+        clickY:      { type: Number,   required: true },
+//        offsetX:     { type: Number,   default: 0 },
+        offsetY:     { type: Number,   default: 0 },
+        scrollX:     { type: Number,   required: false }, 
+        scrollY:     { type: Number,   required: false }, 
+        height:      { type: Number,   default: 320 },
+        width:       { type: Number,   default: 240 },
+        isActive:    { type: Boolean,  required: true },
+        onClose:     { type: Function, required: true },
+        overlayId:   { type: String,   default: '' }
     },
 
     computed: {
         xPosition: function() {
-            const clickPoint = (this.x - 20);
-            if((clickPoint + this.width)> window.innerWidth) {
-                return window.innerWidth - this.width - 50;
+            const rightEdge = window.innerWidth + this.scrollX;
+
+            if( (this.clickX + this.width + this.scrollX) > rightEdge ) {
+                return rightEdge - this.width - 10;
             }
-            
-            return clickPoint;
+
+            return this.clickX + this.scrollX;
         },
 
         yPosition: function() {
-            const clickPoint = (this.y - 62 - this.height);
-            if(clickPoint < 0) {
+            // clickY is a absolute position, but the return value(y) must be relative position
+            const y = this.clickY - this.offsetY - this.height;
+
+            const isScroll = (this.scrollY > this.offsetY);
+
+            if( !isScroll && y < 10 ) {
                 return 10;
-            }
+            } 
             
-            return clickPoint;
+            if( isScroll && y < this.scrollY - this.offsetY ) {
+                return scrollY - this.offsetY + 10;
+            }
+
+            return y;
         },
 
         box: function() {
@@ -60,8 +75,8 @@ export default {
                 top: this.yPosition + 'px',
                 left: this.xPosition + 'px',
                 'background-color': 'blue',
-                height: '320px',
-                width: '240px',
+                height: this.height + 'px',
+                width: this.width + 'px',
                 color: '#fff',
                 'z-index': 999
             }
@@ -89,6 +104,6 @@ export default {
 
 .popup-menu-enter-active,
 .popup-menu-leave-active {
-    transition: all 0.3s ease;
+    transition: opacity .1s ease;
 }
 </style>
