@@ -1,10 +1,10 @@
 <template>
 <span>
-    <p class="title thin-200" :style="style.title">
+    <p class="title thin-200" :style="titleStyle">
         Nuts <strong>Calendar</strong>
     </p>
 
-    <p class="subtitle thin" style="color: #fff">
+    <p class="subtitle thin" :style="subtitleStyle">
         <small>
             Manage your task & events in easily, quickly and a fun!
         </small>
@@ -14,6 +14,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import chroma from 'chroma-js';
 
 export default {
     computed: {
@@ -21,12 +22,27 @@ export default {
             theme: state => state.app.theme
         }),
 
-        style: function() {
-            return {
-                title: {
-                    'color': this.theme.secondary.code
+        ...mapState('dashboard', {
+            disabled: state => state.disabled
+        }),
+
+        titleStyle: function() {
+            if( this.disabled ) {
+                return { color: chroma(this.theme.secondary.code).alpha(0.5).css('hsl') }
+            }
+
+            return { color: this.theme.secondary.code }    
+        },
+
+        subtitleStyle: function() {
+            if( this.disabled ) { 
+                return {
+                    color: 'rgba(242, 242, 242, 0.3)',
+                    pointerEvents: 'none'
                 }
             }
+
+            return { color: 'rgb(242, 242, 242)' }
         }
     }
 }

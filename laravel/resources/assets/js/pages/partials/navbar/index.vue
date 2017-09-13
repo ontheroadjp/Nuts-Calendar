@@ -50,7 +50,13 @@
         <!-- <lang-changer></lang-changer> -->
 
         <span class="nav-item">
-            <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']" >
+            <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']"
+                :style="{ 
+                    'color': linkColorStyle, 
+                    'pointer-events': pointerEventsStyle,
+                    'border': '1px solid ' + linkColorStyle
+                }"
+            >
                 <span class="icon">
                     <i class="fa fa-twitter"></i>
                 </span>
@@ -105,8 +111,8 @@
             },
 
             linkColorStyle: function() {
-                if( this.disabled ) return "rgba(242, 242, 242, 0.3)";
-                return "";
+                if( this.disabled ) return "rgba(242, 242, 242, .3)";
+                return "rgba(242, 242, 242, .75)";
             },
     
             pointerEventsStyle: function() {
