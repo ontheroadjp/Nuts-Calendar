@@ -13,7 +13,10 @@
 
     <div class="nav-right nav-menu" style="overflow:visible">
 
-        <router-link to="/" class="nav-item thin">{{ t('navbar.home') }}</router-link>
+        <router-link to="/" 
+            class="nav-item thin"
+            :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+        >{{ t('navbar.home') }}</router-link>
 
         <template v-if="! $store.state.user.name">
             <router-link to="/login" class="nav-item thin">
@@ -28,11 +31,12 @@
         <template v-else>
             <router-link 
                 to="/dashboard" 
+                class="nav-item thin"
+                :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
                 @click.native="$store.commit('calendar/setValue', {
                     key: 'currentId',
                     value: 'dashboard'
                 })"
-                class="nav-item thin"
             >{{ t('navbar.dashboard') }}
             </router-link>
 
@@ -62,6 +66,7 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
     import core from '../../../mixins/core.js';
     import hamburgerMenu from './hamburger-menu.vue';
     import userAccountDropdown from './user-account-dropdown.vue';
@@ -90,9 +95,23 @@
         ],
 
         computed: {
+            ...mapState('dashboard', {
+                disabled: state => state.disabled
+            }),
+
             headerStyle: function() {
                 return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
                     + 'box-shadow: none;';
+            },
+
+            linkColorStyle: function() {
+                if( this.disabled ) return "rgba(242, 242, 242, 0.3)";
+                return "";
+            },
+    
+            pointerEventsStyle: function() {
+                if( this.disabled ) return 'none';
+                return 'auto';
             }
         },
 
