@@ -92,7 +92,8 @@ export default {
             if( this.disabled ) {
                 return {
                     fontSize: '1.8em',
-                    color: 'rgba(242, 242, 242, .3)'
+                    color: 'rgba(242, 242, 242, .3)',
+                    pointerEvents: 'none'
                 }
             }
 
