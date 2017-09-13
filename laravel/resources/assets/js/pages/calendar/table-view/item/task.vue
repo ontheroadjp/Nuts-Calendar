@@ -1,14 +1,17 @@
 <template>
-    <span class="item is-task" @click.stop="clickItem($event)">
+    <span class="item is-task" 
+        :style="searchHighlightStyle"
+        @click.stop="clickItem($event)">
+
         <span :class="{'task-done': item.is_done}">
             <input id="item.id" 
                 type="checkbox" 
                 style="margin-right: 8px" 
                 @click.stop="clickDone()" 
                 :checked="item.is_done"> 
-            <span>
-                {{ item.content }}
-            </span>
+
+            <span>{{ item.content }}</span>
+
             <span class="icon is-small" 
                 v-show="(dragItem.isLoading || deleteItem.isLoading) 
                             && dragItem.draggingItem === item"
@@ -29,7 +32,19 @@ export default {
         ...mapState('calendar/tableView/item', {
             dragItem: state => state.dnd,
             deleteItem: state => state.remove
-        })
+        }),
+
+        ...mapState('calendar/tableView/toolPalette', {
+            searchQuery: state => state.query.search
+        }),
+
+        searchHighlightStyle: function() {
+            if( this.searchQuery != '' 
+                    && this.item.content.toLowerCase().indexOf(this.searchQuery) != -1) {
+                return { backgroundColor: '#FFEB3B' }
+            }
+            return {}
+        }
     },
 
     methods: {
@@ -56,7 +71,6 @@ export default {
             this.updatePrepare( { editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
-
     }
 }
 </script>
