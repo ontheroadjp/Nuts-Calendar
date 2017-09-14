@@ -1,6 +1,7 @@
 <template>
 <transition name="popup-menu">
-    <black-screen v-show="isActive" :overlayId="overlayId" @click.stop="onClose()">
+<!--
+    <black-screen v-show="isactive" :overlayid="overlayid" @click.stop="onclose()">
         <div :style="box">
             <button class="modal-close" aria-label="close"
                 style="position: absolute; 
@@ -9,22 +10,34 @@
                     background-color: rgb(84, 110, 122);
                     z-index: 5;
                 "
-                @click.stop="onClose()"
+                @click.stop="onclose()"
             ></button>
 
             <slot></slot>
         </div>
     </black-screen>
+-->
+        <div v-show="isActive" :style="box">
+            <button class="modal-close" aria-label="close"
+                style="position: absolute; 
+                    top: -8px;
+                    right: -8px;
+                    background-color: rgb(84, 110, 122);
+                    z-index: 5;
+                "
+                @click.stop="onClose"
+            ></button>
+
+            <slot></slot>
+        </div>
 </transition>
 </template>
 
 <script>
-import blackScreen from './black-screen.vue';
+//import blackScreen from './black-screen.vue';
 
 export default {
-    components: {
-        blackScreen
-    },
+//    components: { blackScreen },
 
     props: {
 //        id:          { type: String,   required: true },
@@ -38,7 +51,7 @@ export default {
         width:       { type: Number,   default: 240 },
         isActive:    { type: Boolean,  required: true },
         onClose:     { type: Function, required: true },
-        overlayId:   { type: String,   default: '' }
+//        overlayId:   { type: String,   default: '' }
     },
 
     computed: {

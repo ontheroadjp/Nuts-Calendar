@@ -1,5 +1,6 @@
 <template id="calendar">
 <div>
+<!--
     <black-screen v-if="isLoading">
         <div v-show="filteredBody" class="has-text-centered black-screen-loading">
             <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -8,7 +9,19 @@
 
     <popup-menu 
         v-if="filteredBody && editItem.isActive"
-        overlayId="table-view-body"
+        :clickX="editItem.clickX" 
+        :clickY="editItem.clickY" 
+        :isActive="editItem.isActive" 
+        :onClose="popupMenuClose"
+        :offsetY="topPosition"
+        :scrollX="scrollPositionX"
+        :scrollY="scrollPositionY"
+        ><item-edit-popup-content></item-edit-popup-content>
+    </popup-menu>
+-->
+
+    <popup-menu 
+        v-if="filteredBody && editItem.isActive"
         :clickX="editItem.clickX" 
         :clickY="editItem.clickY" 
         :isActive="editItem.isActive" 
@@ -19,10 +32,12 @@
         ><item-edit-popup-content></item-edit-popup-content>
     </popup-menu>
 
+<!--
     <black-screen 
         v-if="!filteredBody && editItem.isActive" 
         overlayId="table-view-header"
     ></black-screen>
+-->
 
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
     <table 

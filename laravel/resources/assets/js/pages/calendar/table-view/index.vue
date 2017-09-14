@@ -6,6 +6,15 @@
     </transition>
 
     <div id="table-view">
+
+        <black-screen v-if="disabled" color="rgba(242, 242, 242, .5)"></black-screen>
+
+        <black-screen v-if="calendarIsLoading">
+            <div style="display: flex; justify-content: center; margin-top: 10%">
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+            </div>
+        </black-screen>
+
         <div id="table-view-header" 
             :class="['main-calendar-panel-header', {sticky: isFixed}]"
             ><table-view 
@@ -41,20 +50,16 @@
 
 <script>
     import { mapState } from 'vuex';
+    import blackScreen from '../../../components/black-screen.vue';
     import core from '../../../mixins/core.js';
     import tableView from './table-view.vue';
     import toolPalette from './table-tool-palette.vue';
     import dateUtilities from '../../../mixins/date-utilities.js';
     
     export default {
-        components: {
-            'table-view': tableView,
-            'tool-palette': toolPalette
-        },
+        components: { tableView, toolPalette, blackScreen },
 
-        mixins: [
-            core, dateUtilities
-        ],
+        mixins: [ core, dateUtilities ],
 
         props: [
             'calendarIsLoading'
@@ -77,6 +82,10 @@
         },
         
         computed: {
+            ...mapState('dashboard', {
+                disabled: state => state.disabled
+            }),
+
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
                 searchQuery: state => (state.query.search).toLowerCase(),
