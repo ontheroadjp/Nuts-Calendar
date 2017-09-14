@@ -197,7 +197,7 @@ export default {
             } else {
                 this.fixedScrollPositionY = 0;
             }
-        }
+        },
     },
 
     methods: {
