@@ -2,16 +2,16 @@
     <div class="control">
 
         <div class="control has-icon has-addons">
-            <input 
-                class="input" 
+            <input class="input" 
                 type="text" 
-                v-model="searchQuery" 
+                v-model="query" 
                 placeholder="Search"
-                :disabled="disabled"
-            >
+                :disabled="disabled" />
+
             <span class="icon is-small">
                 <i class="fa fa-search"></i>
             </span>
+
             <a :class="['button', theme.secondary.class, 'is-outlined']" 
                 @click="clearField"
             >Clear</a>
@@ -33,10 +33,15 @@ export default {
             disabled: state => state.disabled
         }),
 
-        searchQuery: {
+        ...mapState('calendar/tableView/toolPalette', {
+            searchQuery: state => state.query.search
+        }),
+
+        query: {
             get() {
-                return this.$store.state.calendar.tableView.toolPalette.query.search;
+                return this.searchQuery;
             },
+
             set(value) {
                 this.setSearchQuery({ value });
             }
