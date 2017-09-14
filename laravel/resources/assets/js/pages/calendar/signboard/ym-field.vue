@@ -1,12 +1,15 @@
 <template>
 <div>
     <transition name="ym-picker">
+
+        <!-- display value -->
         <span v-if="!editing" 
             class="thin" 
             :style="displayStyle"
             @click="togglePicker" 
         >{{ getYearAndMonth(currentYear + '-' + currentMonth + '-01') }}</span>
 
+        <!-- select bar -->
         <div v-else class="card thin ym-picker">
             <button class="delete delete-button" @click="togglePicker"></button>
 
@@ -123,7 +126,7 @@ export default {
     top: 20px;
     padding: 5px 10px;
     border-radius: 3px;
-    width: 60%;
+    width: 100%;
 
     & .delete-button {
         position: absolute;
