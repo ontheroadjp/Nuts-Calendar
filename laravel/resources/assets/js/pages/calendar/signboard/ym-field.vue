@@ -35,18 +35,6 @@ export default {
         dateUtilities
     ],
 
-//    props: {
-//        yearFrom: {
-//            type: Number,
-//            default: 2017
-//        }, 
-//
-//        yearPeriod: {
-//            type: Number,
-//            default: 5
-//        }
-//    },
-
     data() {
         return {
             editing: false,
@@ -102,16 +90,6 @@ export default {
                 color: 'rgb(242, 242, 242)'
             }
         },
-
-//        yearVals: function() {
-//            let start, period, vals = [];
-//            this.yearFrom ? start = this.yearFrom : start = this.currentYear;
-//            this.yearPeriod ? period = this.yearPeriod : period = 5;
-//            for( var n=0; n < period; n++ ) {
-//                vals.push(parseInt(start) + n);
-//            }
-//            return vals;
-//        },
 
         theme: function() {
             return this.$store.state.app.theme;
