@@ -1,7 +1,7 @@
 <template>
 <div class="dropdown">
     <template v-if="label !== ''">
-        <a href="#" class="dropdown-toggle" @click="toggle()">
+        <a href="#" class="dropdown-toggle" :style="labelStyle" @click="toggle()">
             <span>
                 <span class="icon is-small">
                     <i class="fa" :class="icon"></i>
@@ -38,6 +38,7 @@ export default {
         id:             { type: String, required: true },
         icon:           { type: String, default: 'fa-user' },
         label:          { type: String, default: '' },
+        labelStyle:     { type: Object, default: () => {} },
         frontIconStyle: { type: Object, default: () => { color: '#fff' } },
         backIconStyle:  { type: Object, default: () => { color: '#000' } },
         menuHeight:     { type: Number, default: 40 }
