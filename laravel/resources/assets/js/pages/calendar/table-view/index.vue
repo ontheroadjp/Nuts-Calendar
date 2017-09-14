@@ -12,6 +12,7 @@
             color="rgba(242, 242, 242, .6)"
             :onActive="function() {
                 this.$store.commit('calendar/tableView/item/insert/reset');
+                this.$store.commit('calendar/tableView/item/update/reset');
             }"
         ></black-screen>
 
