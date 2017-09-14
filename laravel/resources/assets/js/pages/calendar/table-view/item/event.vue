@@ -3,15 +3,25 @@
         :style="searchHighlightStyle"
         @click.stop="clickItem($event)">
 
-        <span v-show="item.hasStartTimeError" style="color:red">!S!</span>
-        <span v-show="item.hasEndTimeError" style="color:red">!E!</span>
 
-        <strong v-show="item.start_time" style="margin-right: 8px;">
-            {{ item.start_time | timeFormatter }} 
-            <template v-show="item.end_time !== null">
-                <br>{{ item.end_time | timeFormatter }}
-            </template>
-        </strong> {{ item.content }}
+        <strong v-show="item.start_time" 
+            :class="{'vertial': displayVertically}"
+            style="margin-right: 8px;">
+                <span :style="startTimeStyle">
+                    {{ item.start_time | timeFormatter }}
+                </span>
+    
+                <span>|</span>
+    
+                <template v-show="item.end_time !== null">
+                    <span :style="endTimeStyle">
+                        {{ item.end_time | timeFormatter }}
+                    </span>
+                </template>
+        </strong> 
+        
+        {{ item.content }}
+
         <span class="icon is-small" 
             v-show="(dragItem.isLoading || deleteItem.isLoading) 
                         && dragItem.draggingItem == item"
@@ -29,6 +39,12 @@ export default {
 
     props: [ 'item' ],
 
+    data() {
+        return {
+            displayVertically: false
+        }
+    },
+
     computed: {
         ...mapState('calendar/tableView/item', {
             dragItem: state => state.dnd,
@@ -38,6 +54,20 @@ export default {
         ...mapState('calendar/tableView/toolPalette', {
             searchQuery: state => (state.query.search).toLowerCase()
         }),
+
+        startTimeStyle: function() {
+            if(this.item.hasStartTimeError) {
+                return { color: 'red' };
+            }
+            return {};
+        },
+
+        endTimeStyle: function() {
+            if(this.item.hasEndTimeError) {
+                return { color: 'red' };
+            }
+            return {};
+        },
 
         searchHighlightStyle: function() {
             if( this.searchQuery != '' 
@@ -69,3 +99,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.vertial {
+    display: inline-flex;
+    flex-flow: column nowrap;
+    align-items: center;
+} 
+</style>

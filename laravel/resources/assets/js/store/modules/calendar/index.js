@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import toolPalette  from './table-view/tool-palette.js';
 import insert       from './table-view/item/insert.js';
 import update       from './table-view/item/update.js';
@@ -117,7 +118,7 @@ const calendar = {
                             // for check time error
                             let prev = '';
                             let cellItemsLength = columns[memberId].length;
-                            u.clog('Length: ' + cellItemsLength);
+//                            u.clog('Length: ' + cellItemsLength);
 
                             columns[memberId].forEach(function(item, index) {
 
@@ -135,26 +136,31 @@ const calendar = {
 
                                 if(prev === '') {
 //                                    u.clog('SKIP(1): ' + item.content);
-                                    item.hasStartTimeError = false;
-//                                    item.hasEndTimeError = false;
+//                                    item.hasStartTimeError = false;
+                                    Vue.set(item, 'hasStartTimeError', false);
                                     prev = item;
                                     return;
                                 }
 
                                 if(prev.end_time > item.start_time) {
 //                                    u.clog('>>> true: ' + prev.content + ' & ' + item.content + '(' + index + ')');
-                                    prev.hasEndTimeError = true;
-                                    item.hasStartTimeError = true;
+//                                    prev.hasEndTimeError = true;
+//                                    item.hasStartTimeError = true;
+                                    Vue.set(prev, 'hasEndTimeError', true);
+                                    Vue.set(item, 'hasStartTimeError', true);
                                 } else {
 //                                    u.clog('>>> false: ' + prev.content + ' & ' + item.content + '(' + index + ')');
-                                    prev.hasEndTimeError = false;
-                                    item.hasStartTimeError = false;
+//                                    prev.hasEndTimeError = false;
+//                                    item.hasStartTimeError = false;
+                                    Vue.set(prev, 'hasEndTimeError', false);
+                                    Vue.set(item, 'hasStartTimeError', false);
                                 }
 
                                 // last item
                                 if(index === (cellItemsLength -1)) {
-//                                    u.clog('LAST: ' + item.content + '(' + index + ')');
-                                    item.hasEndTimeError = false;
+//                                    u.clog('LAST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
+//                                    item.hasEndTimeError = false;
+                                    Vue.set(item, 'hasEndTimeError', false);
                                     return;
                                 }
 
@@ -171,16 +177,9 @@ const calendar = {
                                 prev = item;
                             });
 
-
                             // ---------------------------------------------
+
                         });
-
-
-//                        memberIds.forEach(function(memberId) {
-
-//                        });
-
-
                     });
                 }
             },
