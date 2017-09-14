@@ -66,7 +66,8 @@ export default {
         },
 
         yPosition: function() {
-            // clickY is a absolute position, but the return value(y) must be relative position
+            // clickY is absolute position toward the window, 
+            // but the y:return-value must be relative position against a component.
             const y = this.clickY - this.offsetY - this.height;
 
             const isScroll = (this.scrollY > this.offsetY);

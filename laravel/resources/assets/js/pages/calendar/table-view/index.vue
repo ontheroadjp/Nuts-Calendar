@@ -7,11 +7,19 @@
 
     <div id="table-view">
 
-        <black-screen v-if="disabled" color="rgba(242, 242, 242, .5)"></black-screen>
+        <black-screen v-if="disabled" color="rgba(242, 242, 242, .6)"></black-screen>
 
         <black-screen v-if="calendarIsLoading">
-            <div style="display: flex; justify-content: center; margin-top: 10%">
-                <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+            <div style="display: flex;
+                    justify-content: center;
+                    flex-flow: column wrap;
+                    align-items: center;
+                    margin-top: 10%;
+                    color: #546e7a;
+            ">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+                    style="margin-bottom: .5em"></i>
+                <div>is Loading...</div>
             </div>
         </black-screen>
 
