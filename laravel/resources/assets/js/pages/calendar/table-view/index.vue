@@ -10,20 +10,14 @@
         <black-screen v-if="disabled" color="rgba(242, 242, 242, .6)"></black-screen>
 
         <black-screen v-if="calendarIsLoading">
-            <div style="display: flex;
-                    justify-content: center;
-                    flex-flow: column wrap;
-                    align-items: center;
-                    margin-top: 10%;
-                    color: #546e7a;
-            ">
+            <div class="loading-black-screen">
                 <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
                     style="margin-bottom: .5em"></i>
                 <div>is Loading...</div>
             </div>
         </black-screen>
 
-        <div id="table-view-header" 
+        <div :id="id.header" 
             :class="['main-calendar-panel-header', {sticky: isFixed}]"
             ><table-view 
                 :filtered-columns="filteredColumns"
@@ -32,7 +26,7 @@
             ></table-view>
         </div>
     
-        <div id="table-view-body" 
+        <div :id="id.body" 
              :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]" 
              @scroll="onScrollBody()"
             ><table-view 
@@ -69,19 +63,24 @@
 
         mixins: [ core, dateUtilities ],
 
-        props: [
-            'calendarIsLoading'
-        ],
+        props: {
+            calendarIsLoading: { type: Boolean, required: false }
+        },
 
         data() {
             return {
                 scrollPositionY: 0,
                 scrollPositionX: 0,
+                id: {
+                    header: 'table-view-header',
+                    body: 'table-view-body'
+                },
                 height: {
                     headerNav: 0,
                     signboard: 0,
                     toolPalette: 0
                 },
+
                 elements: {
                     tableHeader: '',
                     tableBody: ''
@@ -186,37 +185,32 @@
 
         mounted() {
             this.$nextTick( () => {
-                this.updateHeight();
-    
                 const self = this;
+                this.updateHeight();
 
-//                let resizing; 
-//                window.addEventListener('resize', function (event) {
-//                    if (resizing) { clearTimeout(resizing); }
-//                    resizing = setTimeout(function() {
-//                        u.clog('window resized');
-//                        self.updateHeight();
-//                    }, 500);
-//                });
-    
                 document.onscroll = function(e) {
                     self.scrollPositionY = document.documentElement.scrollTop || document.body.scrollTop;
                 };
     
-                this.elements.tableHeader = document.getElementById('table-view-header');
-                this.elements.tableBody = document.getElementById('table-view-body');
+                this.elements.tableHeader = document.getElementById(this.id.header);
+                this.elements.tableBody = document.getElementById(this.id.body);
             });
-        },
-
-//        destroyed() {
-//            window.removeEventListener('resize', () => {},false);
-//        }
+        }
     }
 </script>
 
 <style lang="scss" scoped>
 .main-calendar-panel-wrapper {
     position: relative;
+
+    & .loading-black-screen {
+        display: flex;
+        justify-content: center;
+        flex-flow: column wrap;
+        align-items: center;
+        margin-top: 10%;
+        color: #546e7a;
+    }
 
     & .main-calendar-panel-header {
         user-select: none;
