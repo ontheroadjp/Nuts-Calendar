@@ -47,6 +47,14 @@
             </td>
 
             <template v-for="(cellItems, memberId) in day.items">
+                <cell-items 
+                    :day="day" 
+                    :dayIndex="dayIndex" 
+                    :cellItems="cellItems"
+                    :memberId="memberId"
+                    :columnWidth="columnWidth"
+                ></cell-items>
+<!--
                 <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
                     :style="[
                         columnWidth, 
@@ -74,13 +82,14 @@
                             :item="item"
                         ></item>
 
-                    </div><!-- // v-for -->
+                    </div>
 
                     <item-insert-field 
                         v-if="addItem.enterCell.dayIndex === dayIndex 
                                 && addItem.enterCell.memberId === memberId"
                     ></item-insert-field>
                 </td>
+-->
             </template>
         </tr>
     </tbody>
@@ -95,18 +104,21 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import popupMenu from '../../../components/popup-menu.vue';
-import item from './item/index.vue';
-import itemInsertField from './item-insert-field.vue';
+//import item from './item/index.vue';
+//import itemInsertField from './item-insert-field.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
 import dateUtilities from '../../../mixins/date-utilities.js';
 import chroma from 'chroma-js';
 
+import cellItems from './cell-items.vue';
+
 export default {
     name: 'table-view-content',
 
     components: { 
-        popupMenu, item, itemInsertField, itemEditPopupContent, miniCalBar 
+//        popupMenu, item, itemInsertField, itemEditPopupContent, miniCalBar 
+        popupMenu, cellItems, itemEditPopupContent, miniCalBar 
     },
 
     mixins: [ dateUtilities ],
