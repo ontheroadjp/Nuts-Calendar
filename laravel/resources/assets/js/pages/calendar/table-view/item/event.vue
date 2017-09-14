@@ -4,6 +4,7 @@
         @click.stop="clickItem($event)">
 
 
+<!--
         <strong v-show="item.start_time" 
             :class="{'vertial': displayVertically}"
             style="margin-right: 8px;">
@@ -18,6 +19,19 @@
                         {{ item.end_time | timeFormatter }}
                     </span>
                 </template>
+        </strong> 
+-->
+        <strong :class="{'vertial': displayVertically}"
+            style="margin-right: 8px;">
+                <span :style="startTimeStyle">
+                    {{ item.start_time | timeFormatter }}
+                </span>
+    
+                <span>|</span>
+    
+                <span :style="endTimeStyle">
+                    {{ item.end_time | timeFormatter }}
+                </span>
         </strong> 
         
         {{ item.content }}
