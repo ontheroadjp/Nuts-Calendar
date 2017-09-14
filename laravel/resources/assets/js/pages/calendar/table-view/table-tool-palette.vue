@@ -25,31 +25,30 @@
 
         <span v-show="selected === 'member'" class="level-item">
             <template v-for="(member, memberId) in members">
-                <button  :class="['button', {'is-off': !member.isShow}]" 
-                    :disabled="disabled"
-                    @click="clickColumnButton(memberId, !member.isShow)"
-                    >
-                    <i v-show="member.isShow" class="fa fa-user"></i>
-                    <i v-show="!member.isShow" class="fa fa-user-times"></i>
+                <button  :class="['button', { off: !member.isShow}]" 
+                          @click="clickColumnButton(memberId, !member.isShow)"
+                          :disabled="disabled">
+                    <i v-if="member.isShow" class="fa fa-user"></i>
+                    <i v-else class="fa fa-user-times"></i>
                     ({{ memberId }})
                 </button>
             </template>
         </span>
 
         <span v-show="selected === 'item'" class="level-item">
-            <button :class="[ 'button', { 'is-off': !isEventItemShow } ]" 
-                    :disabled="disabled"
-                    @click="clickEventItemButton()">
-                <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
-                <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
+            <button :class="[ 'button', { off: !isEventItemShow } ]" 
+                    @click="clickEventItemButton()"
+                    :disabled="disabled">
+                <i v-if="isEventItemShow" class="fa fa-bell-o"></i>
+                <i v-else class="fa fa-bell-slash-o"></i>
                 Event
             </button>
 
-            <button :class="['button', { 'is-off': !isTaskItemShow }]" 
+            <button :class="['button', { off: !isTaskItemShow }]" 
                     :disabled="disabled"
                     @click="clickTaskItemButton()">
-                <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
-                <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
+                <i v-if="isTaskItemShow" class="fa fa-bell-o"></i>
+                <i v-else class="fa fa-bell-slash-o"></i>
                 Task
             </button>
         </span>
@@ -81,9 +80,8 @@ import searchBox from './table-search-box.vue';
 
 export default {
     name: 'calendar-tool-palett',
-    components: {
-        'search-box': searchBox,
-    },
+
+    components: { searchBox },
 
     data() {
         return {
@@ -140,7 +138,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.button.is-off {
+.button.off {
     background-color: #f0f0f0;
 }
 </style>
