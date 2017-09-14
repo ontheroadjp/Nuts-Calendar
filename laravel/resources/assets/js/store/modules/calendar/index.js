@@ -104,13 +104,83 @@ const calendar = {
                                 // the same value
                                 return 0;
                             });
-            
-                            // set dayIndex & itemIndex
+
+//                            // set dayIndex & itemIndex
+//                            columns[memberId].forEach(function(item, index) {
+//                                item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
+//                                item.itemIndex = index;
+//                            });
+
+
+                            // ---------------------------------------------
+
+                            // for check time error
+                            let prev = '';
+                            let cellItemsLength = columns[memberId].length;
+                            u.clog('Length: ' + cellItemsLength);
+
                             columns[memberId].forEach(function(item, index) {
+
+                                // set dayIndex & itemIndex ( for DnD )
                                 item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
                                 item.itemIndex = index;
+
+                                // check time error
+                                if(item.type_id !== 1) { 
+//                                    u.clog('SKIP: (' + item.content + ')');
+//                                    item.hasStartTimeError = false;
+//                                    item.hasEndTimeError = false;
+                                    return;
+                                }
+
+                                if(prev === '') {
+//                                    u.clog('SKIP(1): ' + item.content);
+                                    item.hasStartTimeError = false;
+//                                    item.hasEndTimeError = false;
+                                    prev = item;
+                                    return;
+                                }
+
+                                if(prev.end_time > item.start_time) {
+//                                    u.clog('>>> true: ' + prev.content + ' & ' + item.content + '(' + index + ')');
+                                    prev.hasEndTimeError = true;
+                                    item.hasStartTimeError = true;
+                                } else {
+//                                    u.clog('>>> false: ' + prev.content + ' & ' + item.content + '(' + index + ')');
+                                    prev.hasEndTimeError = false;
+                                    item.hasStartTimeError = false;
+                                }
+
+                                // last item
+                                if(index === (cellItemsLength -1)) {
+//                                    u.clog('LAST: ' + item.content + '(' + index + ')');
+                                    item.hasEndTimeError = false;
+                                    return;
+                                }
+
+//                                u.clog('====================================');
+//                                u.clog('prev.content: ' + prev.content);
+//                                u.clog('item.content: ' + item.content);
+//                                u.clog('------------------------------------');
+//                                u.clog('prev.end_time: ' + prev.end_time);
+//                                u.clog('item.start_time: ' + item.start_time);
+//                                u.clog('------------------------------------');
+//                                u.clog('prev.hasEndTimeError: ' + prev.hasEndTimeError);
+//                                u.clog('item.hasStartTimeError: ' + item.hasStartTimeError);
+
+                                prev = item;
                             });
+
+
+                            // ---------------------------------------------
                         });
+
+
+//                        memberIds.forEach(function(memberId) {
+
+//                        });
+
+
                     });
                 }
             },

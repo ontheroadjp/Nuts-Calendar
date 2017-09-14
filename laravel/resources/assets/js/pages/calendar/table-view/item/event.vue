@@ -3,6 +3,9 @@
         :style="searchHighlightStyle"
         @click.stop="clickItem($event)">
 
+        <span v-show="item.hasStartTimeError" style="color:red">!S!</span>
+        <span v-show="item.hasEndTimeError" style="color:red">!E!</span>
+
         <strong v-show="item.start_time" style="margin-right: 8px;">
             {{ item.start_time | timeFormatter }} 
             <template v-show="item.end_time !== null">
