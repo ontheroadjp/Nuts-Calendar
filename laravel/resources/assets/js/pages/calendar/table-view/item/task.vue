@@ -35,7 +35,7 @@ export default {
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
-            searchQuery: state => state.query.search
+            searchQuery: state => (state.query.search).toLowerCase()
         }),
 
         searchHighlightStyle: function() {
