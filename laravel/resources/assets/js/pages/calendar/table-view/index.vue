@@ -6,20 +6,37 @@
     </transition>
 
     <div id="table-view">
-        <div id="table-view-header" 
+
+        <black-screen 
+            v-if="disabled" 
+            color="rgba(242, 242, 242, .6)"
+            :onActive="function() {
+                this.$store.commit('calendar/tableView/item/insert/reset');
+            }"
+        ></black-screen>
+
+        <black-screen v-if="calendarIsLoading">
+            <div class="loading-black-screen">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+                    style="margin-bottom: .5em"></i>
+                <div>is Loading...</div>
+            </div>
+        </black-screen>
+
+        <div :id="id.header" 
             :class="['main-calendar-panel-header', {sticky: isFixed}]"
             ><table-view 
                 :filtered-columns="filteredColumns"
                 :isLoading="calendarIsLoading"
-                :is-fixed="isFixed"
+                :isFixed="isFixed"
             ></table-view>
         </div>
-    
-        <div id="table-view-body" 
+   
+        <div :id="id.body" 
              :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]" 
              @scroll="onScrollBody()"
             ><table-view 
-                :filtered-body="filteredCalendar" 
+                :filtered-body="filteredBody" 
                 :isLoading="calendarIsLoading"
                 :topPosition="(height.headerNav + height.signboard + height.toolPalette)"
                 :scrollPositionY="scrollPositionY"
@@ -30,10 +47,10 @@
 
     <!-- jump to the page top button -->
     <a  href="#top" 
-        class="button" 
-        style="position: fixed; bottom: 30px; right: 30px" 
-        :style="'color: white; background-color: ' + theme.primary.code"
         v-show="scrollPositionY > fixedHeight && !draggingItem" 
+        class="button" 
+        style="position: fixed; bottom: 30px; right: 30px; color: #fff" 
+        :style="'background-color: ' + theme.primary.code"
         >{{ t('calendar.jumpToTop') }}
     </a>
 </div>
@@ -41,34 +58,35 @@
 
 <script>
     import { mapState } from 'vuex';
+    import blackScreen from '../../../components/black-screen.vue';
     import core from '../../../mixins/core.js';
     import tableView from './table-view.vue';
     import toolPalette from './table-tool-palette.vue';
     import dateUtilities from '../../../mixins/date-utilities.js';
     
     export default {
-        components: {
-            'table-view': tableView,
-            'tool-palette': toolPalette
+        components: { tableView, toolPalette, blackScreen },
+
+        mixins: [ core, dateUtilities ],
+
+        props: {
+            calendarIsLoading: { type: Boolean, required: false }
         },
-
-        mixins: [
-            core, dateUtilities
-        ],
-
-        props: [
-            'calendarIsLoading'
-        ],
 
         data() {
             return {
                 scrollPositionY: 0,
                 scrollPositionX: 0,
+                id: {
+                    header: 'table-view-header',
+                    body: 'table-view-body'
+                },
                 height: {
                     headerNav: 0,
                     signboard: 0,
                     toolPalette: 0
                 },
+
                 elements: {
                     tableHeader: '',
                     tableBody: ''
@@ -77,6 +95,10 @@
         },
         
         computed: {
+            ...mapState('dashboard', {
+                disabled: state => state.disabled
+            }),
+
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
                 searchQuery: state => (state.query.search).toLowerCase(),
@@ -101,7 +123,7 @@
                 return this.$store.getters.filteredMembers;
             },
 
-           filteredCalendar: {
+           filteredBody: {
                 cache: true,
                 get() {
                     let data = this.$store.state.calendar.data.calendars;
@@ -169,37 +191,32 @@
 
         mounted() {
             this.$nextTick( () => {
-                this.updateHeight();
-    
                 const self = this;
+                this.updateHeight();
 
-//                let resizing; 
-//                window.addEventListener('resize', function (event) {
-//                    if (resizing) { clearTimeout(resizing); }
-//                    resizing = setTimeout(function() {
-//                        u.clog('window resized');
-//                        self.updateHeight();
-//                    }, 500);
-//                });
-    
                 document.onscroll = function(e) {
                     self.scrollPositionY = document.documentElement.scrollTop || document.body.scrollTop;
                 };
     
-                this.elements.tableHeader = document.getElementById('table-view-header');
-                this.elements.tableBody = document.getElementById('table-view-body');
+                this.elements.tableHeader = document.getElementById(this.id.header);
+                this.elements.tableBody = document.getElementById(this.id.body);
             });
-        },
-
-//        destroyed() {
-//            window.removeEventListener('resize', () => {},false);
-//        }
+        }
     }
 </script>
 
 <style lang="scss" scoped>
 .main-calendar-panel-wrapper {
     position: relative;
+
+    & .loading-black-screen {
+        display: flex;
+        justify-content: center;
+        flex-flow: column wrap;
+        align-items: center;
+        margin-top: 10%;
+        color: #546e7a;
+    }
 
     & .main-calendar-panel-header {
         user-select: none;

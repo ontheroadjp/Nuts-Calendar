@@ -1,30 +1,24 @@
 <template>
 <transition name="popup-menu">
-    <black-screen v-show="isActive" :overlayId="overlayId" @click.stop="onClose()">
-        <div :style="box">
-            <button class="modal-close" aria-label="close"
-                style="position: absolute; 
-                    top: -8px;
-                    right: -8px;
-                    background-color: rgb(84, 110, 122);
-                    z-index: 5;
-                "
-                @click.stop="onClose()"
-            ></button>
+    <div v-show="isActive" :style="box">
+        <button class="modal-close" aria-label="close"
+            style="position: absolute; 
+                top: -8px;
+                right: -8px;
+                background-color: rgb(84, 110, 122);
+                z-index: 5;
+            "
+            @click.stop="onClose"
+        ></button>
 
-            <slot></slot>
-        </div>
-    </black-screen>
+        <slot></slot>
+    </div>
 </transition>
 </template>
 
 <script>
-import blackScreen from './black-screen.vue';
 
 export default {
-    components: {
-        blackScreen
-    },
 
     props: {
 //        id:          { type: String,   required: true },
@@ -38,7 +32,6 @@ export default {
         width:       { type: Number,   default: 240 },
         isActive:    { type: Boolean,  required: true },
         onClose:     { type: Function, required: true },
-        overlayId:   { type: String,   default: '' }
     },
 
     computed: {
@@ -53,7 +46,8 @@ export default {
         },
 
         yPosition: function() {
-            // clickY is a absolute position, but the return value(y) must be relative position
+            // clickY is absolute position toward the window, 
+            // but the y:return-value must be relative position against a component.
             const y = this.clickY - this.offsetY - this.height;
 
             const isScroll = (this.scrollY > this.offsetY);

@@ -1,5 +1,8 @@
 <template>
-    <span class="item is-event" @click.stop="clickItem($event)">
+    <span class="item is-event" 
+        :style="searchHighlightStyle"
+        @click.stop="clickItem($event)">
+
         <strong v-show="item.start_time" style="margin-right: 8px;">
             {{ item.start_time | timeFormatter }} 
             <template v-show="item.end_time !== null">
@@ -27,7 +30,19 @@ export default {
         ...mapState('calendar/tableView/item', {
             dragItem: state => state.dnd,
             deleteItem: state => state.remove
-        })
+        }),
+
+        ...mapState('calendar/tableView/toolPalette', {
+            searchQuery: state => (state.query.search).toLowerCase()
+        }),
+
+        searchHighlightStyle: function() {
+            if( this.searchQuery != '' 
+                    && this.item.content.toLowerCase().indexOf(this.searchQuery) != -1) {
+                return { backgroundColor: '#FFEB3B' }
+            }
+            return {}
+        }
     },
 
     methods: {
@@ -44,6 +59,9 @@ export default {
             this.updatePrepareModal( { event: e } );
             this.removePrepare( { event: e, deletingItem: this.item } );
             this.insertReset();
+            this.$store.commit('dashboard/setValue', {
+                key: 'disabled', value: true
+            });
         }
     }
 }

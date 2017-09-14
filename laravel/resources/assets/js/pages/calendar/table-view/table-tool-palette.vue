@@ -5,7 +5,7 @@
 <span class="level" style="white-space: nowrap">
     <span class="level-left">
         <span class="level-item select">
-            <select v-model="selected">
+            <select v-model="selected" :disabled="disabled">
                 <option value="date" selected>Date</option>
                 <option value="member">Member</option>
                 <option value="item">Item</option>
@@ -13,40 +13,42 @@
         </span>
 
         <span v-show="selected === 'date'" class="level-item">
-            <button class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
-            <button class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
-            <button class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
-            <button class="button" @click="setInternalQuery({ value: '2' })">Tue</button>
-            <button class="button" @click="setInternalQuery({ value: '3' })">Wed</button>
-            <button class="button" @click="setInternalQuery({ value: '4' })">Thu</button>
-            <button class="button" @click="setInternalQuery({ value: '5' })">Fri</button>
-            <button class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '2' })">Tue</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '3' })">Wed</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '4' })">Thu</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '5' })">Fri</button>
+            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
         </span>
 
         <span v-show="selected === 'member'" class="level-item">
             <template v-for="(member, memberId) in members">
-                <button  :class="['button', {'is-off': !member.isShow}]" 
-                    @click="clickColumnButton(memberId, !member.isShow)"
-                    >
-                    <i v-show="member.isShow" class="fa fa-user"></i>
-                    <i v-show="!member.isShow" class="fa fa-user-times"></i>
+                <button  :class="['button', { off: !member.isShow}]" 
+                          @click="clickColumnButton(memberId, !member.isShow)"
+                          :disabled="disabled">
+                    <i v-if="member.isShow" class="fa fa-user"></i>
+                    <i v-else class="fa fa-user-times"></i>
                     ({{ memberId }})
                 </button>
             </template>
         </span>
 
         <span v-show="selected === 'item'" class="level-item">
-            <button :class="[ 'button', { 'is-off': !isEventItemShow } ]" 
-                    @click="clickEventItemButton()">
-                <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
-                <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
+            <button :class="[ 'button', { off: !isEventItemShow } ]" 
+                    @click="clickEventItemButton()"
+                    :disabled="disabled">
+                <i v-if="isEventItemShow" class="fa fa-bell-o"></i>
+                <i v-else class="fa fa-bell-slash-o"></i>
                 Event
             </button>
 
-            <button :class="['button', { 'is-off': !isTaskItemShow }]" 
+            <button :class="['button', { off: !isTaskItemShow }]" 
+                    :disabled="disabled"
                     @click="clickTaskItemButton()">
-                <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
-                <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
+                <i v-if="isTaskItemShow" class="fa fa-bell-o"></i>
+                <i v-else class="fa fa-bell-slash-o"></i>
                 Task
             </button>
         </span>
@@ -78,9 +80,8 @@ import searchBox from './table-search-box.vue';
 
 export default {
     name: 'calendar-tool-palett',
-    components: {
-        'search-box': searchBox,
-    },
+
+    components: { searchBox },
 
     data() {
         return {
@@ -92,6 +93,10 @@ export default {
         ...mapState({
             members: state => state.member.data.members,
             theme: state => state.app.theme
+        }),
+
+        ...mapState('dashboard', {
+            disabled: state => state.disabled
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
@@ -133,7 +138,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.button.is-off {
+.button.off {
     background-color: #f0f0f0;
 }
 </style>

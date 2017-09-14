@@ -1,14 +1,7 @@
 <template id="calendar">
 <div>
-    <black-screen v-if="isLoading">
-        <div v-show="filteredBody" class="has-text-centered black-screen-loading">
-            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        </div>
-    </black-screen>
-
     <popup-menu 
         v-if="filteredBody && editItem.isActive"
-        overlayId="table-view-body"
         :clickX="editItem.clickX" 
         :clickY="editItem.clickY" 
         :isActive="editItem.isActive" 
@@ -19,16 +12,11 @@
         ><item-edit-popup-content></item-edit-popup-content>
     </popup-menu>
 
-    <black-screen 
-        v-if="!filteredBody && editItem.isActive" 
-        overlayId="table-view-header"
-    ></black-screen>
-
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
+
     <table 
         class="table is-bordered thin"
         style="width: 100%;"
-        :style="isFixed ? style.table : ''"
     >
     <thead v-if="filteredColumns">
         <tr>
@@ -106,37 +94,31 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import dateUtilities from '../../../mixins/date-utilities.js';
-import blackScreen from '../../../components/black-screen.vue';
 import popupMenu from '../../../components/popup-menu.vue';
 import item from './item/index.vue';
 import itemInsertField from './item-insert-field.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
+import dateUtilities from '../../../mixins/date-utilities.js';
 import chroma from 'chroma-js';
 
 export default {
     name: 'table-view-content',
 
-    components: {
-        'black-screen': blackScreen,
-        'popup-menu': popupMenu,
-        'item': item,
-        'item-insert-field': itemInsertField,
-        'item-edit-popup-content': itemEditPopupContent,
-        'mini-cal-bar': miniCalBar
+    components: { 
+        popupMenu, item, itemInsertField, itemEditPopupContent, miniCalBar 
     },
 
     mixins: [ dateUtilities ],
 
     props: {
-        filteredColumns:    { type: Object,     required: false }, 
-        filteredBody:       { type: Array,      required: false }, 
-        isLoading:          { type: Boolean,    default: false },
-        isFixed:            { type: Boolean,    default: false },
-        topPosition:        { type: Number,     required: false },
-        scrollPositionX:     { type: Number,     required: false },
-        scrollPositionY:     { type: Number,     required: false }
+        filteredColumns: { type: Object,  required: false }, 
+        filteredBody:    { type: Array,   required: false }, 
+        isLoading:       { type: Boolean, default: false },
+        isFixed:         { type: Boolean, default: false },
+        topPosition:     { type: Number,  required: false },
+        scrollPositionX: { type: Number,  required: false },
+        scrollPositionY: { type: Number,  required: false }
     },
 
     data() {
@@ -185,14 +167,6 @@ export default {
             }
         },
 
-//        textColor: function(){
-//            if(!this.isFixed) return;
-//
-//            return {
-//                color: 'white'
-//            }
-//        },
-
         dragEnterStyle: function() {
             return { 
                 border: '2px solid ' + this.theme.secondary.code
@@ -201,15 +175,10 @@ export default {
 
         style: function() {
             return {
-                table: {
-//                    'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl'),
-                    'width': '100%'
-                },
                 dayColumnWidth: {
                     'width': '8%',
                     'min-width': '110px',
                     'max-width': '110px',
-//                    'border-right': '1px solid ' + this.theme.primary.code
                 }
             }
         }
@@ -253,13 +222,15 @@ export default {
         }),
 
         clickCell(dayIndex, memberId) {
-            u.clog('clickCell()');
             this.inertPrepare( { dayIndex, memberId } );
         },
 
         popupMenuClose() {
             this.updateReset();
             this.removeReset();
+            this.$store.commit('dashboard/setValue', {
+                key: 'disabled', value: false
+            });
         },
 
         handleDragStart(draggingItem) {
@@ -286,13 +257,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.black-screen-loading {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 table.calendar {
     & tbody {
         & td {
@@ -303,7 +267,7 @@ table.calendar {
             background-color: #eee;
         }
     }
-
+/*
     &:hover tbody {
         &:hover td:hover {
             opacity: 1;
@@ -315,17 +279,18 @@ table.calendar {
         }
 
     }
+*/
 }
 
-$tableFrameBackgroundColor: rgba(240, 240, 240, 0.85);
+$headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
 
 .header-styling {
-    background-color: $tableFrameBackgroundColor;
+    background-color: $headerCellAndDayColumnCellColor;
 }
 
 .date-styling {
     font-size: 1em;
-    background-color: $tableFrameBackgroundColor;
+    background-color: $headerCellAndDayColumnCellColor;
 }
 
 .today {
@@ -335,12 +300,10 @@ $tableFrameBackgroundColor: rgba(240, 240, 240, 0.85);
 }
 
 .saturday {
-    /* background-color: rgba(240, 240, 255, 1); */
     background-color: rgb(228, 247, 255) !important;
 }
 
 .sunday {
-    /* background-color: rgba(255, 240, 240, 1); */
     background-color: rgb(253, 231, 231) !important;
 }
 </style>
