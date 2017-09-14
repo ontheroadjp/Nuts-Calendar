@@ -10,7 +10,10 @@
         >{{ getYearAndMonth(currentYear + '-' + currentMonth + '-01') }}</span>
 
         <!-- select bar -->
-        <div v-else class="card thin ym-picker">
+        <div v-else 
+            class="card thin ym-picker"
+            :style="{ backgroundColor: theme.secondary.code }"
+        >
             <button class="delete delete-button" @click="togglePicker"></button>
 
             <div class="header">
@@ -20,9 +23,27 @@
             </div>
     
             <div class="row">
-                <div v-for="m in monthVals" class="item">
-                    <a @click="currentMonth = m; editing = false">{{ m }}月</a>
+
+                <div v-for="m in monthVals">
+                    <a class="item" 
+                        @mouseover="
+                                $event.target.style.border = '1px solid #e6e6e6';
+                                $event.target.style.backgroundColor = theme.primary.code;
+                                $event.target.style.borderRadius = '15px';
+                                $event.target.style.padding = '5px';
+                                $event.target.style.color = '#fff';
+                            "
+                         @mouseleave="
+                                $event.target.style.border = '';
+                                $event.target.style.backgroundColor = '';
+                                $event.target.style.borderRadius = '';
+                                $event.target.style.padding = '';
+                                $event.target.style.color = '';
+                            "
+                        @click="currentMonth = m; editing = false"
+                    >{{ m }}月</a>
                 </div>
+
             </div>
         </div>
     </transition>
@@ -79,6 +100,16 @@ export default {
             }
         },
 
+//        hoverStyle: function() {
+//            return {
+//                border: '1px solid #e6e6e6',
+//                backgroundColor: this.theme.primary.code,
+//                borderRadius: '15px',
+//                padding: '5px',
+//                color: '#fff'
+//            }
+//        },
+
         displayStyle: function() {
             if( this.disabled ) {
                 return {
@@ -115,7 +146,6 @@ export default {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
-    background-color: #b688ff;
     color: #e4f7ff;
     align-items: center;
     font-size: 0.8rem;
@@ -162,14 +192,6 @@ export default {
         width: 75px;
         text-align: center;
         padding: 6px;
-        
-        &:hover {
-            border: 1px solid #e6e6e6;
-            background-color: #7058a3;
-            border-radius: 15px;
-            padding: 5px;
-            color: white;
-        }
     }
 }
 
