@@ -7,7 +7,13 @@
 
     <div id="table-view">
 
-        <black-screen v-if="disabled" color="rgba(242, 242, 242, .6)"></black-screen>
+        <black-screen 
+            v-if="disabled" 
+            color="rgba(242, 242, 242, .6)"
+            :onActive="function() {
+                this.$store.commit('calendar/tableView/item/insert/reset');
+            }"
+        ></black-screen>
 
         <black-screen v-if="calendarIsLoading">
             <div class="loading-black-screen">
