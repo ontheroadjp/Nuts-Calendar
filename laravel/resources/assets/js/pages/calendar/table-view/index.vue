@@ -22,15 +22,15 @@
             ><table-view 
                 :filtered-columns="filteredColumns"
                 :isLoading="calendarIsLoading"
-                :is-fixed="isFixed"
+                :isFixed="isFixed"
             ></table-view>
         </div>
-    
+   
         <div :id="id.body" 
              :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]" 
              @scroll="onScrollBody()"
             ><table-view 
-                :filtered-body="filteredCalendar" 
+                :filtered-body="filteredBody" 
                 :isLoading="calendarIsLoading"
                 :topPosition="(height.headerNav + height.signboard + height.toolPalette)"
                 :scrollPositionY="scrollPositionY"
@@ -41,10 +41,10 @@
 
     <!-- jump to the page top button -->
     <a  href="#top" 
-        class="button" 
-        style="position: fixed; bottom: 30px; right: 30px" 
-        :style="'color: white; background-color: ' + theme.primary.code"
         v-show="scrollPositionY > fixedHeight && !draggingItem" 
+        class="button" 
+        style="position: fixed; bottom: 30px; right: 30px; color: #fff" 
+        :style="'background-color: ' + theme.primary.code"
         >{{ t('calendar.jumpToTop') }}
     </a>
 </div>
@@ -117,7 +117,7 @@
                 return this.$store.getters.filteredMembers;
             },
 
-           filteredCalendar: {
+           filteredBody: {
                 cache: true,
                 get() {
                     let data = this.$store.state.calendar.data.calendars;
