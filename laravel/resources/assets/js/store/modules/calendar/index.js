@@ -167,62 +167,50 @@ const calendar = {
 //                    });
 //                },
 
-                            // ---------------------------------------------
+                checkTime( state, cellItems ) {
+                    let prev = '';
+                    let cellItemsLength = cellItems.length;
+//                    u.clog('Length: ' + cellItemsLength);
 
-                checkTime( state, data ) {
-                    data.forEach(function(day, dayIndex) {
-                        const columns = day.items;
-                        const memberIds = Object.keys(columns);
-            
-                        memberIds.forEach(function(memberId) {
-                            // for check time error
-                            let prev = '';
-                            let cellItemsLength = columns[memberId].length;
-//                            u.clog('Length: ' + cellItemsLength);
+                    cellItems.forEach(function(item, index) {
 
-                            columns[memberId].forEach(function(item, index) {
-
-//                                // set dayIndex & itemIndex ( for DnD )
-//                                item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
-//                                item.itemIndex = index;
-
-                                // check time error
-                                if(item.type_id !== 1) { 
+                        // check time error
+                        if(item.type_id !== 1) { 
 //                                    u.clog('SKIP: (' + item.content + ')');
 //                                    item.hasStartTimeError = false;
 //                                    item.hasEndTimeError = false;
-                                    return;
-                                }
+                            return;
+                        }
 
-                                if(prev === '') {
+                        if(prev === '') {
 //                                    u.clog('SKIP(1): ' + item.content);
 //                                    item.hasStartTimeError = false;
-                                    Vue.set(item, 'hasStartTimeError', false);
-                                    prev = item;
-                                    return;
-                                }
+                            Vue.set(item, 'hasStartTimeError', false);
+                            prev = item;
+                            return;
+                        }
 
-                                if(prev.end_time > item.start_time) {
+                        if(prev.end_time > item.start_time) {
 //                                    u.clog('>>> true: ' + prev.content + ' & ' + item.content + '(' + index + ')');
 //                                    prev.hasEndTimeError = true;
 //                                    item.hasStartTimeError = true;
-                                    Vue.set(prev, 'hasEndTimeError', true);
-                                    Vue.set(item, 'hasStartTimeError', true);
-                                } else {
+                            Vue.set(prev, 'hasEndTimeError', true);
+                            Vue.set(item, 'hasStartTimeError', true);
+                        } else {
 //                                    u.clog('>>> false: ' + prev.content + ' & ' + item.content + '(' + index + ')');
 //                                    prev.hasEndTimeError = false;
 //                                    item.hasStartTimeError = false;
-                                    Vue.set(prev, 'hasEndTimeError', false);
-                                    Vue.set(item, 'hasStartTimeError', false);
-                                }
+                            Vue.set(prev, 'hasEndTimeError', false);
+                            Vue.set(item, 'hasStartTimeError', false);
+                        }
 
-                                // last item
-                                if(index === (cellItemsLength -1)) {
+                        // last item
+                        if(index === (cellItemsLength -1)) {
 //                                    u.clog('LAST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
 //                                    item.hasEndTimeError = false;
-                                    Vue.set(item, 'hasEndTimeError', false);
-                                    return;
-                                }
+                            Vue.set(item, 'hasEndTimeError', false);
+                            return;
+                        }
 
 //                                u.clog('====================================');
 //                                u.clog('prev.content: ' + prev.content);
@@ -234,14 +222,82 @@ const calendar = {
 //                                u.clog('prev.hasEndTimeError: ' + prev.hasEndTimeError);
 //                                u.clog('item.hasStartTimeError: ' + item.hasStartTimeError);
 
-                                prev = item;
-                            });
-
-                            // ---------------------------------------------
-
-                        });
+                        prev = item;
                     });
-                }
+                },
+
+//                checkTime( state, data ) {
+//                    data.forEach(function(day, dayIndex) {
+//                        const columns = day.items;
+//                        const memberIds = Object.keys(columns);
+//            
+//                        memberIds.forEach(function(memberId) {
+//                            // for check time error
+//                            let prev = '';
+//                            let cellItemsLength = columns[memberId].length;
+////                            u.clog('Length: ' + cellItemsLength);
+//
+//                            columns[memberId].forEach(function(item, index) {
+//
+////                                // set dayIndex & itemIndex ( for DnD )
+////                                item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
+////                                item.itemIndex = index;
+//
+//                                // check time error
+//                                if(item.type_id !== 1) { 
+////                                    u.clog('SKIP: (' + item.content + ')');
+////                                    item.hasStartTimeError = false;
+////                                    item.hasEndTimeError = false;
+//                                    return;
+//                                }
+//
+//                                if(prev === '') {
+////                                    u.clog('SKIP(1): ' + item.content);
+////                                    item.hasStartTimeError = false;
+//                                    Vue.set(item, 'hasStartTimeError', false);
+//                                    prev = item;
+//                                    return;
+//                                }
+//
+//                                if(prev.end_time > item.start_time) {
+////                                    u.clog('>>> true: ' + prev.content + ' & ' + item.content + '(' + index + ')');
+////                                    prev.hasEndTimeError = true;
+////                                    item.hasStartTimeError = true;
+//                                    Vue.set(prev, 'hasEndTimeError', true);
+//                                    Vue.set(item, 'hasStartTimeError', true);
+//                                } else {
+////                                    u.clog('>>> false: ' + prev.content + ' & ' + item.content + '(' + index + ')');
+////                                    prev.hasEndTimeError = false;
+////                                    item.hasStartTimeError = false;
+//                                    Vue.set(prev, 'hasEndTimeError', false);
+//                                    Vue.set(item, 'hasStartTimeError', false);
+//                                }
+//
+//                                // last item
+//                                if(index === (cellItemsLength -1)) {
+////                                    u.clog('LAST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
+////                                    item.hasEndTimeError = false;
+//                                    Vue.set(item, 'hasEndTimeError', false);
+//                                    return;
+//                                }
+//
+////                                u.clog('====================================');
+////                                u.clog('prev.content: ' + prev.content);
+////                                u.clog('item.content: ' + item.content);
+////                                u.clog('------------------------------------');
+////                                u.clog('prev.end_time: ' + prev.end_time);
+////                                u.clog('item.start_time: ' + item.start_time);
+////                                u.clog('------------------------------------');
+////                                u.clog('prev.hasEndTimeError: ' + prev.hasEndTimeError);
+////                                u.clog('item.hasStartTimeError: ' + item.hasStartTimeError);
+//
+//                                prev = item;
+//                            });
+//
+//                        });
+//                    });
+//                }
+
             },
 
             modules: {

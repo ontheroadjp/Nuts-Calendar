@@ -94,6 +94,7 @@ export default {
 
         sortCellItems() {
             this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
+            this.$store.commit('calendar/tableView/checkTime', this.cellItems);
         },
 
         setItemIndex() {
@@ -118,8 +119,8 @@ export default {
 
         handleDrop() {
             this.drop();
-            this.sortCellItems();
             this.setItemIndex();
+            this.sortCellItems();
         },
 
         handleDragEnd() {
@@ -128,8 +129,8 @@ export default {
     },
 
     mounted() {
-        this.sortCellItems();
         this.setItemIndex();
+        this.sortCellItems();
     }
 } 
 </script>
