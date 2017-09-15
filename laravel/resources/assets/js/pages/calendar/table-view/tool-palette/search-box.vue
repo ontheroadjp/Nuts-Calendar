@@ -24,6 +24,10 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
+    props: {
+        disabled: { type: Boolean, default: false }
+    },
+
     computed: {
         ...mapState({
             theme: state => state.app.theme

@@ -1,7 +1,7 @@
 <template>
 <div id="tool-palette" class="tool-palette">
-
 <span class="level" style="white-space: nowrap">
+
     <span class="level-left">
         <span class="level-item select">
             <select v-model="selected" :disabled="disabled">
@@ -22,7 +22,6 @@
         <span v-show="selected === 'item'" class="level-item">
             <item-pane :disabled="disabled"></item-pane>
         </span>
-
     </span><!-- // .level-left -->
 
     <span class="level-right">

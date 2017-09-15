@@ -4,6 +4,7 @@ export default {
     state: {
         isEventItemShow: true,
         isTaskItemShow: true,
+        isEndTimeShow: true,
 
         query: {
             search: '',
@@ -33,6 +34,10 @@ export default {
             commit('toggleShowHideTaskItem', { value });
         },
     
+        toggleShowHideEndTime( { commit }, { value } ) {
+            commit('toggleShowHideEndTime', { value });
+        },
+    
         setSearchQuery( { commit }, { value } ) {
             commit('setSearchQuery', { value: value.toLowerCase() });
         },
@@ -57,6 +62,10 @@ export default {
     
         toggleShowHideTaskItem( state, { value } ) {
             state.isTaskItemShow = value;
+        },
+    
+        toggleShowHideEndTime( state, { value } ) {
+            state.isEndTimeShow = value;
         },
     
         setSearchQuery( state, { value } ) {
