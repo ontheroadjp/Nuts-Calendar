@@ -84,7 +84,6 @@ const calendar = {
 //                },
 
                 sortCellItems( state, cellItems ) {
-                    u.clog('>>sortCellItems()');
                     if(cellItems.length < 1) return;
                     cellItems.sort((a, b) => {
                         if(a.type_id === 1 && b.type_id === 2) return 1;
@@ -119,57 +118,47 @@ const calendar = {
                 checkTime( state, cellItems ) {
                     let prev = '';
                     let cellItemsLength = cellItems.length;
-//                    u.clog('Length: ' + cellItemsLength);
 
                     cellItems.forEach(function(item, index) {
 
-                        // check time error
-                        if(item.type_id !== 1) { 
-//                                    u.clog('SKIP: (' + item.content + ')');
-//                                    item.hasStartTimeError = false;
-//                                    item.hasEndTimeError = false;
-                            return;
+                        if( item.type_id !== 1 ||
+                            item.start_time == '' || 
+                            item.start_time == null ||
+                            item.end_time == '' ||
+                            item.end_time == null) {
+                            return
                         }
 
+                        // first item
                         if(prev === '') {
-//                                    u.clog('SKIP(1): ' + item.content);
-//                                    item.hasStartTimeError = false;
+//                            u.clog('-----------------------------------');
+//                            u.clog('FIRST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
                             Vue.set(item, 'hasStartTimeError', false);
+                            Vue.set(item, 'hasEndTimeError', false);
                             prev = item;
                             return;
                         }
 
-                        if(prev.end_time > item.start_time) {
-//                                    u.clog('>>> true: ' + prev.content + ' & ' + item.content + '(' + index + ')');
-//                                    prev.hasEndTimeError = true;
-//                                    item.hasStartTimeError = true;
+                        let st = '2011/03/14 ' + item.start_time;
+                        let et = '2011/03/14 ' + prev.end_time;
+
+                        st = new Date(st);
+                        et = new Date(et);
+
+                        if( et.getTime() > st.getTime() ) {
                             Vue.set(prev, 'hasEndTimeError', true);
                             Vue.set(item, 'hasStartTimeError', true);
                         } else {
-//                                    u.clog('>>> false: ' + prev.content + ' & ' + item.content + '(' + index + ')');
-//                                    prev.hasEndTimeError = false;
-//                                    item.hasStartTimeError = false;
                             Vue.set(prev, 'hasEndTimeError', false);
                             Vue.set(item, 'hasStartTimeError', false);
                         }
 
                         // last item
                         if(index === (cellItemsLength -1)) {
-//                                    u.clog('LAST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
-//                                    item.hasEndTimeError = false;
+//                            u.clog('LAST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
                             Vue.set(item, 'hasEndTimeError', false);
                             return;
                         }
-
-//                                u.clog('====================================');
-//                                u.clog('prev.content: ' + prev.content);
-//                                u.clog('item.content: ' + item.content);
-//                                u.clog('------------------------------------');
-//                                u.clog('prev.end_time: ' + prev.end_time);
-//                                u.clog('item.start_time: ' + item.start_time);
-//                                u.clog('------------------------------------');
-//                                u.clog('prev.hasEndTimeError: ' + prev.hasEndTimeError);
-//                                u.clog('item.hasStartTimeError: ' + item.hasStartTimeError);
 
                         prev = item;
                     });

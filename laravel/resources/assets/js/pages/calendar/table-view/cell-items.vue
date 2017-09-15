@@ -134,7 +134,7 @@ export default {
 
     mounted() {
         this.sortCellItems();
- //       this.checkTime();
+        this.checkTime();
     }
 } 
 </script>

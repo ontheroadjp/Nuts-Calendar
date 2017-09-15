@@ -71,12 +71,24 @@ export default {
             const m = rootState.calendar.currentMonth;
             commit('drop', { y, m });
 
+            // sort cellItems
             commit('calendar/tableView/sortCellItems', 
                 state.enterCell.cellItems, 
                 { root: true }
             );
 
             commit('calendar/tableView/sortCellItems',
+                state.fromCell.cellItems,
+                { root: true }
+            );
+
+            // check time
+            commit('calendar/tableView/checkTime', 
+                state.enterCell.cellItems, 
+                { root: true }
+            );
+
+            commit('calendar/tableView/checkTime',
                 state.fromCell.cellItems,
                 { root: true }
             );
