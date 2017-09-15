@@ -1,7 +1,6 @@
 <template>
     <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-        :style="[
-            columnWidth, 
+        :style="[ columnWidth, 
             dragItem.enterCell.cellAddress 
                 == getCellAddress(getRowIndex(day.date), memberId) 
                 ? dragEnterStyle : ''
@@ -26,11 +25,11 @@
                 :item="item"
             ></item>
 
-        </div><!-- // v-for -->
+        </div>
 
         <item-insert-field 
             v-if="addItem.enterCell.dayIndex === dayIndex 
-                    && addItem.enterCell.memberId === memberId"
+                && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
     </td>
 </template>
