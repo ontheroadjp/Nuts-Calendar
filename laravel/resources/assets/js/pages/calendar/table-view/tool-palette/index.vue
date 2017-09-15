@@ -1,6 +1,5 @@
 <template>
-<div id="tool-palette"
-    style="background:#f0f0f0; padding:5px; overflow: scroll">
+<div id="tool-palette" class="tool-palette">
 
 <span class="level" style="white-space: nowrap">
     <span class="level-left">
@@ -28,17 +27,8 @@
 
     <span class="level-right">
         <span class="level-item">
-            <search-box></search-box>
+            <search-box :disabled="disabled"></search-box>
         </span>
-        <!--
-        <span class="level-item">
-            <span class="icon is-small" 
-                  style="cursor:pointer; margin: 0 10px"
-                  @click="close()"
-                  ><i class="fa fa-times-circle"></i>
-            </span>
-        </span>
-        -->
     </span>
 
 </span><!-- // .level -->
@@ -64,25 +54,17 @@ export default {
     },
 
     computed: {
-        ...mapState({
-            theme: state => state.app.theme
-        }),
-
         ...mapState('dashboard', {
             disabled: state => state.disabled
         })
-    },
-
-    methods: {
-        close() {
-            this.toggleTableToolPalette({ value: false });
-        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.button.off {
-    background-color: #f0f0f0;
-}
+.tool-palette {
+    background:#f0f0f0;
+    padding:5px;
+    overflow: scroll;
+} 
 </style>
