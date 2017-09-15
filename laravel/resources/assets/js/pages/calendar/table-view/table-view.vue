@@ -103,15 +103,15 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import popupMenu from '../../../components/popup-menu.vue';
+import cellItems from './cell-items.vue';
 //import item from './item/index.vue';
 //import itemInsertField from './item-insert-field.vue';
+import popupMenu from '../../../components/popup-menu.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
 import dateUtilities from '../../../mixins/date-utilities.js';
 import chroma from 'chroma-js';
 
-import cellItems from './cell-items.vue';
 
 export default {
     name: 'table-view-content',
@@ -213,9 +213,9 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item/insert', {
-            inertPrepare: 'prepare',
-        }),
+//        ...mapActions('calendar/tableView/item/insert', {
+//            inertPrepare: 'prepare',
+//        }),
 
         ...mapActions('calendar/tableView/item/update', {
             updateReset: 'reset'
