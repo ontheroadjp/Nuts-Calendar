@@ -96,6 +96,10 @@ export default {
             this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
         },
 
+        setItemIndex() {
+            this.$store.commit('calendar/tableView/setIndexForItem', this.cellItems);
+        },
+
         clickCell(dayIndex, memberId) {
             this.inertPrepare( { dayIndex, memberId } );
         },
@@ -115,6 +119,7 @@ export default {
         handleDrop() {
             this.drop();
             this.sortCellItems();
+            this.setItemIndex();
         },
 
         handleDragEnd() {
@@ -124,6 +129,7 @@ export default {
 
     mounted() {
         this.sortCellItems();
+        this.setItemIndex();
     }
 } 
 </script>

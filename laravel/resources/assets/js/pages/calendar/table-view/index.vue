@@ -142,8 +142,8 @@
                         });
                     }
 
-                    // set index
-                    this.$store.commit('calendar/tableView/setIndexForItem', data);
+//                    // set index
+//                    this.$store.commit('calendar/tableView/setIndexForItem', data);
 
 //                    // sort cell items
 //                    this.$store.commit('calendar/tableView/sortCellItemsByStartTime', data);
