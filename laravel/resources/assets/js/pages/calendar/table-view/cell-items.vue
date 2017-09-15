@@ -81,7 +81,8 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item/insert', {
-            inertPrepare: 'prepare',
+            insertPrepare: 'prepare',
+            insertReset: 'reset'
         }),
 
         ...mapActions('calendar/tableView/item/dnd', {
@@ -94,18 +95,22 @@ export default {
 
         sortCellItems() {
             this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
-            this.$store.commit('calendar/tableView/checkTime', this.cellItems);
         },
 
         setItemIndex() {
             this.$store.commit('calendar/tableView/setIndexForItem', this.cellItems);
         },
 
+        checkTime() {
+            this.$store.commit('calendar/tableView/checkTime', this.cellItems);
+        },
+
         clickCell(dayIndex, memberId) {
-            this.inertPrepare( { dayIndex, memberId } );
+            this.insertPrepare( { dayIndex, memberId } );
         },
 
         handleDragStart(draggingItem) {
+            this.insertReset();
             this.dragStart({ draggingItem });
         },
 
@@ -119,8 +124,9 @@ export default {
 
         handleDrop() {
             this.drop();
-            this.setItemIndex();
             this.sortCellItems();
+            this.setItemIndex();
+//            this.checkTime();
         },
 
         handleDragEnd() {
@@ -129,8 +135,9 @@ export default {
     },
 
     mounted() {
-        this.setItemIndex();
         this.sortCellItems();
+        this.setItemIndex();
+ //       this.checkTime();
     }
 } 
 </script>
