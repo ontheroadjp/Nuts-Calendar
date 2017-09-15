@@ -29,10 +29,6 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('dashboard', {
-            disabled: state => state.disabled
-        }),
-
         ...mapState('calendar/tableView/toolPalette', {
             searchQuery: state => state.query.search
         }),
