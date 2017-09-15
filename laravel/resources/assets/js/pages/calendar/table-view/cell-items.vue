@@ -15,7 +15,7 @@
         <div v-for="(item, itemIndex) in cellItems"
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
-            draggable="true"
+            :draggable="!dragItem.isLoading"
             @dragstart="handleDragStart(item)"
             @dragend="handleDragEnd()"
             >
@@ -66,6 +66,10 @@ export default {
             dragItem: state => state.dnd
         }),
 
+        ...mapState('calendar/tableView/item/dnd', {
+            fromCellItems: state => state.fromCell.cellItems
+        }),
+
         ...mapGetters({
             showColumns: 'getShowMembers',
             getCellAddress: 'getCellAddress',
@@ -81,7 +85,8 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item/insert', {
-            inertPrepare: 'prepare',
+            insertPrepare: 'prepare',
+            insertReset: 'reset'
         }),
 
         ...mapActions('calendar/tableView/item/dnd', {
@@ -96,11 +101,16 @@ export default {
             this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
         },
 
+        checkTime() {
+            this.$store.commit('calendar/tableView/checkTime', this.cellItems);
+        },
+
         clickCell(dayIndex, memberId) {
-            this.inertPrepare( { dayIndex, memberId } );
+            this.insertPrepare( { dayIndex, memberId } );
         },
 
         handleDragStart(draggingItem) {
+            this.insertReset();
             this.dragStart({ draggingItem });
         },
 
@@ -114,7 +124,7 @@ export default {
 
         handleDrop() {
             this.drop();
-            this.sortCellItems();
+//            this.checkTime();
         },
 
         handleDragEnd() {
@@ -124,6 +134,7 @@ export default {
 
     mounted() {
         this.sortCellItems();
+        this.checkTime();
     }
 } 
 </script>
