@@ -97,14 +97,6 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-        sortCellItems() {
-            this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
-        },
-
-        checkTime() {
-            this.$store.commit('calendar/tableView/checkTime', this.cellItems);
-        },
-
         clickCell(dayIndex, memberId) {
             this.insertPrepare( { dayIndex, memberId } );
         },
@@ -132,8 +124,8 @@ export default {
     },
 
     mounted() {
-        this.sortCellItems();
-        this.checkTime();
+        this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
+        this.$store.commit('calendar/tableView/checkTime', this.cellItems);
     }
 } 
 </script>
