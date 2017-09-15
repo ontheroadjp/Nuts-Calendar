@@ -18,43 +18,42 @@
         class="table is-bordered thin"
         style="width: 100%;"
     >
-    <thead v-if="filteredColumns">
-        <tr>
-            <th class="header-styling thin" 
-                style="padding: 0.4rem 1rem"
-                :style="[style.dayColumnWidth]"
-            ></th>
-            <template v-for="(member, memberId) in filteredColumns">
-                <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    class="header-styling thin"
+        <thead v-if="filteredColumns">
+            <tr>
+                <th class="header-styling thin" 
                     style="padding: 0.4rem 1rem"
-                    :style="[columnWidth]"
-                    ><span>{{ member.name }}({{ member.id}})</span>
-                </th>
-            </template>
-        </tr>
-    </thead>
+                    :style="[style.dayColumnWidth]"
+                ></th>
+                <template v-for="(member, memberId) in filteredColumns">
+                    <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
+                        class="header-styling thin"
+                        style="padding: 0.4rem 1rem"
+                        :style="[columnWidth]"
+                        ><span>{{ member.name }}({{ member.id}})</span>
+                    </th>
+                </template>
+            </tr>
+        </thead>
 
-    <tbody v-if="filteredBody">
-        <tr v-for="(day, dayIndex) in filteredBody"
-            :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }"
-            >
-
-            <td class="date-styling" :style="[style.dayColumnWidth]">
-                <span>{{ getDateAndDay(day.date) }}</span>
-            </td>
-
-            <template v-for="(cellItems, memberId) in day.items">
-                <cell-items 
-                    :day="day" 
-                    :dayIndex="dayIndex" 
-                    :cellItems="cellItems"
-                    :memberId="memberId"
-                    :columnWidth="columnWidth"
-                ></cell-items>
-            </template>
-        </tr>
-    </tbody>
+        <tbody v-if="filteredBody">
+            <tr v-for="(day, dayIndex) in filteredBody"
+                :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }">
+    
+                <td class="date-styling" :style="[style.dayColumnWidth]">
+                    <span>{{ getDateAndDay(day.date) }}</span>
+                </td>
+    
+                <template v-for="(cellItems, memberId) in day.items">
+                    <cell-items 
+                        :day="day" 
+                        :dayIndex="dayIndex" 
+                        :cellItems="cellItems"
+                        :memberId="memberId"
+                        :columnWidth="columnWidth"
+                    ></cell-items>
+                </template>
+            </tr>
+        </tbody>
     </table>
     </div><!-- // .panel -->
 
