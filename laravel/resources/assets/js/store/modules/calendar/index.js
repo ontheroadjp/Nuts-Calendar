@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import toolPalette  from './table-view/tool-palette.js';
 import insert       from './table-view/item/insert.js';
 import update       from './table-view/item/update.js';
@@ -75,41 +76,162 @@ const calendar = {
             namespaced: true,
 
             mutations: {
-                sortCellItemsByStartTime( state, data ) {
+                setIndexForItem( state, data ) {
                     data.forEach(function(day, dayIndex) {
                         const columns = day.items;
                         const memberIds = Object.keys(columns);
             
                         memberIds.forEach(function(memberId) {
-                            if(columns[memberId].length < 1) return;
-                            columns[memberId].sort((a, b) => {
-                                if(a.type_id === 1 && b.type_id === 2) return 1;
-                                if(a.type_id === 2 && b.type_id === 1) return -1;
-                                if(a.type_id === 2 && b.type_id === 2) return 0;
-                    
-                                if( a.start_time === undefined || a.start_time === null ) return -1;
-                                if( b.start_time === undefined || b.start_time === null ) return 1;
-                    
-                                const aArr = a.start_time.split(':');
-                                const bArr = b.start_time.split(':');
-                    
-                                // sort by hour
-                                if (parseInt(aArr[0]) < parseInt(bArr[0])) return -1;
-                                if (parseInt(aArr[0]) > parseInt(bArr[0])) return 1;
-                    
-                                // sort by minits
-                                if (parseInt(aArr[1]) < parseInt(bArr[1])) return -1;
-                                if (parseInt(aArr[1]) > parseInt(bArr[1])) return 1;
-                    
-                                // the same value
-                                return 0;
-                            });
-            
                             // set dayIndex & itemIndex
                             columns[memberId].forEach(function(item, index) {
                                 item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
                                 item.itemIndex = index;
                             });
+                        });
+                    });
+                },
+
+                sortCellItems( state, cellItems ) {
+                    if(cellItems.length < 1) return;
+                    cellItems.sort((a, b) => {
+                        if(a.type_id === 1 && b.type_id === 2) return 1;
+                        if(a.type_id === 2 && b.type_id === 1) return -1;
+                        if(a.type_id === 2 && b.type_id === 2) return 0;
+            
+                        if( a.start_time === undefined || a.start_time === null ) return -1;
+                        if( b.start_time === undefined || b.start_time === null ) return 1;
+            
+                        const aArr = a.start_time.split(':');
+                        const bArr = b.start_time.split(':');
+            
+                        // sort by hour
+                        if (parseInt(aArr[0]) < parseInt(bArr[0])) return -1;
+                        if (parseInt(aArr[0]) > parseInt(bArr[0])) return 1;
+            
+                        // sort by minits
+                        if (parseInt(aArr[1]) < parseInt(bArr[1])) return -1;
+                        if (parseInt(aArr[1]) > parseInt(bArr[1])) return 1;
+            
+                        // the same value
+                        return 0;
+                    });
+                },
+
+                sortAllCellItemsByStartTime( state, data ) {
+                    data.forEach(function(day, dayIndex) {
+                        const columns = day.items;
+                        const memberIds = Object.keys(columns);
+            
+                        memberIds.forEach(function(memberId) {
+
+//                            commit('sortCellItemByStartTime', columns[memberId]);
+
+//                            if(columns[memberId].length < 1) return;
+//                            columns[memberId].sort((a, b) => {
+//                                if(a.type_id === 1 && b.type_id === 2) return 1;
+//                                if(a.type_id === 2 && b.type_id === 1) return -1;
+//                                if(a.type_id === 2 && b.type_id === 2) return 0;
+//                    
+//                                if( a.start_time === undefined || a.start_time === null ) return -1;
+//                                if( b.start_time === undefined || b.start_time === null ) return 1;
+//                    
+//                                const aArr = a.start_time.split(':');
+//                                const bArr = b.start_time.split(':');
+//                    
+//                                // sort by hour
+//                                if (parseInt(aArr[0]) < parseInt(bArr[0])) return -1;
+//                                if (parseInt(aArr[0]) > parseInt(bArr[0])) return 1;
+//                    
+//                                // sort by minits
+//                                if (parseInt(aArr[1]) < parseInt(bArr[1])) return -1;
+//                                if (parseInt(aArr[1]) > parseInt(bArr[1])) return 1;
+//                    
+//                                // the same value
+//                                return 0;
+//                            });
+
+//                            // set dayIndex & itemIndex
+//                            columns[memberId].forEach(function(item, index) {
+//                                item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
+//                                item.itemIndex = index;
+//                            });
+
+                        });
+                    });
+                },
+
+                            // ---------------------------------------------
+
+                checkTime( state, data ) {
+                    data.forEach(function(day, dayIndex) {
+                        const columns = day.items;
+                        const memberIds = Object.keys(columns);
+            
+                        memberIds.forEach(function(memberId) {
+                            // for check time error
+                            let prev = '';
+                            let cellItemsLength = columns[memberId].length;
+//                            u.clog('Length: ' + cellItemsLength);
+
+                            columns[memberId].forEach(function(item, index) {
+
+//                                // set dayIndex & itemIndex ( for DnD )
+//                                item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
+//                                item.itemIndex = index;
+
+                                // check time error
+                                if(item.type_id !== 1) { 
+//                                    u.clog('SKIP: (' + item.content + ')');
+//                                    item.hasStartTimeError = false;
+//                                    item.hasEndTimeError = false;
+                                    return;
+                                }
+
+                                if(prev === '') {
+//                                    u.clog('SKIP(1): ' + item.content);
+//                                    item.hasStartTimeError = false;
+                                    Vue.set(item, 'hasStartTimeError', false);
+                                    prev = item;
+                                    return;
+                                }
+
+                                if(prev.end_time > item.start_time) {
+//                                    u.clog('>>> true: ' + prev.content + ' & ' + item.content + '(' + index + ')');
+//                                    prev.hasEndTimeError = true;
+//                                    item.hasStartTimeError = true;
+                                    Vue.set(prev, 'hasEndTimeError', true);
+                                    Vue.set(item, 'hasStartTimeError', true);
+                                } else {
+//                                    u.clog('>>> false: ' + prev.content + ' & ' + item.content + '(' + index + ')');
+//                                    prev.hasEndTimeError = false;
+//                                    item.hasStartTimeError = false;
+                                    Vue.set(prev, 'hasEndTimeError', false);
+                                    Vue.set(item, 'hasStartTimeError', false);
+                                }
+
+                                // last item
+                                if(index === (cellItemsLength -1)) {
+//                                    u.clog('LAST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
+//                                    item.hasEndTimeError = false;
+                                    Vue.set(item, 'hasEndTimeError', false);
+                                    return;
+                                }
+
+//                                u.clog('====================================');
+//                                u.clog('prev.content: ' + prev.content);
+//                                u.clog('item.content: ' + item.content);
+//                                u.clog('------------------------------------');
+//                                u.clog('prev.end_time: ' + prev.end_time);
+//                                u.clog('item.start_time: ' + item.start_time);
+//                                u.clog('------------------------------------');
+//                                u.clog('prev.hasEndTimeError: ' + prev.hasEndTimeError);
+//                                u.clog('item.hasStartTimeError: ' + item.hasStartTimeError);
+
+                                prev = item;
+                            });
+
+                            // ---------------------------------------------
+
                         });
                     });
                 }
