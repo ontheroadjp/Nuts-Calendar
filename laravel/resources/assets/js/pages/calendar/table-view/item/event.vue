@@ -9,10 +9,11 @@
                     {{ item.start_time | timeFormatter }}
                 </span>
 
-                <span>|</span>
-
-                <span :style="endTimeStyle">
-                    {{ item.end_time | timeFormatter }}
+                <span v-if="isEndTimeShow">
+                    <span>|</span>
+                    <span :style="endTimeStyle">
+                        {{ item.end_time | timeFormatter }}
+                    </span>
                 </span>
         </strong> 
         
@@ -48,6 +49,7 @@ export default {
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
+            isEndTimeShow: state => state.isEndTimeShow,
             searchQuery: state => (state.query.search).toLowerCase()
         }),
 
