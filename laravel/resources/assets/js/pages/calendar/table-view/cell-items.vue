@@ -124,7 +124,6 @@ export default {
 
         handleDrop() {
             this.drop();
-//            this.checkTime();
         },
 
         handleDragEnd() {
