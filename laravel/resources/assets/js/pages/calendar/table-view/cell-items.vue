@@ -1,7 +1,6 @@
 <template>
     <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-        :style="[
-            columnWidth, 
+        :style="[ columnWidth, 
             dragItem.enterCell.cellAddress 
                 == getCellAddress(getRowIndex(day.date), memberId) 
                 ? dragEnterStyle : ''
@@ -26,11 +25,11 @@
                 :item="item"
             ></item>
 
-        </div><!-- // v-for -->
+        </div>
 
         <item-insert-field 
             v-if="addItem.enterCell.dayIndex === dayIndex 
-                    && addItem.enterCell.memberId === memberId"
+                && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
     </td>
 </template>
@@ -97,14 +96,6 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-        sortCellItems() {
-            this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
-        },
-
-        checkTime() {
-            this.$store.commit('calendar/tableView/checkTime', this.cellItems);
-        },
-
         clickCell(dayIndex, memberId) {
             this.insertPrepare( { dayIndex, memberId } );
         },
@@ -124,7 +115,6 @@ export default {
 
         handleDrop() {
             this.drop();
-//            this.checkTime();
         },
 
         handleDragEnd() {
@@ -133,8 +123,8 @@ export default {
     },
 
     mounted() {
-        this.sortCellItems();
-        this.checkTime();
+        this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
+        this.$store.commit('calendar/tableView/checkTime', this.cellItems);
     }
 } 
 </script>
