@@ -1,13 +1,64 @@
 <template>
 <span>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '2' })">Tue</button>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '3' })">Wed</button>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '4' })">Thu</button>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '5' })">Fri</button>
-    <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
+    <button 
+        class="button" 
+        style="margin-right:8px"
+        @click="setInternalQuery({ value: '' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">All</span>
+    </button>
+
+    <button 
+        class="button" 
+        style="background-color:#fff0f0"
+        @click="setInternalQuery({ value: '0' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">Sun</span>
+    </button>
+
+    <button 
+        class="button" 
+        @click="setInternalQuery({ value: '1' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">Mon</span>
+    </button>
+
+    <button 
+        class="button" 
+        @click="setInternalQuery({ value: '2' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">Tue</span>
+    </button>
+
+    <button 
+        class="button" 
+        @click="setInternalQuery({ value: '3' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">Wed</span>
+    </button>
+
+    <button 
+        class="button" 
+        @click="setInternalQuery({ value: '4' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">Thu</span>
+    </button>
+
+    <button 
+        class="button" 
+        @click="setInternalQuery({ value: '5' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">Fri</span>
+    </button>
+
+    <button 
+        class="button" 
+        style="background-color:#f0f0ff; margin-right:15px"
+        @click="setInternalQuery({ value: '6' })"
+        :disabled="disabled" 
+        ><span class="date-label thin">Sat</span>
+    </button>
+
 </span>
 </template>
 
@@ -26,3 +77,9 @@ export default {
     }
 } 
 </script>
+
+<style lang="scss" scoped>
+.date-label {
+    font-size: 0.8em;
+}
+</style>
