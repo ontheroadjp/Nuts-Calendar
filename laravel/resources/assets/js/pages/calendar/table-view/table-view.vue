@@ -41,9 +41,7 @@
             >
 
             <td class="date-styling" :style="[style.dayColumnWidth]">
-                <span>
-                    {{ getDateAndDay(day.date) }}
-                </span>
+                <span>{{ getDateAndDay(day.date) }}</span>
             </td>
 
             <template v-for="(cellItems, memberId) in day.items">
@@ -54,42 +52,6 @@
                     :memberId="memberId"
                     :columnWidth="columnWidth"
                 ></cell-items>
-<!--
-                <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    :style="[
-                        columnWidth, 
-                        dragItem.enterCell.cellAddress 
-                            == getCellAddress(getRowIndex(day.date), memberId) 
-                            ? dragEnterStyle : ''
-                    ]"
-                    @click="clickCell(dayIndex, memberId)"
-                    @dragenter="handleDragEnter(day.date, memberId)"
-                    @dragover="handleDragOver($event)"
-                    @drop.stop="handleDrop()"
-                    >
-
-                    <div v-for="(item, itemIndex) in cellItems"
-                        style="cursor: move"
-                        :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
-                        draggable="true"
-                        @dragstart="handleDragStart(item)"
-                        @dragend="handleDragEnd()"
-                        >
-
-                        <item 
-                            :isEventItem="isEventItem" 
-                            :isTaskItem="isTaskItem" 
-                            :item="item"
-                        ></item>
-
-                    </div>
-
-                    <item-insert-field 
-                        v-if="addItem.enterCell.dayIndex === dayIndex 
-                                && addItem.enterCell.memberId === memberId"
-                    ></item-insert-field>
-                </td>
--->
             </template>
         </tr>
     </tbody>
@@ -104,8 +66,6 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import cellItems from './cell-items.vue';
-//import item from './item/index.vue';
-//import itemInsertField from './item-insert-field.vue';
 import popupMenu from '../../../components/popup-menu.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
@@ -117,7 +77,6 @@ export default {
     name: 'table-view-content',
 
     components: { 
-//        popupMenu, item, itemInsertField, itemEditPopupContent, miniCalBar 
         popupMenu, cellItems, itemEditPopupContent, miniCalBar 
     },
 
@@ -145,21 +104,12 @@ export default {
             theme: state => state.app.theme
         }),
 
-//        ...mapState('calendar/tableView/toolPalette', {
-//            isEventItem: state => state.isEventItemShow,
-//            isTaskItem: state => state.isTaskItemShow
-//        }),
-
         ...mapState('calendar/tableView/item', {
-//            addItem: state => state.insert,
             editItem: state => state.update,
-//            dragItem: state => state.dnd
         }),
 
         ...mapGetters({
             showColumns: 'getShowMembers',
-//            getCellAddress: 'getCellAddress',
-//            getRowIndex: 'getRowIndex'
         }),
 
         columnWidth: function() {
@@ -178,12 +128,6 @@ export default {
                 minWidth: '206px'
             }
         },
-
-//        dragEnterStyle: function() {
-//            return { 
-//                border: '2px solid ' + this.theme.secondary.code
-//            }
-//        },
 
         style: function() {
             return {
@@ -213,10 +157,6 @@ export default {
     },
 
     methods: {
-//        ...mapActions('calendar/tableView/item/insert', {
-//            inertPrepare: 'prepare',
-//        }),
-
         ...mapActions('calendar/tableView/item/update', {
             updateReset: 'reset'
         }),
@@ -225,45 +165,13 @@ export default {
             removeReset: 'reset'
         }),
 
-//        ...mapActions('calendar/tableView/item/dnd', {
-//            dragStart: 'dragStart',
-//            dragEnter: 'dragEnter',
-//            dragOver: 'dragOver',
-//            drop: 'drop',
-//            dragEnd: 'dragEnd'
-//        }),
-
-//        clickCell(dayIndex, memberId) {
-//            this.inertPrepare( { dayIndex, memberId } );
-//        },
-
         popupMenuClose() {
             this.updateReset();
             this.removeReset();
             this.$store.commit('dashboard/setValue', {
                 key: 'disabled', value: false
             });
-        },
-
-//        handleDragStart(draggingItem) {
-//            this.dragStart({ draggingItem });
-//        },
-//
-//        handleDragEnter(dayString, memberId) {
-//            this.dragEnter({ dayString, memberId });
-//        },
-//
-//        handleDragOver(e) {
-//            this.dragOver({ e });
-//        },
-//
-//        handleDrop() {
-//            this.drop();
-//        },
-//
-//        handleDragEnd() {
-//            this.dragEnd();
-//        }
+        }
     }
 }
 </script>
@@ -279,19 +187,6 @@ table.calendar {
             background-color: #eee;
         }
     }
-/*
-    &:hover tbody {
-        &:hover td:hover {
-            opacity: 1;
-            background-color: rgba(145, 235, 250, 0.5);
-        }
-        & tr:hover td {
-            color: #666;
-            background-color: rgba(145, 235, 250, 0.1);
-        }
-
-    }
-*/
 }
 
 $headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
