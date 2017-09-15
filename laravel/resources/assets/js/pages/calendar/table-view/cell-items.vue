@@ -50,11 +50,15 @@ export default {
         columnWidth: { type: Object, required: true }
     },
 
+    data() {
+        return {
+            shouldBeSort: true
+        }
+    },
+
     computed: {
-        ...mapGetters({
-            showColumns: 'getShowMembers',
-            getCellAddress: 'getCellAddress',
-            getRowIndex: 'getRowIndex'
+        ...mapState({
+            theme: state => state.app.theme
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
@@ -68,6 +72,12 @@ export default {
             dragItem: state => state.dnd
         }),
 
+        ...mapGetters({
+            showColumns: 'getShowMembers',
+            getCellAddress: 'getCellAddress',
+            getRowIndex: 'getRowIndex'
+        }),
+
         dragEnterStyle: function() {
             return { 
                 border: '2px solid ' + this.theme.secondary.code
@@ -76,6 +86,10 @@ export default {
     },
 
     methods: {
+        ...mapActions('calendar/tableView/item/insert', {
+            inertPrepare: 'prepare',
+        }),
+
         ...mapActions('calendar/tableView/item/dnd', {
             dragStart: 'dragStart',
             dragEnter: 'dragEnter',
@@ -83,6 +97,10 @@ export default {
             drop: 'drop',
             dragEnd: 'dragEnd'
         }),
+
+        sortCellItems() {
+            this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
+        },
 
         clickCell(dayIndex, memberId) {
             this.inertPrepare( { dayIndex, memberId } );
@@ -102,11 +120,26 @@ export default {
 
         handleDrop() {
             this.drop();
+            this.sortCellItems();
         },
 
         handleDragEnd() {
             this.dragEnd();
         }
+    },
+
+//    watch: {
+//        cellItems: function() {
+//            if( this.shouldBeSort ) {
+//                this.shouldBeSort = false;
+//                this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
+//            }
+//            this.shouldBeSort = true;
+//        }
+//    }
+
+    mounted() {
+        this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
     }
 } 
 </script>

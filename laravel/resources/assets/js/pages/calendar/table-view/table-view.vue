@@ -145,21 +145,21 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('calendar/tableView/toolPalette', {
-            isEventItem: state => state.isEventItemShow,
-            isTaskItem: state => state.isTaskItemShow
-        }),
+//        ...mapState('calendar/tableView/toolPalette', {
+//            isEventItem: state => state.isEventItemShow,
+//            isTaskItem: state => state.isTaskItemShow
+//        }),
 
         ...mapState('calendar/tableView/item', {
-            addItem: state => state.insert,
+//            addItem: state => state.insert,
             editItem: state => state.update,
-            dragItem: state => state.dnd
+//            dragItem: state => state.dnd
         }),
 
         ...mapGetters({
             showColumns: 'getShowMembers',
-            getCellAddress: 'getCellAddress',
-            getRowIndex: 'getRowIndex'
+//            getCellAddress: 'getCellAddress',
+//            getRowIndex: 'getRowIndex'
         }),
 
         columnWidth: function() {
@@ -179,11 +179,11 @@ export default {
             }
         },
 
-        dragEnterStyle: function() {
-            return { 
-                border: '2px solid ' + this.theme.secondary.code
-            }
-        },
+//        dragEnterStyle: function() {
+//            return { 
+//                border: '2px solid ' + this.theme.secondary.code
+//            }
+//        },
 
         style: function() {
             return {
@@ -225,17 +225,17 @@ export default {
             removeReset: 'reset'
         }),
 
-        ...mapActions('calendar/tableView/item/dnd', {
-            dragStart: 'dragStart',
-            dragEnter: 'dragEnter',
-            dragOver: 'dragOver',
-            drop: 'drop',
-            dragEnd: 'dragEnd'
-        }),
+//        ...mapActions('calendar/tableView/item/dnd', {
+//            dragStart: 'dragStart',
+//            dragEnter: 'dragEnter',
+//            dragOver: 'dragOver',
+//            drop: 'drop',
+//            dragEnd: 'dragEnd'
+//        }),
 
-        clickCell(dayIndex, memberId) {
-            this.inertPrepare( { dayIndex, memberId } );
-        },
+//        clickCell(dayIndex, memberId) {
+//            this.inertPrepare( { dayIndex, memberId } );
+//        },
 
         popupMenuClose() {
             this.updateReset();
@@ -245,25 +245,25 @@ export default {
             });
         },
 
-        handleDragStart(draggingItem) {
-            this.dragStart({ draggingItem });
-        },
-
-        handleDragEnter(dayString, memberId) {
-            this.dragEnter({ dayString, memberId });
-        },
-
-        handleDragOver(e) {
-            this.dragOver({ e });
-        },
-
-        handleDrop() {
-            this.drop();
-        },
-
-        handleDragEnd() {
-            this.dragEnd();
-        }
+//        handleDragStart(draggingItem) {
+//            this.dragStart({ draggingItem });
+//        },
+//
+//        handleDragEnter(dayString, memberId) {
+//            this.dragEnter({ dayString, memberId });
+//        },
+//
+//        handleDragOver(e) {
+//            this.dragOver({ e });
+//        },
+//
+//        handleDrop() {
+//            this.drop();
+//        },
+//
+//        handleDragEnd() {
+//            this.dragEnd();
+//        }
     }
 }
 </script>
