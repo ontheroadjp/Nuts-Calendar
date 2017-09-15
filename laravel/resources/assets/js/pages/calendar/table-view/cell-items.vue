@@ -66,6 +66,10 @@ export default {
             dragItem: state => state.dnd
         }),
 
+        ...mapState('calendar/tableView/item/dnd', {
+            fromCellItems: state => state.fromCell.cellItems
+        }),
+
         ...mapGetters({
             showColumns: 'getShowMembers',
             getCellAddress: 'getCellAddress',
@@ -97,10 +101,6 @@ export default {
             this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
         },
 
-        setItemIndex() {
-            this.$store.commit('calendar/tableView/setIndexForItem', this.cellItems);
-        },
-
         checkTime() {
             this.$store.commit('calendar/tableView/checkTime', this.cellItems);
         },
@@ -124,8 +124,6 @@ export default {
 
         handleDrop() {
             this.drop();
-            this.sortCellItems();
-            this.setItemIndex();
 //            this.checkTime();
         },
 
@@ -136,7 +134,6 @@ export default {
 
     mounted() {
         this.sortCellItems();
-        this.setItemIndex();
  //       this.checkTime();
     }
 } 

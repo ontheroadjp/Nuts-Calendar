@@ -76,14 +76,15 @@ const calendar = {
             namespaced: true,
 
             mutations: {
-                setIndexForItem( state, cellItems ) {
-                    cellItems.forEach(function(item, index) {
-                        item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
-                        item.itemIndex = index;
-                    });
-                },
+//                setIndexForItem( state, cellItems ) {
+//                    cellItems.forEach(function(item, index) {
+//                        item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
+//                        item.itemIndex = index;
+//                    });
+//                },
 
                 sortCellItems( state, cellItems ) {
+                    u.clog('>>sortCellItems()');
                     if(cellItems.length < 1) return;
                     cellItems.sort((a, b) => {
                         if(a.type_id === 1 && b.type_id === 2) return 1;
@@ -106,6 +107,12 @@ const calendar = {
             
                         // the same value
                         return 0;
+                    });
+
+                    // update index
+                    cellItems.forEach(function(item, index) {
+                        item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
+                        item.itemIndex = index;
                     });
                 },
 

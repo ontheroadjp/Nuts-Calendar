@@ -64,16 +64,22 @@ export default {
         },
 
         drop( { state, commit, rootState } ) {
-            if(state.fromCell.cellAddress === state.enterCell.cellAddress) {
-                u.clog('dnd canceled');
-                return;
-            }
-
             u.clog('drop()');
+            if(state.fromCell.cellAddress === state.enterCell.cellAddress) return;
 
             const y = rootState.calendar.currentYear;
             const m = rootState.calendar.currentMonth;
             commit('drop', { y, m });
+
+            commit('calendar/tableView/sortCellItems', 
+                state.enterCell.cellItems, 
+                { root: true }
+            );
+
+            commit('calendar/tableView/sortCellItems',
+                state.fromCell.cellItems,
+                { root: true }
+            );
 
             const url = '/api/v1/item/' + state.draggingItem.id;
             const params = {
@@ -93,6 +99,17 @@ export default {
                 .catch(error => {
                     u.clog('failed');
                     commit('reverseItem', { y, m });
+                    
+                    commit('calendar/tableView/sortCellItems', 
+                        state.enterCell.cellItems, 
+                        { root: true }
+                    );
+
+                    commit('calendar/tableView/sortCellItems',
+                        state.fromCell.cellItems,
+                        { root: true }
+                    );
+
                     commit('dragEnd');
                 });
         },
