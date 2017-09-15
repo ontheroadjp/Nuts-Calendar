@@ -15,10 +15,8 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
-    computed: {
-        ...mapState('dashboard', {
-            disabled: state => state.disabled
-        }),
+    props: {
+        disabled: { type: Boolean, default: false }
     },
 
     methods: {

@@ -13,37 +13,15 @@
         </span>
 
         <span v-show="selected === 'date'" class="level-item">
-            <date-buttons></date-buttons>
+            <date-pane :disabled="disabled"></date-pane>
         </span>
 
         <span v-show="selected === 'member'" class="level-item">
-            <template v-for="(member, memberId) in members">
-                <button  :class="['button', { off: !member.isShow}]" 
-                          @click="clickColumnButton(memberId, !member.isShow)"
-                          :disabled="disabled">
-                    <i v-if="member.isShow" class="fa fa-user"></i>
-                    <i v-else class="fa fa-user-times"></i>
-                    ({{ memberId }})
-                </button>
-            </template>
+            <member-pane :disabled="disabled"></member-pane>
         </span>
 
         <span v-show="selected === 'item'" class="level-item">
-            <button :class="[ 'button', { off: !isEventItemShow } ]" 
-                    @click="clickEventItemButton()"
-                    :disabled="disabled">
-                <i v-if="isEventItemShow" class="fa fa-bell-o"></i>
-                <i v-else class="fa fa-bell-slash-o"></i>
-                Event
-            </button>
-
-            <button :class="['button', { off: !isTaskItemShow }]" 
-                    :disabled="disabled"
-                    @click="clickTaskItemButton()">
-                <i v-if="isTaskItemShow" class="fa fa-bell-o"></i>
-                <i v-else class="fa fa-bell-slash-o"></i>
-                Task
-            </button>
+            <item-pane :disabled="disabled"></item-pane>
         </span>
 
     </span><!-- // .level-left -->
@@ -69,13 +47,15 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import dateButtons from './date-buttons.vue';
+import datePane from './date-pane.vue';
+import memberPane from './member-pane.vue';
+import itemPane from './item-pane.vue';
 import searchBox from './search-box.vue';
 
 export default {
     name: 'calendar-tool-palett',
 
-    components: { dateButtons, searchBox },
+    components: { datePane, memberPane, itemPane, searchBox },
 
     data() {
         return {
@@ -85,44 +65,15 @@ export default {
 
     computed: {
         ...mapState({
-            members: state => state.member.data.members,
             theme: state => state.app.theme
         }),
 
         ...mapState('dashboard', {
             disabled: state => state.disabled
-        }),
-
-        ...mapState('calendar/tableView/toolPalette', {
-            isEventItemShow: state => state.isEventItemShow,
-            isTaskItemShow: state => state.isTaskItemShow
-        }),
-
-        showColumns: function() {
-            return this.$store.getters.getShowMembers;
-        }
+        })
     },
 
     methods: {
-        ...mapActions('calendar/tableView/toolPalette', {
-            toggleShowHideColumn: 'toggleShowHideColumn',
-            toggleShowHideEventItem: 'toggleShowHideEventItem',
-            toggleShowHideTaskItem: 'toggleShowHideTaskItem',
-        }),
-
-        clickColumnButton(id, value) {
-            if(this.showColumns.length === 1 && value === false) return; 
-            this.toggleShowHideColumn({ id, value });
-        },
-
-        clickEventItemButton() {
-            this.toggleShowHideEventItem({ value: !this.isEventItemShow });
-        },
-
-        clickTaskItemButton() {
-            this.toggleShowHideTaskItem({ value: !this.isTaskItemShow });
-        },
-
         close() {
             this.toggleTableToolPalette({ value: false });
         }
