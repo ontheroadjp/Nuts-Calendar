@@ -13,14 +13,7 @@
         </span>
 
         <span v-show="selected === 'date'" class="level-item">
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '' })" style="margin-right:8px">All</button>
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '0' })" style="background-color:#fff0f0">Sun</button>
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '1' })">Mon</button>
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '2' })">Tue</button>
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '3' })">Wed</button>
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '4' })">Thu</button>
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '5' })">Fri</button>
-            <button :disabled="disabled" class="button" @click="setInternalQuery({ value: '6' })" style="background-color:#f0f0ff; margin-right:15px">Sat</button>
+            <date-buttons></date-buttons>
         </span>
 
         <span v-show="selected === 'member'" class="level-item">
@@ -76,12 +69,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import searchBox from './table-search-box.vue';
+import dateButtons from './date-buttons.vue';
+import searchBox from './search-box.vue';
 
 export default {
     name: 'calendar-tool-palett',
 
-    components: { searchBox },
+    components: { dateButtons, searchBox },
 
     data() {
         return {
@@ -114,7 +108,6 @@ export default {
             toggleShowHideColumn: 'toggleShowHideColumn',
             toggleShowHideEventItem: 'toggleShowHideEventItem',
             toggleShowHideTaskItem: 'toggleShowHideTaskItem',
-            setInternalQuery: 'setInternalQuery'
         }),
 
         clickColumnButton(id, value) {
