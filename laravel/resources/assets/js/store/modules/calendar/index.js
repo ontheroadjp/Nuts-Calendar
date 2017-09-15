@@ -91,7 +91,7 @@ const calendar = {
                     });
                 },
 
-                sortCellItem( state, cellItems ) {
+                sortCellItems( state, cellItems ) {
                     if(cellItems.length < 1) return;
                     cellItems.sort((a, b) => {
                         if(a.type_id === 1 && b.type_id === 2) return 1;
