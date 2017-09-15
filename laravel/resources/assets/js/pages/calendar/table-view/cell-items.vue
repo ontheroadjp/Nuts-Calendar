@@ -15,7 +15,7 @@
         <div v-for="(item, itemIndex) in cellItems"
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
-            draggable="true"
+            :draggable="!dragItem.isLoading"
             @dragstart="handleDragStart(item)"
             @dragend="handleDragEnd()"
             >
