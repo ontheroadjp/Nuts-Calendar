@@ -42,18 +42,13 @@ import itemInsertField from './item-insert-field.vue';
 
 export default {
     components: { item, itemInsertField },
+
     props: {
         day:         { type: Object, required: true },
         dayIndex:    { type: Number, required: true },
         cellItems:   { type: Array, required: true },
         memberId:    { type: [Number, String], required: true },
         columnWidth: { type: Object, required: true }
-    },
-
-    data() {
-        return {
-            shouldBeSort: true
-        }
     },
 
     computed: {
@@ -68,7 +63,6 @@ export default {
 
         ...mapState('calendar/tableView/item', {
             addItem: state => state.insert,
-//            editItem: state => state.update,
             dragItem: state => state.dnd
         }),
 
@@ -128,18 +122,8 @@ export default {
         }
     },
 
-//    watch: {
-//        cellItems: function() {
-//            if( this.shouldBeSort ) {
-//                this.shouldBeSort = false;
-//                this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
-//            }
-//            this.shouldBeSort = true;
-//        }
-//    }
-
     mounted() {
-        this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
+        this.sortCellItems();
     }
 } 
 </script>
