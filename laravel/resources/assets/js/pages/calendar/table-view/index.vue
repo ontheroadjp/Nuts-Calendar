@@ -142,21 +142,6 @@
                         });
                     }
 
-//                    // set index
-//                    this.$store.commit('calendar/tableView/setIndexForItem', data);
-
-//                    // sort cell items
-//                    this.$store.commit('calendar/tableView/sortCellItemsByStartTime', data);
-//                    this.$store.commit('calendar/tableView/sortAllCellItemsByStartTime', data);
-
-                    //data.forEach((day, dayIndex) => {
-                    //    const columns = day.items;
-                    //    const memberIds = Object.keys(columns);
-                    //    memberIds.forEach((memberId) => {
-                    //        this.$store.commit('calendar/tableView/sortCellItem', columns[memberId]);
-                    //    });
-                    //});
-
                     return data;
                 }
             }
