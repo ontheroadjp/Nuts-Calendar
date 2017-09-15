@@ -3,12 +3,22 @@
         :style="searchHighlightStyle"
         @click.stop="clickItem($event)">
 
-        <strong v-show="item.start_time" style="margin-right: 8px;">
-            {{ item.start_time | timeFormatter }} 
-            <template v-show="item.end_time !== null">
-                <br>{{ item.end_time | timeFormatter }}
-            </template>
-        </strong> {{ item.content }}
+        <strong :class="{'vertial': displayVertically}"
+            style="margin-right: 8px;">
+                <span :style="startTimeStyle">
+                    {{ item.start_time | timeFormatter }}
+                </span>
+
+                <span v-if="isEndTimeShow">
+                    <span>|</span>
+                    <span :style="endTimeStyle">
+                        {{ item.end_time | timeFormatter }}
+                    </span>
+                </span>
+        </strong> 
+        
+        {{ item.content }}
+
         <span class="icon is-small" 
             v-show="(dragItem.isLoading || deleteItem.isLoading) 
                         && dragItem.draggingItem == item"
@@ -26,6 +36,12 @@ export default {
 
     props: [ 'item' ],
 
+    data() {
+        return {
+            displayVertically: false
+        }
+    },
+
     computed: {
         ...mapState('calendar/tableView/item', {
             dragItem: state => state.dnd,
@@ -33,8 +49,23 @@ export default {
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
-            searchQuery: state => state.query.search
+            isEndTimeShow: state => state.isEndTimeShow,
+            searchQuery: state => (state.query.search).toLowerCase()
         }),
+
+        startTimeStyle: function() {
+            if(this.item.hasStartTimeError) {
+                return { color: 'red' };
+            }
+            return {};
+        },
+
+        endTimeStyle: function() {
+            if(this.item.hasEndTimeError) {
+                return { color: 'red' };
+            }
+            return {};
+        },
 
         searchHighlightStyle: function() {
             if( this.searchQuery != '' 
@@ -66,3 +97,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.vertial {
+    display: inline-flex;
+    flex-flow: column nowrap;
+    align-items: center;
+} 
+</style>

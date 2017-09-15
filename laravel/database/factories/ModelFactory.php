@@ -115,8 +115,10 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
     return [
         'member_id' => $faker->randomElement($memberIds),
         'type_id' => $faker->randomElement($itemTypeIds),
-        'content'=> $faker->sentence(),
+        'content'=> $faker->word(),
         'date' => $randomDate,
-        'start_time' => $randomTime
+        'start_time' => $randomTime,
+        'end_time' => $randomTime,
+        'memo' => $faker->sentence()
     ];
 });

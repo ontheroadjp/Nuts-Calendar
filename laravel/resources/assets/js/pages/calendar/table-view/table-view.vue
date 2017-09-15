@@ -1,14 +1,7 @@
 <template id="calendar">
 <div>
-    <black-screen v-if="isLoading">
-        <div v-show="filteredBody" class="has-text-centered black-screen-loading">
-            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-        </div>
-    </black-screen>
-
     <popup-menu 
         v-if="filteredBody && editItem.isActive"
-        overlayId="table-view-body"
         :clickX="editItem.clickX" 
         :clickY="editItem.clickY" 
         :isActive="editItem.isActive" 
@@ -19,83 +12,48 @@
         ><item-edit-popup-content></item-edit-popup-content>
     </popup-menu>
 
-    <black-screen 
-        v-if="!filteredBody && editItem.isActive" 
-        overlayId="table-view-header"
-    ></black-screen>
-
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
+
     <table 
         class="table is-bordered thin"
         style="width: 100%;"
-        :style="isFixed ? style.table : ''"
     >
-    <thead v-if="filteredColumns">
-        <tr>
-            <th class="header-styling thin" 
-                style="padding: 0.4rem 1rem"
-                :style="[style.dayColumnWidth]"
-            ></th>
-            <template v-for="(member, memberId) in filteredColumns">
-                <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    class="header-styling thin"
+        <thead v-if="filteredColumns">
+            <tr>
+                <th class="header-styling thin" 
                     style="padding: 0.4rem 1rem"
-                    :style="[columnWidth]"
-                    ><span>{{ member.name }}({{ member.id}})</span>
-                </th>
-            </template>
-        </tr>
-    </thead>
+                    :style="[style.dayColumnWidth]"
+                ></th>
+                <template v-for="(member, memberId) in filteredColumns">
+                    <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
+                        class="header-styling thin"
+                        style="padding: 0.4rem 1rem"
+                        :style="[columnWidth]"
+                        ><span>{{ member.name }}({{ member.id}})</span>
+                    </th>
+                </template>
+            </tr>
+        </thead>
 
-    <tbody v-if="filteredBody">
-        <tr v-for="(day, dayIndex) in filteredBody"
-            :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }"
-            >
-
-            <td class="date-styling" :style="[style.dayColumnWidth]">
-                <span>
-                    {{ getDateAndDay(day.date) }}
-                </span>
-            </td>
-
-            <template v-for="(cellItems, memberId) in day.items">
-                <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-                    :style="[
-                        columnWidth, 
-                        dragItem.enterCell.cellAddress 
-                            == getCellAddress(getRowIndex(day.date), memberId) 
-                            ? dragEnterStyle : ''
-                    ]"
-                    @click="clickCell(dayIndex, memberId)"
-                    @dragenter="handleDragEnter(day.date, memberId)"
-                    @dragover="handleDragOver($event)"
-                    @drop.stop="handleDrop()"
-                    >
-
-                    <div v-for="(item, itemIndex) in cellItems"
-                        style="cursor: move"
-                        :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
-                        draggable="true"
-                        @dragstart="handleDragStart(item)"
-                        @dragend="handleDragEnd()"
-                        >
-
-                        <item 
-                            :isEventItem="isEventItem" 
-                            :isTaskItem="isTaskItem" 
-                            :item="item"
-                        ></item>
-
-                    </div><!-- // v-for -->
-
-                    <item-insert-field 
-                        v-if="addItem.enterCell.dayIndex === dayIndex 
-                                && addItem.enterCell.memberId === memberId"
-                    ></item-insert-field>
+        <tbody v-if="filteredBody">
+            <tr v-for="(day, dayIndex) in filteredBody"
+                :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }">
+    
+                <td class="date-styling" :style="[style.dayColumnWidth]">
+                    <span>{{ getDateAndDay(day.date) }}</span>
                 </td>
-            </template>
-        </tr>
-    </tbody>
+    
+                <template v-for="(cellItems, memberId) in day.items">
+                    <cell-items 
+                        :day="day" 
+                        :dayIndex="dayIndex" 
+                        :cellItems="cellItems"
+                        :memberId="memberId"
+                        :columnWidth="columnWidth"
+                    ></cell-items>
+                </template>
+            </tr>
+        </tbody>
     </table>
     </div><!-- // .panel -->
 
@@ -106,37 +64,31 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
-import dateUtilities from '../../../mixins/date-utilities.js';
-import blackScreen from '../../../components/black-screen.vue';
+import cellItems from './cell-items.vue';
 import popupMenu from '../../../components/popup-menu.vue';
-import item from './item/index.vue';
-import itemInsertField from './item-insert-field.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
+import dateUtilities from '../../../mixins/date-utilities.js';
 import chroma from 'chroma-js';
+
 
 export default {
     name: 'table-view-content',
 
-    components: {
-        'black-screen': blackScreen,
-        'popup-menu': popupMenu,
-        'item': item,
-        'item-insert-field': itemInsertField,
-        'item-edit-popup-content': itemEditPopupContent,
-        'mini-cal-bar': miniCalBar
+    components: { 
+        popupMenu, cellItems, itemEditPopupContent, miniCalBar 
     },
 
     mixins: [ dateUtilities ],
 
     props: {
-        filteredColumns:    { type: Object,     required: false }, 
-        filteredBody:       { type: Array,      required: false }, 
-        isLoading:          { type: Boolean,    default: false },
-        isFixed:            { type: Boolean,    default: false },
-        topPosition:        { type: Number,     required: false },
-        scrollPositionX:     { type: Number,     required: false },
-        scrollPositionY:     { type: Number,     required: false }
+        filteredColumns: { type: Object,  required: false }, 
+        filteredBody:    { type: Array,   required: false }, 
+        isLoading:       { type: Boolean, default: false },
+        isFixed:         { type: Boolean, default: false },
+        topPosition:     { type: Number,  required: false },
+        scrollPositionX: { type: Number,  required: false },
+        scrollPositionY: { type: Number,  required: false }
     },
 
     data() {
@@ -151,21 +103,12 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('calendar/tableView/toolPalette', {
-            isEventItem: state => state.isEventItemShow,
-            isTaskItem: state => state.isTaskItemShow
-        }),
-
         ...mapState('calendar/tableView/item', {
-            addItem: state => state.insert,
             editItem: state => state.update,
-            dragItem: state => state.dnd
         }),
 
         ...mapGetters({
             showColumns: 'getShowMembers',
-            getCellAddress: 'getCellAddress',
-            getRowIndex: 'getRowIndex'
         }),
 
         columnWidth: function() {
@@ -185,31 +128,12 @@ export default {
             }
         },
 
-//        textColor: function(){
-//            if(!this.isFixed) return;
-//
-//            return {
-//                color: 'white'
-//            }
-//        },
-
-        dragEnterStyle: function() {
-            return { 
-                border: '2px solid ' + this.theme.secondary.code
-            }
-        },
-
         style: function() {
             return {
-                table: {
-//                    'background-color': chroma(this.theme.primary.code).alpha(0.7).css('hsl'),
-                    'width': '100%'
-                },
                 dayColumnWidth: {
                     'width': '8%',
                     'min-width': '110px',
                     'max-width': '110px',
-//                    'border-right': '1px solid ' + this.theme.primary.code
                 }
             }
         }
@@ -228,14 +152,10 @@ export default {
             } else {
                 this.fixedScrollPositionY = 0;
             }
-        }
+        },
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item/insert', {
-            inertPrepare: 'prepare',
-        }),
-
         ...mapActions('calendar/tableView/item/update', {
             updateReset: 'reset'
         }),
@@ -244,58 +164,18 @@ export default {
             removeReset: 'reset'
         }),
 
-        ...mapActions('calendar/tableView/item/dnd', {
-            dragStart: 'dragStart',
-            dragEnter: 'dragEnter',
-            dragOver: 'dragOver',
-            drop: 'drop',
-            dragEnd: 'dragEnd'
-        }),
-
-        clickCell(dayIndex, memberId) {
-            u.clog('clickCell()');
-            this.inertPrepare( { dayIndex, memberId } );
-        },
-
         popupMenuClose() {
             this.updateReset();
             this.removeReset();
             this.$store.commit('dashboard/setValue', {
                 key: 'disabled', value: false
             });
-        },
-
-        handleDragStart(draggingItem) {
-            this.dragStart({ draggingItem });
-        },
-
-        handleDragEnter(dayString, memberId) {
-            this.dragEnter({ dayString, memberId });
-        },
-
-        handleDragOver(e) {
-            this.dragOver({ e });
-        },
-
-        handleDrop() {
-            this.drop();
-        },
-
-        handleDragEnd() {
-            this.dragEnd();
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.black-screen-loading {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 table.calendar {
     & tbody {
         & td {
@@ -306,29 +186,17 @@ table.calendar {
             background-color: #eee;
         }
     }
-
-    &:hover tbody {
-        &:hover td:hover {
-            opacity: 1;
-            background-color: rgba(145, 235, 250, 0.5);
-        }
-        & tr:hover td {
-            color: #666;
-            background-color: rgba(145, 235, 250, 0.1);
-        }
-
-    }
 }
 
-$tableFrameBackgroundColor: rgba(240, 240, 240, 0.85);
+$headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
 
 .header-styling {
-    background-color: $tableFrameBackgroundColor;
+    background-color: $headerCellAndDayColumnCellColor;
 }
 
 .date-styling {
     font-size: 1em;
-    background-color: $tableFrameBackgroundColor;
+    background-color: $headerCellAndDayColumnCellColor;
 }
 
 .today {
@@ -338,12 +206,10 @@ $tableFrameBackgroundColor: rgba(240, 240, 240, 0.85);
 }
 
 .saturday {
-    /* background-color: rgba(240, 240, 255, 1); */
     background-color: rgb(228, 247, 255) !important;
 }
 
 .sunday {
-    /* background-color: rgba(255, 240, 240, 1); */
     background-color: rgb(253, 231, 231) !important;
 }
 </style>

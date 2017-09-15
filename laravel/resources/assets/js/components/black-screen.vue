@@ -1,45 +1,33 @@
 <template>
-    <div class="black-screen" :style="`background-color: ${color}; width: ${width}px`">
-        <slot></slot>
-    </div>
+<div 
+    class="black-screen" 
+    :style="`background-color: ${color};`" 
+    @click="onClick"
+>
+    <slot></slot>
+</div>
 </template>
 
 <script>
 export default {
     props: {
-        color: { type: String, default: 'rgba(217, 217, 217, 0.75)' },
-        overlayId: { type: String, default: '' }
+        color:   { type: String, default: 'rgba(217, 217, 217, 0.75)' },
+        onClick: { type: Function, default: () => {} },
+        onActive: { type: Function, default: () => {} }
     },
 
-    data() {
-        return {
-            width: 0
-        }
-    },
-
-    mounted() {
-        if( this.overlayId === '' ) return;
-
-        let target = window.document.getElementById(this.overlayId);
-
-        this.width = target.scrollWidth;
-
-//        const self = this;
-//        target.onscroll = function() {
-//            self.width = this.scrollWidth;
-//        };
-    },
-
-
+    mounted: function() {
+        this.onActive();
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-    .black-screen {
-        position: absolute;
-        min-height: 100%;
-        min-width: 100%;
-        z-index: 999;
-        overflow: hidden;
-    }
+.black-screen {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    z-index: 999;
+    overflow: hidden;
+}
 </style>
