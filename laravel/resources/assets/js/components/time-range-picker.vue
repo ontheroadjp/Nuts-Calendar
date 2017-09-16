@@ -116,12 +116,6 @@ export default {
 
     methods: {
         onChangeStart(data) {
-//            u.clog('------------------- onChange Start Value() ---------------');
-//            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
-//            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
-//            u.clog('error: ' + data.error);
-//            u.clog('isReady: ' + data.isReadyResult);
-//            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
             this.input.start.HH = data.inputValue.HH;
             this.input.start.mm = data.inputValue.mm;
             this.error.start = data.error;
@@ -131,12 +125,6 @@ export default {
         },
 
         onChangeEnd(data) {
-//            u.clog('------------------- onChange End Value() ---------------');
-//            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
-//            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
-//            u.clog('error: ' + data.error);
-//            u.clog('isReady: ' + data.isReady);
-//            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
             this.input.end.HH = data.inputValue.HH;
             this.input.end.mm = data.inputValue.mm;
             this.error.end = data.error;
@@ -147,25 +135,6 @@ export default {
         
         fireEvents() {
             const data = {
-//                value: {
-//                    start: {
-//                        HH: this.input.start.HH,
-//                        mm: this.input.start.mm,
-//                    },
-//
-//                    end: {
-//                        HH: this.input.end.HH,
-//                        mm: this.input.end.mm,
-//                    }
-//                },
-
-//                formattedValue: [
-//                    { 
-//                        start: this.formattedStartTime,
-//                        end: this.formattedEndTime
-//                    }
-//                ],
-
                 value: {
                     start: this.formattedStartTime,
                     end: this.formattedEndTime

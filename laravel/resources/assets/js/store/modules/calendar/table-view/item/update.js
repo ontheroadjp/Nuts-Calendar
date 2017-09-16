@@ -58,15 +58,6 @@ export default {
                 .then( response => {
                     u.clog('success');
 
-//                    commit('update', {
-//                        content: response.data.content,
-//                        startTime: response.data.start_time,
-//                        endTime: response.data.end_time,
-//                        allDay: response.data.is_all_day,
-//                        isDone: response.data.is_done,
-//                        memo: response.data.memo
-//                    });
-
                     commit('update', data);
 
                     commit('calendar/tableView/sortCellItems', state.cellItems, {
@@ -110,6 +101,8 @@ export default {
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;
             state.input.endTime = editingItem.end_time;
+            state.input.allDay = editingItem.is_all_day;
+            state.input.memo = editingItem.memo;
         },
 
         prepareModal( state, { event } ) {

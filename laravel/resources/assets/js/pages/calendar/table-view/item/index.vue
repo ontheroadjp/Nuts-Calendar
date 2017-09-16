@@ -33,8 +33,6 @@ export default {
     .item {
         align-items: center;
         border-radius: 3px;
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
         display: inline-flex;
         font-size: 12px;
         justify-content: center;
@@ -45,14 +43,11 @@ export default {
         line-height: 2em;
 
         &.is-event {
-            /* background-color: rgba(0, 209, 178, 0.3); */
-            /* border: 1px solid rgb(0, 209, 178); */
             color: #023a31;
         }
 
         &.is-task {
             background-color: rgb(240, 240, 240);
-            /* border: 1px solid #dbdbdb; */
             color: #363636;
         }
     }

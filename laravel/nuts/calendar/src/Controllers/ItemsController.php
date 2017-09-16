@@ -43,7 +43,6 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-//        var_dump($request);
         $item = new Item($request->all());
         $item->save();
         return $item;
