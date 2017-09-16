@@ -2,11 +2,13 @@
     <span>
         <event-item 
             v-if="isEventItem && item.type_id === 1"
+            :cellItems="cellItems"
             :item="item"
         ></event-item> 
     
         <task-item
             v-if="isTaskItem && item.type_id === 2"
+            :cellItems="cellItems"
             :item="item"
         ></task-item>
     </span>
@@ -22,7 +24,7 @@ export default {
     },
 
     props: [
-        'isEventItem', 'isTaskItem', 'item'
+        'cellItems', 'isEventItem', 'isTaskItem', 'item'
     ]
 }
 </script>

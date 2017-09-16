@@ -4,20 +4,23 @@ export default {
     state: {
         isActive: false,
         isLoading: false,
+        cellItems: '',
         editingItem: '',
         clickX: 0,
         clickY: 0,
         input: {
             content: '',
             startTime: '',
-            endTime: ''
+            endTime: '',
+            allDay: '',
+            memo: ''
         }
     },
 
     actions: {
-        prepare( { commit }, { event, editingItem } ) {
+        prepare( { commit }, { event, cellItems, editingItem } ) {
             u.clog('prepare()');
-            commit('prepare', { event, editingItem } );
+            commit('prepare', { event, cellItems, editingItem } );
         },
 
         prepareModal( { commit }, { event } ) {
@@ -30,9 +33,9 @@ export default {
             dispatch('update');
         },
 
-//        setInputValues( { commit }, { content, startTime, endTime } ) {
-//            commit('setInputValues', { content, startTime, endTime } );
-//        },
+        setInputValue( { commit }, { key, value } ) {
+            commit('setInputValue', { key, value } );
+        },
 
         update( { state, commit } ) {
 //            commit('start');
@@ -48,6 +51,8 @@ export default {
                 content:    state.input.content,
                 start_time: state.input.startTime,
                 end_time:   state.input.endTime,
+                is_all_day: state.input.allDay,
+                memo:       state.input.memo,
             };
     
             http.fetchPut(url, data)
@@ -57,7 +62,18 @@ export default {
                     commit('update', {
                         content: response.data.content,
                         startTime: response.data.start_time,
-                        endTime: response.data.end_time
+                        endTime: response.data.end_time,
+                        allDay: response.data.is_all_day,
+                        isDone: response.data.is_done,
+                        memo: response.data.memo
+                    });
+
+                    commit('calendar/tableView/sortCellItems', state.cellItems, {
+                        root: true
+                    });
+
+                    commit('calendar/tableView/checkTime', state.cellItems, {
+                        root: true
                     });
 
                     commit('notifySuccess', {
@@ -89,7 +105,8 @@ export default {
     },
 
     mutations: {
-        prepare( state, { editingItem } ) {
+        prepare( state, { cellItems, editingItem } ) {
+            state.cellItems = cellItems;
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;
@@ -102,7 +119,7 @@ export default {
             state.isActive = true;
         },
 
-        isLoading( state, { value } ) {
+        isLoading( state, value ) {
             state.isLoading = value;
         },
 
@@ -114,16 +131,17 @@ export default {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
 
-//        setInputValues( state, { content, startTime, endTime } ) {
-//            state.input.content = content;
-//            state.input.startTime = startTime;
-//            state.input.endTime = endTime;
-//        },
+        setInputValue( state, { key, value } ) {
+            state.input[key] = value;
+        },
 
-        update( state, { content, startTime, endTime } ) {
+        update( state, { content, startTime, endTime, allDay, isDone, memo } ) {
             state.editingItem.content = content;
             state.editingItem.start_time = startTime;
             state.editingItem.end_time = endTime;
+            state.editingItem.is_all_day = allDay;
+            state.editingItem.is_done = isDone;
+            state.editingItem.memo = memo;
         },
 
 //        stop( state ) {
@@ -132,6 +150,7 @@ export default {
 
         reset( state ) {
             state.isActive = false,
+            state.cellItems = '',
             state.editingItem = '',
             state.isLoading = false,
             state.input.content = '',

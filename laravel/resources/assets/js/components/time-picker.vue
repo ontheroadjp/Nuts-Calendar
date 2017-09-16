@@ -2,14 +2,15 @@
 <template>
 <span class="time-picker">
 
-    <input class="display-time thin" 
+    <input :class="['display-time', 'thin', { disabled: disabled }]" 
         type="text" 
         :style="[style.input]" 
         v-model="displayTime" 
         @click.stop="toggleDropdown($event)" 
+        :disabled="disabled"
         readonly />
 
-    <div v-show="hasError" class="error-message">Error</div>
+    <div v-show="error && !disabled" class="error-message">Error</div>
 
     <span class="clear-btn" 
         v-if="!hideClearButton" 
@@ -89,6 +90,7 @@ export default {
         dropdownHeight:     { type: Number, default: 280 }, // by px
         inputHeight:        { type: Number, default: 35 },  // by px
         inputWidth:         { type: Number, default: 100 }, // by px
+        disabled:           { type: Boolean, default: false }
     },
 
     data() {
@@ -136,13 +138,16 @@ export default {
         },
 
         showClearBtn () {
-            if ((this.hour && this.hour !== '') || (this.minute && this.minute !== '')) {
+            if ( ((this.hour && this.hour !== '') || 
+                 (this.minute && this.minute !== '')) && 
+                 !this.disabled
+            ) {
                 return true
             }
             return false
         },
 
-        hasError: function() {
+        error: function() {
             if( (this.hour == '' && this.minute != '') 
                 || (this.hour != '' && this.minute == '') 
             ) { return true; }
@@ -481,13 +486,13 @@ export default {
         },
 
         fireEvents() {
-            const ready = !this.hasError 
+            const ready = !this.error 
                     && ( (this.hour != this.initialValue.HH) 
                     || (this.minute != this.initialValue.mm) );
 
             const data = {
-                hasError: this.hasError,
-                isReadyToUpdate: ready,
+                error: this.error,
+                isReady: ready,
                 initialValue: {
                     HH: this.initialValue.HH,
                     mm: this.initialValue.mm
@@ -590,6 +595,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.disabled {
+    color: rgba(190, 190, 190, 1);
+}
+
 .time-picker {
     display: inline-block;
     position: relative;
