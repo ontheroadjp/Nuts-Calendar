@@ -38,7 +38,6 @@ export default {
         },
 
         update( { state, commit } ) {
-//            commit('start');
             commit('isLoading', true);
             u.clog('update()');
 
@@ -59,14 +58,7 @@ export default {
                 .then( response => {
                     u.clog('success');
 
-                    commit('update', {
-                        content: response.data.content,
-                        startTime: response.data.start_time,
-                        endTime: response.data.end_time,
-                        allDay: response.data.is_all_day,
-                        isDone: response.data.is_done,
-                        memo: response.data.memo
-                    });
+                    commit('update', data);
 
                     commit('calendar/tableView/sortCellItems', state.cellItems, {
                         root: true
@@ -81,7 +73,6 @@ export default {
                         isImportant: false
                     }, { root: true });
         
-//                    commit('stop');
                     commit('isLoading', false);
                 })
 
@@ -94,7 +85,6 @@ export default {
                         isActive: true
                     }, { root: true});
 
-//                    commit('stop');
                     commit('isLoading', false);
                 });
         },
@@ -111,6 +101,8 @@ export default {
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;
             state.input.endTime = editingItem.end_time;
+            state.input.allDay = editingItem.is_all_day;
+            state.input.memo = editingItem.memo;
         },
 
         prepareModal( state, { event } ) {
@@ -123,10 +115,6 @@ export default {
             state.isLoading = value;
         },
 
-//        start( state ) {
-//            state.isLoading = true;
-//        },
-
         toggleTaskDone( state ) {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
@@ -135,27 +123,35 @@ export default {
             state.input[key] = value;
         },
 
-        update( state, { content, startTime, endTime, allDay, isDone, memo } ) {
-            state.editingItem.content = content;
-            state.editingItem.start_time = startTime;
-            state.editingItem.end_time = endTime;
-            state.editingItem.is_all_day = allDay;
-            state.editingItem.is_done = isDone;
-            state.editingItem.memo = memo;
-        },
-
-//        stop( state ) {
-//            state.isLoading = false;
+//        update( state, { content, startTime, endTime, allDay, isDone, memo } ) {
+//            state.editingItem.content = content;
+//            state.editingItem.start_time = startTime;
+//            state.editingItem.end_time = endTime;
+//            state.editingItem.is_all_day = allDay;
+//            state.editingItem.is_done = isDone;
+//            state.editingItem.memo = memo;
 //        },
+
+        update( state, data ) {
+            Object.keys(data).forEach((key) => {
+                state.editingItem[key] = data[key];
+            });
+//            state.editingItem.content = content;
+//            state.editingItem.start_time = startTime;
+//            state.editingItem.end_time = endTime;
+//            state.editingItem.is_all_day = allDay;
+//            state.editingItem.is_done = isDone;
+//            state.editingItem.memo = memo;
+        },
 
         reset( state ) {
             state.isActive = false,
             state.cellItems = '',
             state.editingItem = '',
             state.isLoading = false,
-            state.input.content = '',
-            state.input.startTime = '',
-            state.input.endTime = ''
+            Object.keys(state.input).forEach((key) => {
+                state.input[key] = '';
+            });
         }
     }
 }
