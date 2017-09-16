@@ -17,6 +17,9 @@
                 </span>
         </strong> 
         
+        <strong v-else class="all-day" style="margin-right:8px">
+            all-day
+        </strong>
         {{ item.content }}
 
         <span class="icon is-small" 
