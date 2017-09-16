@@ -131,10 +131,13 @@ const calendar = {
                     cellItems.forEach(function(item, index) {
 
                         if( item.type_id !== 1 ||
+                            item.is_all_day == 1 ||
+                            item.is_all_day == true ||
                             item.start_time == '' || 
                             item.start_time == null ||
                             item.end_time == '' ||
-                            item.end_time == null) {
+                            item.end_time == null 
+                        ) {
                             return
                         }
 
