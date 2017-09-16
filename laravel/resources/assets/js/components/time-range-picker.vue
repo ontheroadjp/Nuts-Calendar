@@ -176,24 +176,36 @@ export default {
             }
 
             this.$emit('changeValue', data);
+        },
+
+        updateInputValue: function() {
+            if( this.initialStartTime ) {
+                this.initial.start.HH = this.initialStartTime.split(':')[0];
+                this.initial.start.mm = this.initialStartTime.split(':')[1];
+                this.input.start.HH = this.initial.start.HH;
+                this.input.start.mm = this.initial.start.mm;
+            }
+            if( this.initialEndTime ) {
+                this.initial.end.HH = this.initialEndTime.split(':')[0];
+                this.initial.end.mm = this.initialEndTime.split(':')[1];
+                this.input.end.HH = this.initial.end.HH;
+                this.input.end.mm = this.initial.end.mm;
+            }
+        }
+    },
+
+    watch: {
+        initialStartTime: function() {
+            this.updateInputValue();
+        },
+
+        initialEndTime: function() {
+            this.updateInputValue();
         }
     },
 
     mounted: function() {
-        if( this.initialStartTime ) {
-            u.clog('init startTime');
-            this.initial.start.HH = this.initialStartTime.split(':')[0];
-            this.initial.start.mm = this.initialStartTime.split(':')[1];
-            this.input.start.HH = this.initial.start.HH;
-            this.input.start.mm = this.initial.start.mm;
-        }
-        if( this.initialEndTime ) {
-            u.clog('init endTime');
-            this.initial.end.HH = this.initialEndTime.split(':')[0];
-            this.initial.end.mm = this.initialEndTime.split(':')[1];
-            this.input.end.HH = this.initial.end.HH;
-            this.input.end.mm = this.initial.end.mm;
-        }
+        this.updateInputValue();
     }
 }
 </script>

@@ -3,52 +3,57 @@
     <div class="main">
         <div class="content">
             <text-input 
-                :initialValue="updateState.editingItem.content"
+                :initialValue="editingItem.content"
                 :showError="true"
                 :minTextLength="1"
                 :height="110"
                 placeholder="Title"
                 @changeValue="onChangeContent"
-                :disabled="showDeleteConfirm"
+                :disabled="showDeleteConfirm || isLoading"
             ></text-input>
         </div>
 
         <div class="time-range">
             <timeRangePicker 
                 :minute-interval="5"
-                :initialStartTime="updateState.editingItem.start_time"
-                :initialEndTime="updateState.editingItem.end_time"
+                :initialStartTime="editingItem.start_time"
+                :initialEndTime="editingItem.end_time"
                 :inputWidth="80"
                 :dropdownHeight="280"
                 @changeValue="onChangeTimeRange"
-                :disabled="input.allDay || showDeleteConfirm"
+                :disabled="input.allDay || showDeleteConfirm || isLoading"
             ></timeRangePicker>
         </div>
 
         <div class="all-day">
             <all-day-checkbox
-                :initialValue="updateState.editingItem.is_all_day"
+                :initialValue="editingItem.is_all_day"
                 @changeValue="onChangeAllDayCheckbox"
-                :disabled="showDeleteConfirm"
+                :disabled="showDeleteConfirm || isLoading"
             ></all-day-checkbox>
         </div>
 
         <span class="label thin" style="font-size: 0.8em;">Memo</span>
-        <textarea style=""></textarea>
+        <textarea style="" v-model="input.memo"></textarea>
 
     </div><!-- // .main -->
 
     <div class="popup-footer">
         <div v-show="!showDeleteConfirm" style="overflow:hidden">
-            <a class="button strip" 
+            <button class="button strip" 
                 :disabled="!isReadyResult"
-                @click="clickSave()"
-                ><i class="fa fa-floppy-o" style="margin-right: 5px"></i>Save
-            </a>
+                @click="clickSave()">
+                <span v-if="!isLoading" class="icon is-small" style="width:100%">
+                    <i class="fa fa-floppy-o" style="margin-right: 5px"></i>Save
+                </span>
+                <span v-else style="width:100%">
+                    <i class="fa fa-refresh fa-spin"></i> 
+                </span>
+            </button>
     
-            <a class="button strip" @click="showDeleteConfirm = true">
+            <button class="button strip" @click="showDeleteConfirm = true" :disabled="isLoading">
                 <i class="fa fa-trash" style="margin-right: 5px"></i>Delete
-            </a>
+            </button>
         </div>
 
         <transition name="delete-confirm">
@@ -76,7 +81,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import textInput from '../../../../components/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 import allDayCheckbox from './all-day-checkbox.vue';
@@ -95,19 +100,22 @@ export default {
                 content: '',
                 startTime: '',
                 endTime: '',
-                allDay: ''
+                allDay: '',
+                memo: ''
             },
 
             error: {
                 content: false,
                 timeRange: false,
-                allDay: false
+                allDay: false,
+                memo: ''
             },
 
             isReady: {
                 content: false,
                 timeRange: false,
-                allDay: false
+                allDay: false,
+                memo: false
             },
 
             showDeleteConfirm: false
@@ -115,8 +123,9 @@ export default {
     },
 
     computed: {
-        ...mapState('calendar/tableView/item', {
-            updateState: 'update'
+        ...mapState('calendar/tableView/item/update', {
+            editingItem: 'editingItem',
+            isLoading: 'isLoading'
         }),
 
         errorResult: function() {
@@ -129,14 +138,16 @@ export default {
     },
 
     methods: {
-        update() {
-            u.clog('update ------------------');
-        },
+        ...mapActions('calendar/tableView/item/update', {
+            setInputValue: 'setInputValue',
+            update: 'update'
+        }),
 
         onChangeContent(data) {
             this.input.content = data.inputValue;
             this.error.content = data.error;
             this.isReady.content = data.isReady;
+            this.setInputValue({key: 'content', value: data.inputValue });
             u.clog('----------------------- content ------------------------');
             u.clog('input value: ' + this.input.content);
             u.clog('error: ' + this.error.content);
@@ -148,6 +159,8 @@ export default {
             this.input.endTime = data.value.end;
             this.error.timeRange = data.error;
             this.isReady.timeRange = data.isReady;
+            this.setInputValue({key: 'startTime', value: data.value.start });
+            this.setInputValue({key: 'endTime', value: data.value.end });
             u.clog('----------------------- time range ------------------------');
             u.clog('start: ' + this.input.startTime);
             u.clog('end: ' + this.input.endTime);
@@ -159,6 +172,7 @@ export default {
             this.input.allDay = data.value;
             this.error.allDay = data.error;
             this.isReady.allDay = data.isReady;
+            this.setInputValue({key: 'allDay', value: data.value });
             u.clog('----------------------- all day ------------------------');
             u.clog('value: ' + this.input.allDay);
             u.clog('error: ' + this.error.allDay);
@@ -167,6 +181,11 @@ export default {
 
         clickSave() {
             u.clog('clickSave()');
+            this.update();
+            this.isReady.content = false;
+            this.isReady.timeRange = false;
+            this.isReady.allDay = false;
+            this.isReady.memo = false;
         },
 
         clickDeleteOK() {
@@ -175,14 +194,15 @@ export default {
     },
 
     mounted: function() {
-        this.input.content = this.updateState.editingItem.content; 
-        this.input.startTime = this.updateState.editingItem.start_time; 
-        this.input.endTime = this.updateState.editingItem.end_time; 
-        if( typeof this.updateState.editingItem.is_all_day === 'number' ) {
-            this.input.allDay = (this.updateState.editingItem.is_all_day > 0) 
+        this.input.content = this.editingItem.content; 
+        this.input.startTime = this.editingItem.start_time; 
+        this.input.endTime = this.editingItem.end_time; 
+        if( typeof this.editingItem.is_all_day === 'number' ) {
+            this.input.allDay = (this.editingItem.is_all_day > 0) 
         } else {
-            this.input.allDay = this.updateState.editingItem.is_all_day; 
+            this.input.allDay = this.editingItem.is_all_day; 
         }
+        this.input.memo = this.editingItem.memo;
 
 //        const doc = window.document;
 //        const css = doc.createElement('style');
@@ -259,7 +279,7 @@ textarea {
     padding: 5px;
     text-align: right;
 
-    & a:hover {
+    & button:hover {
         border: 1px solid #e6e6e6;
     }
 }

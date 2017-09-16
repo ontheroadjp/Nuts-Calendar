@@ -20,6 +20,7 @@
             >
 
             <item 
+                :cellItems="cellItems"
                 :isEventItem="isEventItem" 
                 :isTaskItem="isTaskItem" 
                 :item="item"

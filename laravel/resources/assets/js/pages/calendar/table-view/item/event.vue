@@ -3,7 +3,7 @@
         :style="searchHighlightStyle"
         @click.stop="clickItem($event)">
 
-        <strong :class="{'vertial': displayVertically}"
+        <strong v-if="!item.is_all_day" :class="{'vertial': displayVertically}"
             style="margin-right: 8px;">
                 <span :style="startTimeStyle">
                     {{ item.start_time | timeFormatter }}
@@ -34,7 +34,7 @@ import timeFormatter from '../../../../filters/time-formatter.js';
 export default {
     mixins: [ timeFormatter ],
 
-    props: [ 'item' ],
+    props: [ 'cellItems', 'item' ],
 
     data() {
         return {
@@ -86,7 +86,7 @@ export default {
 
         clickItem(e) {
             u.clog('clickItem()');
-            this.updatePrepare( { editingItem: this.item } );
+            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
             this.updatePrepareModal( { event: e } );
             this.removePrepare( { event: e, deletingItem: this.item } );
             this.insertReset();
