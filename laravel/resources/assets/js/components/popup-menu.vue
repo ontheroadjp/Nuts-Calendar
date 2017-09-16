@@ -88,16 +88,16 @@ export default {
 <style>
 .popup-menu-enter,
 .popup-menu-leave-to {
-    opacity: 0;    
+    opacity: 0;
 }
 
 .popup-menu-enter-to,
 .popup-menu-leave {
-    opacity: 1
+    opacity: 1;
 }
 
 .popup-menu-enter-active,
 .popup-menu-leave-active {
-    transition: opacity .1s ease;
+    transition: all .1s ease;
 }
 </style>
