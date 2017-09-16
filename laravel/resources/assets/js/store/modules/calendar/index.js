@@ -86,10 +86,19 @@ const calendar = {
                 sortCellItems( state, cellItems ) {
                     if(cellItems.length < 1) return;
                     cellItems.sort((a, b) => {
+
                         if(a.type_id === 1 && b.type_id === 2) return 1;
                         if(a.type_id === 2 && b.type_id === 1) return -1;
                         if(a.type_id === 2 && b.type_id === 2) return 0;
             
+                        if( (a.is_all_day === 1 || a.is_all_day === true) &&
+                            (b.is_all_day !== 1 || b.is_all_day !== true)
+                        ) return -1;
+
+                        if( (a.is_all_day === 0 || a.is_all_day === false) &&
+                            (b.is_all_day !== 0 || b.is_all_day !== false)
+                        ) return 1;
+
                         if( a.start_time === undefined || a.start_time === null ) return -1;
                         if( b.start_time === undefined || b.start_time === null ) return 1;
             
