@@ -33,25 +33,23 @@
             ></all-day-checkbox>
         </div>
 
-
-
         <span class="label thin" style="font-size: 0.8em;">Memo</span>
         <textarea style=""></textarea>
 
     </div><!-- // .main -->
 
     <div class="popup-footer">
-            <div v-show="!showDeleteConfirm" style="overflow:hidden">
-                <a class="button strip" 
-                    :disabled="!isReadyResult"
-                    @click="clickSave()"
-                    ><i class="fa fa-floppy-o" style="margin-right: 5px"></i>Save
-                </a>
-        
-                <a class="button strip" @click="showDeleteConfirm = true">
-                    <i class="fa fa-trash" style="margin-right: 5px"></i>Delete
-                </a>
-            </div>
+        <div v-show="!showDeleteConfirm" style="overflow:hidden">
+            <a class="button strip" 
+                :disabled="!isReadyResult"
+                @click="clickSave()"
+                ><i class="fa fa-floppy-o" style="margin-right: 5px"></i>Save
+            </a>
+    
+            <a class="button strip" @click="showDeleteConfirm = true">
+                <i class="fa fa-trash" style="margin-right: 5px"></i>Delete
+            </a>
+        </div>
 
         <transition name="delete-confirm">
             <div class="card delete-confirm" v-show="showDeleteConfirm">
@@ -186,31 +184,31 @@ export default {
             this.input.allDay = this.updateState.editingItem.is_all_day; 
         }
 
-        const doc = window.document;
-        const css = doc.createElement('style');
-        const rule = document.createTextNode(`
-
-            .delete-confirm-enter-active,
-            .delete-confirm-leave-active {
-                transition: all .3s ease;
-            }
-            
-            .delete-confirm-leave-to,
-            .delete-confirm-enter {
-                height: 0;
-                opacity: 0;
-            }
-            
-            .delete-confirm-enter-to,
-            .delete-confirm-leave {
-                opacity: 1;
-                height: ${this.height}px;
-            }
-        `);
-
-        css.id = 'delete-confirm';
-        css.type = 'text/css';
-        css.appendChild(rule);
+//        const doc = window.document;
+//        const css = doc.createElement('style');
+//        const rule = document.createTextNode(`
+//
+//            .delete-confirm-enter-active,
+//            .delete-confirm-leave-active {
+//                transition: all .3s ease;
+//            }
+//            
+//            .delete-confirm-leave-to,
+//            .delete-confirm-enter {
+//                height: 0;
+//                opacity: 0;
+//            }
+//            
+//            .delete-confirm-enter-to,
+//            .delete-confirm-leave {
+//                opacity: 1;
+//                height: ${this.height}px;
+//            }
+//        `);
+//
+//        css.id = 'delete-confirm';
+//        css.type = 'text/css';
+//        css.appendChild(rule);
 //        doc.getElementsByTagName('head')[0].appendChild(css);
     }
 }    
@@ -273,7 +271,7 @@ textarea {
     text-align: center;
     overflow: hidden;
     height: 330px;
-        display: flex;
+    display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
 }
