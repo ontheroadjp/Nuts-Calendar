@@ -12,7 +12,7 @@
         ></startTimePicker>
 
         <span :class="{ 'disabled': disabled }" 
-            style="margin: 0 5px;"
+            style="margin: 0 5px; line-height: 2rem;"
         >to</span>
 
         <endTimePicker 
