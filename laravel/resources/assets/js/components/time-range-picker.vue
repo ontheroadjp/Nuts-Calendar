@@ -11,7 +11,9 @@
             :disabled="disabled"
         ></startTimePicker>
 
-        <span :class="{ 'disabled': disabled }" style="margin: 0 5px;">to</span>
+        <span :class="{ 'disabled': disabled }" 
+            style="margin: 0 5px;"
+        >to</span>
 
         <endTimePicker 
             format="HH:mm"
@@ -25,7 +27,9 @@
         ></endTimePicker>
     </div>
 
-    <div v-show="errorResult && !error.start && !error.end && !disabled" class="error-message">Error</div>
+    <div v-show="errorResult && !error.start && !error.end && !disabled" 
+        class="error-message"
+    >Error</div>
 </div>
 </template>
 
