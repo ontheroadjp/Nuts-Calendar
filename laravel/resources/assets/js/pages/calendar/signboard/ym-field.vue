@@ -40,7 +40,7 @@
                                 $event.target.style.padding = '';
                                 $event.target.style.color = '';
                             "
-                        @click="currentMonth = m; editing = false"
+                        @click="currentMonth = m; togglePicker()"
                     >{{ m }}月</a>
                 </div>
 
