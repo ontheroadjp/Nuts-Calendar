@@ -27,6 +27,7 @@
 
         <div class="all-day">
             <all-day-checkbox
+                label="All-day"
                 :initialValue="editingItem.is_all_day"
                 @changeValue="onChangeAllDayCheckbox"
                 :disabled="showDeleteConfirm || updateIsLoading"
@@ -45,27 +46,6 @@
     </div><!-- // .main -->
 
     <div class="popup-footer">
-<!--
-        <div v-show="!showDeleteConfirm" style="overflow:hidden">
-            <button class="button strip thin" 
-                :disabled="!isReadyResult"
-                @click="clickSave()">
-                <span v-if="!updateIsLoading" class="icon is-small" style="width:100%">
-                    <i class="fa fa-floppy-o" style="margin-right: 5px"></i>Save
-                </span>
-                <span v-else style="width:100%">
-                    <i class="fa fa-refresh fa-spin"></i> 
-                </span>
-            </button>
-    
-            <button 
-                class="button strip thin" 
-                @click="showDeleteConfirm = true" 
-                :disabled="updateIsLoading"
-            ><i class="fa fa-trash" style="margin-right: 5px"></i>Delete
-            </button>
-        </div>
--->
         <div v-show="!showDeleteConfirm" style="overflow:hidden">
             <button class="button strip thin" 
                 :disabled="!isReadyResult"
@@ -73,7 +53,7 @@
                 <span v-if="!updateIsLoading" class="icon is-small" style="width:100%">
                     Save
                 </span>
-                <span v-else style="width:100%">
+                <span v-else class="icon is-small" style="width:100%">
                     <i class="fa fa-refresh fa-spin"></i> 
                 </span>
             </button>
