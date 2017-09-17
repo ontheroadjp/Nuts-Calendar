@@ -9,7 +9,7 @@
                 :height="110"
                 placeholder="Title"
                 @changeValue="onChangeContent"
-                :disabled="showDeleteConfirm || isLoading"
+                :disabled="showDeleteConfirm || updateIsLoading"
             ></text-input>
         </div>
 
@@ -21,7 +21,7 @@
                 :inputWidth="80"
                 :dropdownHeight="280"
                 @changeValue="onChangeTimeRange"
-                :disabled="input.allDay || showDeleteConfirm || isLoading"
+                :disabled="input.allDay || showDeleteConfirm || updateIsLoading"
             ></timeRangePicker>
         </div>
 
@@ -29,7 +29,7 @@
             <all-day-checkbox
                 :initialValue="editingItem.is_all_day"
                 @changeValue="onChangeAllDayCheckbox"
-                :disabled="showDeleteConfirm || isLoading"
+                :disabled="showDeleteConfirm || updateIsLoading"
             ></all-day-checkbox>
         </div>
 
@@ -43,7 +43,7 @@
             <button class="button strip" 
                 :disabled="!isReadyResult"
                 @click="clickSave()">
-                <span v-if="!isLoading" class="icon is-small" style="width:100%">
+                <span v-if="!updateIsLoading" class="icon is-small" style="width:100%">
                     <i class="fa fa-floppy-o" style="margin-right: 5px"></i>Save
                 </span>
                 <span v-else style="width:100%">
@@ -51,7 +51,7 @@
                 </span>
             </button>
     
-            <button class="button strip" @click="showDeleteConfirm = true" :disabled="isLoading">
+            <button class="button strip" @click="showDeleteConfirm = true" :disabled="updateIsLoading">
                 <i class="fa fa-trash" style="margin-right: 5px"></i>Delete
             </button>
         </div>
@@ -61,19 +61,24 @@
                 <p style="
                     display: flex;
                     justify-content: center;
-                    height: 60%;
-                "><i class="fa fa-exclamation-circle fa-5x" style="margin-top:60px"></i></p>
-                <div class="delete-confirm-buttons">
-                    <a class="button strip" 
+                ">
+                    <i v-if="!removeIsLoading" class="fa fa-exclamation-circle fa-5x" style="margin-top:60px"></i>
+                    <i v-else class="fa fa-refresh fa-spin fa-3x" style="margin-top:60px"></i>
+                </p>
+                
+                <div v-show="!removeIsLoading" class="delete-confirm-buttons">
+                    <button class="button strip" 
                         style="color:#fff"
                         @click="clickDeleteOK()"
-                    >OK</a>
+                    >OK</button>
 
-                    <a class="button strip" 
+                    <button class="button strip" 
                         style="color:#fff" 
                         @click="showDeleteConfirm = false"
-                    >Cancel</a>
+                        :disabled="updateIsLoading"
+                    >Cancel</button>
                 </div>
+
             </div>
         </transition>
     </div>
@@ -125,7 +130,11 @@ export default {
     computed: {
         ...mapState('calendar/tableView/item/update', {
             editingItem: 'editingItem',
-            isLoading: 'isLoading'
+            updateIsLoading: 'isLoading'
+        }),
+
+        ...mapState('calendar/tableView/item/remove', {
+            removeIsLoading: 'isLoading'
         }),
 
         errorResult: function() {
@@ -141,6 +150,10 @@ export default {
         ...mapActions('calendar/tableView/item/update', {
             setInputValue: 'setInputValue',
             update: 'update'
+        }),
+
+        ...mapActions('calendar/tableView/item/remove', {
+            remove: 'remove'
         }),
 
         onChangeContent(data) {
@@ -190,6 +203,13 @@ export default {
 
         clickDeleteOK() {
             u.clog('clickDeleteOK()');
+            this.remove();
+        }
+    },
+
+    watch: {
+        removeIsLoading: function( newValue, oldValue ) {
+            if(oldValue === true) this.$emit('close');
         }
     },
 
