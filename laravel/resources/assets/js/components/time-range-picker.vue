@@ -104,7 +104,7 @@ export default {
         },
 
         isReadyResult: function() {
-            if(this.disabled) return true;
+            if(this.disabled) return false;
 
             // more than one true is true
             let childrenAreReady = Object.values(this.isReady);
@@ -121,7 +121,7 @@ export default {
             this.error.start = data.error;
             this.isReady.start = data.isReady;
             this.isDropdownOpened = data.isDropdownOpened;
-            this.fireEvents();
+            this.fireEvent();
         },
 
         onChangeEnd(data) {
@@ -130,10 +130,10 @@ export default {
             this.error.end = data.error;
             this.isReady.end = data.isReady;
             this.isDropdownOpened = data.isDropdownOpened;
-            this.fireEvents();
+            this.fireEvent();
         },
         
-        fireEvents() {
+        fireEvent() {
             const data = {
                 value: {
                     start: this.formattedStartTime,
@@ -170,6 +170,10 @@ export default {
 
         initialEndTime: function() {
             this.updateInputValue();
+        },
+
+        disabled: function() {
+            if( !this.disabled ) this.fireEvent();
         }
     },
 
