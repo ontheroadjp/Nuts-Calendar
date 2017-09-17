@@ -29,24 +29,32 @@
             <all-day-checkbox
                 label="All-day"
                 :initialValue="editingItem.is_all_day"
-                @changeValue="onChangeAllDayCheckbox"
+                @changeValue="onChangeAllDay"
                 :disabled="showDeleteConfirm || updateIsLoading"
             ></all-day-checkbox>
         </div>
 
         <div class="memo">
-            <textarea 
-                class="textarea thin" 
-                style="box-shadow: none;" 
-                placeholder="Memo"
-                v-model="input.memo"
-            ></textarea>
+            <memo-textarea
+                :initialValue="editingItem.memo"
+                :minTextLength="5"
+                :maxTextLength="30"
+                :showError="true"
+                placeholder="memo"
+                @changeValue="onChangeMemo"
+            ></memo-textarea>
         </div>
 
     </div><!-- // .main -->
 
     <div class="popup-footer">
-        <div v-show="!showDeleteConfirm" style="overflow:hidden">
+        <div v-show="!showDeleteConfirm" style="display: flex; justify-content: space-around">
+            <button 
+                class="button strip thin" 
+                @click="showDeleteConfirm = true" 
+                :disabled="updateIsLoading"
+            >Delete</button>
+
             <button class="button strip thin" 
                 :disabled="!isReadyResult"
                 @click="clickSave()">
@@ -57,13 +65,8 @@
                     <i class="fa fa-refresh fa-spin"></i> 
                 </span>
             </button>
-    
-            <button 
-                class="button strip thin" 
-                @click="showDeleteConfirm = true" 
-                :disabled="updateIsLoading"
-            >Delete</button>
         </div>
+
         <transition name="delete-confirm">
             <div class="card delete-confirm" v-show="showDeleteConfirm">
                 <p style="
@@ -77,15 +80,15 @@
                 
                 <div v-show="!removeIsLoading" class="delete-confirm-buttons">
                     <button class="button strip" 
-                        style="color:#fff"
-                        @click="clickDeleteOK()"
-                    >OK</button>
-
-                    <button class="button strip" 
                         style="color:#fff" 
                         @click="showDeleteConfirm = false"
                         :disabled="updateIsLoading"
                     >Cancel</button>
+
+                    <button class="button strip" 
+                        style="color:#fff"
+                        @click="clickDeleteOK()"
+                    >OK</button>
                 </div>
 
             </div>
@@ -99,9 +102,10 @@ import { mapState, mapActions } from 'vuex';
 import textInput from '../../../../components/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 import allDayCheckbox from './all-day-checkbox.vue';
+import memoTextarea from './input-textarea.vue';
 
 export default {
-    components: { textInput, timeRangePicker, allDayCheckbox},
+    components: { textInput, timeRangePicker, allDayCheckbox, memoTextarea },
 
     props: {
         'height': { type: Number, default: 320 },
@@ -190,7 +194,7 @@ export default {
 //            u.clog('isReady: ' + this.isReady.timeRange);
         },
 
-        onChangeAllDayCheckbox(data) {
+        onChangeAllDay(data) {
             this.input.allDay = data.value;
             this.error.allDay = data.error;
             this.isReady.allDay = data.isReady;
@@ -199,6 +203,17 @@ export default {
 //            u.clog('value: ' + this.input.allDay);
 //            u.clog('error: ' + this.error.allDay);
 //            u.clog('isReady: ' + this.isReady.allDay);
+        },
+
+        onChangeMemo(data) {
+            this.input.memo = data.value;
+            this.error.memo = data.error;
+            this.isReady.memo = data.isReady;
+            this.setInputValue({key: 'memo', value: data.value });
+//            u.clog('----------------------- all day ------------------------');
+//            u.clog('value: ' + this.input.memo);
+//            u.clog('error: ' + this.error.memo);
+//            u.clog('isReady: ' + this.isReady.memo);
         },
 
         clickSave() {
@@ -289,17 +304,6 @@ export default {
 
 .all-day {
     margin-bottom: 18px;
-}
-
-.memo > textarea {
-    height: 110px;
-    width: 100%; 
-    padding: .4rem;
-    border: 1px solid #d2d2d2;
-    border-radius: 0;
-    outline: none;
-    resize: none;
-    font-size: 1rem;
 }
 
 .popup-footer {
