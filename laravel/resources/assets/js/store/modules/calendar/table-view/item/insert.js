@@ -19,8 +19,8 @@ export default {
     },
 
     actions: {
-        prepare( { commit, rootGetters }, { dayIndex, memberId } ) {
-            const cellItems = rootGetters.getCellItems(dayIndex, memberId);
+        prepare( { commit, rootGetters }, { dayIndex, memberId, cellItems } ) {
+//            const cellItems = rootGetters.getCellItems(dayIndex, memberId);
             commit('prepare', { dayIndex, memberId, cellItems });
         },
 
@@ -59,14 +59,20 @@ export default {
                 'type_id': typeId,
                 'member_id': state.enterCell.memberId,
                 'content': state.newItem.content,
-                'start_time': null,
-                'end_time': null
+                'start_time': '00:00:00',
+                'end_time': '00:00:00',
+                'is_all_day': true,
+                'memo': ''
             };
     
             http.fetchPost(url, params)
                 .then(response => {
                     commit('insert', {
                         item: response.data
+                    });
+
+                    commit('calendar/tableView/sortCellItems', state.enterCell.cellItems, {
+                        root: true
                     });
 
                     commit('notifySuccess', {

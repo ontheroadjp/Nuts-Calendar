@@ -148,10 +148,10 @@ export default {
             this.error.content = data.error;
             this.isReady.content = data.isReady;
             this.setInputValue({key: 'content', value: data.inputValue });
-            u.clog('----------------------- content ------------------------');
-            u.clog('input value: ' + this.input.content);
-            u.clog('error: ' + this.error.content);
-            u.clog('isReady: ' + this.isReady.content);
+//            u.clog('----------------------- content ------------------------');
+//            u.clog('input value: ' + this.input.content);
+//            u.clog('error: ' + this.error.content);
+//            u.clog('isReady: ' + this.isReady.content);
         },
 
         onChangeTimeRange(data) {
@@ -161,11 +161,11 @@ export default {
             this.isReady.timeRange = data.isReady;
             this.setInputValue({key: 'startTime', value: data.value.start });
             this.setInputValue({key: 'endTime', value: data.value.end });
-            u.clog('----------------------- time range ------------------------');
-            u.clog('start: ' + this.input.startTime);
-            u.clog('end: ' + this.input.endTime);
-            u.clog('error: ' + this.error.timeRange);
-            u.clog('isReady: ' + this.isReady.timeRange);
+//            u.clog('----------------------- time range ------------------------');
+//            u.clog('start: ' + this.input.startTime);
+//            u.clog('end: ' + this.input.endTime);
+//            u.clog('error: ' + this.error.timeRange);
+//            u.clog('isReady: ' + this.isReady.timeRange);
         },
 
         onChangeAllDayCheckbox(data) {
@@ -173,10 +173,10 @@ export default {
             this.error.allDay = data.error;
             this.isReady.allDay = data.isReady;
             this.setInputValue({key: 'allDay', value: data.value });
-            u.clog('----------------------- all day ------------------------');
-            u.clog('value: ' + this.input.allDay);
-            u.clog('error: ' + this.error.allDay);
-            u.clog('isReady: ' + this.isReady.allDay);
+//            u.clog('----------------------- all day ------------------------');
+//            u.clog('value: ' + this.input.allDay);
+//            u.clog('error: ' + this.error.allDay);
+//            u.clog('isReady: ' + this.isReady.allDay);
         },
 
         clickSave() {

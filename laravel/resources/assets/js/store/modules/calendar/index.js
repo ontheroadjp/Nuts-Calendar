@@ -95,8 +95,8 @@ const calendar = {
                             (b.is_all_day !== 1 || b.is_all_day !== true)
                         ) return -1;
 
-                        if( (a.is_all_day === 0 || a.is_all_day === false) &&
-                            (b.is_all_day !== 0 || b.is_all_day !== false)
+                        if( (a.is_all_day !== 1 || a.is_all_day !== true) &&
+                            (b.is_all_day === 1 || b.is_all_day === true)
                         ) return 1;
 
                         if( a.start_time === undefined || a.start_time === null ) return -1;
@@ -131,10 +131,13 @@ const calendar = {
                     cellItems.forEach(function(item, index) {
 
                         if( item.type_id !== 1 ||
+                            item.is_all_day == 1 ||
+                            item.is_all_day == true ||
                             item.start_time == '' || 
                             item.start_time == null ||
                             item.end_time == '' ||
-                            item.end_time == null) {
+                            item.end_time == null 
+                        ) {
                             return
                         }
 
