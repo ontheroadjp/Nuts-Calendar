@@ -5,7 +5,7 @@
                 == getCellAddress(getRowIndex(day.date), memberId) 
                 ? dragEnterStyle : ''
         ]"
-        @click="clickCell(dayIndex, memberId)"
+        @click="clickCell(dayIndex, memberId, cellItems)"
         @dragenter="handleDragEnter(day.date, memberId)"
         @dragover="handleDragOver($event)"
         @drop.stop="handleDrop()"
@@ -97,8 +97,8 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-        clickCell(dayIndex, memberId) {
-            this.insertPrepare( { dayIndex, memberId } );
+        clickCell(dayIndex, memberId, cellItems) {
+            this.insertPrepare( { dayIndex, memberId, cellItems } );
         },
 
         handleDragStart(draggingItem) {
