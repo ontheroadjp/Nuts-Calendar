@@ -33,14 +33,21 @@
             ></all-day-checkbox>
         </div>
 
-        <span class="label thin">Memo</span>
-        <textarea class="textarea thin" v-model="input.memo"></textarea>
+        <div class="memo">
+            <textarea 
+                class="textarea thin" 
+                style="box-shadow: none;" 
+                placeholder="Memo"
+                v-model="input.memo"
+            ></textarea>
+        </div>
 
     </div><!-- // .main -->
 
     <div class="popup-footer">
+<!--
         <div v-show="!showDeleteConfirm" style="overflow:hidden">
-            <button class="button strip" 
+            <button class="button strip thin" 
                 :disabled="!isReadyResult"
                 @click="clickSave()">
                 <span v-if="!updateIsLoading" class="icon is-small" style="width:100%">
@@ -51,11 +58,32 @@
                 </span>
             </button>
     
-            <button class="button strip" @click="showDeleteConfirm = true" :disabled="updateIsLoading">
-                <i class="fa fa-trash" style="margin-right: 5px"></i>Delete
+            <button 
+                class="button strip thin" 
+                @click="showDeleteConfirm = true" 
+                :disabled="updateIsLoading"
+            ><i class="fa fa-trash" style="margin-right: 5px"></i>Delete
             </button>
         </div>
-
+-->
+        <div v-show="!showDeleteConfirm" style="overflow:hidden">
+            <button class="button strip thin" 
+                :disabled="!isReadyResult"
+                @click="clickSave()">
+                <span v-if="!updateIsLoading" class="icon is-small" style="width:100%">
+                    Save
+                </span>
+                <span v-else style="width:100%">
+                    <i class="fa fa-refresh fa-spin"></i> 
+                </span>
+            </button>
+    
+            <button 
+                class="button strip thin" 
+                @click="showDeleteConfirm = true" 
+                :disabled="updateIsLoading"
+            >Delete</button>
+        </div>
         <transition name="delete-confirm">
             <div class="card delete-confirm" v-show="showDeleteConfirm">
                 <p style="
@@ -65,6 +93,7 @@
                     <i v-if="!removeIsLoading" class="fa fa-exclamation-circle fa-5x" style="margin-top:60px"></i>
                     <i v-else class="fa fa-refresh fa-spin fa-3x" style="margin-top:60px"></i>
                 </p>
+                <p v-show="!removeIsLoading">Delete {{ input.content }} ?</p>
                 
                 <div v-show="!removeIsLoading" class="delete-confirm-buttons">
                     <button class="button strip" 
@@ -279,14 +308,15 @@ export default {
 }
 
 .all-day {
-    margin-bottom: 10px;
+    margin-bottom: 18px;
 }
 
-textarea {
+.memo > textarea {
     height: 110px;
     width: 100%; 
     padding: .4rem;
-    border: 1px solid #e6e6e6;
+    border: 1px solid #d2d2d2;
+    border-radius: 0;
     outline: none;
     resize: none;
     font-size: 1rem;
