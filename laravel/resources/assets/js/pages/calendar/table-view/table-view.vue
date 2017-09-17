@@ -11,7 +11,11 @@
         :scrollY="scrollPositionY"
         :height="340"
         :width="240"
-        ><item-edit-popup-content :height="340" :width="240"></item-edit-popup-content>
+        ><item-edit-popup-content 
+            :height="340" 
+            :width="240" 
+            @close="popupMenuClose"
+        ></item-edit-popup-content>
     </popup-menu>
 
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
