@@ -1,35 +1,33 @@
 <template>
-    <span class="all-day-checkbox">
-        <label>
-            <input 
-                :class="['all-day-input', {'disabled': disabled}]" 
-                type="checkbox" 
-                v-model="input" 
-                @change="onChange"
-                :disabled="disabled"
-            />
-            <span class="all-day-parts">All day</span>
-        </label>
-    </span>
+    <label>
+        <input 
+            :class="['input-checkbox', {'disabled': disabled}]" 
+            type="checkbox" 
+            v-model="input" 
+            @change="onChange"
+            :disabled="disabled"
+        />
+        <span class="input-checkbox-parts">{{ label }}</span>
+    </label>
 </template>
 
 <script>
 export default {
     props: {
+        label:        { type: String, default: 'Check' },
         initialValue: { type: [Boolean, Number], required: true },
         disabled:     { type: Boolean, default: false }
     },
 
     data() {
         return {
-            initial: '',
             input: ''
         }
     },
 
     computed: {
         isReadyResult: function() {
-            return this.initial != this.input;
+            return this.initialValue != this.input;
         }
     },
 
@@ -56,34 +54,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.all-day-input {
+.input-checkbox {
     display: none;
 }
 
-.all-day-parts {
+.input-checkbox-parts {
     position: relative;
     margin-right: 20px;
     padding-left: 20px;
     font-size: 0.8em;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 15px;
+        height: 15px;
+        border: 1px solid #999;
+        border-radius: 4px;
+    }
 }
 
-.all-day-parts::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 15px;
-    height: 15px;
-    border: 1px solid #999;
-    border-radius: 4px;
-}
 
-.all-day-input:checked + .all-day-parts {
+.input-checkbox:checked + .input-checkbox-parts {
     color: #546e7a;
 }
 
-.all-day-input:checked + .all-day-parts::after {
+.input-checkbox:checked + .input-checkbox-parts::after {
     content: "";
     display: block;
     position: absolute;
@@ -96,9 +95,9 @@ export default {
     border-right: 3px solid #41b883;
 }
 
-.all-day-input.disabled + .all-day-parts,
-.all-day-input.disabled + .all-day-parts::before,
-.all-day-input.disabled + .all-day-parts::after {
+.input-checkbox.disabled + .input-checkbox-parts,
+.input-checkbox.disabled + .input-checkbox-parts::before,
+.input-checkbox.disabled + .input-checkbox-parts::after {
     color: rgba(190, 190, 190, 1);
 }
 </style>
