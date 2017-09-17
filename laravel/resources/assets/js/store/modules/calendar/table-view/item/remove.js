@@ -32,6 +32,14 @@ export default {
 
                     commit('remove');
 
+                    commit('calendar/tableView/sortCellItems', state.cellItems, {
+                        root: true
+                    }),
+
+                    commit('calendar/tableView/checkTime', state.cellItems, {
+                        root: true
+                    }),
+
                     commit('notifySuccess', {
                         content: 'success remove item',
                         isImportant: false
