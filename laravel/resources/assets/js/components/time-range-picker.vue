@@ -1,5 +1,6 @@
 <template>
-    <span class="time-range-picker">
+<div class="time-range-picker">
+    <div>
         <startTimePicker 
             format="HH:mm"
             :initialValue="initial.start"
@@ -7,9 +8,12 @@
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
             @changeValue="onChangeStart"
+            :disabled="disabled"
         ></startTimePicker>
 
-        <span style="margin: 0 5px;">to</span>
+        <span :class="{ 'disabled': disabled }" 
+            style="margin: 0 5px;"
+        >to</span>
 
         <endTimePicker 
             format="HH:mm"
@@ -19,9 +23,14 @@
             :dropdownHeight="dropdownHeight"
             menuPosition="left"
             @changeValue="onChangeEnd"
+            :disabled="disabled"
         ></endTimePicker>
+    </div>
 
-    </span>
+    <div v-show="errorResult && !error.start && !error.end && !disabled" 
+        class="error-message"
+    >Error</div>
+</div>
 </template>
 
 <script>
@@ -37,6 +46,7 @@ export default {
         initialEndTime:     { type: String, default: '' }, // HH:mm:ss or ''
         inputWidth:         { type: Number, default: 80 },
         dropdownHeight:     { type: Number, default: 280 },
+        disabled:           { type: Boolean, default: false }
     },
 
     data() {
@@ -56,7 +66,7 @@ export default {
                 end: false
             },
 
-            readyState: {
+            isReady: {
                 start: false,
                 end: false
             },
@@ -66,25 +76,27 @@ export default {
     },
 
     computed: {
-        startTimeResult: function() {
+        formattedStartTime: function() {
             if( this.error.start ) return '';
             if( this.input.start.HH == '' && this.input.start.mm == '' ) return '';
             return this.input.start.HH + ':' + this.input.start.mm;
         },
         
-        endTimeResult: function() {
+        formattedEndTime: function() {
             if( this.error.end ) return '';
             if( this.input.end.HH == '' && this.input.end.mm == '' ) return '';
             return this.input.end.HH + ':' + this.input.end.mm;
         },
 
-        hasError: function() {
+        errorResult: function() {
             if( this.isDropdownOpen ) { return false; }
 
             const startHH = this.input.start.HH;
             const startMM = this.input.start.mm;
             const endHH = this.input.end.HH;
             const endMM = this.input.end.mm;
+
+            if(this.disabled) return false;
 
             if( (this.error.start || this.error.end) ||
                 (startHH == '' && endHH != '') ||
@@ -95,88 +107,98 @@ export default {
             return false;
         },
 
-        isReadyToUpdate: function() {
-            const values = Object.values(this.readyState);
-            return (values.indexOf(true) !== -1) && !this.hasError && !this.isDropdownOpened;
-//            return (this.readyState.start || this.readyState.end) && !this.isDropdownOpened;
+        isReadyResult: function() {
+            if(this.disabled) return false;
+
+            // more than one true is true
+            let childrenAreReady = Object.values(this.isReady);
+            childrenAreReady = (childrenAreReady.indexOf(true) !== -1);
+
+            return childrenAreReady && !this.errorResult && !this.isDropdownOpen;
         }
     },
 
     methods: {
         onChangeStart(data) {
-//            u.clog('------------------- onChange Start Value() ---------------');
-//            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
-//            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
-//            u.clog('hasError: ' + data.hasError);
-//            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
-//            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
             this.input.start.HH = data.inputValue.HH;
             this.input.start.mm = data.inputValue.mm;
-            this.error.start = data.hasError;
-            this.readyState.start = data.isReadyToUpdate;
+            this.error.start = data.error;
+            this.isReady.start = data.isReady;
             this.isDropdownOpened = data.isDropdownOpened;
-            this.fireEvents();
+            this.fireEvent();
         },
 
         onChangeEnd(data) {
-//            u.clog('------------------- onChange End Value() ---------------');
-//            u.clog('inputValue.HH(initialValue): ' + data.inputValue.HH + '(' + data.initialValue.HH + ')');
-//            u.clog('inputValue.mm(initialValue): ' + data.inputValue.mm + '(' + data.initialValue.mm + ')');
-//            u.clog('hasError: ' + data.hasError);
-//            u.clog('isReadyToUpdate: ' + data.isReadyToUpdate);
-//            u.clog('isDropdownOpened: ' + data.isDropdownOpened);
             this.input.end.HH = data.inputValue.HH;
             this.input.end.mm = data.inputValue.mm;
-            this.error.end = data.hasError;
-            this.readyState.end = data.isReadyToUpdate;
+            this.error.end = data.error;
+            this.isReady.end = data.isReady;
             this.isDropdownOpened = data.isDropdownOpened;
-            this.fireEvents();
+            this.fireEvent();
         },
         
-        fireEvents() {
+        fireEvent() {
             const data = {
                 value: {
-                    start: {
-                        HH: this.input.start.HH,
-                        mm: this.input.start.mm,
-                    },
-
-                    end: {
-                        HH: this.input.end.HH,
-                        mm: this.input.end.mm,
-                    }
+                    start: this.formattedStartTime,
+                    end: this.formattedEndTime
                 },
 
-                formattedValue: [
-                    { 
-                        start: this.startTimeResult,
-                        end: this.endTimeResult
-                    }
-                ],
-
-                hasError: this.hasError,
-                isReadyToUpdate: this.isReadyToUpdate,
+                error: this.errorResult,
+                isReady: this.isReadyResult,
             }
 
             this.$emit('changeValue', data);
+        },
+
+        updateInputValue: function() {
+            if( this.initialStartTime ) {
+                this.initial.start.HH = this.initialStartTime.split(':')[0];
+                this.initial.start.mm = this.initialStartTime.split(':')[1];
+                this.input.start.HH = this.initial.start.HH;
+                this.input.start.mm = this.initial.start.mm;
+            }
+            if( this.initialEndTime ) {
+                this.initial.end.HH = this.initialEndTime.split(':')[0];
+                this.initial.end.mm = this.initialEndTime.split(':')[1];
+                this.input.end.HH = this.initial.end.HH;
+                this.input.end.mm = this.initial.end.mm;
+            }
+        }
+    },
+
+    watch: {
+        initialStartTime: function() {
+            this.updateInputValue();
+        },
+
+        initialEndTime: function() {
+            this.updateInputValue();
+        },
+
+        disabled: function() {
+            if( !this.disabled ) this.fireEvent();
         }
     },
 
     mounted: function() {
-        if( this.initialStartTime ) {
-            u.clog('init startTime');
-            this.initial.start.HH = this.initialStartTime.split(':')[0];
-            this.initial.start.mm = this.initialStartTime.split(':')[1];
-            this.input.start.HH = this.initial.start.HH;
-            this.input.start.mm = this.initial.start.mm;
-        }
-        if( this.initialEndTime ) {
-            u.clog('init endTime');
-            this.initial.end.HH = this.initialEndTime.split(':')[0];
-            this.initial.end.mm = this.initialEndTime.split(':')[1];
-            this.input.end.HH = this.initial.end.HH;
-            this.input.end.mm = this.initial.end.mm;
-        }
+        this.updateInputValue();
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.time-range-picker {
+    display: inline-block;
+}
+
+.error-message {
+    font-size: 0.8em;
+    color: red;
+    text-align: center;
+}
+
+.disabled {
+    color: rgb(190, 190, 190);
+}
+</style>

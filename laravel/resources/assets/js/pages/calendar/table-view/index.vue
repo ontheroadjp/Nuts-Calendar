@@ -61,7 +61,7 @@
     import blackScreen from '../../../components/black-screen.vue';
     import core from '../../../mixins/core.js';
     import tableView from './table-view.vue';
-    import toolPalette from './table-tool-palette.vue';
+    import toolPalette from './tool-palette/index.vue';
     import dateUtilities from '../../../mixins/date-utilities.js';
     
     export default {
@@ -101,8 +101,8 @@
 
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
-                searchQuery: state => (state.query.search).toLowerCase(),
-                internalQuery: state => state.query.internal
+                internalQuery: state => state.query.internal,
+                searchQuery: state => (state.query.search).toLowerCase()
             }),
 
             ...mapState('calendar/tableView/item/dnd', {
@@ -135,15 +135,12 @@
                         });
                     }
     
-                    // filter by day of the week
+                    // filter by a day of week
                     if(this.internalQuery) {
                         data = data.slice().filter( row => {
                             return this.getDayIndex(row['date']) == this.internalQuery;
                         });
                     }
-
-                    // sort cell items
-                    this.$store.commit('calendar/tableView/sortCellItemsByStartTime', data);
 
                     return data;
                 }

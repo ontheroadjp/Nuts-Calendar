@@ -24,13 +24,13 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
+    props: {
+        disabled: { type: Boolean, default: false }
+    },
+
     computed: {
         ...mapState({
             theme: state => state.app.theme
-        }),
-
-        ...mapState('dashboard', {
-            disabled: state => state.disabled
         }),
 
         ...mapState('calendar/tableView/toolPalette', {

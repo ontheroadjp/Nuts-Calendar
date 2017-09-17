@@ -2,11 +2,13 @@
     <span>
         <event-item 
             v-if="isEventItem && item.type_id === 1"
+            :cellItems="cellItems"
             :item="item"
         ></event-item> 
     
         <task-item
             v-if="isTaskItem && item.type_id === 2"
+            :cellItems="cellItems"
             :item="item"
         ></task-item>
     </span>
@@ -22,7 +24,7 @@ export default {
     },
 
     props: [
-        'isEventItem', 'isTaskItem', 'item'
+        'cellItems', 'isEventItem', 'isTaskItem', 'item'
     ]
 }
 </script>
@@ -31,8 +33,6 @@ export default {
     .item {
         align-items: center;
         border-radius: 3px;
-        display: -webkit-inline-box;
-        display: -ms-inline-flexbox;
         display: inline-flex;
         font-size: 12px;
         justify-content: center;
@@ -43,14 +43,11 @@ export default {
         line-height: 2em;
 
         &.is-event {
-            /* background-color: rgba(0, 209, 178, 0.3); */
-            /* border: 1px solid rgb(0, 209, 178); */
             color: #023a31;
         }
 
         &.is-task {
             background-color: rgb(240, 240, 240);
-            /* border: 1px solid #dbdbdb; */
             color: #363636;
         }
     }

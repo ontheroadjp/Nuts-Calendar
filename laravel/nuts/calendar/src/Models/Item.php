@@ -14,7 +14,15 @@ class Item extends Model
      * @access protected
      */
     protected $fillable = [
-        'type_id', 'member_id', 'content', 'date', 'start_time', 'end_time', 'is_done'
+        'type_id',
+        'member_id',
+        'content',
+        'date',
+        'start_time',
+        'end_time',
+        'is_done',
+        'is_all_day',
+        'memo'
     ];
 
     /**

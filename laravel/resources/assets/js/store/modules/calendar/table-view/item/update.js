@@ -4,20 +4,23 @@ export default {
     state: {
         isActive: false,
         isLoading: false,
+        cellItems: '',
         editingItem: '',
         clickX: 0,
         clickY: 0,
         input: {
             content: '',
             startTime: '',
-            endTime: ''
+            endTime: '',
+            allDay: '',
+            memo: ''
         }
     },
 
     actions: {
-        prepare( { commit }, { event, editingItem } ) {
+        prepare( { commit }, { event, cellItems, editingItem } ) {
             u.clog('prepare()');
-            commit('prepare', { event, editingItem } );
+            commit('prepare', { event, cellItems, editingItem } );
         },
 
         prepareModal( { commit }, { event } ) {
@@ -30,12 +33,11 @@ export default {
             dispatch('update');
         },
 
-//        setInputValues( { commit }, { content, startTime, endTime } ) {
-//            commit('setInputValues', { content, startTime, endTime } );
-//        },
+        setInputValue( { commit }, { key, value } ) {
+            commit('setInputValue', { key, value } );
+        },
 
         update( { state, commit } ) {
-//            commit('start');
             commit('isLoading', true);
             u.clog('update()');
 
@@ -48,16 +50,22 @@ export default {
                 content:    state.input.content,
                 start_time: state.input.startTime,
                 end_time:   state.input.endTime,
+                is_all_day: state.input.allDay,
+                memo:       state.input.memo,
             };
     
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
 
-                    commit('update', {
-                        content: response.data.content,
-                        startTime: response.data.start_time,
-                        endTime: response.data.end_time
+                    commit('update', data);
+
+                    commit('calendar/tableView/sortCellItems', state.cellItems, {
+                        root: true
+                    });
+
+                    commit('calendar/tableView/checkTime', state.cellItems, {
+                        root: true
                     });
 
                     commit('notifySuccess', {
@@ -65,7 +73,6 @@ export default {
                         isImportant: false
                     }, { root: true });
         
-//                    commit('stop');
                     commit('isLoading', false);
                 })
 
@@ -78,7 +85,6 @@ export default {
                         isActive: true
                     }, { root: true});
 
-//                    commit('stop');
                     commit('isLoading', false);
                 });
         },
@@ -89,11 +95,14 @@ export default {
     },
 
     mutations: {
-        prepare( state, { editingItem } ) {
+        prepare( state, { cellItems, editingItem } ) {
+            state.cellItems = cellItems;
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
             state.input.startTime = editingItem.start_time;
             state.input.endTime = editingItem.end_time;
+            state.input.allDay = editingItem.is_all_day;
+            state.input.memo = editingItem.memo;
         },
 
         prepareModal( state, { event } ) {
@@ -102,41 +111,47 @@ export default {
             state.isActive = true;
         },
 
-        isLoading( state, { value } ) {
+        isLoading( state, value ) {
             state.isLoading = value;
         },
-
-//        start( state ) {
-//            state.isLoading = true;
-//        },
 
         toggleTaskDone( state ) {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
 
-//        setInputValues( state, { content, startTime, endTime } ) {
-//            state.input.content = content;
-//            state.input.startTime = startTime;
-//            state.input.endTime = endTime;
-//        },
-
-        update( state, { content, startTime, endTime } ) {
-            state.editingItem.content = content;
-            state.editingItem.start_time = startTime;
-            state.editingItem.end_time = endTime;
+        setInputValue( state, { key, value } ) {
+            state.input[key] = value;
         },
 
-//        stop( state ) {
-//            state.isLoading = false;
+//        update( state, { content, startTime, endTime, allDay, isDone, memo } ) {
+//            state.editingItem.content = content;
+//            state.editingItem.start_time = startTime;
+//            state.editingItem.end_time = endTime;
+//            state.editingItem.is_all_day = allDay;
+//            state.editingItem.is_done = isDone;
+//            state.editingItem.memo = memo;
 //        },
+
+        update( state, data ) {
+            Object.keys(data).forEach((key) => {
+                state.editingItem[key] = data[key];
+            });
+//            state.editingItem.content = content;
+//            state.editingItem.start_time = startTime;
+//            state.editingItem.end_time = endTime;
+//            state.editingItem.is_all_day = allDay;
+//            state.editingItem.is_done = isDone;
+//            state.editingItem.memo = memo;
+        },
 
         reset( state ) {
             state.isActive = false,
+            state.cellItems = '',
             state.editingItem = '',
             state.isLoading = false,
-            state.input.content = '',
-            state.input.startTime = '',
-            state.input.endTime = ''
+            Object.keys(state.input).forEach((key) => {
+                state.input[key] = '';
+            });
         }
     }
 }

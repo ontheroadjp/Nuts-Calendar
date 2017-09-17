@@ -3,97 +3,234 @@
     <div class="main">
         <div class="content">
             <text-input 
-                :initialValue="updateState.editingItem.content"
+                :initialValue="editingItem.content"
+                :showError="true"
+                :minTextLength="1"
+                :height="110"
                 placeholder="Title"
-                @valueChange="onChangeContent"
+                @changeValue="onChangeContent"
+                :disabled="showDeleteConfirm || isLoading"
             ></text-input>
         </div>
 
         <div class="time-range">
             <timeRangePicker 
                 :minute-interval="5"
-                :initialStartTime="updateState.editingItem.start_time"
-                :initialEndTime="updateState.editingItem.end_time"
+                :initialStartTime="editingItem.start_time"
+                :initialEndTime="editingItem.end_time"
                 :inputWidth="80"
                 :dropdownHeight="280"
                 @changeValue="onChangeTimeRange"
+                :disabled="input.allDay || showDeleteConfirm || isLoading"
             ></timeRangePicker>
         </div>
 
+        <div class="all-day">
+            <all-day-checkbox
+                :initialValue="editingItem.is_all_day"
+                @changeValue="onChangeAllDayCheckbox"
+                :disabled="showDeleteConfirm || isLoading"
+            ></all-day-checkbox>
+        </div>
+
         <span class="label thin" style="font-size: 0.8em;">Memo</span>
-        <textarea style=""></textarea>
+        <textarea style="" v-model="input.memo"></textarea>
 
     </div><!-- // .main -->
 
     <div class="popup-footer">
-        <a class="button strip" :disabled="!isReadyToUpdate">Save</a>
-        <a class="button strip">Delete</a>
+        <div v-show="!showDeleteConfirm" style="overflow:hidden">
+            <button class="button strip" 
+                :disabled="!isReadyResult"
+                @click="clickSave()">
+                <span v-if="!isLoading" class="icon is-small" style="width:100%">
+                    <i class="fa fa-floppy-o" style="margin-right: 5px"></i>Save
+                </span>
+                <span v-else style="width:100%">
+                    <i class="fa fa-refresh fa-spin"></i> 
+                </span>
+            </button>
+    
+            <button class="button strip" @click="showDeleteConfirm = true" :disabled="isLoading">
+                <i class="fa fa-trash" style="margin-right: 5px"></i>Delete
+            </button>
+        </div>
+
+        <transition name="delete-confirm">
+            <div class="card delete-confirm" v-show="showDeleteConfirm">
+                <p style="
+                    display: flex;
+                    justify-content: center;
+                    height: 60%;
+                "><i class="fa fa-exclamation-circle fa-5x" style="margin-top:60px"></i></p>
+                <div class="delete-confirm-buttons">
+                    <a class="button strip" 
+                        style="color:#fff"
+                        @click="clickDeleteOK()"
+                    >OK</a>
+
+                    <a class="button strip" 
+                        style="color:#fff" 
+                        @click="showDeleteConfirm = false"
+                    >Cancel</a>
+                </div>
+            </div>
+        </transition>
     </div>
 </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import textInput from '../../../../components/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
+import allDayCheckbox from './all-day-checkbox.vue';
 
 export default {
-    components: { textInput, timeRangePicker },
+    components: { textInput, timeRangePicker, allDayCheckbox},
+
+    props: {
+        'height': { type: Number, default: 320 },
+        'width':  { type: Number, default: 280 }
+    },
 
     data() {
         return {
             input: {
                 content: '',
                 startTime: '',
-                endTime: ''
+                endTime: '',
+                allDay: '',
+                memo: ''
             },
 
-            hasError: {
+            error: {
                 content: false,
-                timeRange: false
+                timeRange: false,
+                allDay: false,
+                memo: ''
             },
 
-            readyState: {
+            isReady: {
                 content: false,
-                timeRange: false
-            }
+                timeRange: false,
+                allDay: false,
+                memo: false
+            },
+
+            showDeleteConfirm: false
         }
     },
 
     computed: {
-        ...mapState('calendar/tableView/item', {
-            updateState: 'update'
+        ...mapState('calendar/tableView/item/update', {
+            editingItem: 'editingItem',
+            isLoading: 'isLoading'
         }),
 
-        isReadyToUpdate: function() {
-            const values = Object.values(this.readyState);
-            return (values.indexOf(true) !== -1) && !this.hasError;
+        errorResult: function() {
+            return (Object.values(this.error).indexOf(true) !== -1);
+        },
+
+        isReadyResult: function() {
+            return (Object.values(this.isReady).indexOf(true) !== -1) && !this.errorResult;
         }
     },
 
     methods: {
-        update() {
-            u.clog('update ------------------');
-        },
+        ...mapActions('calendar/tableView/item/update', {
+            setInputValue: 'setInputValue',
+            update: 'update'
+        }),
 
         onChangeContent(data) {
-            u.clog('-----------------------------------------------');
-            u.clog('initial value: ' + data.initialValue);
-            u.clog('input value: ' + data.inputValue);
-            u.clog('hasError: ' + data.hasError);
-            u.clog('isReady: ' + data.isReady);
+            this.input.content = data.inputValue;
+            this.error.content = data.error;
+            this.isReady.content = data.isReady;
+            this.setInputValue({key: 'content', value: data.inputValue });
+//            u.clog('----------------------- content ------------------------');
+//            u.clog('input value: ' + this.input.content);
+//            u.clog('error: ' + this.error.content);
+//            u.clog('isReady: ' + this.isReady.content);
         },
 
         onChangeTimeRange(data) {
-            this.readyState.timeRange = data.isReadyToUpdate;
+            this.input.startTime = data.value.start;
+            this.input.endTime = data.value.end;
+            this.error.timeRange = data.error;
+            this.isReady.timeRange = data.isReady;
+            this.setInputValue({key: 'startTime', value: data.value.start });
+            this.setInputValue({key: 'endTime', value: data.value.end });
+//            u.clog('----------------------- time range ------------------------');
+//            u.clog('start: ' + this.input.startTime);
+//            u.clog('end: ' + this.input.endTime);
+//            u.clog('error: ' + this.error.timeRange);
+//            u.clog('isReady: ' + this.isReady.timeRange);
+        },
+
+        onChangeAllDayCheckbox(data) {
+            this.input.allDay = data.value;
+            this.error.allDay = data.error;
+            this.isReady.allDay = data.isReady;
+            this.setInputValue({key: 'allDay', value: data.value });
+//            u.clog('----------------------- all day ------------------------');
+//            u.clog('value: ' + this.input.allDay);
+//            u.clog('error: ' + this.error.allDay);
+//            u.clog('isReady: ' + this.isReady.allDay);
+        },
+
+        clickSave() {
+            u.clog('clickSave()');
+            this.update();
+            this.isReady.content = false;
+            this.isReady.timeRange = false;
+            this.isReady.allDay = false;
+            this.isReady.memo = false;
+        },
+
+        clickDeleteOK() {
+            u.clog('clickDeleteOK()');
         }
     },
 
     mounted: function() {
-        this.input.content = this.updateState.editingItem.content; 
-        this.input.startTime = this.updateState.editingItem.start_time; 
-        this.input.endTime = this.updateState.editingItem.end_time; 
-    },
+        this.input.content = this.editingItem.content; 
+        this.input.startTime = this.editingItem.start_time; 
+        this.input.endTime = this.editingItem.end_time; 
+        if( typeof this.editingItem.is_all_day === 'number' ) {
+            this.input.allDay = (this.editingItem.is_all_day > 0) 
+        } else {
+            this.input.allDay = this.editingItem.is_all_day; 
+        }
+        this.input.memo = this.editingItem.memo;
+
+//        const doc = window.document;
+//        const css = doc.createElement('style');
+//        const rule = document.createTextNode(`
+//
+//            .delete-confirm-enter-active,
+//            .delete-confirm-leave-active {
+//                transition: all .3s ease;
+//            }
+//            
+//            .delete-confirm-leave-to,
+//            .delete-confirm-enter {
+//                height: 0;
+//                opacity: 0;
+//            }
+//            
+//            .delete-confirm-enter-to,
+//            .delete-confirm-leave {
+//                opacity: 1;
+//                height: ${this.height}px;
+//            }
+//        `);
+//
+//        css.id = 'delete-confirm';
+//        css.type = 'text/css';
+//        css.appendChild(rule);
+//        doc.getElementsByTagName('head')[0].appendChild(css);
+    }
 }    
 </script>
 
@@ -118,7 +255,11 @@ export default {
 } 
 
 .time-range {
-    margin-bottom: 12px;
+    margin-bottom: 5px;
+}
+
+.all-day {
+    margin-bottom: 10px;
 }
 
 textarea {
@@ -136,5 +277,46 @@ textarea {
     background-color: whitesmoke;
     width: 100%;
     padding: 5px;
+    text-align: right;
+
+    & button:hover {
+        border: 1px solid #e6e6e6;
+    }
 }
+
+.delete-confirm {
+    background-color: red;
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+    height: 330px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.delete-confirm-buttons {
+    display: inline-flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.delete-confirm-enter-active,
+.delete-confirm-leave-active {
+    transition: all .3s ease;
+}
+
+.delete-confirm-leave-to,
+.delete-confirm-enter {
+    height: 0;
+    opacity: 0;
+}
+
+.delete-confirm-enter-to,
+.delete-confirm-leave {
+    opacity: 1;
+    height: 330px;
+}
+
 </style>
