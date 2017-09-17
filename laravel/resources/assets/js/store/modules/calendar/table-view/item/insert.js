@@ -24,8 +24,8 @@ export default {
             commit('prepare', { dayIndex, memberId, cellItems });
         },
 
-        setContent( { commit }, { value } ) {
-            commit('setContent', { value } );
+        setValue( { commit }, { key, value } ) {
+            commit('setValue', { key, value } );
         },
 
         insertEvent( { commit, dispatch } ) {
@@ -47,7 +47,8 @@ export default {
                 return;
             }
 
-            commit('start');
+//            commit('start');
+            commit('isLoading', true);
 
             const y = rootState.calendar.currentYear;
             const m = rootState.calendar.currentMonth;
@@ -80,6 +81,7 @@ export default {
                         isImportant: false
                     }, { root: true });
 
+                    commit('isLoading', false);
                     commit('reset');
                 })
                 .catch(error => {
@@ -90,6 +92,7 @@ export default {
                         isImportant: false
                     }, { root: true });
 
+                    commit('isLoading', false);
                     commit('reset');
                 });
         },
@@ -107,21 +110,25 @@ export default {
             state.isActive = true;
         },
     
-        setContent( state, { value } ) {
-            state.newItem.content = value;
+        isLoading( state, value ) {
+            state.isLoading = value;
+        },
+
+        setValue( state, { key, value } ) {
+            state.newItem[key] = value;
         },
     
-        start( state ) {
-            state.isLoading = true;
-        },
-    
+//        start( state ) {
+//            state.isLoading = true;
+//        },
+
         insert( state, { item } ) {
             state.enterCell.cellItems.push(item);
         },
     
         reset( state ) {
             state.isActive = false;
-            state.isLoading = false;
+//            state.isLoading = false;
             state.enterCell.dayIndex = '';
             state.enterCell.memberId = '';
             state.enterCell.cellItems = '';

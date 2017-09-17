@@ -62,14 +62,14 @@ export default {
             },
 
             set(value) {
-                this.setContent( { value } );
+                this.setValue( { key: 'content', value } );
             }
         }
     },
 
     methods: {
         ...mapActions('calendar/tableView/item/insert', {
-            setContent: 'setContent',
+            setValue: 'setValue',
             insertEvent: 'insertEvent',
             insertTask: 'insertTask',
             reset: 'reset'
