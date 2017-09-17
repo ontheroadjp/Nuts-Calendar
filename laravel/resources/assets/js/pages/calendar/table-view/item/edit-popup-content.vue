@@ -33,8 +33,8 @@
             ></all-day-checkbox>
         </div>
 
-        <span class="label thin" style="font-size: 0.8em;">Memo</span>
-        <textarea style="" v-model="input.memo"></textarea>
+        <span class="label thin">Memo</span>
+        <textarea class="textarea thin" v-model="input.memo"></textarea>
 
     </div><!-- // .main -->
 
@@ -285,10 +285,11 @@ export default {
 textarea {
     height: 110px;
     width: 100%; 
-    padding: 1em;
+    padding: .4rem;
     border: 1px solid #e6e6e6;
     outline: none;
     resize: none;
+    font-size: 1rem;
 }
 
 .popup-footer {
