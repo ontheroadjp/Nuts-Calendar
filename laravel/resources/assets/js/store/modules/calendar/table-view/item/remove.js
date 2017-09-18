@@ -26,16 +26,9 @@ export default {
 
                     commit('remove');
 
-                    dispatch('calendar/tableView/updateCellItems', state.cellItems, {
-                        root: true
-                    }),
-//                    commit('calendar/tableView/sortCellItems', state.cellItems, {
-//                        root: true
-//                    }),
-//
-//                    commit('calendar/tableView/checkTime', state.cellItems, {
-//                        root: true
-//                    }),
+                    dispatch('calendar/tableView/updateCellItems',
+                        state.cellItems, { root: true }
+                    ),
 
                     commit('notifySuccess', {
                         content: 'success remove item',

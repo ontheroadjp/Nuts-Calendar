@@ -72,13 +72,9 @@ export default {
                         item: response.data
                     });
 
-                    dispatch('calendar/tableView/updateCellItems', state.enterCell.cellItems, {
-                        root: true
-                    });
-
-//                    commit('calendar/tableView/sortCellItems', state.enterCell.cellItems, {
-//                        root: true
-//                    });
+                    dispatch('calendar/tableView/updateCellItems',
+                        state.enterCell.cellItems, { root: true }
+                    );
 
                     commit('notifySuccess', {
                         content: 'success add task',
