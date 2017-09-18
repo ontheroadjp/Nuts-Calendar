@@ -1,11 +1,11 @@
 <template>
     <span>
-        <event-item 
+        <event-item
             v-if="isEventItem && item.type_id === 1"
             :cellItems="cellItems"
             :item="item"
-        ></event-item> 
-    
+        ></event-item>
+
         <task-item
             v-if="isTaskItem && item.type_id === 2"
             :cellItems="cellItems"
