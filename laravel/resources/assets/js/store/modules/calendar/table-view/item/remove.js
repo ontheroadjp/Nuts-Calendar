@@ -11,12 +11,6 @@ export default {
     actions: {
         prepare( { commit, rootGetters }, { cellItems, deletingItem } ) {
             u.clog('prepare()');
-
-//            const cellItems = rootGetters.getCellItems(
-//                deletingItem.dayIndex,
-//                deletingItem.member_id
-//            );
-
             commit('prepare', { cellItems, deletingItem } );
         },
 
