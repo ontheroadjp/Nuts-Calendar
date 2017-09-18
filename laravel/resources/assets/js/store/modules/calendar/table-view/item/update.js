@@ -119,25 +119,10 @@ export default {
             state.input[key] = value;
         },
 
-//        update( state, { content, startTime, endTime, allDay, isDone, memo } ) {
-//            state.editingItem.content = content;
-//            state.editingItem.start_time = startTime;
-//            state.editingItem.end_time = endTime;
-//            state.editingItem.is_all_day = allDay;
-//            state.editingItem.is_done = isDone;
-//            state.editingItem.memo = memo;
-//        },
-
         update( state, data ) {
             Object.keys(data).forEach((key) => {
                 state.editingItem[key] = data[key];
             });
-//            state.editingItem.content = content;
-//            state.editingItem.start_time = startTime;
-//            state.editingItem.end_time = endTime;
-//            state.editingItem.is_all_day = allDay;
-//            state.editingItem.is_done = isDone;
-//            state.editingItem.memo = memo;
         },
 
         reset( state ) {
