@@ -26,6 +26,7 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
     foreach( App\User::all(['id']) as $val ) {
         $userIds[] = $val->id;
     }
+
     return [
         'name' => $faker->word,
         'description' => $faker->sentence,
@@ -58,19 +59,14 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
 //});
 
 $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) {
-    //$faker = FakerFactory::create('ja_JP');
-    $colors = ['primary', 'info', 'danger'];
-
-    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
-        $userCalendarIds[] = $val->id;
+    foreach( App\User::all(['id']) as $val ) {
+        $userIds[] = $val->id;
     }
 
     return [
         'name' => $faker->name,
-        'order' => $faker->randomElement($colors),
-        'user_calendar_id' => $faker->randomElement($userCalendarIds),
+        'user_id' => $faker->randomElement($userIds),
     ];
-
 });
 
 $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $faker) {
@@ -119,8 +115,10 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
     return [
         'member_id' => $faker->randomElement($memberIds),
         'type_id' => $faker->randomElement($itemTypeIds),
-        'content'=> $faker->sentence(),
+        'content'=> $faker->word(),
         'date' => $randomDate,
-        'start_time' => $randomTime
+        'start_time' => $randomTime,
+        'end_time' => $randomTime,
+        'memo' => $faker->sentence()
     ];
 });

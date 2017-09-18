@@ -98,13 +98,13 @@
 </template>
 
 <script>
-    import calendarApi from '../../../services/calendar.js';
-//    import memberApi from '../../../services/member.js';
+    import calendarService from '../../../services/calendar.js';
+//    import memberService from '../../../services/member.js';
 
     export default {
         mixins: [
-//            calendarApi, memberApi
-            calendarApi
+            calendarService
+//            memberService
         ],
 
         data() {

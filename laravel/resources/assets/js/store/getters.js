@@ -7,13 +7,24 @@ export default {
     },
 
     filteredMembers: (state, getters) => {
-        let members = state.calendar.data.members;
+        let currentCalendarId = state.calendar.currentId;
+        let ids = [];
+
+        state.userCalendarMember.data.userCalendarMembers.forEach( function( val ) {
+            if(val.user_calendar_id == currentCalendarId) {
+                ids.push(val.member_id);
+            }
+        });
+
+        let members = state.member.data.members;
         let result = {};
-        Object.keys(members).forEach(function(memberId) {
-            if( this[memberId].isShow ) {
-                result[memberId] = this[memberId];
+
+        Object.keys(members).forEach(function(key) {
+            if( ids.indexOf(parseInt(key)) != -1 ) {
+                result[key] = this[key];
             }
         }, members);
+
         return result;
     },
 

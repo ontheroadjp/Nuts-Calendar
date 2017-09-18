@@ -1,12 +1,12 @@
 export const en = {
     state: {
         navbar: {
-            home: 'home',
-            login: 'login',
-            register: 'register',
+            home: 'Home',
+            login: 'Sign in',
+            register: 'Register',
             dashboard: 'Dashboard',
             accountSettings: 'Account Settings', 
-            logout: 'Logout'
+            logout: 'Sign out'
         },
         theme: {
             koiai: 'koiai',
@@ -20,19 +20,19 @@ export const en = {
             password: 'Password',
             rememberMe: 'Remember Me',
             forgotYourPassword: 'Forgot Your Password ?',
-            login: 'Login'
+            login: 'Sign in'
         },
         register: {
             name: 'Name',
             email: 'Email Address',
             password: 'Password',
             passwordConfirmation: 'Password (confirmation)',
-            loginForm: 'Login Form',
+            loginForm: 'Sign in',
             register: 'Register'
         },
         passwordMail: {
             email: 'Email Address',
-            loginForm: 'Login Form',
+            loginForm: 'Sign in',
             sendPasswordResetLink: 'Send Password Reset Link'
         },
         passwordMailResult: {

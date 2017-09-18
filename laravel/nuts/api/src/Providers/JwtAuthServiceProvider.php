@@ -34,6 +34,7 @@ class JwtAuthServiceProvider extends ServiceProvider
 
         // -------------------------------------------------------------------
         // for Nuts\Calendar
+
         $this->app['router']->group([
             'namespace' => 'Nuts\Calendar\Controllers',
             'prefix' => '/api/v1',
@@ -41,11 +42,18 @@ class JwtAuthServiceProvider extends ServiceProvider
         ], function() {
             Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
 
-                // calendar(date)
-                Route::get('calendar/{userCalendarId}/{year}/{month}', 'CalendarController@index' );
+                // calendar(days)
+                $url = 'calendar/{userCalendarId}/{year}/{month}';
+                Route::get($url, 'CalendarController@index' );
 
                 // user calendar
                 Route::put('calendar/{id}', 'UserCalendarsController@update');
+                Route::post('calendar/member', 'UserCalendarsController@addMember');
+                Route::delete('calendar/member', 'UserCalendarsController@removeMember');
+
+                // user calendar members
+                $url = 'uscrCalendarMembers/{user_calendar_id}';
+                Route::get($url, 'UserCalendarMembersController@userIndex' );
 
                 // member
                 Route::get('member/index/{id}', 'MembersController@userIndex' );
@@ -62,6 +70,7 @@ class JwtAuthServiceProvider extends ServiceProvider
 
         // -------------------------------------------------------------------
         // for Nuts\Api
+
         $this->app['router']->group([
             'namespace' => 'Nuts\Api\Controllers',
         ], function() {
@@ -75,6 +84,8 @@ class JwtAuthServiceProvider extends ServiceProvider
             //  the access restriction should be handle at cliant side (vue.js)
             //Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
                 Route::get('/me/settings/{type}', 'JwtUserController@getSettings');
+                Route::get('/dashboard', 'PagesController@index');
+                Route::get('/dashboard/{type}', 'PagesController@index');
                 Route::get('/calendar', 'PagesController@index');
                 Route::get('/calendar/view', 'PagesController@index');
                 Route::get('/calendar/settings/{type}', 'PagesController@index');

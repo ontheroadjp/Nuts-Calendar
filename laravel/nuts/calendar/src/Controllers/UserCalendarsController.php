@@ -3,10 +3,10 @@
 namespace Nuts\Calendar\Controllers;
 
 use JWTAuth;
-use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Nuts\Calendar\Models\UserCalendar;
+use Nuts\Calendar\Models\UserCalendarMember;
 
 class UserCalendarsController extends Controller
 {
@@ -18,7 +18,7 @@ class UserCalendarsController extends Controller
         return UserCalendar::where('user_id', $userId)->get()->keyBy('id');
     }
 
-    public function update($id, Request $request)
+    public function update(Request $request, $id)
     {
         $item = UserCalendar::findOrAbort($id);
         if( $item instanceof \Illuminate\Http\JsonResponse ) {
@@ -28,7 +28,26 @@ class UserCalendarsController extends Controller
         $item->fill($request->only([
             'name','description'
         ]));
+
         $item->save();
         return $item;
+    }
+
+    public function addMember(Request $request)
+    {
+        return UserCalendarMember::create([
+            'user_calendar_id' => $request->input('user_calendar_id'),
+            'member_id' => $request->input('member_id')
+        ]);
+    }
+
+    public function removeMember(Request $request)
+    {
+        $userCalendarId = $request->input('user_calendar_id');
+        $memberId = $request->input('member_id');
+        $target = UserCalendarMember::where('user_calendar_id', $userCalendarId)
+            ->where('member_id', $memberId)->get();
+        $target[0]->delete();
+        return $target[0];
     }
 }

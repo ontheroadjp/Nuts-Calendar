@@ -32,14 +32,31 @@ class Calendar extends Model
         return $this->hasMany(Item::class,'date','date');
     }
 
-    public function fetch($userCalendarId, $year, $month)
+    public function fetch($userId, $userCalendarId, $year, $month)
     {
-        $members = Member::where('user_calendar_id', $userCalendarId)
-                ->get()
-                ->keyBy('id');
+//        $members = Member::where('user_id', $userCalendarId)
+//                ->get()
+//                ->keyBy('id');
+
+        if($userCalendarId === 'dashboard') return;
+
+        $allMembers = Member::where('user_id', $userId)->get()->keyBy('id')->toArray();
+
+        $userCalendarMemberIds = UserCalendarMember::where('user_calendar_id', $userCalendarId)
+                                    ->get(['member_id'])
+                                    ->keyBy('member_id')
+                                    ->keys()
+                                    ->toArray();
+
+        $members = [];
+        foreach( $allMembers as $val ) {
+            if( in_array($val['id'], $userCalendarMemberIds) ) {
+                $members += [$val['id'] => $val];
+            }
+        }
 
         $calendar = $this->fetchCalendarWithItems($year,$month);
-        $calendar = $this->tidyItems($calendar, $members);
+        $calendar = $this->tidyItems($calendar, collect($members));
 
         $item = new Item();
         $items = $item->fetchSpecificMonth($year, $month);
@@ -81,6 +98,7 @@ class Calendar extends Model
                 ->diff($items_group_by->keys())
                 ->flatten();
 
+            // add empty item
             for( $i=0; $i < count($diff); $i++ ) {
                 $items_group_by->put($diff[$i], []);
 //                $items_group_by->put($diff[$i], array([
@@ -90,6 +108,7 @@ class Calendar extends Model
 //                ]));
             }
 
+            // replace items to new one
             $days[] = collect($calendar[$n])
                 ->forget('items')
                 ->put('items', $items_group_by);

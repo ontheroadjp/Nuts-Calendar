@@ -49,7 +49,7 @@
 
         computed: {
             userCalendars: function() {
-                return this.$store.state.calendar.data.userCalendars;
+                return this.$store.state.userCalendar.data.userCalendars;
             },
         },
 
@@ -61,14 +61,22 @@
 
         methods: {
             clickUserCalendar: function(uCalendar) {
-                this.$store.commit('setCurrentCalendarId', uCalendar.id);
+//                this.$store.commit('setCurrentCalendarId', uCalendar.id);
+                this.$store.commit('calendar/setValue', {
+                    key: 'currentId', 
+                    value: uCalendar.id
+                });
             }
         },
 
         created() {
             const calId = localStorage.getItem('currentCalendarId');
             if(calId) {
-                this.$store.commit('setCurrentCalendarId', calId);
+//                this.$store.commit('setCurrentCalendarId', calId);
+                this.$store.commit('calendar/setValue', {
+                    key: 'currentId', 
+                    value: calId
+                });
             }
         },
 
@@ -78,7 +86,3 @@
 
     }
 </script>
-
-<style lang="scss" scoped>
-    /* empty */
-</style>
