@@ -9,7 +9,7 @@ export default {
     },
 
     actions: {
-        prepare( { commit, rootGetters }, { cellItems, deletingItem } ) {
+        prepare( { commit, dispatch, rootGetters }, { cellItems, deletingItem } ) {
             u.clog('prepare()');
             commit('prepare', { cellItems, deletingItem } );
         },
@@ -26,13 +26,16 @@ export default {
 
                     commit('remove');
 
-                    commit('calendar/tableView/sortCellItems', state.cellItems, {
+                    dispatch('calendar/tableView/updateCellItems', state.cellItems, {
                         root: true
                     }),
-
-                    commit('calendar/tableView/checkTime', state.cellItems, {
-                        root: true
-                    }),
+//                    commit('calendar/tableView/sortCellItems', state.cellItems, {
+//                        root: true
+//                    }),
+//
+//                    commit('calendar/tableView/checkTime', state.cellItems, {
+//                        root: true
+//                    }),
 
                     commit('notifySuccess', {
                         content: 'success remove item',
@@ -52,7 +55,6 @@ export default {
 
                     commit('reset');
                 });
-
         },
 
         reset( { commit } ) {

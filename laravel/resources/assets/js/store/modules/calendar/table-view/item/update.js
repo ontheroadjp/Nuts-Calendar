@@ -37,7 +37,7 @@ export default {
             commit('setInputValue', { key, value } );
         },
 
-        update( { state, commit } ) {
+        update( { state, dispatch, commit } ) {
             commit('isLoading', true);
             u.clog('update()');
 
@@ -53,26 +53,29 @@ export default {
                 is_all_day: state.input.allDay,
                 memo:       state.input.memo,
             };
-    
+
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
 
                     commit('update', data);
 
-                    commit('calendar/tableView/sortCellItems', state.cellItems, {
+                    dispatch('calendar/tableView/updateCellItems', state.cellItems, {
                         root: true
                     });
-
-                    commit('calendar/tableView/checkTime', state.cellItems, {
-                        root: true
-                    });
+//                    commit('calendar/tableView/sortCellItems', state.cellItems, {
+//                        root: true
+//                    });
+//
+//                    commit('calendar/tableView/checkTime', state.cellItems, {
+//                        root: true
+//                    });
 
                     commit('notifySuccess', {
                         content: 'success update task',
                         isImportant: false
                     }, { root: true });
-        
+
                     commit('isLoading', false);
                 })
 
