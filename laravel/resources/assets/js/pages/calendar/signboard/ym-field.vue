@@ -3,14 +3,14 @@
     <transition name="ym-picker">
 
         <!-- display value -->
-        <span v-if="!editing" 
-            class="thin" 
+        <span v-if="!editing"
+            class="thin"
             :style="displayStyle"
-            @click="togglePicker" 
+            @click="togglePicker"
         >{{ getYearAndMonth(currentYear + '-' + currentMonth + '-01') }}</span>
 
         <!-- select bar -->
-        <div v-else 
+        <div v-else
             class="card thin ym-picker"
             :style="{ backgroundColor: theme.secondary.code }"
         >
@@ -21,11 +21,11 @@
                 <div>{{ currentYear }}</div>
                 <div><a @click="currentYear = currentYear + 1">>></a></div>
             </div>
-    
+
             <div class="row">
 
                 <div v-for="m in monthVals">
-                    <a class="item" 
+                    <a class="item"
                         @mouseover="
                                 $event.target.style.border = '1px solid #e6e6e6';
                                 $event.target.style.backgroundColor = theme.primary.code;
@@ -81,7 +81,7 @@ export default {
 
             set(value) {
                 this.$store.commit('calendar/setValue', {
-                    key: 'currentYear', 
+                    key: 'currentYear',
                     value: value
                 });
             }
@@ -94,7 +94,7 @@ export default {
 
             set(value) {
                 this.$store.commit('calendar/setValue', {
-                    key: 'currentMonth', 
+                    key: 'currentMonth',
                     value: value
                 });
             }
@@ -174,7 +174,7 @@ export default {
             font-weight: bold;
         }
     }
-    
+
     & .row {
         display: flex;
         flex-flow: row nowrap;
@@ -186,8 +186,8 @@ export default {
         width: 100%;
         padding: 0 10px;
         height: 23px
-    } 
-   
+    }
+
     & .item {
         width: 75px;
         text-align: center;

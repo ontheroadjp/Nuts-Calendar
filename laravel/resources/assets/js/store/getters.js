@@ -40,7 +40,7 @@ export default {
         return (dayIndex + 1) + '-' + memberId;
     },
 
-    getCellItems: (state) => (dayIndex, memberId) => {
-        return state.calendar.data.calendars[dayIndex].items[memberId];
-    }
+//    getCellItems: (state) => (dayIndex, memberId) => {
+//        return state.calendar.data.calendars[dayIndex].items[memberId];
+//    }
 }
