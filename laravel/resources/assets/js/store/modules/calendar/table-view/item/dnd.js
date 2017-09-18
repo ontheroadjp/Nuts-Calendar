@@ -74,35 +74,13 @@ export default {
             commit('drop', { y, m });
 
             // update cellItems
-            dispatch('calendar/tableView/updateCellItems', state.enterCell.cellItems,
-                { root: true }
+            dispatch('calendar/tableView/updateCellItems',
+                state.enterCell.cellItems, { root: true }
             );
 
-            dispatch('calendar/tableView/updateCellItems', state.fromCell.cellItems,
-                { root: true }
+            dispatch('calendar/tableView/updateCellItems',
+                state.fromCell.cellItems, { root: true }
             );
-
-//            // sort cellItems
-//            commit('calendar/tableView/sortCellItems',
-//                state.enterCell.cellItems,
-//                { root: true }
-//            );
-//
-//            commit('calendar/tableView/sortCellItems',
-//                state.fromCell.cellItems,
-//                { root: true }
-//            );
-//
-//            // check time
-//            commit('calendar/tableView/checkTime',
-//                state.enterCell.cellItems,
-//                { root: true }
-//            );
-//
-//            commit('calendar/tableView/checkTime',
-//                state.fromCell.cellItems,
-//                { root: true }
-//            );
 
             const url = '/api/v1/item/' + state.draggingItem.id;
             const params = {
