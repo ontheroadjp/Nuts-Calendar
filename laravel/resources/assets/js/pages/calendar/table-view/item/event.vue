@@ -1,5 +1,5 @@
 <template>
-    <span class="item is-event" 
+    <span class="item is-event"
         :style="searchHighlightStyle"
         @click.stop="clickItem($event)">
 
@@ -15,15 +15,15 @@
                         {{ item.end_time | timeFormatter }}
                     </span>
                 </span>
-        </strong> 
-        
+        </strong>
+
         <strong v-else class="all-day" style="margin-right:8px">
             all-day
         </strong>
         {{ item.content }}
 
-        <span class="icon is-small" 
-            v-show="(dragItem.isLoading || deleteItem.isLoading) 
+        <span class="icon is-small"
+            v-show="(dragItem.isLoading || deleteItem.isLoading)
                         && dragItem.draggingItem == item"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>
@@ -71,7 +71,7 @@ export default {
         },
 
         searchHighlightStyle: function() {
-            if( this.searchQuery != '' 
+            if( this.searchQuery != ''
                     && this.item.content.toLowerCase().indexOf(this.searchQuery) != -1) {
                 return { backgroundColor: '#FFEB3B' }
             }
@@ -91,7 +91,7 @@ export default {
             u.clog('clickItem()');
             this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
             this.updatePrepareModal( { event: e } );
-            this.removePrepare( { event: e, deletingItem: this.item } );
+            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
             this.insertReset();
             this.$store.commit('dashboard/setValue', {
                 key: 'disabled', value: true
@@ -106,5 +106,5 @@ export default {
     display: inline-flex;
     flex-flow: column nowrap;
     align-items: center;
-} 
+}
 </style>

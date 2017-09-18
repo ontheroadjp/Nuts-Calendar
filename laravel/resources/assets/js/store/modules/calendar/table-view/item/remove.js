@@ -9,36 +9,26 @@ export default {
     },
 
     actions: {
-        prepare( { commit, rootGetters }, { deletingItem } ) {
+        prepare( { commit, dispatch, rootGetters }, { cellItems, deletingItem } ) {
             u.clog('prepare()');
-
-            const cellItems = rootGetters.getCellItems( 
-                deletingItem.dayIndex, 
-                deletingItem.member_id
-            );
-
             commit('prepare', { cellItems, deletingItem } );
         },
 
         remove( { state, commit } ) {
             u.clog('removeItem()');
-            
+
             commit('start');
             const url = '/api/v1/item/' + state.deletingItem.id;
-    
+
             http.fetchDelete(url)
                 .then(response => {
                     u.clog('success');
 
                     commit('remove');
 
-                    commit('calendar/tableView/sortCellItems', state.cellItems, {
-                        root: true
-                    }),
-
-                    commit('calendar/tableView/checkTime', state.cellItems, {
-                        root: true
-                    }),
+                    dispatch('calendar/tableView/updateCellItems',
+                        state.cellItems, { root: true }
+                    ),
 
                     commit('notifySuccess', {
                         content: 'success remove item',
@@ -58,7 +48,6 @@ export default {
 
                     commit('reset');
                 });
-
         },
 
         reset( { commit } ) {

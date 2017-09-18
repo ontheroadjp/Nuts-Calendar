@@ -38,9 +38,5 @@ export default {
 
     getCellAddress: (state) => (dayIndex, memberId) => {
         return (dayIndex + 1) + '-' + memberId;
-    },
-
-    getCellItems: (state) => (dayIndex, memberId) => {
-        return state.calendar.data.calendars[dayIndex].items[memberId];
     }
 };

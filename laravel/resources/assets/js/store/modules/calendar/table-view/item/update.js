@@ -37,7 +37,7 @@ export default {
             commit('setInputValue', { key, value } );
         },
 
-        update( { state, commit } ) {
+        update( { state, dispatch, commit } ) {
             commit('isLoading', true);
             u.clog('update()');
 
@@ -53,26 +53,22 @@ export default {
                 is_all_day: state.input.allDay,
                 memo:       state.input.memo
             };
-    
+
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
 
                     commit('update', data);
 
-                    commit('calendar/tableView/sortCellItems', state.cellItems, {
-                        root: true
-                    });
-
-                    commit('calendar/tableView/checkTime', state.cellItems, {
-                        root: true
-                    });
+                    dispatch('calendar/tableView/updateCellItems',
+                        state.cellItems, { root: true }
+                    );
 
                     commit('notifySuccess', {
                         content: 'success update task',
                         isImportant: false
                     }, { root: true });
-        
+
                     commit('isLoading', false);
                 })
 
@@ -123,25 +119,10 @@ export default {
             state.input[key] = value;
         },
 
-//        update( state, { content, startTime, endTime, allDay, isDone, memo } ) {
-//            state.editingItem.content = content;
-//            state.editingItem.start_time = startTime;
-//            state.editingItem.end_time = endTime;
-//            state.editingItem.is_all_day = allDay;
-//            state.editingItem.is_done = isDone;
-//            state.editingItem.memo = memo;
-//        },
-
         update( state, data ) {
             Object.keys(data).forEach((key) => {
                 state.editingItem[key] = data[key];
             });
-//            state.editingItem.content = content;
-//            state.editingItem.start_time = startTime;
-//            state.editingItem.end_time = endTime;
-//            state.editingItem.is_all_day = allDay;
-//            state.editingItem.is_done = isDone;
-//            state.editingItem.memo = memo;
         },
 
         reset( state ) {

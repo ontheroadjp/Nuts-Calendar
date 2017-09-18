@@ -36,7 +36,7 @@ export default {
             dispatch('insert', { typeId: 2 });
         },
 
-        insert( { state, commit, rootState }, { typeId } ) {
+        insert( { state, dispatch, commit, rootState }, { typeId } ) {
             u.clog('insertItem()');
 
             if( ! state.newItem.content ) {
@@ -65,16 +65,16 @@ export default {
                 'is_all_day': true,
                 'memo': ''
             };
-    
+
             http.fetchPost(url, params)
                 .then(response => {
                     commit('insert', {
                         item: response.data
                     });
 
-                    commit('calendar/tableView/sortCellItems', state.enterCell.cellItems, {
-                        root: true
-                    });
+                    dispatch('calendar/tableView/updateCellItems',
+                        state.enterCell.cellItems, { root: true }
+                    );
 
                     commit('notifySuccess', {
                         content: 'success add task',
@@ -109,7 +109,7 @@ export default {
             state.enterCell.cellItems = cellItems;
             state.isActive = true;
         },
-    
+
         isLoading( state, value ) {
             state.isLoading = value;
         },
@@ -117,7 +117,7 @@ export default {
         setValue( state, { key, value } ) {
             state.newItem[key] = value;
         },
-    
+
 //        start( state ) {
 //            state.isLoading = true;
 //        },
@@ -125,7 +125,7 @@ export default {
         insert( state, { item } ) {
             state.enterCell.cellItems.push(item);
         },
-    
+
         reset( state ) {
             state.isActive = false;
 //            state.isLoading = false;

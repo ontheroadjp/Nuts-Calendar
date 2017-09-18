@@ -22,7 +22,7 @@ const calendar = {
     },
 
     actions: {
-        fetchCalendar( { state, commit }, calendarId) {
+        fetchCalendar( { state, commit, dispatch }, calendarId) {
             u.clog('fetchCalendar(' + calendarId + ')');
             if(calendarId === 'dashboard') return;
 
@@ -36,6 +36,24 @@ const calendar = {
             http.fetchGet(url)
                 .then( response => {
                     u.clog('success');
+
+                    response.data.days.forEach((day)=> {
+                        Object.keys(day.items).forEach(memberId => {
+
+                            dispatch('tableView/updateCellItems', day.items[memberId]);
+
+//                            commit('tableView/sortCellItems', day.items[memberId]);
+//                            commit('tableView/checkTime', day.items[memberId]);
+
+//                            commit('calendar/tableView/sortCellItems', day.items[memberId],
+//                                {root: true}
+//                            );
+//                            commit('calendar/tableView/checkTime', day.items[memberId],
+//                                {root: true}
+//                            );
+                        });
+                    });
+
                     commit('init', response.data.days );
 
                     Object.keys(response.data.members).forEach(function(key) {
@@ -74,6 +92,13 @@ const calendar = {
         tableView: {
             namespaced: true,
 
+            actions: {
+                updateCellItems( { commit }, cellItems ) {
+                    commit('sortCellItems', cellItems);
+                    commit('checkTime', cellItems);
+                }
+            },
+
             mutations: {
 //                setIndexForItem( state, cellItems ) {
 //                    cellItems.forEach(function(item, index) {
@@ -83,6 +108,7 @@ const calendar = {
 //                },
 
                 sortCellItems( state, cellItems ) {
+                    u.clog('>> sortCellItems()');
                     if(cellItems.length < 1) return;
                     cellItems.sort((a, b) => {
 
