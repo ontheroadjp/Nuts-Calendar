@@ -9,23 +9,23 @@ export default {
     },
 
     actions: {
-        prepare( { commit, rootGetters }, { deletingItem } ) {
+        prepare( { commit, rootGetters }, { cellItems, deletingItem } ) {
             u.clog('prepare()');
 
-            const cellItems = rootGetters.getCellItems( 
-                deletingItem.dayIndex, 
-                deletingItem.member_id
-            );
+//            const cellItems = rootGetters.getCellItems(
+//                deletingItem.dayIndex,
+//                deletingItem.member_id
+//            );
 
             commit('prepare', { cellItems, deletingItem } );
         },
 
         remove( { state, commit } ) {
             u.clog('removeItem()');
-            
+
             commit('start');
             const url = '/api/v1/item/' + state.deletingItem.id;
-    
+
             http.fetchDelete(url)
                 .then(response => {
                     u.clog('success');
