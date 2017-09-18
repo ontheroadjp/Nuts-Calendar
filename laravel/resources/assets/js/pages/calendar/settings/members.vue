@@ -114,7 +114,7 @@
                 input: {
                     name: '',
                     order: '',
-                    isShow: '',
+                    isShow: ''
                 },
                 dnd: {
                     draggingItem: '',
@@ -127,12 +127,12 @@
                         dragEnter: {
                             padding: '20px 0',
                             border: '2px dotted red',
-                            'border-radius': '5px',
+                            'border-radius': '5px'
                         },
                         dragLeave: {
-                            padding: '5px 0',
+                            padding: '5px 0'
                         }
-                    },
+                    }
                 }
             }
         },
@@ -148,7 +148,7 @@
 
             members: function() {
                 return this.$store.state.calendar.data.members;
-            },
+            }
         },
 
         methods: {
@@ -192,7 +192,7 @@
                 e.dataTransfer.dropEffect = 'move';
 
                 return false;
-            },
+            }
 
 //            handleDrop(e, item) {
 //                u.clog('drop - item: ' + this.dnd.draggingItem.id);

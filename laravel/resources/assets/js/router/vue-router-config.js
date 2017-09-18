@@ -24,7 +24,7 @@ export const routes = [
             footer: false
         }
     },
-    
+
     {
         path: '/login',
         component: login,
@@ -34,7 +34,7 @@ export const routes = [
         }
     },
 
-    { 
+    {
         path: '/password/email',
         component: passwordEmail,
         meta: {
@@ -42,7 +42,7 @@ export const routes = [
             footer: true
         }
     },
-    
+
     {
         path: '/password/reset/:token',
         component: passwordReset,
@@ -52,7 +52,7 @@ export const routes = [
         }
     },
 
-    { 
+    {
         path: '/register',
         component: register,
         meta: {
@@ -61,7 +61,7 @@ export const routes = [
         }
     },
 
-    { 
+    {
         path: '/me/settings/:type',
         component: userAccountSettings,
         meta: {
@@ -75,7 +75,7 @@ export const routes = [
         component: dashboard,
         meta: {
             auth: true,
-            footer: true,
+            footer: true
         },
         children: [
             {
@@ -83,18 +83,18 @@ export const routes = [
                 component: dashboard,
                 meta: {
                     auth: true,
-                    footer: true,
+                    footer: true
                 }
             }
         ]
     },
 
-    { 
+    {
         path: '/calendar',
         component: calendar,
         meta: {
             auth: true,
-            footer: true,
+            footer: true
         },
         children: [
             {
@@ -104,7 +104,7 @@ export const routes = [
                     auth: true,
                     footer: false
                 }
-            },
+            }
 //            {
 //                path: 'settings/:type',
 //                component: calendarSettings,
@@ -116,7 +116,7 @@ export const routes = [
 ];
 
 
-function registGuards(router){
+function registGuards(router) {
     router.beforeResolve(function (to, from, next) {
         u.clog( '------- ' + to.path + ' -------' );
         const token = jwtToken.getLocalToken();
@@ -127,7 +127,7 @@ function registGuards(router){
         handleAlreadyLogedIn(to, from, next, token);
     });
 }
-            
+
 function handleNoLogedIn(to, from, next) {
     u.clog('handleNoLogedIn@vue-router-config');
     if(to.matched.some(record => record.meta.auth)) {
@@ -136,7 +136,7 @@ function handleNoLogedIn(to, from, next) {
     u.clog('next()');
     next();
 }
-            
+
 function handleAlreadyLogedIn(to, from, next, token) {
     u.clog('handleAlreadyLogedIn@vue-router-config');
 

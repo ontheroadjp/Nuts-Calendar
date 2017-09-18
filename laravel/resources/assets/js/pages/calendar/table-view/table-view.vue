@@ -75,21 +75,19 @@ import popupMenu from '../../../components/popup-menu.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
 import dateUtilities from '../../../mixins/date-utilities.js';
-import chroma from 'chroma-js';
-
 
 export default {
     name: 'table-view-content',
 
-    components: { 
-        popupMenu, cellItems, itemEditPopupContent, miniCalBar 
+    components: {
+        popupMenu, cellItems, itemEditPopupContent, miniCalBar
     },
 
     mixins: [ dateUtilities ],
 
     props: {
-        filteredColumns: { type: Object,  required: false }, 
-        filteredBody:    { type: Array,   required: false }, 
+        filteredColumns: { type: Object,  required: false },
+        filteredBody:    { type: Array,   required: false },
         isLoading:       { type: Boolean, default: false },
         isFixed:         { type: Boolean, default: false },
         topPosition:     { type: Number,  required: false },
@@ -101,7 +99,7 @@ export default {
         return {
             fixedScrollPositionX: 0,
             fixedScrollPositionY: 0
-        }
+        };
     },
 
     computed: {
@@ -110,11 +108,11 @@ export default {
         }),
 
         ...mapState('calendar/tableView/item', {
-            editItem: state => state.update,
+            editItem: state => state.update
         }),
 
         ...mapGetters({
-            showColumns: 'getShowMembers',
+            showColumns: 'getShowMembers'
         }),
 
         columnWidth: function() {
@@ -131,7 +129,7 @@ export default {
             return {
                 width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
                 minWidth: '206px'
-            }
+            };
         },
 
         style: function() {
@@ -139,9 +137,9 @@ export default {
                 dayColumnWidth: {
                     'width': '8%',
                     'min-width': '110px',
-                    'max-width': '110px',
+                    'max-width': '110px'
                 }
-            }
+            };
         }
     },
 
@@ -158,7 +156,7 @@ export default {
             } else {
                 this.fixedScrollPositionY = 0;
             }
-        },
+        }
     },
 
     methods: {
@@ -178,7 +176,7 @@ export default {
             });
         }
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>

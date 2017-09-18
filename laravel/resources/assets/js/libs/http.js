@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 export const http = {
     request (method, url, data, successCb = null, errorCb = null) {
@@ -8,25 +8,25 @@ export const http = {
             url,
             data,
             method: method.toLowerCase()
-        }).then(successCb).catch(errorCb)
+        }).then(successCb).catch(errorCb);
     },
 
     get (url, successCb = null, errorCb = null) {
-        return this.request('GET', url, {}, successCb, errorCb)
+        return this.request('GET', url, {}, successCb, errorCb);
     },
 
     post (url, data, successCb = null, errorCb = null) {
-        return this.request('POST', url, data, successCb, errorCb)
+        return this.request('POST', url, data, successCb, errorCb);
     },
 
     put (url, data, successCb = null, errorCb = null) {
         data._method = "PUT";
-        return this.request('POST', url, data, successCb, errorCb)
+        return this.request('POST', url, data, successCb, errorCb);
     },
 
     delete (url, data = {}, successCb = null, errorCb = null) {
         data._method = "DELETE";
-        return this.request('POST', url, data, successCb, errorCb)
+        return this.request('POST', url, data, successCb, errorCb);
     },
 
     fetchRequest(method, uri, data) {
@@ -48,7 +48,7 @@ export const http = {
 
                         default:
                             u.clog('ERROR fetchRequest(): ' + response.status);
-                            throw Error(response)
+                            throw Error(response);
                     }
                 },
                 error => {
@@ -69,12 +69,12 @@ export const http = {
 
     fetchPut(uri, data) {
         data._method = 'PUT';
-        return this.fetchRequest('POST', uri, data)
+        return this.fetchRequest('POST', uri, data);
     },
 
     fetchDelete (uri, data = {}) {
         data._method = 'DELETE';
-        return this.fetchRequest('POST', uri, data)
+        return this.fetchRequest('POST', uri, data);
     },
 
     /**
@@ -91,14 +91,14 @@ export const http = {
             if(token) {
                 config.headers.Authorization = 'Bearer ' + token;
             }
-            return config
-        })
+            return config;
+        });
 
         axios.interceptors.response.use( 
             response => {
                 u.clog('axios.before - response');
 
-                const jwtToken = response.headers['authorization'] || response.data['token']
+                const jwtToken = response.headers['authorization'] || response.data['token'];
                 if (jwtToken) {
                     sessionStorage.setItem('token', jwtToken);
                 }
@@ -108,7 +108,7 @@ export const http = {
                     axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
                 }
 
-                return Promise.resolve(response)
+                return Promise.resolve(response);
             }, error => {
                 if (error.response) {
                     u.clog(error.response.data);
@@ -118,8 +118,8 @@ export const http = {
                     u.clog('Error' + error.message);
                 }
 
-                return Promise.reject(error)
+                return Promise.reject(error);
             }
         );
     }
-}
+};

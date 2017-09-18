@@ -90,7 +90,7 @@
                 elements: {
                     tableHeader: '',
                     tableBody: ''
-                },
+                }
             }
         },
         

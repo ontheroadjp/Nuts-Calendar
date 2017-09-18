@@ -18,11 +18,11 @@ export default {
             commit('isLoading', true);
 
             const url = '/api/v1/member';
-            
+
             const params = {
-                'name': state.insertValues.name,
+                'name': state.insertValues.name
             };
-            
+
             http.fetchPost(url, params)
                 .then(response => {
                     u.clog('success');
@@ -30,7 +30,7 @@ export default {
                     const data = response.data;
                     data.isShow = true;
 
-                    commit('member/add', { 
+                    commit('member/add', {
                         id: data.id,
                         member: data
                     }, { root: true } );

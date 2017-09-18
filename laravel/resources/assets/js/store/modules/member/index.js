@@ -35,5 +35,6 @@ const member = {
         update: update,
         remove: remove
     }
-}
+};
+
 export default member;

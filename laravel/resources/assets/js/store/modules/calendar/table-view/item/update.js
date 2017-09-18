@@ -51,7 +51,7 @@ export default {
                 start_time: state.input.startTime,
                 end_time:   state.input.endTime,
                 is_all_day: state.input.allDay,
-                memo:       state.input.memo,
+                memo:       state.input.memo
             };
     
             http.fetchPut(url, data)

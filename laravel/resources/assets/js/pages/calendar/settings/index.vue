@@ -38,19 +38,19 @@
             'sidebar': sidebar,
             'calendar': calendar,
             'members': members,
-            'items': items,
+            'items': items
         },
 
         data() {
             return {
-                selected: 'calendar',
+                selected: 'calendar'
             }
         },
 
         computed: {
             userCalendars: function() {
                 return this.$store.state.userCalendar.data.userCalendars;
-            },
+            }
         },
 
         watch: {
@@ -82,7 +82,6 @@
 
         mounted() {
             this.selected = this.$route.params.type;
-        },
-
+        }
     }
 </script>

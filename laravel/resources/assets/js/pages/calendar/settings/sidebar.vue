@@ -68,9 +68,7 @@
 <script>
 export default {
 
-    props: [
-        'selected',
-    ],
+    props: [ 'selected' ],
 
     computed: {
         theme: function() {
@@ -86,9 +84,9 @@ export default {
                 'border-radius': '2px 2px 0 0 / 2px 2px 0 0',
                 'background': 'rgba(220, 220, 220, 0.3)',
                 'color': this.theme.primary.code,
-                'font-size': '1.15em',
+                'font-size': '1.15em'
             }
-        },
+        }
     }
 }
 </script>

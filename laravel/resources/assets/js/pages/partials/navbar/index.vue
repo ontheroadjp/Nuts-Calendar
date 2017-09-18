@@ -87,7 +87,7 @@
             'hamburgerMenu': hamburgerMenu,
             'user-account-dropdown': userAccountDropdown,
             'theme-dropdown': themeDropdown,
-            'lang-dropdown': langDropdown,
+            'lang-dropdown': langDropdown
 //            'themeChanger': themeChanger,
 //            'langChanger': langChanger
         },

@@ -63,10 +63,10 @@ export default {
 
         yearLabels: function() {
             const m = moment(this.currentYear + this.currentMonth + '01').add(-6,'months');
-            let labels = [];
-            let prev = ''
+            const labels = [];
+            let prev = '';
             for(let i=0; i < 12; i++) {
-                let next = m.add(1, 'months').format('YYYY');
+                const next = m.add(1, 'months').format('YYYY');
                 if( prev !== next ) {
                     labels.push(next);
                 }
@@ -77,7 +77,7 @@ export default {
 
         monthLabels: function() {
             const m = moment(this.currentYear + this.currentMonth + '01').add(-6,'months');
-            let labels = [];
+            const labels = [];
             for(let i=0; i < 12; i++) {
                 labels.push(m.add(1, 'months').format('YYYY-MM'));
             }
@@ -117,7 +117,7 @@ export default {
                     'bottom': '30px',
                     'border': '2px solid' + this.theme.secondary.code
                 }
-            }
+            };
         }
     },
 
@@ -137,7 +137,7 @@ export default {
             this.setOnMiniCal({ value: monthLabel });
         }
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>

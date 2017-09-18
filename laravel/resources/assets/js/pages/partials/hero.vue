@@ -16,10 +16,10 @@
             subtitle: { type: String, default: '' }
         },
 
-        computed : {
-            theme : function() {
+        computed: {
+            theme: function() {
                 return this.$store.state.app.theme;
             }
         }
-    }
+    };
 </script>

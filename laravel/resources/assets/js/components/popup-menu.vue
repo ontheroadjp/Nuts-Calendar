@@ -31,7 +31,7 @@ export default {
         height:      { type: Number,   default: 320 },
         width:       { type: Number,   default: 240 },
         isActive:    { type: Boolean,  required: true },
-        onClose:     { type: Function, required: true },
+        onClose:     { type: Function, required: true }
     },
 
     computed: {

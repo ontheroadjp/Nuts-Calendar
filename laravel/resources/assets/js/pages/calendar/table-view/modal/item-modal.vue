@@ -95,14 +95,14 @@ export default {
         ...mapActions('calendar/tableView/item/update', {
             setInputValues: 'setInputValues',
             update: 'update',
-            updateReset: 'reset',
+            updateReset: 'reset'
 //            updateContent: 'updateContent',
 //            updateTimeRange: 'updateTimeRange'
         }),
 
         ...mapActions('calendar/tableView/item/remove', {
             remove: 'remove',
-            removeReset: 'reset',
+            removeReset: 'reset'
         }),
 
         clickSave() {

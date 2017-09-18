@@ -47,6 +47,6 @@
             currentCalendarId: function() {
                 return this.$store.state.calendar.currentId;
             }
-        },
+        }
     }
 </script>

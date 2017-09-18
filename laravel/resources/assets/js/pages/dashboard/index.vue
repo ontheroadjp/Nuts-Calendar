@@ -62,7 +62,6 @@
 </template>
 
 <script>
-import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
@@ -76,7 +75,7 @@ export default {
         'menu-tabs': menuTabs,
         'user-calendar-card': userCalendarCard,
         'member-settings': memberSettingsPane,
-        'today-date-card': todayDateCard,
+        'today-date-card': todayDateCard
 //        'popup-menu': popupMenu
     },
 
@@ -85,7 +84,7 @@ export default {
             tabs: {
                 '/dashboard': { label: 'Calendars', icon: 'fa-calendar'},
                 '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
-            },
+            }
                 
 //            x: 0,
 //            y: 0,
@@ -99,18 +98,18 @@ export default {
         }),
 
         ...mapState('userCalendar', {
-            userCalendars: state => state.data.userCalendars,
+            userCalendars: state => state.data.userCalendars
         }),
 
         ...mapState('member', {
-            members: state => state.data.members,
-        }),
+            members: state => state.data.members
+        })
     },
 
     methods: {
         clickNewCalendar: function() {
             u.clog('New Calendar Button');
-        },
+        }
 
 //        click(e) {
 //            this.isBoxActive = true;

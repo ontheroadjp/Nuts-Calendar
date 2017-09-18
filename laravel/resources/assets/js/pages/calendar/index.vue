@@ -19,7 +19,7 @@
         name: 'calendar-root',
 
         components: {
-            'signboard': signboard,
+            'signboard': signboard
         },
 
 //        mixins: [
@@ -28,7 +28,7 @@
 
         computed: {
             ...mapState({
-                appReady: state => state.app.ready,
+                appReady: state => state.app.ready
             }),
 
             ...mapState('calendar', {

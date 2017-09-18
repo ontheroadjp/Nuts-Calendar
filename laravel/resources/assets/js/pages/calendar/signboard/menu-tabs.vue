@@ -62,7 +62,7 @@ import { mapState, mapActions } from 'vuex';
 import core from '../../../mixins/core.js';
 
 export default {
-    props: [ 'calendarIsLoading', ],
+    props: [ 'calendarIsLoading' ],
 
     mixins: [ core ],
 
@@ -72,19 +72,19 @@ export default {
 //        }),
 
         ...mapState('dashboard', {
-            disabled: state => state.disabled,
+            disabled: state => state.disabled
         }),
 
         ...mapState('userCalendar', {
-            userCalendars: state => state.data.userCalendars,
+            userCalendars: state => state.data.userCalendars
         }),
 
         ...mapState('calendar', {
-            currentCalendarId: state => state.currentId,
+            currentCalendarId: state => state.currentId
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
-            isToolPaletteOpen: state => state.toolPalette.isActive,
+            isToolPaletteOpen: state => state.toolPalette.isActive
         }),
 
 //        menuItemStyle: function() {
@@ -128,7 +128,7 @@ export default {
 
         toggleToolPalet() {
             this.toggleTableToolPalette({ value: !this.isToolPaletteOpen }); 
-        },
+        }
     },
 
     created() {
@@ -140,7 +140,7 @@ export default {
                 value: id
             });
         }
-    },
+    }
 
 }
 </script>

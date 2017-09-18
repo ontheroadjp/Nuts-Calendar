@@ -117,7 +117,7 @@ export default {
 
     computed: {
         ...mapState({
-            theme: state => state.app.theme,
+            theme: state => state.app.theme
         }),
 
         ...mapState('userCalendar', {
@@ -125,7 +125,7 @@ export default {
         }),
 
         ...mapState('member', {
-            members: state => state.data.members,
+            members: state => state.data.members
         }),
 
         ...mapState('member/insert', {
@@ -166,7 +166,7 @@ export default {
 
         ...mapActions('member/update', {
             prepareUpdate: 'prepare',
-            update: 'update',
+            update: 'update'
         }),
 
         ...mapActions('member/remove', {

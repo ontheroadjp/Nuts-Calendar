@@ -36,5 +36,5 @@ export default {
         name: null,
         token: null,
         rememberMe: false
-    },
-}
+    }
+};

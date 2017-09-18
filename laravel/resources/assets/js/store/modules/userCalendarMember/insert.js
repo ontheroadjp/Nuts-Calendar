@@ -14,7 +14,7 @@ export default {
             const data = {
                 'user_calendar_id': userCalendarId,
                 'member_id': memberId
-            }
+            };
 
             http.fetchPost(url, data)
                 .then( response => {
@@ -31,8 +31,7 @@ export default {
                     u.clog('error: ' + error.response.status);
                     commit('isLoading', false);
                 });
-        },
-
+        }
     },
 
     mutations: {
@@ -40,4 +39,4 @@ export default {
             state.isLoading = value;
         }
     }
-}
+};

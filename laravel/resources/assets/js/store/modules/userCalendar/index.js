@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import insert from './insert.js';
 import update from './update.js';
 import remove from './remove.js';
@@ -7,7 +6,7 @@ const userCalendar = {
     namespaced: true,
     state: {
         data: {
-            userCalendars: [],
+            userCalendars: []
         }
     },
 
@@ -18,7 +17,7 @@ const userCalendar = {
 
         setValue( state, { id, key, value } ) {
             const t = state.data.userCalendars[id];
-            t[key] = value
+            t[key] = value;
         }
     },
 
@@ -27,6 +26,6 @@ const userCalendar = {
         update: update,
         remove: remove
     }
-}
-export default userCalendar;
+};
 
+export default userCalendar;

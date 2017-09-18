@@ -58,7 +58,7 @@ export default {
                 e.preventDefault();
             }
 
-            e.dataTransfer.dropEffect = 'move'
+            e.dataTransfer.dropEffect = 'move';
 
             return false;
         },
@@ -72,8 +72,8 @@ export default {
             commit('drop', { y, m });
 
             // sort cellItems
-            commit('calendar/tableView/sortCellItems', 
-                state.enterCell.cellItems, 
+            commit('calendar/tableView/sortCellItems',
+                state.enterCell.cellItems,
                 { root: true }
             );
 
@@ -83,8 +83,8 @@ export default {
             );
 
             // check time
-            commit('calendar/tableView/checkTime', 
-                state.enterCell.cellItems, 
+            commit('calendar/tableView/checkTime',
+                state.enterCell.cellItems,
                 { root: true }
             );
 
@@ -102,7 +102,7 @@ export default {
                 'is_done': state.draggingItem.is_done,
                 'date': state.draggingItem.date
             };
-    
+
             http.fetchPut(url, params)
                 .then(response => {
                     u.clog('success');
@@ -111,9 +111,9 @@ export default {
                 .catch(error => {
                     u.clog('failed');
                     commit('reverseItem', { y, m });
-                    
-                    commit('calendar/tableView/sortCellItems', 
-                        state.enterCell.cellItems, 
+
+                    commit('calendar/tableView/sortCellItems',
+                        state.enterCell.cellItems,
                         { root: true }
                     );
 
@@ -131,9 +131,9 @@ export default {
 //            this.dragItem.isInTrash = true;
 //
 //            this.removeItem(
-//                this.dragItem.fromCell.cellItems, 
+//                this.dragItem.fromCell.cellItems,
 //                this.dragItem.fromCell.itemIndex,
-//                this.dragItem.draggingItem, 
+//                this.dragItem.draggingItem,
 //            );
         },
 
@@ -150,12 +150,12 @@ export default {
 
     mutations: {
         dragStart( state, p ) {
-            state.fromCell.cellAddress = p.cellAddress,
-            state.fromCell.dayIndex = p.dayIndex,
-            state.fromCell.memberId = p.memberId,
-            state.fromCell.cellItems = p.cellItems,
-            state.fromCell.itemIndex = p.itemIndex,
-            state.draggingItem = p.draggingItem
+            state.fromCell.cellAddress = p.cellAddress;
+            state.fromCell.dayIndex = p.dayIndex;
+            state.fromCell.memberId = p.memberId;
+            state.fromCell.cellItems = p.cellItems;
+            state.fromCell.itemIndex = p.itemIndex;
+            state.draggingItem = p.draggingItem;
         },
 
         dragEnter( state, p ) {
@@ -219,4 +219,4 @@ export default {
             state.onMiniCal = '';
         }
     }
-}
+};

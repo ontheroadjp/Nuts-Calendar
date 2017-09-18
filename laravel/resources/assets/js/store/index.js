@@ -7,7 +7,7 @@ import actions      from './actions.js';
 import getters      from './getters.js';
 
 // modules
-import app                  from './modules/app/index.js';
+//import app                  from './modules/app/index.js';
 import i18n                 from './modules/i18n/index.js';
 import dashboard            from './modules/dashboard/index.js';
 import userCalendar         from './modules/userCalendar/index.js';

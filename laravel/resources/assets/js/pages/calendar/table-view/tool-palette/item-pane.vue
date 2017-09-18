@@ -59,7 +59,7 @@ export default {
 
         clickEndTimeButton() {
             this.toggleShowHideEndTime({ value: !this.isEndTimeShow });
-        },
+        }
     }
 } 
 </script>

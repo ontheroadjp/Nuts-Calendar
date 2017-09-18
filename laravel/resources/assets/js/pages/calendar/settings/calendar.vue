@@ -82,7 +82,7 @@ export default {
     methods: {
         putCalendarSettings: function() {
             this.execPutCalendarSettings(this.currentCalendarId)
-        },
+        }
     },
 
     mounted() {
@@ -102,6 +102,6 @@ export default {
             self.input.name = calName;
             self.input.description = calDescription;
         }
-    },
+    }
 }
 </script>

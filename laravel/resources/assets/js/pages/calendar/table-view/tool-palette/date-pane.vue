@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
     props: {
@@ -73,7 +73,7 @@ export default {
     methods: {
         ...mapActions('calendar/tableView/toolPalette', {
             setInternalQuery: 'setInternalQuery'
-        }),
+        })
     }
 } 
 </script>

@@ -12,6 +12,7 @@
     "lint:css": "node_modules/stylelint/bin/stylelint.js 'resources/assets/js/**/*.vue' --syntax scss"
   },
   "devDependencies": {
+    "avoriaz": "^4.2.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-latest": "^6.24.1",
     "chai": "^4.0.2",

@@ -16,7 +16,7 @@ const calendar = {
         currentYear: now.getFullYear(),
         currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
         data: {
-            calendars: [],
+            calendars: []
 //            members: []
         }
     },
@@ -27,23 +27,22 @@ const calendar = {
             if(calendarId === 'dashboard') return;
 
             commit('isLoading', true);
-    
+
             const id = calendarId;
             const y = state.currentYear;
             const m = state.currentMonth;
             const url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
-    
+
             http.fetchGet(url)
                 .then( response => {
                     u.clog('success');
                     commit('init', response.data.days );
-        
+
                     Object.keys(response.data.members).forEach(function(key) {
-                        let val = this[key];
+                        const val = this[key];
                         val.isShow = true;
-//                        u.clog(key + ':' + val.name);
                     }, response.data.members);
-        
+
                     commit('isLoading', false);
                 })
 
@@ -60,7 +59,7 @@ const calendar = {
         },
 
         setValue( state, { key, value } ) {
-            state[key] = value;            
+            state[key] = value;
             if(key == 'currentId') {
                 localStorage.setItem('currentCalendarId', value);
             }
@@ -90,7 +89,7 @@ const calendar = {
                         if(a.type_id === 1 && b.type_id === 2) return 1;
                         if(a.type_id === 2 && b.type_id === 1) return -1;
                         if(a.type_id === 2 && b.type_id === 2) return 0;
-            
+
                         if( (a.is_all_day === 1 || a.is_all_day === true) &&
                             (b.is_all_day !== 1 || b.is_all_day !== true)
                         ) return -1;
@@ -101,18 +100,18 @@ const calendar = {
 
                         if( a.start_time === undefined || a.start_time === null ) return -1;
                         if( b.start_time === undefined || b.start_time === null ) return 1;
-            
+
                         const aArr = a.start_time.split(':');
                         const bArr = b.start_time.split(':');
-            
+
                         // sort by hour
                         if (parseInt(aArr[0]) < parseInt(bArr[0])) return -1;
                         if (parseInt(aArr[0]) > parseInt(bArr[0])) return 1;
-            
+
                         // sort by minits
                         if (parseInt(aArr[1]) < parseInt(bArr[1])) return -1;
                         if (parseInt(aArr[1]) > parseInt(bArr[1])) return 1;
-            
+
                         // the same value
                         return 0;
                     });
@@ -126,19 +125,19 @@ const calendar = {
 
                 checkTime( state, cellItems ) {
                     let prev = '';
-                    let cellItemsLength = cellItems.length;
+                    const cellItemsLength = cellItems.length;
 
                     cellItems.forEach(function(item, index) {
 
                         if( item.type_id !== 1 ||
                             item.is_all_day == 1 ||
                             item.is_all_day == true ||
-                            item.start_time == '' || 
+                            item.start_time == '' ||
                             item.start_time == null ||
                             item.end_time == '' ||
-                            item.end_time == null 
+                            item.end_time == null
                         ) {
-                            return
+                            return;
                         }
 
                         // first item

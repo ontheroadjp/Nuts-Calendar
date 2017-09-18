@@ -12,23 +12,23 @@ export default {
         notifyPrimary( { commit }, { content, isImportant } ) {
             commit('notifyPrimary', { content, isImportant } );
         },
-    
+
         notifySuccess( { commit }, { content, isImportant } ) {
             commit('notifySuccess', { content, isImportant } );
         },
-    
+
         notifyInfo( { commit }, { content, isImportant } ) {
             commit('notifyInfo', { content, isImportant } );
         },
-    
+
         notifyWarning( { commit }, { content, isImportant } ) {
             commit('notifyWarning', { content, isImportant } );
         },
-    
+
         notifyDanger( { commit }, { content, isImportant } ) {
             commit('notifyDanger', { content, isImportant } );
         },
-    
+
         resetNotification( { commit } ) {
             commit('resetNotification');
         }
@@ -42,7 +42,7 @@ export default {
             state.isImportant = isImportant;
             state.isActive = true;
         },
-    
+
         notifySuccess( state, { content, isImportant } ) {
             if(!content || typeof(isImportant) !== 'boolean' ) return;
             state.content = content;
@@ -50,7 +50,7 @@ export default {
             state.isImportant = isImportant;
             state.isActive = true;
         },
-    
+
         notifyInfo( state, { content, isImportant } ) {
             if(!content || typeof(isImportant) !== 'boolean' ) return;
             state.content = content;
@@ -58,7 +58,7 @@ export default {
             state.isImportant = isImportant;
             state.isActive = true;
         },
-    
+
         notifyWarning( state, { content, isImportant } ) {
             if(!content || typeof(isImportant) !== 'boolean' ) return;
             state.content = content;
@@ -66,7 +66,7 @@ export default {
             state.isImportant = isImportant;
             state.isActive = true;
         },
-    
+
         notifyDanger( state, { content, isImportant } ) {
             if(!content || typeof(isImportant) !== 'boolean' ) return;
             state.content = content;
@@ -74,7 +74,7 @@ export default {
             state.isImportant = isImportant;
             state.isActive = true;
         },
-    
+
         resetNotification( state ) {
             state.content = '';
             state.type = '';
@@ -82,4 +82,4 @@ export default {
             state.isActive = false;
         }
     }
-}
+};

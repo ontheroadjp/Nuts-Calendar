@@ -12,7 +12,7 @@ export default {
 
     actions: {
         prepare( { commit }, { id, name, isShow } ) {
-            commit('prepare', { id, name, isShow } ); 
+            commit('prepare', { id, name, isShow } );
         },
 
         setUpdateValue( { commit }, { key, value } ) {
@@ -25,9 +25,9 @@ export default {
 
             const url = '/api/v1/member/' + state.updateValues.id;
             const data = {
-                'name': state.updateValues.name,
+                'name': state.updateValues.name
             };
-    
+
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
@@ -71,7 +71,7 @@ export default {
             state.updateValues.name = name;
             state.updateValues.isShow = isShow;
         },
-    
+
         setUpdateValue( state, { key, value } ) {
             state.updateValues[key] = value;
         },

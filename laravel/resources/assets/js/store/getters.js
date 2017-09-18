@@ -7,8 +7,8 @@ export default {
     },
 
     filteredMembers: (state, getters) => {
-        let currentCalendarId = state.calendar.currentId;
-        let ids = [];
+        const currentCalendarId = state.calendar.currentId;
+        const ids = [];
 
         state.userCalendarMember.data.userCalendarMembers.forEach( function( val ) {
             if(val.user_calendar_id == currentCalendarId) {
@@ -16,8 +16,8 @@ export default {
             }
         });
 
-        let members = state.member.data.members;
-        let result = {};
+        const members = state.member.data.members;
+        const result = {};
 
         Object.keys(members).forEach(function(key) {
             if( ids.indexOf(parseInt(key)) != -1 ) {
@@ -43,4 +43,4 @@ export default {
     getCellItems: (state) => (dayIndex, memberId) => {
         return state.calendar.data.calendars[dayIndex].items[memberId];
     }
-}
+};

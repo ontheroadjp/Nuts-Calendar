@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import datePane from './date-pane.vue';
 import memberPane from './member-pane.vue';
 import itemPane from './item-pane.vue';

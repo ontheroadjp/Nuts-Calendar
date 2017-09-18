@@ -2,7 +2,7 @@ export default {
     namespaced: true,
 
     state: {
-        isLoading: false,
+        isLoading: false
     },
 
     actions: {
@@ -16,8 +16,8 @@ export default {
                 .then(response => {
                     u.clog('success');
 
-                    commit('member/remove', { 
-                        id: index 
+                    commit('member/remove', {
+                        id: index
                     }, { root: true });
 
                     commit('notifySuccess', {
@@ -43,7 +43,7 @@ export default {
 
     mutations: {
         isLoading( state, value ) {
-            state.isLoading = value
+            state.isLoading = value;
         }
     }
-}
+};

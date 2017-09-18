@@ -16,5 +16,5 @@ export const jwtToken = {
 
     rememberMe: function() {
         return localStorage.getItem('rememberMe');
-    },
+    }
 }

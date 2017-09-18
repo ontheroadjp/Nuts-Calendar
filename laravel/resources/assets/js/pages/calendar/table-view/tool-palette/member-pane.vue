@@ -22,7 +22,7 @@ export default {
 
     computed: {
         ...mapState({
-            members: state => state.member.data.members,
+            members: state => state.member.data.members
         }),
 
         showColumns: function() {
@@ -32,14 +32,13 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/toolPalette', {
-            toggleShowHideColumn: 'toggleShowHideColumn',
+            toggleShowHideColumn: 'toggleShowHideColumn'
         }),
 
         clickColumnButton(id, value) {
             if(this.showColumns.length === 1 && value === false) return; 
             this.toggleShowHideColumn({ id, value });
-        },
-
+        }
     }
 } 
 </script>

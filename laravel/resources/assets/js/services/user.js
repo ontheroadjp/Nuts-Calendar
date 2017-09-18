@@ -37,42 +37,42 @@ export default {
                     color: 'red'
                 }
             }
-        }
+        };
     },
 
     computed: {
         nameHasError: function() {
-            return this.error.name 
+            return this.error.name
                 && ! this.input.name ? true : false;
         },
 
         emailHasError: function() {
-            return this.error.email 
+            return this.error.email
                 && ! this.input.email ? true : false;
         },
 
         passwordHasError: function() {
-            return this.error.password 
+            return this.error.password
                 && ! this.input.password ? true : false;
         },
 
         passwordConfirmationHasError: function() {
-            return this.error.passwordConfirmation 
+            return this.error.passwordConfirmation
                 && ! this.input.passwordConfirmation ? true : false;
         },
 
         newPasswordHasError: function() {
-            return this.error.newPassword 
+            return this.error.newPassword
                 && ! this.input.newPassword ? true : false;
         },
 
         oldPasswordHasError: function() {
-            return this.error.oldPassword 
+            return this.error.oldPassword
                 && ! this.input.oldPassword ? true : false;
         },
 
         newPasswordConfirmationHasError: function() {
-            return this.error.newPasswordConfirmation 
+            return this.error.newPasswordConfirmation
                 && ! this.input.newPasswordConfirmation ? true : false;
         }
     },
@@ -140,7 +140,7 @@ export default {
             http.post( '/api/v1/login', {
                 'email': this.input.email,
                 'password': this.input.password
-            }, 
+            },
                 this.successLogin(this),
                 this.failedLogin(this)
             );
@@ -148,15 +148,15 @@ export default {
 
         successLogin: self => {
             return response => {
-                eventBus.fire('nuts.login.success', { 
-                    response: response, 
+                eventBus.fire('nuts.login.success', {
+                    response: response,
                     rememberMe: jwtToken.rememberMe
                 }, 'user.vue');
-            }
+            };
         },
 
         failedLogin: self => {
-            return error => { 
+            return error => {
                 if (error.response) {
                     if( error.response.status === 422 || error.response.status === 500) {
                         self.$store.commit('notifyDanger', {
@@ -166,7 +166,7 @@ export default {
 //                        const m = 'We couldn\'t verify your credentials.';
 //                        self.error.authentication = m;
                     }
-        
+
                     if( error.response.status === 429) {
                         self.$store.commit('notifyDanger', {
                             content: 'Too many login attempts. Try it again after ',
@@ -176,12 +176,12 @@ export default {
 //                        const min = error.response.data.retryAfter.minuts;
 //                        self.error.authentication = m + min + ' minuts.';
                     }
-        
+
                     if( error.response.data.email ) {
                         self.error.email = error.response.data.email[0];
                         self.input.email = '';
                     }
-        
+
                     if( error.response.data.password ) {
                         self.error.password = error.response.data.password[0];
                         self.input.password = '';
@@ -190,7 +190,7 @@ export default {
                     // Something happened in setting up the request that triggered an Error
                     u.clog('Error: ' + error.message + '@user.vue - login()');
                 }
-            }
+            };
         },
 
         // --------------------------------------------------------------
@@ -206,9 +206,9 @@ export default {
             //const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
             const inputPasswordConfirmationInvalid = this.isPasswordConfirmationInvalid();
-            if( inputNameInvalid 
-                    || inputPasswordInvalid 
-                    || inputPasswordInvalid 
+            if( inputNameInvalid
+                    || inputPasswordInvalid
+                    || inputPasswordInvalid
                     || inputPasswordConfirmationInvalid
             ) return;
 
@@ -217,8 +217,8 @@ export default {
                 'email': this.input.email,
                 'password': this.input.password,
                 'password_confirmation': this.input.passwordConfirmation
-            }, 
-                this.successLogin(this), 
+            },
+                this.successLogin(this),
                 this.failedLogin(this)
             );
         },
@@ -245,8 +245,8 @@ export default {
 
             http.post('/api/v1/password/email', {
                 'email': this.input.email
-            }, 
-                this.successSendPasswordMail(this), 
+            },
+                this.successSendPasswordMail(this),
                 this.failedSendPasswordMail(this)
             );
         },
@@ -255,14 +255,14 @@ export default {
             return response => {
                 u.clog('success sent reset password mail');
                 self.passwordMailResult = 'success';
-            }
+            };
         },
 
         failedSendPasswordMail: self => {
             return error => {
                 u.clog('error sent reset password mail');
                 self.passwordMailResult = 'failed';
-            }
+            };
         },
 
         // -----------------------------------------------------
@@ -276,8 +276,8 @@ export default {
             const inputEmailInvalid = this.isEmailInvalid();
             const inputPasswordInvalid = this.isPasswordInvalid();
             const inputPasswordConfirmationInvalid = this.isPasswordConfirmationInvalid();
-            if( inputEmailInvalid 
-                    || inputPasswordInvalid 
+            if( inputEmailInvalid
+                    || inputPasswordInvalid
                     || inputPasswordConfirmationInvalid
             ) return;
 
@@ -290,7 +290,7 @@ export default {
                 'password': this.input.password,
                 'password_confirmation': this.input.passwordConfirmation,
                 'token': token
-            }, 
+            },
                 this.successPasswordReset(this), 
                 this.failedPasswordReset(this)
             );
@@ -300,14 +300,14 @@ export default {
             return response => {
                 u.clog('success reset password');
                 self.passwordResetResult = 'success';
-            }
+            };
         },
 
         failedPasswordReset: self => {
             return error => {
                 u.clog('error reset password');
                 self.passwordResetResult = 'failed';
-            }
+            };
         },
 
         // -----------------------------------------------------
@@ -339,7 +339,7 @@ export default {
 
                             default:
                                 u.clog('ERROR execPutSettings(): ' + response.status);
-                                throw Error(response)
+                                throw Error(response);
                         }
                     }, error => {
                         u.clog('execPutSettings().catch()');
@@ -383,7 +383,7 @@ export default {
 
                             default:
                                 u.clog('ERROR execPutPassword(): ' + response.status);
-                                throw Error(response)
+                                throw Error(response);
                         }
                     }, error => {
                         u.clog('execPutPassword().catch()');
@@ -401,4 +401,4 @@ export default {
             this.input.newPasswordConfirmation = '';
         }
     }
-}
+};

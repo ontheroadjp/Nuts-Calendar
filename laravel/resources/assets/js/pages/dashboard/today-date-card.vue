@@ -24,11 +24,11 @@ export default {
     computed: {
         ...mapState({
             lang: state => state.app.lang,
-            theme: state => state.app.theme,
+            theme: state => state.app.theme
         }),
 
         date: function() {
-            return this.now()
+            return this.now();
         },
 
         dayPanel: function() {
@@ -37,36 +37,36 @@ export default {
                 'height': '180px',
                 'position': 'relative',
                 'font-weight': 400
-            }
+            };
         },
         upper: function() {
             return {
-            }
+            };
         },
         bottom: function() {
             return {
                 'position': 'absolute',
                 'top': '110px',
                 'right': '60px'
-            }
+            };
         },
         year: function() {
             return {
                 'font-size': '24px'
-            }
+            };
         },
         month: function() {
             return {
                 'font-size': '36px',
                 'color': this.theme.secondary.code
-            }
+            };
         },
         day: function() {
             return {
                 'font-size': '96px',
                 'color': this.theme.secondary.code
-            }
+            };
         }
     }
-}
+};
 </script>

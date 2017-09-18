@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import userCalendarModal from './user-calendar-modal.vue';
 
 export default {
     components: {
-        'user-calendar-modal': userCalendarModal,
+        'user-calendar-modal': userCalendarModal
     },
 
     props: {
@@ -56,7 +56,7 @@ export default {
     data() {
         return {
             modal: {
-                isActive: false,
+                isActive: false
             }
         }
     },
@@ -78,7 +78,7 @@ export default {
 
     methods: {
         ...mapActions('userCalendar/update', {
-            prepare: 'prepare',
+            prepare: 'prepare'
         }),
 
         openDialog: function( userCalendar ) {

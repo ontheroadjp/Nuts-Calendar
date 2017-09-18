@@ -145,7 +145,7 @@ export default {
                 },
 
                 error: this.errorResult,
-                isReady: this.isReadyResult,
+                isReady: this.isReadyResult
             }
 
             this.$emit('changeValue', data);

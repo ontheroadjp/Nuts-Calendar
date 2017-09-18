@@ -8,8 +8,8 @@ export default {
         },
 
         updateValues: {
-            id: '', 
-            name: '', 
+            id: '',
+            name: '',
             description: ''
         }
     },
@@ -34,13 +34,13 @@ export default {
             const url = '/api/v1/calendar/' + state.updateValues.id;
             const data = {
                 'name': state.updateValues.name,
-                'description': state.updateValues.description,
+                'description': state.updateValues.description
             };
-    
+
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
-        
+
                     const id = response.data.id;
                     const name = response.data.name;
                     const description = response.data.description;
@@ -51,7 +51,7 @@ export default {
                         value: name
                     }, { root: true });
 
-                    commit('userCalendar/setValue', { 
+                    commit('userCalendar/setValue', {
                         id: id,
                         key: 'description',
                         value: description
@@ -99,4 +99,4 @@ export default {
             }, state.isLoading );
         }
     }
-}
+};

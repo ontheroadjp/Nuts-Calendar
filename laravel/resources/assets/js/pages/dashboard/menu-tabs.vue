@@ -25,7 +25,7 @@ import { mapState } from 'vuex';
 
 export default {
     props: {
-        tabs: { type: Object, required: true },
+        tabs: { type: Object, required: true }
     },
 
     computed: {
@@ -40,6 +40,6 @@ export default {
                 'cursor': 'default'
             }
         }
-    },
+    }
 }
 </script>

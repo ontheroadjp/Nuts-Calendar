@@ -88,7 +88,7 @@ export default {
         secondInterval:     { type: Number, default: 10 },
         dropdownHeight:     { type: Number, default: 280 }, // by px
         inputHeight:        { type: Number, default: 35 },  // by px
-        inputWidth:         { type: Number, default: 100 }, // by px
+        inputWidth:         { type: Number, default: 100 }  // by px
     },
 
     data() {

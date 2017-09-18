@@ -44,7 +44,7 @@ export default {
         selectStyle: function() {
             return {
                 background: 'none',
-                color: this.theme.primary.codeInvert,
+                color: this.theme.primary.codeInvert
             }
         }
     },

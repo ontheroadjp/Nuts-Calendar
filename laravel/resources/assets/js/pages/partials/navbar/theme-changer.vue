@@ -46,7 +46,7 @@ export default {
             return {
                 background: 'none',
                 border: 'none',
-                color: this.theme.primary.codeInvert,
+                color: this.theme.primary.codeInvert
             }
         }
     },

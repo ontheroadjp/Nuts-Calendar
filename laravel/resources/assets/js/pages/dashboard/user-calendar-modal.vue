@@ -3,7 +3,7 @@
 <simple-modal v-if="isActive" :opacity="parseFloat(0.4)" :onClose="clickClose">
 
     <div slot="header">
-        <inline-text-input 
+        <inline-text-input
             id="calendar-name"
             inputClass="title thin-200"
             inputStyle=" color: #4a4a4a; margin-bottom: 15px"
@@ -14,9 +14,9 @@
             :defaultValue="userCalendar.name"
             :saveCallback="clickSaveName"
             :editingId.sync="editingId"
-        ></inline-text-input>  
+        ></inline-text-input>
 
-        <inline-text-input 
+        <inline-text-input
             id="calendar-description"
             inputClass="subtitle thin"
             inputStyle="color: #000"
@@ -27,25 +27,25 @@
             :defaultValue="userCalendar.description"
             :saveCallback="clickSaveDescription"
             :editingId.sync="editingId"
-        ></inline-text-input>  
+        ></inline-text-input>
     </div>
 
     <div slot="body">
         <label class="label thin-400">Members</label>
         <ul class="members">
             <li v-for="member in members" class="member">
-                <input :id="member.name" 
-                    type="checkbox" 
-                    class="nuts-input-checkbox" 
+                <input :id="member.name"
+                    type="checkbox"
+                    class="nuts-input-checkbox"
                     :checked="userCalendarMemberIds.indexOf(member.id) !== -1"
                     @change="changeMemberValue(
-                        member.name, 
+                        member.name,
                         userCalendar.id,
                         member.id
                     )"
                 >
-                <label :for="member.name" 
-                    class="member-checkbox-label" 
+                <label :for="member.name"
+                    class="member-checkbox-label"
                     style="display: inline;"
                 >{{ member.name }}</label>
             </li>
@@ -77,7 +77,7 @@ export default {
     data() {
         return {
             editingId: '',
-            userCalendarMemberIds: [],
+            userCalendarMemberIds: []
         }
     },
 
@@ -188,7 +188,7 @@ export default {
 }
 
 .member {
-    line-height: 2.0rem;
+    line-height: 2rem;
 }
 
 .member-checkbox-label {

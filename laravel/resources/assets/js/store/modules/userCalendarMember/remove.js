@@ -20,12 +20,12 @@ export default {
                 .then( response => {
                     u.clog("success");
 
-//                    this.$store.commit('userCalendarMember/remove', { 
-//                        obj: response.data 
+//                    this.$store.commit('userCalendarMember/remove', {
+//                        obj: response.data
 //                    });
 
-                    commit('userCalendarMember/remove', { 
-                        obj: response.data 
+                    commit('userCalendarMember/remove', {
+                        obj: response.data
                     }, { root: true });
 
                     commit('isLoading', false);
@@ -44,4 +44,4 @@ export default {
             state.isLoading = value;
         }
     }
-}
+};

@@ -43,9 +43,9 @@ export default {
     props: {
         icon:        { type: String, default: 'fa-user' },
         headerStyle: { type: String, default: 'background-color: #546e7a; color: #fff;' },
-        opacity:     { type: Nubmer, default: 0.85 },
+        opacity:     { type: Number, default: 0.85 },
         onClose:     { type: Function, required: true }
-    },
+    }
 
 //    computed: {
 ////        ...mapState({

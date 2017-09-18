@@ -95,8 +95,8 @@ export default {
     mounted() {
         const locale = ['en', 'ja'];
         locale.forEach( (val, index) => {
-            const l = moment.locale(val);
-            const p = 'moment().startOf(\'week\')';
+//            const l = moment.locale(val);
+//            const p = 'moment().startOf(\'week\')';
 
 //            u.clog('['+val+'] ----------------------------------');
 //

@@ -12,7 +12,7 @@ const router = init(
         mode: 'history',
         scrollBehavior: function (to, from, savedPosition) {
             return savedPosition || { x: 0, y: 0 }
-        },
+        }
     })
 );
 Vue.use(VueRouter);
@@ -39,5 +39,5 @@ import App from './app.vue';
 
 new Vue({
     router,
-    render(h) { return h(App) },
+    render(h) { return h(App) }
 }).$mount('#app');

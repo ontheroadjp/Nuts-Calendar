@@ -18,13 +18,13 @@ const member = {
 
         add(state, { obj }) {
             const t = state.data.userCalendarMembers;
-            Vue.set(t, t.length, obj); 
+            Vue.set(t, t.length, obj);
         },
 
         remove(state, { obj }) {
             const t = state.data.userCalendarMembers;
             t.forEach( function(val, index) {
-                if((val.user_calendar_id === obj.user_calendar_id) 
+                if((val.user_calendar_id === obj.user_calendar_id)
                     && (val.member_id === obj.member_id)) {
                     Vue.delete(t, index);
                 }
@@ -36,5 +36,6 @@ const member = {
         insert: insert,
         remove: remove
     }
-}
+};
+
 export default member;

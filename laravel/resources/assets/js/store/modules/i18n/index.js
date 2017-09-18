@@ -7,4 +7,4 @@ export default {
         en: en,
         ja: ja
     }
-}
+};
