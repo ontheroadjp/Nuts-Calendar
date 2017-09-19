@@ -209,7 +209,8 @@ class ChineseCalendar
 
     public function __construct()
     {
-        date_default_timezone_set('PRC');
+//        date_default_timezone_set('PRC');
+        date_default_timezone_set('UTC');
     }
 
     /**
@@ -687,7 +688,8 @@ class ChineseCalendar
      *
      * @return \DateTime
      */
-    protected function makeDate($string = 'now', $timezone = 'PRC')
+//    protected function makeDate($string = 'now', $timezone = 'PRC')
+    protected function makeDate($string = 'now', $timezone = 'UTC')
     {
         return new DateTime($string, new DateTimeZone($timezone));
     }

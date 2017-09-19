@@ -16,10 +16,6 @@ class CalendarTableSeeder extends Seeder
         DB::table('calendar')->delete();
         //$faker = Faker::create('en_US');
 
-//        $startYear = 2017;
-//        $startMonth = 1;
-//        $startDay = 1;
-
         $date = new DateTime("2015-01-01");
         $days = 365 * 4 + 1;
 
@@ -32,10 +28,6 @@ class CalendarTableSeeder extends Seeder
             $d = $date->format('d');
 
             $result = $chineseCalendar->solar($y, $m, $d);
-
-//            Calendar::create([
-//                'date' => $date->format('Y-m-d')
-//            ]);
 
             Calendar::create([
                 'date' => $date->format('Y-m-d'),
