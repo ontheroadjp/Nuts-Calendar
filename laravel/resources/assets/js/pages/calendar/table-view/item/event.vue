@@ -1,6 +1,5 @@
 <template>
-    <span class="item is-event" 
-        :style="searchHighlightStyle"
+    <span class="item is-event"
         @click.stop="clickItem($event)">
 
         <strong :class="{'vertial': displayVertically}"
@@ -15,12 +14,12 @@
                         {{ item.end_time | timeFormatter }}
                     </span>
                 </span>
-        </strong> 
-        
-        {{ item.content }}
+        </strong>
 
-        <span class="icon is-small" 
-            v-show="(dragItem.isLoading || deleteItem.isLoading) 
+        <span :style="searchHighlightStyle">{{ item.content }}</span>
+
+        <span class="icon is-small"
+            v-show="(dragItem.isLoading || deleteItem.isLoading)
                         && dragItem.draggingItem == item"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>
@@ -68,7 +67,7 @@ export default {
         },
 
         searchHighlightStyle: function() {
-            if( this.searchQuery != '' 
+            if( this.searchQuery != ''
                     && this.item.content.toLowerCase().indexOf(this.searchQuery) != -1) {
                 return { backgroundColor: '#FFEB3B' }
             }
@@ -103,5 +102,5 @@ export default {
     display: inline-flex;
     flex-flow: column nowrap;
     align-items: center;
-} 
+}
 </style>
