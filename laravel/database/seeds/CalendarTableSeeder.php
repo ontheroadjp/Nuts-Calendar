@@ -55,7 +55,8 @@ class CalendarTableSeeder extends Seeder
                 'gregorian_day' => $result['gregorian_day'],
                 'week_no' => $result['week_no'],
                 'week_name' => $result['week_name'],
-                'constellation' => $result['constellation']
+                'constellation' => $result['constellation'],
+                'is_today' => $result['is_today']
             ]);
 
             $date->modify('+1 days');

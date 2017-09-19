@@ -43,6 +43,9 @@ class DatabaseSeeder extends Seeder
         // item
         $this->call(ItemsTableSeeder::class);
 
+        // holiday
+        $this->call(HolidaysTableSeeder::class);
+
         // calendar(date)
         $this->call(CalendarTableSeeder::class);
 
