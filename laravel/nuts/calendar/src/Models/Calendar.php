@@ -29,7 +29,12 @@ class Calendar extends Model
 
     public function items()
     {
-        return $this->hasMany(Item::class,'date','date');
+        return $this->hasMany(Item::class, 'date', 'date');
+    }
+
+    public function holiday()
+    {
+        return $this->hasMany(Holiday::class, 'date', 'date');
     }
 
     public function fetch($userId, $userCalendarId, $year, $month)
@@ -55,7 +60,7 @@ class Calendar extends Model
             }
         }
 
-        $calendar = $this->fetchCalendarWithItems($year,$month);
+        $calendar = $this->fetchCalendarWithHolidayAndItems($year,$month);
         $calendar = $this->tidyItems($calendar, collect($members));
 
         $item = new Item();
@@ -68,9 +73,9 @@ class Calendar extends Model
          ];
     }
 
-    public function fetchCalendarWithItems($year,$month)
+    public function fetchCalendarWithHolidayAndItems($year,$month)
     {
-        return Calendar::with('items')
+        return Calendar::with('items')->with('holiday')
             ->where('date', 'LIKE', "%$year-$month%")
             ->get();
     }
