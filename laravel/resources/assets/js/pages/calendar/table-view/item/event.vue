@@ -1,5 +1,6 @@
 <template>
     <span class="item is-event"
+        :style="searchHighlightStyle"
         @click.stop="clickItem($event)">
 
         <strong v-if="!item.is_all_day" :class="{'vertial': displayVertically}"
