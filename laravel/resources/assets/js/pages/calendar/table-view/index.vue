@@ -101,6 +101,8 @@
 
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
+                isEventItemShow: state => state.isEventItemShow,
+                isTaskItemShow: state => state.isTaskItemShow,
                 internalQuery: state => state.query.internal,
                 searchQuery: state => (state.query.search).toLowerCase()
             }),
@@ -153,10 +155,14 @@
                 let columns = day.items;
                 const memberIds = Object.keys(columns);
 
-                memberIds.forEach(function(id) {
+                memberIds.forEach((id) => {
                     const cellItems = columns[id];
-                    cellItems.forEach(function(item) {
-                        result += item.content.toLowerCase() + ' ';
+                    cellItems.forEach((item) => {
+                        if( item.type_id === 1 && this.isEventItemShow ) {
+                            result += item.content.toLowerCase() + ' ';
+                        } else if( item.type_id === 2 && this.isTaskItemShow ) {
+                            result += item.content.toLowerCase() + ' ';
+                        }
                     });
                 });
                 return result;
