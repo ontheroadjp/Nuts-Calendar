@@ -21,9 +21,9 @@ class Calendar extends Model
 
     public function getFlagsAttribute() {
         return [
-            'is_saturday' => false
-            , 'is_sunday' => false
-            , 'is_holiday' => false
+            'is_saturday' => false,
+            'is_sunday' => false
+//            , 'is_holiday' => false
         ];
     }
 
@@ -32,7 +32,7 @@ class Calendar extends Model
         return $this->hasMany(Item::class, 'date', 'date');
     }
 
-    public function holiday()
+    public function holidays()
     {
         return $this->hasMany(Holiday::class, 'date', 'date');
     }
@@ -75,7 +75,11 @@ class Calendar extends Model
 
     public function fetchCalendarWithHolidayAndItems($year,$month)
     {
-        return Calendar::with('items')->with('holiday')
+//        return Calendar::with('items')->with('holiday')
+//            ->where('date', 'LIKE', "%$year-$month%")
+//            ->groupBy('region')
+//            ->get();
+        return Calendar::with('holidays', 'items')
             ->where('date', 'LIKE', "%$year-$month%")
             ->get();
     }
