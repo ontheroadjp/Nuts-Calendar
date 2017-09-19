@@ -25,7 +25,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 
-    props: [ 'item' ],
+    props: [ 'cellItems', 'item' ],
 
     computed: {
         ...mapState('calendar/tableView/item', {
@@ -57,7 +57,7 @@ export default {
 
         clickItem(e) {
             u.clog('clickItem()');
-            this.updatePrepare( { editingItem: this.item} );
+            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
             this.removePrepare( { event: e, deletingItem: this.item } );
             this.updatePrepareModal( { event: e } );
             this.insertReset();
@@ -67,7 +67,7 @@ export default {
         },
 
         clickDone() {
-            this.updatePrepare( { editingItem: this.item } );
+            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
     }

@@ -28,7 +28,7 @@ export default {
     },
 
     actions: {
-        dragStart( { commit, rootGetters }, { draggingItem } ) {
+        dragStart( { commit, rootGetters }, { cellItems, draggingItem } ) {
 
             const dayIndex = draggingItem.dayIndex;
             const memberId = draggingItem.member_id;
@@ -37,19 +37,21 @@ export default {
                 dayIndex: dayIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
-                cellItems: rootGetters.getCellItems(dayIndex, memberId),
+//                cellItems: rootGetters.getCellItems(dayIndex, memberId),
+                cellItems: cellItems,
                 itemIndex: draggingItem.itemIndex,
                 draggingItem: draggingItem
             });
         },
 
-        dragEnter( { state, commit, rootGetters }, { dayString, memberId } ) {
+        dragEnter( { state, commit, rootGetters }, { dayString, memberId, cellItems } ) {
             const dayIndex = rootGetters.getRowIndex(dayString);
             commit('dragEnter', {
                 dayIndex: dayIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
-                cellItems: rootGetters.getCellItems(dayIndex, memberId)
+//                cellItems: rootGetters.getCellItems(dayIndex, memberId)
+                cellItems: cellItems
             });
         },
 
@@ -58,12 +60,12 @@ export default {
                 e.preventDefault();
             }
 
-            e.dataTransfer.dropEffect = 'move'
+//            e.dataTransfer.dropEffect = 'move'
 
             return false;
         },
 
-        drop( { state, commit, rootState } ) {
+        drop( { state, dispatch, commit, rootState } ) {
             u.clog('drop()');
             if(state.fromCell.cellAddress === state.enterCell.cellAddress) return;
 
@@ -71,26 +73,13 @@ export default {
             const m = rootState.calendar.currentMonth;
             commit('drop', { y, m });
 
-            // sort cellItems
-            commit('calendar/tableView/sortCellItems', 
-                state.enterCell.cellItems, 
-                { root: true }
+            // update cellItems
+            dispatch('calendar/tableView/updateCellItems',
+                state.enterCell.cellItems, { root: true }
             );
 
-            commit('calendar/tableView/sortCellItems',
-                state.fromCell.cellItems,
-                { root: true }
-            );
-
-            // check time
-            commit('calendar/tableView/checkTime', 
-                state.enterCell.cellItems, 
-                { root: true }
-            );
-
-            commit('calendar/tableView/checkTime',
-                state.fromCell.cellItems,
-                { root: true }
+            dispatch('calendar/tableView/updateCellItems',
+                state.fromCell.cellItems, { root: true }
             );
 
             const url = '/api/v1/item/' + state.draggingItem.id;
@@ -102,7 +91,7 @@ export default {
                 'is_done': state.draggingItem.is_done,
                 'date': state.draggingItem.date
             };
-    
+
             http.fetchPut(url, params)
                 .then(response => {
                     u.clog('success');
@@ -111,9 +100,9 @@ export default {
                 .catch(error => {
                     u.clog('failed');
                     commit('reverseItem', { y, m });
-                    
-                    commit('calendar/tableView/sortCellItems', 
-                        state.enterCell.cellItems, 
+
+                    commit('calendar/tableView/sortCellItems',
+                        state.enterCell.cellItems,
                         { root: true }
                     );
 
@@ -131,9 +120,9 @@ export default {
 //            this.dragItem.isInTrash = true;
 //
 //            this.removeItem(
-//                this.dragItem.fromCell.cellItems, 
+//                this.dragItem.fromCell.cellItems,
 //                this.dragItem.fromCell.itemIndex,
-//                this.dragItem.draggingItem, 
+//                this.dragItem.draggingItem,
 //            );
         },
 

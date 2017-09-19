@@ -1,14 +1,20 @@
 <template>
 <span class="text-input">
-    <input :class="['text-input', { 'has-error': showError && hasError }, inputClass]" 
+    <input :class="[
+            'text-input', 
+            inputClass,
+            { 'has-error': showError && errorResult }, 
+            { 'disabled': disabled }
+        ]" 
         :style="inputStyle"
         type="text" 
         :placeholder="placeholder"
         v-model="input.value" 
-        @keyup="onKeyup"/>    
+        @keyup="onKeyup"
+        :disabled="disabled" />    
 
     <div class="status">
-        <span v-show="showError && hasError" class="error-message">
+        <span v-show="showError && errorResult" class="error-message">
             {{ errorMessage }}
         </span>
 
@@ -27,10 +33,10 @@ export default {
         inputStyle:    { type: String, default: '' },
         showError:     { type: Boolean, default: false },
         showCount:     { type: Boolean, default: false },
-        errorMessage:  { type: String, default: 'Error' },
         initialValue:  { type: String, default: '' },
-        minTextLength: { type: Number, default: 5 },
-        maxTextLength: { type: Number, default: 15 }
+        minTextLength: { type: Number, default: 0 },
+        maxTextLength: { type: Number, default: 20 },
+        disabled:      { type: Boolean, default: false }
     },
 
     data() {
@@ -42,24 +48,35 @@ export default {
     },
 
     computed: {
-        hasError: function() {
+        errorResult: function() {
             return (this.input.value.length > this.maxTextLength)
             || (this.input.value.length < this.minTextLength);
+        },
+
+        errorMessage: function() {
+            if( this.input.value.length < this.minTextLength ) {
+                return "Title must be more than " + this.minTextLength + " charactor(s)";
+            }
+            if( this.input.value.length > this.maxTextLength ) {
+                return "Title must be less than " + this.maxTextLength + " charactors";
+            }
+
+            return "Error";
         }
     },
 
     methods: {
         onKeyup: function() {
-            const isReady = !this.hasError && this.input.value !== this.initialValue;
+            const isReady = !this.errorResult && (this.input.value !== this.initialValue);
 
             const data = {
                 initialValue: this.initialValue,
                 inputValue: this.input.value,
-                hasError: this.hasError,
+                error: this.errorResult,
                 isReady: isReady
             }
 
-            this.$emit('valueChange', data);
+            this.$emit('changeValue', data);
         }
     },
 
@@ -99,4 +116,8 @@ export default {
         color: red;
     }
 } 
+
+.disabled {
+    color: rgba(190, 190, 190, 1);
+}
 </style>

@@ -1,12 +1,12 @@
 <template>
     <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-        :style="[ columnWidth, 
-            dragItem.enterCell.cellAddress 
-                == getCellAddress(getRowIndex(day.date), memberId) 
+        :style="[ columnWidth,
+            dragItem.enterCell.cellAddress
+                == getCellAddress(getRowIndex(day.date), memberId)
                 ? dragEnterStyle : ''
         ]"
-        @click="clickCell(dayIndex, memberId)"
-        @dragenter="handleDragEnter(day.date, memberId)"
+        @click="clickCell(dayIndex, memberId, cellItems)"
+        @dragenter="handleDragEnter(day.date, memberId, cellItems)"
         @dragover="handleDragOver($event)"
         @drop.stop="handleDrop()"
         >
@@ -15,20 +15,21 @@
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
             :draggable="!dragItem.isLoading"
-            @dragstart="handleDragStart(item)"
+            @dragstart="handleDragStart(cellItems, item)"
             @dragend="handleDragEnd()"
             >
 
-            <item 
-                :isEventItem="isEventItem" 
-                :isTaskItem="isTaskItem" 
+            <item
+                :cellItems="cellItems"
+                :isEventItem="isEventItem"
+                :isTaskItem="isTaskItem"
                 :item="item"
             ></item>
 
         </div>
 
-        <item-insert-field 
-            v-if="addItem.enterCell.dayIndex === dayIndex 
+        <item-insert-field
+            v-if="addItem.enterCell.dayIndex === dayIndex
                 && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
     </td>
@@ -76,7 +77,7 @@ export default {
         }),
 
         dragEnterStyle: function() {
-            return { 
+            return {
                 border: '2px solid ' + this.theme.secondary.code
             }
         }
@@ -96,17 +97,17 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-        clickCell(dayIndex, memberId) {
-            this.insertPrepare( { dayIndex, memberId } );
+        clickCell(dayIndex, memberId, cellItems) {
+            this.insertPrepare( { dayIndex, memberId, cellItems } );
         },
 
-        handleDragStart(draggingItem) {
+        handleDragStart(cellItems, draggingItem) {
             this.insertReset();
-            this.dragStart({ draggingItem });
+            this.dragStart({ cellItems, draggingItem });
         },
 
-        handleDragEnter(dayString, memberId) {
-            this.dragEnter({ dayString, memberId });
+        handleDragEnter(dayString, memberId, cellItems) {
+            this.dragEnter({ dayString, memberId, cellItems });
         },
 
         handleDragOver(e) {
@@ -120,11 +121,6 @@ export default {
         handleDragEnd() {
             this.dragEnd();
         }
-    },
-
-    mounted() {
-        this.$store.commit('calendar/tableView/sortCellItems', this.cellItems);
-        this.$store.commit('calendar/tableView/checkTime', this.cellItems);
     }
-} 
+};
 </script>

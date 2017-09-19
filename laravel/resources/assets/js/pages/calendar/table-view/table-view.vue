@@ -1,26 +1,32 @@
 <template id="calendar">
 <div>
-    <popup-menu 
+    <popup-menu
         v-if="filteredBody && editItem.isActive"
-        :clickX="editItem.clickX" 
-        :clickY="editItem.clickY" 
-        :isActive="editItem.isActive" 
+        :clickX="editItem.clickX"
+        :clickY="editItem.clickY"
+        :isActive="editItem.isActive"
         :onClose="popupMenuClose"
         :offsetY="topPosition"
         :scrollX="scrollPositionX"
         :scrollY="scrollPositionY"
-        ><item-edit-popup-content></item-edit-popup-content>
+        :height="340"
+        :width="240"
+        ><item-edit-popup-content
+            :height="340"
+            :width="240"
+            @close="popupMenuClose"
+        ></item-edit-popup-content>
     </popup-menu>
 
     <div class="panel" :style="isLoading ? 'height: 100vh' : ''">
 
-    <table 
+    <table
         class="table is-bordered thin"
         style="width: 100%;"
     >
         <thead v-if="filteredColumns">
             <tr>
-                <th class="header-styling thin" 
+                <th class="header-styling thin"
                     style="padding: 0.4rem 1rem"
                     :style="[style.dayColumnWidth]"
                 ></th>
@@ -38,15 +44,15 @@
         <tbody v-if="filteredBody">
             <tr v-for="(day, dayIndex) in filteredBody"
                 :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }">
-    
+
                 <td class="date-styling" :style="[style.dayColumnWidth]">
                     <span>{{ getDateAndDay(day.date) }}</span>
                 </td>
-    
+
                 <template v-for="(cellItems, memberId) in day.items">
-                    <cell-items 
-                        :day="day" 
-                        :dayIndex="dayIndex" 
+                    <cell-items
+                        :day="day"
+                        :dayIndex="dayIndex"
                         :cellItems="cellItems"
                         :memberId="memberId"
                         :columnWidth="columnWidth"
@@ -73,17 +79,18 @@ import chroma from 'chroma-js';
 
 
 export default {
+    //name: 'table-view-content',
     name: 'table-view-content',
 
-    components: { 
-        popupMenu, cellItems, itemEditPopupContent, miniCalBar 
+    components: {
+        popupMenu, cellItems, itemEditPopupContent, miniCalBar
     },
 
     mixins: [ dateUtilities ],
 
     props: {
-        filteredColumns: { type: Object,  required: false }, 
-        filteredBody:    { type: Array,   required: false }, 
+        filteredColumns: { type: Object,  required: false },
+        filteredBody:    { type: Array,   required: false },
         isLoading:       { type: Boolean, default: false },
         isFixed:         { type: Boolean, default: false },
         topPosition:     { type: Number,  required: false },
