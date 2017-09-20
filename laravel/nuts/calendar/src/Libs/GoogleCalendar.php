@@ -4,13 +4,6 @@
 
     class GoogleCalendar
     {
-
-//        $start_date = '2010-01-01T00%3A00%3A00.000Z';
-//        $end_date = '2020-12-31T00%3A00%3A00.000Z';
-//        $api_key = 'AIzaSyDOWpzniKoIe-akEtPApMeJXHq_HXoMSlw';
-//        $holidays_id = 'japanese__ja@holiday.calendar.google.com';
-//        $maxResults = 100;
-
         private $apiKey;
 
         public function __construct( $apiKey )

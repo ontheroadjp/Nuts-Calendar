@@ -2,8 +2,6 @@
 
 namespace Nuts\Calendar\Models;
 
-//use Nuts\Calendar\Models\Item;
-//use Nuts\Calendar\Models\Member;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,9 +19,8 @@ class Calendar extends Model
 
     public function getFlagsAttribute() {
         return [
-            'is_saturday' => false
-            , 'is_sunday' => false
-            , 'is_holiday' => false
+            'is_saturday' => false,
+            'is_sunday' => false
         ];
     }
 
@@ -32,17 +29,13 @@ class Calendar extends Model
         return $this->hasMany(Item::class, 'date', 'date');
     }
 
-    public function holiday()
+    public function holidays()
     {
         return $this->hasMany(Holiday::class, 'date', 'date');
     }
 
     public function fetch($userId, $userCalendarId, $year, $month)
     {
-//        $members = Member::where('user_id', $userCalendarId)
-//                ->get()
-//                ->keyBy('id');
-
         if($userCalendarId === 'dashboard') return;
 
         $allMembers = Member::where('user_id', $userId)->get()->keyBy('id')->toArray();
@@ -75,7 +68,7 @@ class Calendar extends Model
 
     public function fetchCalendarWithHolidayAndItems($year,$month)
     {
-        return Calendar::with('items')->with('holiday')
+        return Calendar::with('holidays', 'items')
             ->where('date', 'LIKE', "%$year-$month%")
             ->get();
     }
@@ -106,11 +99,6 @@ class Calendar extends Model
             // add empty item
             for( $i=0; $i < count($diff); $i++ ) {
                 $items_group_by->put($diff[$i], []);
-//                $items_group_by->put($diff[$i], array([
-//                    'editing' => false,
-//                    'is_hover' => false,
-//                    'is_drag_start' => false
-//                ]));
             }
 
             // replace items to new one

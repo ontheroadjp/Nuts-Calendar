@@ -25,17 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserCalendarsTableSeeder::class);
 
         // member
-//        $faker = Faker::create('en_US');
-//        foreach( User::all(['id']) as $val ) {
-//            for( $i=1; $i<rand(3, 6); $i++ ) {
-//                Member::create([
-//                    'name' => $faker->name,
-//                    'user_id' => $val->id,
-//                ]);
-//            }
-//        }
         $this->call(MembersTableSeeder::class);
-
 
         // item type
         $this->call(ItemTypesTableSeeder::class);

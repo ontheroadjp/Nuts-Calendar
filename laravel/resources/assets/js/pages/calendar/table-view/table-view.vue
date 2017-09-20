@@ -43,20 +43,26 @@
 
         <tbody v-if="filteredBody">
             <tr v-for="(day, dayIndex) in filteredBody"
-                :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }">
-
+                :class="{ saturday: isSaturday(day.date),
+                            sunday: isSunday(day.date) || day.holidays.length > 0
+                        }">
                 <td class="date-styling" :style="[style.dayColumnWidth]">
-                    <div style="margin-bottom: 5px;"><span :style="[ day.is_today ? style.today : '' ]">
-                        {{ getDateAndDay(day.date) }}
-                    </span></div>
+                    <div style="margin-bottom: 5px;">
+                        <span :style="[ day.is_today ? style.today : '' ]">
+                            {{ getDateAndDay(day.date) }}
+                        </span>
+                    </div>
 
-                    <div v-for="holiday in day.holiday"
+                    <div v-for="holiday in day.holidays"
                         class="date-label"
                         style="background-color: red;"
                     >{{ holiday.holiday_name }}</div>
 
-                    <div v-show="lang === 'ja'" class="date-label">{{ day.lunar_month_chinese }} {{ day.lunar_day_chinese }}</div>
-                    <div v-show="lang === 'ja'" class="date-label">{{ rokuyou(day.lunar_month, day.lunar_day) }}</div>
+                    <div v-show="lang === 'ja'" class="date-label">
+                        {{ rokuyou(day.lunar_month, day.lunar_day) }}
+                    </div>
+
+                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.lunar_month_chinese }} {{ day.lunar_day_chinese }}</div> -->
                     <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.constellation }}</div> -->
                     <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.week_name }}</div> -->
                     <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.animal }}</div> -->
