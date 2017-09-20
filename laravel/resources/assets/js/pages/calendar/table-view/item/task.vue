@@ -1,19 +1,18 @@
 <template>
-    <span class="item is-task" 
-        :style="searchHighlightStyle"
+    <span class="item is-task"
         @click.stop="clickItem($event)">
 
         <span :class="{'task-done': item.is_done}">
-            <input id="item.id" 
-                type="checkbox" 
-                style="margin-right: 8px" 
-                @click.stop="clickDone()" 
-                :checked="item.is_done"> 
+            <input id="item.id"
+                type="checkbox"
+                style="margin-right: 8px"
+                @click.stop="clickDone()"
+                :checked="item.is_done">
 
-            <span>{{ item.content }}</span>
+            <span :style="searchHighlightStyle">{{ item.content }}</span>
 
-            <span class="icon is-small" 
-                v-show="(dragItem.isLoading || deleteItem.isLoading) 
+            <span class="icon is-small"
+                v-show="(dragItem.isLoading || deleteItem.isLoading)
                             && dragItem.draggingItem === item"
                 ><i class="fa fa-refresh fa-spin"></i>
             </span>
@@ -26,7 +25,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 
-    props: [ 'item' ],
+    props: [ 'cellItems', 'item' ],
 
     computed: {
         ...mapState('calendar/tableView/item', {
@@ -39,7 +38,7 @@ export default {
         }),
 
         searchHighlightStyle: function() {
-            if( this.searchQuery != '' 
+            if( this.searchQuery != ''
                     && this.item.content.toLowerCase().indexOf(this.searchQuery) != -1) {
                 return { backgroundColor: '#FFEB3B' }
             }
@@ -58,7 +57,7 @@ export default {
 
         clickItem(e) {
             u.clog('clickItem()');
-            this.updatePrepare( { editingItem: this.item} );
+            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
             this.removePrepare( { event: e, deletingItem: this.item } );
             this.updatePrepareModal( { event: e } );
             this.insertReset();
@@ -68,7 +67,7 @@ export default {
         },
 
         clickDone() {
-            this.updatePrepare( { editingItem: this.item } );
+            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
             this.toggleTaskDone({ item: this.item });
         }
     }

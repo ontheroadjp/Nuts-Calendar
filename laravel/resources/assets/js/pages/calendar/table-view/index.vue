@@ -7,8 +7,8 @@
 
     <div id="table-view">
 
-        <black-screen 
-            v-if="disabled" 
+        <black-screen
+            v-if="disabled"
             color="rgba(242, 242, 242, .6)"
             :onActive="function() {
                 this.$store.commit('calendar/tableView/item/insert/reset');
@@ -17,26 +17,26 @@
 
         <black-screen v-if="calendarIsLoading">
             <div class="loading-black-screen">
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw" 
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"
                     style="margin-bottom: .5em"></i>
                 <div>is Loading...</div>
             </div>
         </black-screen>
 
-        <div :id="id.header" 
+        <div :id="id.header"
             :class="['main-calendar-panel-header', {sticky: isFixed}]"
-            ><table-view 
+            ><table-view
                 :filtered-columns="filteredColumns"
                 :isLoading="calendarIsLoading"
                 :isFixed="isFixed"
             ></table-view>
         </div>
-   
-        <div :id="id.body" 
-             :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]" 
+
+        <div :id="id.body"
+             :class="['main-calendar-panel-body', {'sticky-offset': isFixed}]"
              @scroll="onScrollBody()"
-            ><table-view 
-                :filtered-body="filteredBody" 
+            ><table-view
+                :filtered-body="filteredBody"
                 :isLoading="calendarIsLoading"
                 :topPosition="(height.headerNav + height.signboard + height.toolPalette)"
                 :scrollPositionY="scrollPositionY"
@@ -46,10 +46,10 @@
     </div>
 
     <!-- jump to the page top button -->
-    <a  href="#top" 
-        v-show="scrollPositionY > fixedHeight && !draggingItem" 
-        class="button" 
-        style="position: fixed; bottom: 30px; right: 30px; color: #fff" 
+    <a  href="#top"
+        v-show="scrollPositionY > fixedHeight && !draggingItem"
+        class="button"
+        style="position: fixed; bottom: 30px; right: 30px; color: #fff"
         :style="'background-color: ' + theme.primary.code"
         >{{ t('calendar.jumpToTop') }}
     </a>
@@ -61,9 +61,9 @@
     import blackScreen from '../../../components/black-screen.vue';
     import core from '../../../mixins/core.js';
     import tableView from './table-view.vue';
-    import toolPalette from './table-tool-palette.vue';
+    import toolPalette from './tool-palette/index.vue';
     import dateUtilities from '../../../mixins/date-utilities.js';
-    
+
     export default {
         components: { tableView, toolPalette, blackScreen },
 
@@ -93,7 +93,7 @@
                 },
             }
         },
-        
+
         computed: {
             ...mapState('dashboard', {
                 disabled: state => state.disabled
@@ -101,8 +101,10 @@
 
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
-                searchQuery: state => (state.query.search).toLowerCase(),
-                internalQuery: state => state.query.internal
+                isEventItemShow: state => state.isEventItemShow,
+                isTaskItemShow: state => state.isTaskItemShow,
+                internalQuery: state => state.query.internal,
+                searchQuery: state => (state.query.search).toLowerCase()
             }),
 
             ...mapState('calendar/tableView/item/dnd', {
@@ -114,8 +116,8 @@
             },
 
             fixedHeight: function() {
-                return this.height.headerNav 
-                        + this.height.signboard 
+                return this.height.headerNav
+                        + this.height.signboard
                         + this.height.toolPalette;
             },
 
@@ -127,23 +129,20 @@
                 cache: true,
                 get() {
                     let data = this.$store.state.calendar.data.calendars;
-    
+
                     // filter by search words
                     if(this.searchQuery) {
                         data = data.slice().filter( day => {
                             return this.getItemContentsAsString(day).indexOf(this.searchQuery) > -1;
                         });
                     }
-    
-                    // filter by day of the week
+
+                    // filter by a day of week
                     if(this.internalQuery) {
                         data = data.slice().filter( row => {
                             return this.getDayIndex(row['date']) == this.internalQuery;
                         });
                     }
-
-                    // sort cell items
-                    this.$store.commit('calendar/tableView/sortCellItemsByStartTime', data);
 
                     return data;
                 }
@@ -156,10 +155,14 @@
                 let columns = day.items;
                 const memberIds = Object.keys(columns);
 
-                memberIds.forEach(function(id) {
+                memberIds.forEach((id) => {
                     const cellItems = columns[id];
-                    cellItems.forEach(function(item) {
-                        result += item.content.toLowerCase() + ' ';
+                    cellItems.forEach((item) => {
+                        if( item.type_id === 1 && this.isEventItemShow ) {
+                            result += item.content.toLowerCase() + ' ';
+                        } else if( item.type_id === 2 && this.isTaskItemShow ) {
+                            result += item.content.toLowerCase() + ' ';
+                        }
                     });
                 });
                 return result;
@@ -170,7 +173,7 @@
                     this.height.headerNav = document.getElementById('headerNav').clientHeight;
                     this.height.signboard = document.getElementById('signboard').clientHeight;
                     this.height.toolPalette = 0;
-    
+
                     if(this.$route.path == '/calendar/view' && this.isToolPaletteOpen) {
                         this.height.toolPalette = document.getElementById('tool-palette').clientHeight -2;
                     }
@@ -197,7 +200,7 @@
                 document.onscroll = function(e) {
                     self.scrollPositionY = document.documentElement.scrollTop || document.body.scrollTop;
                 };
-    
+
                 this.elements.tableHeader = document.getElementById(this.id.header);
                 this.elements.tableBody = document.getElementById(this.id.body);
             });
