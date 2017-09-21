@@ -85,18 +85,8 @@ export default {
             state.isLoading = value;
         },
 
-//        start( state, { key } ) {
-//            state.isLoading[key] = true;
-//        },
-
         setUpdateValue( state, { key, value } ) {
             state.updateValues[key] = value;
-        },
-
-//        stop( state ) {
-//            Object.keys(state.isLoading).forEach(function(key) {
-//                this[key] = false;
-//            }, state.isLoading );
-//        }
+        }
     }
-}
+};
