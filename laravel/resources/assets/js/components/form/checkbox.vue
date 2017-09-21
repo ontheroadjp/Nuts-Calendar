@@ -48,12 +48,14 @@ export default {
         }
     },
 
-    mounted() {
-        if( typeof this.initialValue === 'number' ) {
-            this.initialValue > 0 ? this.input = true : this.input = false;
-        } else {
-            u.clog('initialValue: ' + this.initialValue);
-            this.input = this.initialValue;
+    watch: {
+        initialValue: function() {
+            if( typeof this.initialValue === 'number' ) {
+                this.initialValue > 0 ? this.input = true : this.input = false;
+            } else {
+                u.clog('initialValue: ' + this.initialValue);
+                this.input = this.initialValue;
+            }
         }
     }
 };

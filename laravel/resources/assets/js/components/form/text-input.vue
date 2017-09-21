@@ -98,9 +98,15 @@ export default {
         }
     },
 
-    mounted() {
-        this.input.value = this.initialValue.trim();
+    watch: {
+        initialValue: function() {
+            this.input.value = this.initialValue.trim();
+        }
     }
+
+//    mounted() {
+//        this.input.value = this.initialValue.trim();
+//    }
 }
 </script>
 
