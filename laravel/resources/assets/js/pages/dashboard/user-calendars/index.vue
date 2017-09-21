@@ -1,9 +1,9 @@
 <<template>
 <div id="dashboard-user=calendar-pane">
-    <user-calendar-modal
+    <user-calendar-edit-modal
         v-show="modal.isActive"
         :onClose="closeDialog"
-    ></user-calendar-modal>
+    ></user-calendar-edit-modal>
 
     <div class="columns is-multiline">
         <template v-for="uCal in userCalendars">
@@ -42,11 +42,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import userCalendarModal from './edit-modal.vue';
+import userCalendarEditModal from './edit-modal.vue';
 import userCalendarCard from './card.vue';
 
 export default {
-    components: { userCalendarModal, userCalendarCard },
+    components: { userCalendarEditModal, userCalendarCard },
 
     data() {
         return {
