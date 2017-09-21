@@ -1,9 +1,4 @@
 <template>
-    <!-- <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
-        <edit-modal-content
-            :userCalendar="userCalendar"
-        ></edit-modal-content>
-    </simple-modal> -->
     <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
         <edit-modal-content></edit-modal-content>
     </simple-modal>

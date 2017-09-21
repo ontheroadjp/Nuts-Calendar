@@ -104,7 +104,6 @@ export default {
     },
 
     props: {
-//        userCalendar:    { type: Object, required: true },
         updateIsLoading: { type: Boolean, default: false }
     },
 
@@ -181,10 +180,6 @@ export default {
             this.initUserCalendarMemberIds();
         }
     }
-
-//    created() {
-//        this.initUserCalendarMemberIds();
-//    }
 };
 </script>
 
