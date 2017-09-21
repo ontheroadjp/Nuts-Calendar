@@ -2,11 +2,8 @@ export default {
     namespaced: true,
 
     state: {
-        isLoading: {
-            name: false,
-            description: false
-        },
-
+        isLoading: false,
+        editingUserCalendar: '',
         updateValues: {
             id: '',
             name: '',
@@ -23,17 +20,8 @@ export default {
             commit('setUpdateValue', { key, value } );
         },
 
-//        updateName( { commit, dispatch } ) {
-//            commit('start', { key: 'name' });
-//            dispatch('update');
-//        },
-//
-//        updateDescription( { commit, dispatch } ) {
-//            commit('start', { key: 'description' });
-//            dispatch('update');
-//        },
-
         update( { state, commit, rootState }, notify = true) {
+            commit('isLoading', true);
 
             const url = '/api/v1/calendar/' + state.updateValues.id;
             const data = {
@@ -68,7 +56,7 @@ export default {
                         }, { root: true});
                     }
 
-                    commit('stop');
+                    commit('isLoading', false);
                 })
 
                 .catch( error => {
@@ -79,30 +67,36 @@ export default {
                         isActive: true
                     }, { root: true});
 
-                    commit('stop');
+                    commit('isLoading', false);
                 });
         }
     },
 
     mutations: {
         prepare( state, { userCalendar } ) {
+            state.editingUserCalendar = userCalendar;
+
             Object.keys(state.updateValues).forEach(function(key) {
                 this[key] = userCalendar[key];
             }, state.updateValues );
         },
 
-        start( state, { key } ) {
-            state.isLoading[key] = true;
+        isLoading( state, value ) {
+            state.isLoading = value;
         },
+
+//        start( state, { key } ) {
+//            state.isLoading[key] = true;
+//        },
 
         setUpdateValue( state, { key, value } ) {
             state.updateValues[key] = value;
         },
 
-        stop( state ) {
-            Object.keys(state.isLoading).forEach(function(key) {
-                this[key] = false;
-            }, state.isLoading );
-        }
+//        stop( state ) {
+//            Object.keys(state.isLoading).forEach(function(key) {
+//                this[key] = false;
+//            }, state.isLoading );
+//        }
     }
 }
