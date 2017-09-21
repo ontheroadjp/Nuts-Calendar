@@ -1,8 +1,11 @@
 <template>
-    <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
+    <!-- <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
         <edit-modal-content
             :userCalendar="userCalendar"
         ></edit-modal-content>
+    </simple-modal> -->
+    <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
+        <edit-modal-content></edit-modal-content>
     </simple-modal>
 </template>
 
@@ -14,8 +17,8 @@ export default {
     components: { simpleModal, editModalContent },
 
     props: {
-        userCalendar: { type: Object, required: true },
-        onClose:      { type: Function, required: true }
+//        userCalendar: { type: Object, required: true },
+        onClose:        { type: Function, required: true }
     }
 };
 </script>

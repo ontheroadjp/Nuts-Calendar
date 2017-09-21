@@ -104,7 +104,7 @@ export default {
     },
 
     props: {
-        userCalendar:    { type: Object, required: true },
+//        userCalendar:    { type: Object, required: true },
         updateIsLoading: { type: Boolean, default: false }
     },
 
@@ -119,6 +119,10 @@ export default {
     computed: {
         ...mapState('member', {
             members: state => state.data.members
+        }),
+
+        ...mapState('userCalendar/update', {
+            userCalendar: state => state.editingUserCalendar
         }),
 
         ...mapState('userCalendarMember', {
@@ -163,6 +167,7 @@ export default {
         },
 
         initUserCalendarMemberIds: function() {
+            this.userCalendarMemberIds = [];
             this.userCalendarMembers.forEach( ( val ) => {
                 if( val.user_calendar_id === this.userCalendar.id ) {
                     this.userCalendarMemberIds.push(val.member_id);
@@ -171,9 +176,15 @@ export default {
         }
     },
 
-    created() {
-        this.initUserCalendarMemberIds();
+    watch: {
+        userCalendar: function() {
+            this.initUserCalendarMemberIds();
+        }
     }
+
+//    created() {
+//        this.initUserCalendarMemberIds();
+//    }
 };
 </script>
 
