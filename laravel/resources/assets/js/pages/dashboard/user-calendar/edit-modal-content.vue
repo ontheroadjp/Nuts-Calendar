@@ -43,7 +43,6 @@
                 </div>
             </li>
         </ul>
-
     </div>
 
     <div class="popup-footer">
@@ -141,20 +140,12 @@ export default {
             removeUserCalendarMember: 'remove'
         }),
 
-//        changeName(data) {
-//            this.setUpdateValue({ key: 'name', value: data.inputValue });
-//        },
-
         blurName(data) {
             if(data.isReady) {
                 this.setUpdateValue({ key: 'name', value: data.inputValue });
                 this.update(false);
             }
         },
-
-//        changeDescription(data) {
-//            this.setUpdateValue({ key: 'description', value: data.inputValue });
-//        },
 
         blurDescription(data) {
             if(data.isReady) {
@@ -183,8 +174,7 @@ export default {
     created() {
         this.initUserCalendarMemberIds();
     }
-
-}
+};
 </script>
 
 <style lang="scss" scoped>
