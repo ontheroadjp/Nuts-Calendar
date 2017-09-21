@@ -1,21 +1,5 @@
 <template>
 <div>
-    <!-- <user-calendar-modal
-        :isActive.sync="modal.isActive"
-        :userCalendar="userCalendar"
-    ></user-calendar-modal> -->
-
-    <!-- <user-calendar-modal
-        v-show="modal.isActive"
-        :onClose="closeDialog"
-        :userCalendar="userCalendar"
-    ></user-calendar-modal> -->
-
-    <!-- <user-calendar-modal
-        v-show="modal.isActive"
-        :onClose="closeDialog"
-    ></user-calendar-modal> -->
-
     <div :class="['card', 'is-clickable', theme.primary.class]"
         :style="style.calendarCard">
 
@@ -56,13 +40,9 @@
 </template>
 
 <script>
-//import { mapState, mapActions, mapMutations } from 'vuex';
 import { mapState } from 'vuex';
-//import userCalendarModal from './edit-modal.vue';
 
 export default {
-//    components: { userCalendarModal },
-
     props: {
         userCalendar:   { type: Object, required: true },
         clickSettings:  { type: Function, required: true }
@@ -94,21 +74,6 @@ export default {
     },
 
     methods: {
-//        ...mapActions('userCalendar/update', {
-//            prepare: 'prepare',
-//            reset: 'reset'
-//        }),
-
-//        openDialog: function() {
-//            this.modal.isActive = true;
-//            this.prepare({ userCalendar: this.userCalendar });
-//        },
-
-//        closeDialog: function() {
-//            this.modal.isActive = false;
-//            this.reset();
-//        },
-
         clickUserCalendar: function(id) {
             u.clog('changeCalendar(' + id + ')');
             this.$store.commit('calendar/setValue', {
