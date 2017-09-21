@@ -2,7 +2,7 @@
 <div class="card thin" style="height: 100%; background-color: #fff;">
     <div class="main">
         <div class="content">
-            <text-input 
+            <text-input
                 :initialValue="editingItem.content"
                 :showError="true"
                 :minTextLength="1"
@@ -14,7 +14,7 @@
         </div>
 
         <div class="time-range">
-            <timeRangePicker 
+            <timeRangePicker
                 :minute-interval="5"
                 :initialStartTime="editingItem.start_time"
                 :initialEndTime="editingItem.end_time"
@@ -49,20 +49,20 @@
 
     <div class="popup-footer">
         <div v-show="!showDeleteConfirm" style="display: flex; justify-content: space-around">
-            <button 
-                class="button strip thin" 
-                @click="showDeleteConfirm = true" 
+            <button
+                class="button strip thin"
+                @click="showDeleteConfirm = true"
                 :disabled="updateIsLoading"
             >Delete</button>
 
-            <button class="button strip thin" 
+            <button class="button strip thin"
                 :disabled="!isReadyResult"
                 @click="clickSave()">
                 <span v-if="!updateIsLoading" class="icon is-small" style="width:100%">
                     Save
                 </span>
                 <span v-else class="icon is-small" style="width:100%">
-                    <i class="fa fa-refresh fa-spin"></i> 
+                    <i class="fa fa-refresh fa-spin"></i>
                 </span>
             </button>
         </div>
@@ -77,15 +77,15 @@
                     <i v-else class="fa fa-refresh fa-spin fa-3x" style="margin-top:60px"></i>
                 </p>
                 <p v-show="!removeIsLoading">Delete {{ input.content }} ?</p>
-                
+
                 <div v-show="!removeIsLoading" class="delete-confirm-buttons">
-                    <button class="button strip" 
-                        style="color:#fff" 
+                    <button class="button strip"
+                        style="color:#fff"
                         @click="showDeleteConfirm = false"
                         :disabled="updateIsLoading"
                     >Cancel</button>
 
-                    <button class="button strip" 
+                    <button class="button strip"
                         style="color:#fff"
                         @click="clickDeleteOK()"
                     >OK</button>
@@ -99,7 +99,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import textInput from '../../../../components/text-input.vue';
+import textInput from '../../../../components/form/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 import allDayCheckbox from './all-day-checkbox.vue';
 import memoTextarea from './input-textarea.vue';
@@ -238,13 +238,13 @@ export default {
     },
 
     mounted: function() {
-        this.input.content = this.editingItem.content; 
-        this.input.startTime = this.editingItem.start_time; 
-        this.input.endTime = this.editingItem.end_time; 
+        this.input.content = this.editingItem.content;
+        this.input.startTime = this.editingItem.start_time;
+        this.input.endTime = this.editingItem.end_time;
         if( typeof this.editingItem.is_all_day === 'number' ) {
-            this.input.allDay = (this.editingItem.is_all_day > 0) 
+            this.input.allDay = (this.editingItem.is_all_day > 0)
         } else {
-            this.input.allDay = this.editingItem.is_all_day; 
+            this.input.allDay = this.editingItem.is_all_day;
         }
         this.input.memo = this.editingItem.memo;
 
@@ -256,13 +256,13 @@ export default {
 //            .delete-confirm-leave-active {
 //                transition: all .3s ease;
 //            }
-//            
+//
 //            .delete-confirm-leave-to,
 //            .delete-confirm-enter {
 //                height: 0;
 //                opacity: 0;
 //            }
-//            
+//
 //            .delete-confirm-enter-to,
 //            .delete-confirm-leave {
 //                opacity: 1;
@@ -275,7 +275,7 @@ export default {
 //        css.appendChild(rule);
 //        doc.getElementsByTagName('head')[0].appendChild(css);
     }
-}    
+}
 </script>
 
 <style lang="scss" scoped>
@@ -283,20 +283,9 @@ export default {
     padding: 20px;
 }
 
-.strip {
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    background: none;
-    outline: none;
-    &:hover {
-        border-bottom: 1px solid #red
-    }
-}
-
 .content {
     margin-bottom: 20px;
-} 
+}
 
 .time-range {
     margin-bottom: 5px;
@@ -351,7 +340,5 @@ export default {
 .delete-confirm-enter-to,
 .delete-confirm-leave {
     opacity: 1;
-    height: 330px;
 }
-
 </style>

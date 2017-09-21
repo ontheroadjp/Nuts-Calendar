@@ -74,7 +74,9 @@ export default {
             return {
                 calendarCard: {
                     'height': '150px',
-                    'background-image': 'linear-gradient(-135deg, ' + this.theme.secondary.code + ' 40px, transparent 0)'
+                    'background-image': 'linear-gradient(-135deg, '
+                                        + this.theme.secondary.code
+                                        + ' 40px, transparent 0)'
                 }
             }
         }

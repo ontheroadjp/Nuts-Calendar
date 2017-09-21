@@ -3,15 +3,17 @@
     <button class="modal-close" @click="clickClose()"></button>
     <div class="modal-card">
 
-        <section class="modal-card-body" style="padding: 40px;background-color: blue; color:white;">
-            <button 
-                class="delete" 
+        <section class="modal-card-body"
+            style="padding: 40px;background-color: blue; color:white;">
+
+            <button
+                class="delete"
                 style="position: absolute; top: 20px; right: 20px;"
-                aria-label="close" 
+                aria-label="close"
                 @click="clickClose()"
             ></button>
 
-            <inline-text-input 
+            <inline-text-input
                 id="item-content"
                 inputClass="title"
                 inputColor="#fff"
@@ -21,7 +23,7 @@
                 :syncValue.sync="input.content"
                 :defaultValue="updateState.editingItem.content"
                 :saveCallback="clickSave"
-            ></inline-text-input>  
+            ></inline-text-input>
         </section>
 
         <section class="modal-card-body" style="padding: 60px;">
@@ -29,7 +31,7 @@
                 <i class="fa fa-clock-o"></i>
             </span>
 
-            <timeRangePicker 
+            <timeRangePicker
                 minute-interval="5"
                 :startTime="updateState.editingItem.start_time"
                 :endTime="updateState.editingItem.end_time"
@@ -39,17 +41,17 @@
         </section>
 
         <footer class="modal-card-foot">
-            <button 
-                class="button is-danger" 
-                @click="clickRemove()" 
+            <button
+                class="button is-danger"
+                @click="clickRemove()"
                 :disabled="updateState.isLoading || deleteItem.isLoading"
                 >
                 <span v-if="!deleteItem.isLoading"><i class="fa fa-trash"></i></span>
                 <span v-else><i class="fa fa-refresh fa-spin"></i></span>
             </button>
-            <button 
-                class="button" 
-                @click="clickClose()" 
+            <button
+                class="button"
+                @click="clickClose()"
                 :disabled="updateState.isLoading || deleteItem.isLoading"
                 >Cancel
             </button>
@@ -106,7 +108,7 @@ export default {
         }),
 
         clickSave() {
-            this.setInputValues({ 
+            this.setInputValues({
                 content: this.input.content,
                 startTime: this.input.startTime,
                 endTime: this.input.endTime
@@ -126,9 +128,9 @@ export default {
     },
 
     mounted: function() {
-        this.input.content = this.updateState.editingItem.content; 
-        this.input.startTime = this.updateState.editingItem.start_time; 
-        this.input.endTime = this.updateState.editingItem.end_time; 
+        this.input.content = this.updateState.editingItem.content;
+        this.input.startTime = this.updateState.editingItem.start_time;
+        this.input.endTime = this.updateState.editingItem.end_time;
     },
 
     beforeDestroy() {
