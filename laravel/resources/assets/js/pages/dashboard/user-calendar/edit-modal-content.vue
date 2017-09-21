@@ -96,8 +96,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import textInput from '../../components/form/text-input.vue';
-import checkboxInput from '../../components/form/checkbox.vue';
+import textInput from '../../../components/form/text-input.vue';
+import checkboxInput from '../../../components/form/checkbox.vue';
 
 export default {
     components: {

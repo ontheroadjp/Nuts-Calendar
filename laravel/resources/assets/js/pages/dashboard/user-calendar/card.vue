@@ -46,7 +46,7 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex';
-import userCalendarModal from './user-calendar-modal.vue';
+import userCalendarModal from './edit-modal.vue';
 
 export default {
     components: {

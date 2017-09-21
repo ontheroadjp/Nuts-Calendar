@@ -3,9 +3,9 @@
 
 <!--
 <div class="container" style="width: 100%;" @click="click($event)">
-    <popup-menu 
-        :x="x" :y="y" 
-        :isActive.sync="isBoxActive" 
+    <popup-menu
+        :x="x" :y="y"
+        :isActive.sync="isBoxActive"
         :onClose="popupMenuClose"
     >
         <div style="margin:0; width:100%; height:100%; background-color: orange;">
@@ -22,7 +22,7 @@
             <today-date-card></today-date-card>
         </div>
     </div>
-    
+
     <!-- tab menu -->
     <menu-tabs :tabs="tabs">
         <div v-if="$route.path === '/dashboard'">
@@ -33,16 +33,16 @@
                     </div>
                 </template>
                 <div class="column is-6">
-                    <div class="new-user-calendar-card" 
+                    <div class="new-user-calendar-card"
                         style="text-align: center; cursor: pointer"
                         @click="clickNewCalendar()">
 
                         <div class="card-content" style="font-weight: 100">
 
-                            <a class="fa-stack fa-lg create-new-icon" 
+                            <a class="fa-stack fa-lg create-new-icon"
                                 style="margin-right: 10px">
 
-                                <i class="fa fa-calendar-plus-o fa-stack-1x" 
+                                <i class="fa fa-calendar-plus-o fa-stack-1x"
                                     style="margin-left:1px; color: #fff"></i>
                             </a>
                             <a href="">
@@ -53,7 +53,7 @@
                 </div>
             </div>
         </div><!-- // v-if -->
-    
+
         <member-settings v-else-if="$route.path === '/dashboard/members'"></member-settings>
     </menu-tabs>
 
@@ -66,7 +66,7 @@ import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
-import userCalendarCard from './user-calendar-card.vue';
+import userCalendarCard from './user-calendar/card.vue';
 import memberSettingsPane from './member-settings/index.vue';
 //import popupMenu from '../../components/popup-menu.vue';
 
@@ -86,7 +86,7 @@ export default {
                 '/dashboard': { label: 'Calendars', icon: 'fa-calendar'},
                 '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
             },
-                
+
 //            x: 0,
 //            y: 0,
 //            isBoxActive: false

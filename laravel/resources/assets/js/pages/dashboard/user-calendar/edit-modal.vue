@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import simpleModal from '../../components/simple-modal.vue';
-import userCalendarModalContent from './user-calendar-modal-content.vue';
+import simpleModal from '../../../components/simple-modal.vue';
+import userCalendarModalContent from './edit-modal-content.vue';
 
 export default {
     components: {
