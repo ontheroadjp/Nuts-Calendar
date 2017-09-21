@@ -8,8 +8,8 @@ export default {
         },
 
         updateValues: {
-            id: '', 
-            name: '', 
+            id: '',
+            name: '',
             description: ''
         }
     },
@@ -19,28 +19,32 @@ export default {
             commit('prepare',{ userCalendar });
         },
 
-        updateName( { commit, dispatch } ) {
-            commit('start', { key: 'name' });
-            dispatch('update');
+        setUpdateValue( { commit }, { key, value } ) {
+            commit('setUpdateValue', { key, value } );
         },
 
-        updateDescription( { commit, dispatch } ) {
-            commit('start', { key: 'description' });
-            dispatch('update');
-        },
+//        updateName( { commit, dispatch } ) {
+//            commit('start', { key: 'name' });
+//            dispatch('update');
+//        },
+//
+//        updateDescription( { commit, dispatch } ) {
+//            commit('start', { key: 'description' });
+//            dispatch('update');
+//        },
 
-        update( { state, commit, rootState } ) {
+        update( { state, commit, rootState }, notify = true) {
 
             const url = '/api/v1/calendar/' + state.updateValues.id;
             const data = {
                 'name': state.updateValues.name,
                 'description': state.updateValues.description,
             };
-    
+
             http.fetchPut(url, data)
                 .then( response => {
                     u.clog('success');
-        
+
                     const id = response.data.id;
                     const name = response.data.name;
                     const description = response.data.description;
@@ -51,16 +55,18 @@ export default {
                         value: name
                     }, { root: true });
 
-                    commit('userCalendar/setValue', { 
+                    commit('userCalendar/setValue', {
                         id: id,
                         key: 'description',
                         value: description
                     }, { root: true });
 
-                    commit('notifySuccess', {
-                        content: 'success update User Calendar',
-                        isImportant: false
-                    }, { root: true});
+                    if( notify ) {
+                        commit('notifySuccess', {
+                            content: 'success update User Calendar',
+                            isImportant: false
+                        }, { root: true});
+                    }
 
                     commit('stop');
                 })

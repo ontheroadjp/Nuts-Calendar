@@ -2,8 +2,12 @@
 <!-- <icon-header-modal v-if="isActive" icon="fa-calendar" :onClose="clickClose"> -->
 <simple-modal v-if="isActive" :opacity="parseFloat(0.4)" :onClose="clickClose">
 
+        <user-calendar-modal-content
+            :userCalendar="userCalendar"
+        ></user-calendar-modal-content>
+<!--
     <div slot="header">
-        <inline-text-input 
+        <inline-text-input
             id="calendar-name"
             inputClass="title thin-200"
             inputStyle=" color: #4a4a4a; margin-bottom: 15px"
@@ -14,9 +18,9 @@
             :defaultValue="userCalendar.name"
             :saveCallback="clickSaveName"
             :editingId.sync="editingId"
-        ></inline-text-input>  
+        ></inline-text-input>
 
-        <inline-text-input 
+        <inline-text-input
             id="calendar-description"
             inputClass="subtitle thin"
             inputStyle="color: #000"
@@ -27,30 +31,30 @@
             :defaultValue="userCalendar.description"
             :saveCallback="clickSaveDescription"
             :editingId.sync="editingId"
-        ></inline-text-input>  
+        ></inline-text-input>
     </div>
-
     <div slot="body">
         <label class="label thin-400">Members</label>
         <ul class="members">
             <li v-for="member in members" class="member">
-                <input :id="member.name" 
-                    type="checkbox" 
-                    class="nuts-input-checkbox" 
+                <input :id="member.name"
+                    type="checkbox"
+                    class="nuts-input-checkbox"
                     :checked="userCalendarMemberIds.indexOf(member.id) !== -1"
                     @change="changeMemberValue(
-                        member.name, 
+                        member.name,
                         userCalendar.id,
                         member.id
                     )"
                 >
-                <label :for="member.name" 
-                    class="member-checkbox-label" 
+                <label :for="member.name"
+                    class="member-checkbox-label"
                     style="display: inline;"
                 >{{ member.name }}</label>
             </li>
         </ul>
     </div>
+-->
 
 </simple-modal>
 <!-- </icon-header-modal> -->
@@ -62,11 +66,16 @@ import { mapState, mapActions, mapMutations } from 'vuex';
 import simpleModal from '../../components/simple-modal.vue';
 import inlineTextInput from '../../components/inline-text-input.vue';
 
+import userCalendarModalContent from './user-calendar-modal-content.vue';
+import textInput from '../../components/text-input.vue';
+
 export default {
     components: {
 //        iconHeaderModal,
         simpleModal,
-        inlineTextInput
+        inlineTextInput,
+        textInput,
+        userCalendarModalContent
     },
 
     props: {
@@ -77,7 +86,7 @@ export default {
     data() {
         return {
             editingId: '',
-            userCalendarMemberIds: [],
+//            userCalendarMemberIds: [],
         }
     },
 
@@ -129,13 +138,13 @@ export default {
             updateDescription: 'updateDescription'
         }),
 
-        ...mapActions('userCalendarMember/insert', {
-            insertUserCalendarMember: 'insert'
-        }),
-
-        ...mapActions('userCalendarMember/remove', {
-            removeUserCalendarMember: 'remove'
-        }),
+//        ...mapActions('userCalendarMember/insert', {
+//            insertUserCalendarMember: 'insert'
+//        }),
+//
+//        ...mapActions('userCalendarMember/remove', {
+//            removeUserCalendarMember: 'remove'
+//        }),
 
         clickClose: function() {
             this.$emit('update:isActive', false);
@@ -156,29 +165,29 @@ export default {
             this.input.description = this.userCalendar.description;
         },
 
-        changeMemberValue(elementId, userCalendarId, memberId) {
-//            const value = document.getElementById(elementId).checked;
+//        changeMemberValue(elementId, userCalendarId, memberId) {
+////            const value = document.getElementById(elementId).checked;
+//
+//            if( document.getElementById(elementId).checked ) {
+//                this.insertUserCalendarMember({ userCalendarId, memberId });
+//            } else {
+//                this.removeUserCalendarMember({ userCalendarId, memberId });
+//            }
+//        },
 
-            if( document.getElementById(elementId).checked ) {
-                this.insertUserCalendarMember({ userCalendarId, memberId });
-            } else {
-                this.removeUserCalendarMember({ userCalendarId, memberId });
-            }
-        },
-
-        initUserCalendarMemberIds: function() {
-            const self = this;
-            this.userCalendarMembers.forEach( function( val ) {
-                if( val.user_calendar_id === self.userCalendar.id ) {
-                    self.userCalendarMemberIds.push(val.member_id);
-                }
-            });
-        }
+//        initUserCalendarMemberIds: function() {
+//            const self = this;
+//            this.userCalendarMembers.forEach( function( val ) {
+//                if( val.user_calendar_id === self.userCalendar.id ) {
+//                    self.userCalendarMemberIds.push(val.member_id);
+//                }
+//            });
+//        }
     },
 
-    mounted() {
-        this.initUserCalendarMemberIds();
-    }
+//    mounted() {
+//        this.initUserCalendarMemberIds();
+//    }
 }
 </script>
 
