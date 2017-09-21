@@ -53,7 +53,6 @@ export default {
             if( typeof this.initialValue === 'number' ) {
                 this.initialValue > 0 ? this.input = true : this.input = false;
             } else {
-                u.clog('initialValue: ' + this.initialValue);
                 this.input = this.initialValue;
             }
         }
