@@ -9,10 +9,12 @@
         </div>
     </template>
 
+    <!-- New Calrendar panel -->
     <div class="column is-6">
         <div class="new-user-calendar-card"
             style="text-align: center; cursor: pointer"
-            @click="clickNewCalendar()">
+            @click="clickNewCalendar()"
+        >
 
             <div class="card-content" style="font-weight: 100">
 
@@ -20,8 +22,7 @@
                     style="margin-right: 10px"
                 >
                     <i class="fa fa-calendar-plus-o fa-stack-1x"
-                        style="margin-left:1px; color: #fff">
-                    </i>
+                        style="margin-left:1px; color: #fff"></i>
                 </a>
                 <a href="">
                     <span>Create New Calendar</span>
