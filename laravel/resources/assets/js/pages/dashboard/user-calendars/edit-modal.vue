@@ -1,20 +1,17 @@
 <template>
     <simple-modal v-if="isActive" :opacity="parseFloat(0.4)" :onClose="clickClose">
-        <user-calendar-modal-content
+        <edit-modal-content
             :userCalendar="userCalendar"
-        ></user-calendar-modal-content>
+        ></edit-modal-content>
     </simple-modal>
 </template>
 
 <script>
 import simpleModal from '../../../components/simple-modal.vue';
-import userCalendarModalContent from './edit-modal-content.vue';
+import editModalContent from './edit-modal-content.vue';
 
 export default {
-    components: {
-        simpleModal,
-        userCalendarModalContent
-    },
+    components: { simpleModal, editModalContent },
 
     props: {
         userCalendar: { type: Object, required: true },
