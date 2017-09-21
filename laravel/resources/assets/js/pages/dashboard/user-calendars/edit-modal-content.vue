@@ -43,7 +43,6 @@
                 </div>
             </li>
         </ul>
-
     </div>
 
     <div class="popup-footer">
@@ -96,8 +95,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import textInput from '../../components/form/text-input.vue';
-import checkboxInput from '../../components/form/checkbox.vue';
+import textInput from '../../../components/form/text-input.vue';
+import checkboxInput from '../../../components/form/checkbox.vue';
 
 export default {
     components: {
@@ -105,7 +104,7 @@ export default {
     },
 
     props: {
-        userCalendar:    { type: Object, required: true },
+//        userCalendar:    { type: Object, required: true },
         updateIsLoading: { type: Boolean, default: false }
     },
 
@@ -120,6 +119,10 @@ export default {
     computed: {
         ...mapState('member', {
             members: state => state.data.members
+        }),
+
+        ...mapState('userCalendar/update', {
+            userCalendar: state => state.editingUserCalendar
         }),
 
         ...mapState('userCalendarMember', {
@@ -141,20 +144,12 @@ export default {
             removeUserCalendarMember: 'remove'
         }),
 
-//        changeName(data) {
-//            this.setUpdateValue({ key: 'name', value: data.inputValue });
-//        },
-
         blurName(data) {
             if(data.isReady) {
                 this.setUpdateValue({ key: 'name', value: data.inputValue });
                 this.update(false);
             }
         },
-
-//        changeDescription(data) {
-//            this.setUpdateValue({ key: 'description', value: data.inputValue });
-//        },
 
         blurDescription(data) {
             if(data.isReady) {
@@ -172,6 +167,7 @@ export default {
         },
 
         initUserCalendarMemberIds: function() {
+            this.userCalendarMemberIds = [];
             this.userCalendarMembers.forEach( ( val ) => {
                 if( val.user_calendar_id === this.userCalendar.id ) {
                     this.userCalendarMemberIds.push(val.member_id);
@@ -180,11 +176,16 @@ export default {
         }
     },
 
-    created() {
-        this.initUserCalendarMemberIds();
+    watch: {
+        userCalendar: function() {
+            this.initUserCalendarMemberIds();
+        }
     }
 
-}
+//    created() {
+//        this.initUserCalendarMemberIds();
+//    }
+};
 </script>
 
 <style lang="scss" scoped>

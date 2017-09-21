@@ -4,9 +4,11 @@
         <span :style="[day]">{{ getDay(date) }}</span>
         <span style="font-size: 48px">th</span>
     </div>
+
     <div class="middle">
         <span :style="[date]">{{ getDate(date) }}</span>
     </div>
+
     <div :style="[bottom]">
         <span :style="[month]">{{ getMonth(date) }}</span>
         <span :style="[year]">{{ getYear(date) }}</span>
@@ -39,10 +41,12 @@ export default {
                 'font-weight': 400
             }
         },
+
         upper: function() {
             return {
             }
         },
+
         bottom: function() {
             return {
                 'position': 'absolute',
@@ -50,17 +54,20 @@ export default {
                 'right': '60px'
             }
         },
+
         year: function() {
             return {
                 'font-size': '24px'
             }
         },
+
         month: function() {
             return {
                 'font-size': '36px',
                 'color': this.theme.secondary.code
             }
         },
+
         day: function() {
             return {
                 'font-size': '96px',
@@ -68,5 +75,5 @@ export default {
             }
         }
     }
-}
+};
 </script>
