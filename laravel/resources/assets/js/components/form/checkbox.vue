@@ -1,5 +1,5 @@
 <template>
-    <label>
+    <label style="padding-left: 20px;">
         <input
             :id="id"
             :class="['input-checkbox', {'disabled': disabled}]"
@@ -8,7 +8,9 @@
             @change="onChange"
             :disabled="disabled"
         />
-        <span class="input-checkbox-parts" :style="labelStyle">{{ label }}</span>
+        <span class="input-checkbox-parts" :style="labelStyle">
+            {{ label }}
+        </span>
     </label>
 </template>
 
@@ -69,6 +71,7 @@ export default {
     font-size: 0.8em;
 
     &::before {
+    /*
         content: "";
         display: block;
         position: absolute;
@@ -78,6 +81,16 @@ export default {
         height: 15px;
         border: 1px solid #999;
         border-radius: 4px;
+    */
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: -0.5rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 1px solid #999;
+        border-radius: 50%;
     }
 }
 
@@ -87,6 +100,7 @@ export default {
 }
 
 .input-checkbox:checked + .input-checkbox-parts::after {
+/*
     content: "";
     display: block;
     position: absolute;
@@ -97,6 +111,16 @@ export default {
     transform: rotate(40deg);
     border-bottom: 3px solid #41b883;
     border-right: 3px solid #41b883;
+*/
+    content: "";
+    display: block;
+    position: absolute;
+    top: 3px;
+    left: calc(-0.5rem + 3px);
+    width: 0.8rem;
+    height: 0.8rem;
+    background-color: #5bbdca;
+    border-radius: 50%;
 }
 
 .input-checkbox.disabled + .input-checkbox-parts,
