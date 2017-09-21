@@ -1,10 +1,11 @@
 <template>
 <div>
     <div class="tabs thin">
+
         <ul style="border-bottom: none">
             <template v-for="(tab, uri) in tabs">
                 <li :style="$route.path === uri ? isActive : ''">
-                    <router-link :to="uri" 
+                    <router-link :to="uri"
                         :style="$route.path === uri ? isActive : ''">
 
                         <span class="icon is-small">
@@ -15,8 +16,11 @@
                 </li>
             </template>
         </ul>
+
     </div>
+
     <slot></slot>
+
 </div>
 </template>
 
@@ -41,5 +45,5 @@ export default {
             }
         }
     },
-}
+};
 </script>

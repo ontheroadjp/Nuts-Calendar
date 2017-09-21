@@ -11,13 +11,13 @@
 
     <!-- tab menu -->
     <menu-tabs :tabs="tabs">
-        <user-calendar-pane
+        <user-calendars-pane
             v-if="$route.path === '/dashboard'"
-        ></user-calendar-pane>
+        ></user-calendars-pane>
 
-        <member-settings
+        <members
             v-else-if="$route.path === '/dashboard/members'"
-        ></member-settings>
+        ></members>
     </menu-tabs>
 
 </div>
@@ -29,20 +29,20 @@ import VueRouter from 'vue-router';
 import { mapState } from 'vuex';
 import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
-import userCalendarPane from './user-calendar/index.vue';
-import memberSettingsPane from './member-settings/index.vue';
+import userCalendarsPane from './user-calendars/index.vue';
+import membersPane from './members/index.vue';
 
 export default {
 
     components: {
-        menuTabs, todayDateCard, userCalendarPane, memberSettingsPane
+        menuTabs, todayDateCard, userCalendarsPane, membersPane
     },
 
     data() {
         return {
             tabs: {
                 '/dashboard': { label: 'Calendars', icon: 'fa-calendar'},
-                '/dashboard/members': { label: 'Member Settings', icon: 'fa-gear'}
+                '/dashboard/members': { label: 'Members', icon: 'fa-gear'}
             }
         }
     },
