@@ -1,5 +1,12 @@
 <template>
+<!--
     <simple-modal v-if="isActive" :opacity="parseFloat(0.4)" :onClose="clickClose">
+        <edit-modal-content
+            :userCalendar="userCalendar"
+        ></edit-modal-content>
+    </simple-modal>
+-->
+    <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
         <edit-modal-content
             :userCalendar="userCalendar"
         ></edit-modal-content>
@@ -15,13 +22,14 @@ export default {
 
     props: {
         userCalendar: { type: Object, required: true },
-        isActive:     { type: Boolean, required: true }
+        onClose:      { type: Function, required: true }
+//        isActive:     { type: Boolean, required: true }
     },
 
-    methods: {
-        clickClose: function() {
-            this.$emit('update:isActive', false);
-        }
-    }
+//    methods: {
+//        clickClose: function() {
+//            this.$emit('update:isActive', false);
+//        }
+//    }
 };
 </script>

@@ -1,7 +1,13 @@
 <template>
 <div>
-    <user-calendar-modal
+    <!-- <user-calendar-modal
         :isActive.sync="modal.isActive"
+        :userCalendar="userCalendar"
+    ></user-calendar-modal> -->
+
+    <user-calendar-modal
+        v-show="modal.isActive"
+        :onClose="closeDialog"
         :userCalendar="userCalendar"
     ></user-calendar-modal>
 
@@ -31,7 +37,7 @@
                     {{ userCalendar.description }}
                 </p>
 
-                <a @click="openDialog(userCalendar)" style="transition: color 0.3s">
+                <a @click="openDialog()" style="transition: color 0.3s">
                     <div class="icon" style="position: absolute; top: 6px; right: 3px; color: #fff">
                         <i class="fa fa-gear" style="margin-right: 5px"></i>
                     </div>
@@ -85,9 +91,13 @@ export default {
             prepare: 'prepare',
         }),
 
-        openDialog: function( userCalendar ) {
+        openDialog: function() {
             this.modal.isActive = true;
-            this.prepare({ userCalendar });
+            this.prepare({ userCalendar: this.userCalendar });
+        },
+
+        closeDialog: function() {
+            this.modal.isActive = false;
         },
 
         clickUserCalendar: function(id) {
