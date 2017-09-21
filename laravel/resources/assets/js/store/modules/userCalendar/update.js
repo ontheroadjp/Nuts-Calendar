@@ -69,6 +69,10 @@ export default {
 
                     commit('isLoading', false);
                 });
+        },
+
+        reset: function( { commit } ) {
+            commit('reset');
         }
     },
 
@@ -87,6 +91,14 @@ export default {
 
         setUpdateValue( state, { key, value } ) {
             state.updateValues[key] = value;
+        },
+
+        reset( state ) {
+            state.isLoading = false;
+            state.editingUserCalendar = '';
+            state.updateValues.id = '';
+            state.updateValues.name = '';
+            state.updateValues.description = '';
         }
     }
 };
