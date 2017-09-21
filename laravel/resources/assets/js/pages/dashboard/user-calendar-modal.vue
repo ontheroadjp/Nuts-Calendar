@@ -64,10 +64,10 @@
 import { mapState, mapActions, mapMutations } from 'vuex';
 //import iconHeaderModal from '../../components/icon-header-modal.vue';
 import simpleModal from '../../components/simple-modal.vue';
-import inlineTextInput from '../../components/inline-text-input.vue';
+//import inlineTextInput from '../../components/inline-text-input.vue';
 
 import userCalendarModalContent from './user-calendar-modal-content.vue';
-import textInput from '../../components/text-input.vue';
+//import textInput from '../../components/form/text-input.vue';
 
 export default {
     components: {

@@ -24,7 +24,7 @@
             ></text-input>
     </div>
 
-    <div style="padding: 40px 60px; background-color: whitesmoke;">
+    <div style="padding: 40px 60px; background-color: whitesmoke; margin-bottom: 32px;">
         <ul class="members">
             <li v-for="member in members" class="member">
                 <div class="card" style="margin-bottom: 5px; padding: 10px;">
@@ -46,7 +46,7 @@
 
     </div>
 
-    <div class="dialog-footer">
+    <div class="popup-footer">
         <div v-show="!showDeleteConfirm"
             style="display: flex; justify-content: flex-end; width: 95%;"
         >
@@ -59,7 +59,6 @@
 
         <transition name="delete-confirm">
             <div class="card delete-confirm"
-                :style="'height: 150px;'"
                 v-show="showDeleteConfirm"
             >
                 <div style="
@@ -97,7 +96,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import textInput from '../../components/text-input.vue';
+import textInput from '../../components/form/text-input.vue';
 import checkboxInput from '../../components/form/checkbox.vue';
 
 export default {
@@ -189,7 +188,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dialog-footer {
+.popup-footer {
     position: absolute;
     bottom: 0;
     background-color: #fff;
@@ -208,6 +207,7 @@ export default {
     color: #fff;
     text-align: center;
     overflow: hidden;
+    height: 150px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
@@ -233,6 +233,6 @@ export default {
 .delete-confirm-enter-to,
 .delete-confirm-leave {
     opacity: 1;
-    /* height: 330px; */
+    height: 150px;
 }
 </style>

@@ -99,7 +99,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import textInput from '../../../../components/text-input.vue';
+import textInput from '../../../../components/form/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 import allDayCheckbox from './all-day-checkbox.vue';
 import memoTextarea from './input-textarea.vue';
@@ -340,7 +340,5 @@ export default {
 .delete-confirm-enter-to,
 .delete-confirm-leave {
     opacity: 1;
-    height: 500px;
 }
-
 </style>
