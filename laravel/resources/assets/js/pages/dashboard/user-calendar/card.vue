@@ -49,9 +49,7 @@ import { mapState, mapActions, mapMutations } from 'vuex';
 import userCalendarModal from './edit-modal.vue';
 
 export default {
-    components: {
-        'user-calendar-modal': userCalendarModal,
-    },
+    components: { userCalendarModal },
 
     props: {
         userCalendar: { type: Object, required: true }
@@ -100,5 +98,5 @@ export default {
             });
         }
     }
-}
+};
 </script>
