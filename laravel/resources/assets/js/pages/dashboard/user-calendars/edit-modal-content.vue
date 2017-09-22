@@ -99,9 +99,7 @@ import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 
 export default {
-    components: {
-        textInput, checkboxInput
-    },
+    components: { textInput, checkboxInput },
 
     props: {
         updateIsLoading: { type: Boolean, default: false }
