@@ -1,5 +1,12 @@
 <<template>
-<div class="card" :style="showDeleteConfirm ? 'height: 160px' : ''">
+<div class="card"
+    :style="showDeleteConfirm ||
+            showSuccessNotification ||
+            showFailedNotification
+                ? 'height: 160px'
+                : ''
+">
+
     <div style="padding: 40px;">
             <text-input
                 id="calendar-name"
@@ -89,6 +96,13 @@
                 </div>
             </div>
         </transition>
+
+        <notification
+            :isSuccess="showSuccessNotification"
+            :isFailed="showFailedNotification"
+            @close="close()"
+        ></notification>
+
     </div><!-- // .dialog-footer -->
 </div>
 </template>
@@ -97,19 +111,23 @@
 import { mapState, mapActions } from 'vuex';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
+import notification from './notification.vue';
 
 export default {
-    components: { textInput, checkboxInput },
+    components: { textInput, checkboxInput, notification },
 
     props: {
-        updateIsLoading: { type: Boolean, default: false }
+        updateIsLoading: { type: Boolean, default: false },
+        onClose: { type: Function, default: () => {} }
     },
 
     data() {
         return {
             userCalendarMemberIds: [],
             showDeleteConfirm: false,
-            removeIsLoading: false
+            removeIsLoading: false,
+            showSuccessNotification: false,
+            showFailedNotification: false
         }
     },
 
@@ -128,6 +146,10 @@ export default {
     },
 
     methods: {
+        ...mapActions('userCalendar/remove', {
+            remove: 'remove'
+        }),
+
         ...mapActions('userCalendar/update', {
             setUpdateValue: 'setUpdateValue',
             update: 'update'
@@ -163,6 +185,37 @@ export default {
             }
         },
 
+        clickDeleteOK() {
+            this.remove({
+                id: this.userCalendar.id,
+
+                notify: false,
+
+                successCb: () => {
+                    this.showSuccessNotification = true;
+                    setTimeout(() => {
+                        this.showDeleteConfirm = false;
+                    }, 300);
+                },
+
+                failedCb: () => {
+                    this.showFailedNotification = true;
+                    setTimeout(() => {
+                        this.showDeleteConfirm = false;
+                    }, 300);
+                }
+            })
+        },
+
+        close() {
+            this.onClose();
+            setTimeout(() => {
+                this.showDeleteConfirm = false;
+                this.showSuccessNotification = false;
+                this.showFailedNotification = false;
+            }, 1000);
+        },
+
         initUserCalendarMemberIds: function() {
             this.userCalendarMemberIds = [];
             this.userCalendarMembers.forEach( ( val ) => {
@@ -195,6 +248,7 @@ export default {
     }
 }
 
+.notification,
 .delete-confirm {
     background-color: red;
     padding: 10px;
@@ -207,23 +261,30 @@ export default {
     justify-content: space-between;
 }
 
+.notification-buttons,
 .delete-confirm-buttons {
     display: inline-flex;
     justify-content: space-around;
     width: 100%;
 }
 
+.notification-enter-active,
+.notification-leave-active,
 .delete-confirm-enter-active,
 .delete-confirm-leave-active {
     transition: all .3s ease;
 }
 
+.notification-leave-to,
+.notification-enter,
 .delete-confirm-leave-to,
 .delete-confirm-enter {
     height: 0;
     opacity: 0;
 }
 
+.notification-enter-to,
+.notification-leave,
 .delete-confirm-enter-to,
 .delete-confirm-leave {
     opacity: 1;

@@ -1,6 +1,6 @@
 <template>
     <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
-        <edit-modal-content></edit-modal-content>
+        <edit-modal-content :onClose="onClose"></edit-modal-content>
     </simple-modal>
 </template>
 

@@ -147,6 +147,8 @@ export default {
                 document.getElementById(this.textInputId.name).value = '';
                 document.getElementById(this.textInputId.description).value = '';
             }, 1000);
+            this.input.name = '';
+            this.input.description = '';
             this.onClose();
         }
     }

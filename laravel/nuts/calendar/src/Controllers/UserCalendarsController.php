@@ -46,17 +46,38 @@ class UserCalendarsController extends Controller
 
     public function update(Request $request, $id)
     {
-        $item = UserCalendar::findOrAbort($id);
-        if( $item instanceof \Illuminate\Http\JsonResponse ) {
-            return $item;
+        $userCalendar = UserCalendar::findOrAbort($id);
+        if( $userCalendar instanceof \Illuminate\Http\JsonResponse ) {
+            return $userCalendar;
         }
 
-        $item->fill($request->only([
+        $userCalendar->fill($request->only([
             'name','description'
         ]));
 
-        $item->save();
-        return $item;
+        $userCalendar->save();
+        return $userCalendar;
+    }
+
+    /**
+     * Remove the specified Story from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, $id)
+    {
+        $userCalendar = UserCalendar::findOrAbort($id);
+
+        if( ! $userCalendar instanceof UserCalendar ) {
+            return [
+                'status' => 400,
+                'message' => 'user calendar id does not exist'
+            ];
+        }
+
+        $userCalendar->delete();
+        return $userCalendar;
     }
 
     public function addMember(Request $request)
