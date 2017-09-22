@@ -1,13 +1,13 @@
 <<template>
-<div class="card"
-    :style="showDeleteConfirm ||
-            showSuccessNotification ||
-            showFailedNotification
-                ? 'height: 160px'
-                : ''
-">
+    <div class="card"
+        :style="showDeleteConfirm ||
+                showSuccessNotification ||
+                showFailedNotification
+                    ? 'height: 160px'
+                    : ''
+    ">
 
-    <div style="padding: 40px;">
+        <div style="padding: 40px;">
             <text-input
                 id="calendar-name"
                 inputStyle="font-size: 2rem; font-weight: 200;"
@@ -29,92 +29,69 @@
                 @blurValue="blurDescription"
                 :disabled="false"
             ></text-input>
-    </div>
-
-    <div style="padding: 40px 60px; background-color: whitesmoke; margin-bottom: 32px;">
-        <ul class="members">
-            <li v-for="member in members" class="member">
-                <div class="card" style="margin-bottom: 5px; padding: 10px;">
-                    <checkbox-input
-                        :id="member.name"
-                        :label="member.name"
-                        labelStyle="font-size: 1rem; font-weight: 100;"
-                        :initialValue="userCalendarMemberIds.indexOf(member.id) !== -1"
-                        @changeValue="changeMemberGroup(
-                            member.name,
-                            userCalendar.id,
-                            member.id
-                        )"
-                        :disabled="false"
-                    ></checkbox-input>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-    <div class="popup-footer">
-        <div v-show="!showDeleteConfirm"
-            style="display: flex; justify-content: flex-end; width: 95%;"
-        >
-            <button
-                class="button strip thin"
-                @click="showDeleteConfirm = true"
-                :disabled="updateIsLoading"
-            >Delete</button>
         </div>
 
-        <transition name="delete-confirm">
-            <div class="card delete-confirm"
-                v-show="showDeleteConfirm"
-            >
-                <div style="
-                    display: flex;
-                    justify-content: center;
-                    height: 75%;
-                ">
-                    <div style="display: flex; justify-content: space-around; align-items: center;">
-                        <i v-if="!removeIsLoading" class="fa fa-exclamation-circle fa-3x"></i>
-                        <i v-else class="fa fa-refresh fa-spin fa-3x"></i>
-                        <span v-show="!removeIsLoading"
-                            class="thin-200"
-                            style="padding: 20px; font-size: 1.8rem;"
-                        >Delete {{ userCalendar.name }} ?</span>
+        <div style="padding: 40px 60px; background-color: whitesmoke; margin-bottom: 32px;">
+            <ul class="members">
+                <li v-for="member in members" class="member">
+                    <div class="card" style="margin-bottom: 5px; padding: 10px;">
+                        <checkbox-input
+                            :id="member.name"
+                            :label="member.name"
+                            labelStyle="font-size: 1rem; font-weight: 100;"
+                            :initialValue="userCalendarMemberIds.indexOf(member.id) !== -1"
+                            @changeValue="changeMemberGroup(
+                                member.name,
+                                userCalendar.id,
+                                member.id
+                            )"
+                            :disabled="false"
+                        ></checkbox-input>
                     </div>
-                </div>
+                </li>
+            </ul>
+        </div>
 
-                <div v-show="!removeIsLoading" class="delete-confirm-buttons">
-                    <button class="button strip"
-                        style="color:#fff"
-                        @click="showDeleteConfirm = false"
-                        :disabled="updateIsLoading"
-                    >Cancel</button>
-
-                    <button class="button strip"
-                        style="color:#fff"
-                        @click="clickDeleteOK()"
-                    >OK</button>
-                </div>
+        <div class="footer">
+            <div v-show="!showDeleteConfirm" class="button-panel">
+                <button class="button strip thin"
+                    @click="showDeleteConfirm = true"
+                    :disabled="updateIsLoading"
+                >Delete</button>
             </div>
-        </transition>
 
-        <notification
-            :isSuccess="showSuccessNotification"
-            :isFailed="showFailedNotification"
-            @close="close()"
-        ></notification>
+    <!--
+            <deleteConfirm
+                :isActive="showDeleteConfirm"
+                :isLoading="removeIsLoading"
+                @cancel="showDeleteConfirm = false"
+                @ok="clickDeleteOK()"
+            ></deleteConfirm>
+    -->
+            <deleteConfirm
+                :isActive="showDeleteConfirm"
+                @cancel="showDeleteConfirm = false"
+                @ok="clickDeleteOK()"
+            ></deleteConfirm>
 
-    </div><!-- // .dialog-footer -->
-</div>
+            <notification
+                :isSuccessActive="showSuccessNotification"
+                :isFailedActive="showFailedNotification"
+                @close="close()"
+            ></notification>
+        </div>
+    </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
+import deleteConfirm from './deleteConfirm.vue';
 import notification from './notification.vue';
 
 export default {
-    components: { textInput, checkboxInput, notification },
+    components: { textInput, checkboxInput, deleteConfirm, notification },
 
     props: {
         updateIsLoading: { type: Boolean, default: false },
@@ -124,8 +101,8 @@ export default {
     data() {
         return {
             userCalendarMemberIds: [],
+//            removeIsLoading: false,
             showDeleteConfirm: false,
-            removeIsLoading: false,
             showSuccessNotification: false,
             showFailedNotification: false
         }
@@ -207,7 +184,7 @@ export default {
             })
         },
 
-        close() {
+        close: function() {
             this.onClose();
             setTimeout(() => {
                 this.showDeleteConfirm = false;
@@ -235,7 +212,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.popup-footer {
+.footer {
     position: absolute;
     bottom: 0;
     background-color: #fff;
@@ -248,46 +225,10 @@ export default {
     }
 }
 
-.notification,
-.delete-confirm {
-    background-color: red;
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    overflow: hidden;
-    height: 150px;
+.button-panel {
     display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-}
-
-.notification-buttons,
-.delete-confirm-buttons {
-    display: inline-flex;
-    justify-content: space-around;
-    width: 100%;
-}
-
-.notification-enter-active,
-.notification-leave-active,
-.delete-confirm-enter-active,
-.delete-confirm-leave-active {
-    transition: all .3s ease;
-}
-
-.notification-leave-to,
-.notification-enter,
-.delete-confirm-leave-to,
-.delete-confirm-enter {
-    height: 0;
-    opacity: 0;
-}
-
-.notification-enter-to,
-.notification-leave,
-.delete-confirm-enter-to,
-.delete-confirm-leave {
-    opacity: 1;
-    height: 150px;
+    justify-content:
+    flex-end;
+    width: 95%;
 }
 </style>
