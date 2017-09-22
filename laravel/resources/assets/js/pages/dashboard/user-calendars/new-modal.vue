@@ -125,18 +125,17 @@ export default {
 
         clickCreate() {
             if(!this.isReady) return;
-            const self = this;
             this.setInsertValue({ key: 'name', value: this.input.name });
             this.setInsertValue({ key: 'description', value: this.input.description });
             this.insert({
                 notify: false,
 
-                successCb: function() {
-                    self.showSuccessNotification = true;
+                successCb: () => {
+                    this.showSuccessNotification = true;
                 },
 
-                failedCb: function() {
-                    self.showErrorNotification = true;
+                failedCb: () => {
+                    this.showErrorNotification = true;
                 }
             });
         },
