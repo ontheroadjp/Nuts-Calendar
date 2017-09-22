@@ -15,9 +15,9 @@
             v-if="$route.path === '/dashboard'"
         ></user-calendars-pane>
 
-        <members
+        <members-pane
             v-else-if="$route.path === '/dashboard/members'"
-        ></members>
+        ></members-pane>
     </menu-tabs>
 
 </div>
