@@ -49,7 +49,7 @@ class JwtAuthServiceProvider extends ServiceProvider
                 // user calendar
                 Route::post('calendar', 'UserCalendarsController@store');
                 Route::put('calendar/{id}', 'UserCalendarsController@update');
-                Route::put('calendar/{id}', 'UserCalendarsController@destroy');
+                Route::delete('calendar/{id}', 'UserCalendarsController@destroy');
 
                 // user calendar members
                 Route::post('calendar/member', 'UserCalendarsController@addMember');
