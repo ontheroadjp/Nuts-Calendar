@@ -1,11 +1,23 @@
 <<template>
     <div class="card"
+         style="
+            transition: height 0.3s ease;
+            height: 600px;
+         "
         :style="showDeleteConfirm ||
                 showSuccessNotification ||
                 showFailedNotification
                     ? 'height: 160px'
                     : ''
     ">
+
+        <div class="modal-header">
+            <notification
+                :isSuccessActive="showSuccessNotification"
+                :isFailedActive="showFailedNotification"
+                @close="close()"
+            ></notification>
+        </div>
 
         <div style="padding: 40px;">
             <text-input
@@ -52,7 +64,7 @@
             </ul>
         </div>
 
-        <div class="footer">
+        <div class="modal-footer">
             <div v-show="!showDeleteConfirm" class="button-panel">
                 <button class="button strip thin"
                     @click="showDeleteConfirm = true"
@@ -60,25 +72,11 @@
                 >Delete</button>
             </div>
 
-    <!--
-            <deleteConfirm
-                :isActive="showDeleteConfirm"
-                :isLoading="removeIsLoading"
-                @cancel="showDeleteConfirm = false"
-                @ok="clickDeleteOK()"
-            ></deleteConfirm>
-    -->
             <deleteConfirm
                 :isActive="showDeleteConfirm"
                 @cancel="showDeleteConfirm = false"
                 @ok="clickDeleteOK()"
             ></deleteConfirm>
-
-            <notification
-                :isSuccessActive="showSuccessNotification"
-                :isFailedActive="showFailedNotification"
-                @close="close()"
-            ></notification>
         </div>
     </div>
 </template>
@@ -170,16 +168,16 @@ export default {
 
                 successCb: () => {
                     this.showSuccessNotification = true;
-                    setTimeout(() => {
-                        this.showDeleteConfirm = false;
-                    }, 300);
+//                    setTimeout(() => {
+//                        this.showDeleteConfirm = false;
+//                    }, 300);
                 },
 
                 failedCb: () => {
                     this.showFailedNotification = true;
-                    setTimeout(() => {
-                        this.showDeleteConfirm = false;
-                    }, 300);
+//                    setTimeout(() => {
+//                        this.showDeleteConfirm = false;
+//                    }, 300);
                 }
             })
         },
@@ -212,7 +210,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.footer {
+.modal-header {
+    position: absolute;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    padding: 5px;
+    text-align: right;
+}
+
+.modal-footer {
     position: absolute;
     bottom: 0;
     background-color: #fff;
