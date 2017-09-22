@@ -18,6 +18,32 @@ class UserCalendarsController extends Controller
         return UserCalendar::where('user_id', $userId)->get()->keyBy('id');
     }
 
+    /**
+     * Store a newly created Story in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required'
+        ]);
+
+        $userId = $request->user()->id;
+        $name = $request->input('name');
+        $description = $request->input('description');
+
+        $userCalendar = UserCalendar::create([
+            'user_id' => $userId,
+            'name' => $name,
+            'description' => $description
+        ]);
+
+        $userCalendar->save();
+        return $userCalendar;
+    }
+
     public function update(Request $request, $id)
     {
         $item = UserCalendar::findOrAbort($id);
