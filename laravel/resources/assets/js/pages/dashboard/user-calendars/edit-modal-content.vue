@@ -102,10 +102,6 @@ export default {
             members: state => state.data.members
         }),
 
-//        ...mapState('userCalendar/update', {
-//            userCalendar: state => state.editingUserCalendar
-//        }),
-
         ...mapState('userCalendar', {
             userCalendar: state => state.update.editingUserCalendar
         }),
@@ -122,19 +118,10 @@ export default {
             setUpdateValue: 'update/setUpdateValue'
         }),
 
-//        ...mapActions('userCalendar/update', {
-//            setUpdateValue: 'setUpdateValue',
-//            update: 'update'
-//        }),
-
         ...mapActions('userCalendarMember', {
             insertUserCalendarMember: 'insert/insert',
             removeUserCalendarMember: 'remove/remove'
         }),
-
-//        ...mapActions('userCalendarMember/remove', {
-//            removeUserCalendarMember: 'remove'
-//        }),
 
         blurName(data) {
             if(data.isReady) {
@@ -161,13 +148,10 @@ export default {
         clickDeleteOK() {
             this.remove({
                 id: this.userCalendar.id,
-
                 notify: false,
-
                 successCb: () => {
                     this.deleteResult = 'success';
                 },
-
                 failedCb: () => {
                     this.deleteResult = 'failed';
                 }
