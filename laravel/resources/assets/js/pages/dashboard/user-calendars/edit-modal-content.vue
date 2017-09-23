@@ -3,14 +3,12 @@
          style="transition: height 0.3s ease; height: 600px;"
         :style="showDeleteConfirm || deleteResult ? 'height: 160px' : ''
     ">
-        <div class="modal-header">
-            <slide-notification
-                :isActive="deleteResult !== ''"
-                :type="deleteResult !== '' ? deleteResult : 'success'"
-                height="150px"
-                @close="close()"
-            ></slide-notification>
-        </div>
+        <notification-slide-panel
+            :isActive="deleteResult !== ''"
+            :type="deleteResult !== '' ? deleteResult : 'success'"
+            height="150px"
+            @close="close()"
+        ></notification-slide-panel>
 
         <div style="padding: 40px;">
             <text-input
@@ -79,10 +77,10 @@ import { mapState, mapActions } from 'vuex';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirm from './deleteConfirm.vue';
-import slideNotification from '../../../components/notification/slide-notification.vue';
+import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
 
 export default {
-    components: { textInput, checkboxInput, deleteConfirm, slideNotification },
+    components: { textInput, checkboxInput, deleteConfirm, notificationSlidePanel },
 
     props: {
         updateIsLoading: { type: Boolean, default: false },
@@ -102,8 +100,8 @@ export default {
             members: state => state.data.members
         }),
 
-        ...mapState('userCalendar/update', {
-            userCalendar: state => state.editingUserCalendar
+        ...mapState('userCalendar', {
+            userCalendar: state => state.update.editingUserCalendar
         }),
 
         ...mapState('userCalendarMember', {
@@ -112,21 +110,15 @@ export default {
     },
 
     methods: {
-        ...mapActions('userCalendar/remove', {
-            remove: 'remove'
+        ...mapActions('userCalendar', {
+            remove: 'remove/remove',
+            update: 'update/update',
+            setUpdateValue: 'update/setUpdateValue'
         }),
 
-        ...mapActions('userCalendar/update', {
-            setUpdateValue: 'setUpdateValue',
-            update: 'update'
-        }),
-
-        ...mapActions('userCalendarMember/insert', {
-            insertUserCalendarMember: 'insert'
-        }),
-
-        ...mapActions('userCalendarMember/remove', {
-            removeUserCalendarMember: 'remove'
+        ...mapActions('userCalendarMember', {
+            insertUserCalendarMember: 'insert/insert',
+            removeUserCalendarMember: 'remove/remove'
         }),
 
         blurName(data) {
@@ -154,13 +146,10 @@ export default {
         clickDeleteOK() {
             this.remove({
                 id: this.userCalendar.id,
-
                 notify: false,
-
                 successCb: () => {
                     this.deleteResult = 'success';
                 },
-
                 failedCb: () => {
                     this.deleteResult = 'failed';
                 }
@@ -196,12 +185,12 @@ export default {
 
 <style lang="scss" scoped>
 .modal-header {
-    position: absolute;
-    top: 0;
-    background-color: #fff;
-    width: 100%;
-    padding: 5px;
-    text-align: right;
+    /* position: absolute; */
+    /* top: 0; */
+    /* background-color: #fff; */
+    /* width: 100%; */
+    /* padding: 5px; */
+    /* text-align: right; */
 }
 
 .modal-footer {

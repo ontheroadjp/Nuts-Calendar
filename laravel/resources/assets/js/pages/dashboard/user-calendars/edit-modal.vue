@@ -12,7 +12,6 @@ export default {
     components: { simpleModal, editModalContent },
 
     props: {
-//        userCalendar: { type: Object, required: true },
         onClose:        { type: Function, required: true }
     }
 };
