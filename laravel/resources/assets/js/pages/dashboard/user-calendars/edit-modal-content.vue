@@ -3,13 +3,6 @@
          style="transition: height 0.3s ease; height: 600px;"
         :style="showDeleteConfirm || deleteResult ? 'height: 160px' : ''
     ">
-            <deleteConfirm
-                :isActive="showDeleteConfirm"
-                height="150px"
-                @cancel="showDeleteConfirm = false"
-                @ok="clickDeleteOK()"
-            ></deleteConfirm>
-
         <notification-slide-panel
             :isActive="deleteResult !== ''"
             :type="deleteResult !== '' ? deleteResult : 'success'"
@@ -69,8 +62,14 @@
                     :disabled="updateIsLoading"
                 >Delete</button>
             </div>
-
         </div>
+
+        <deleteConfirm
+            :isActive="showDeleteConfirm"
+            height="150px"
+            @cancel="showDeleteConfirm = false"
+            @ok="clickDeleteOK()"
+        ></deleteConfirm>
     </div>
 </template>
 
@@ -186,15 +185,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-header {
-    /* position: absolute; */
-    /* top: 0; */
-    /* background-color: #fff; */
-    /* width: 100%; */
-    /* padding: 5px; */
-    /* text-align: right; */
-}
-
 .modal-footer {
     position: absolute;
     bottom: 0;

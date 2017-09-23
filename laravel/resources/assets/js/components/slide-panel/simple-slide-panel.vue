@@ -35,7 +35,6 @@ export default {
         },
 
         addCssClass: function() {
-            u.clog('------------------- add Class -------------------');
             const el = document.getElementById(this.name + '-simple-slide-panel-css')
             if(el) return;
 
@@ -70,5 +69,3 @@ export default {
     }
 };
 </script>
-<style scoped>
-</style>
