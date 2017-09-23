@@ -1,5 +1,6 @@
 <template>
 <simple-slide-panel
+    name="notification"
     :isActive="isActive"
     :bgColor="bgColor"
     :height="height"
@@ -10,7 +11,6 @@
         <div style="padding-left: 10px;"
             v-text="message ? message : defaultMessage"
         ></div>
-        <slot></slot>
     </div>
 
     <div class="buttons">
@@ -38,7 +38,7 @@ export default {
         }},
         height:   { type: String, default: '300px' },
         isActive: { type: Boolean, required: true },
-//        message:  { type: String, default: '' },
+        message:  { type: String, default: '' },
         position: { type: String, default: 'top', validator: function(value) {
             return value == 'top' || value == 'bottom'
         }}
