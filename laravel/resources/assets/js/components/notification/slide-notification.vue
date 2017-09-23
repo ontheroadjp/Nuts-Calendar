@@ -1,8 +1,11 @@
 <template>
 <slide-panel v-if="isActive" :bgColor="bgColor" :height="height">
     <div style="display: flex; justify-content: center; align-items: center; height: 75%;">
+<!--
         <i v-if="type === 'success'" class="fa fa-check-circle fa-3x"></i>
-        <i v-else-if="type === 'danger'" class="fa fa-exclamation-circle fa-3x"></i>
+        <i v-else-if="type === 'danger' || type === 'failed'" class="fa fa-exclamation-circle fa-3x"></i>
+-->
+        <icon :type="type" :size=3></icon>
         <div style="padding-left: 10px;" v-text="message ? message : defaultMessage"></div>
     </div>
 
@@ -16,15 +19,16 @@
 </template>
 
 <script>
-import slidePanel from '../../../components/slide-panel.vue';
+import slidePanel from '../panel/slide-panel.vue';
+import icon from './notification-icon.vue';
 
 export default {
-    components: { slidePanel },
+    components: { slidePanel, icon },
 
     props: {
         type:     { type: String, required: true, validator: function(value) {
                          const expectation = [
-                             'success', 'info', 'warning', 'danger'
+                             'success', 'info', 'warning', 'danger', 'failed'
                          ];
                          return expectation.indexOf(value) > -1;
                   }},
@@ -40,6 +44,7 @@ export default {
                 case "info":    return '#3273dc'; break;
                 case "warning": return '#ffdd57'; break;
                 case "danger":  return '#ff3860'; break;
+                case "failed":  return '#ff3860'; break;
             }
         },
 
@@ -52,37 +57,7 @@ export default {
         clickClose() {
             this.$emit('close');
         }
-    },
-
-//    mounted: function() {
-//        const doc = window.document;
-//        const css = doc.createElement('style');
-//        const rule = document.createTextNode(`
-//            .notification {
-//                background-color: red;
-//                padding: 10px;
-//                color: #fff;
-//                text-align: center;
-//                overflow: hidden;
-//                height: ${this.height};
-//                display: flex;
-//                flex-flow: column nowrap;
-//                justify-content: space-between;
-//                z-index: 99;
-//            }
-//
-//            .notification-enter-to,
-//            .notification-leave {
-//                opacity: 1;
-//                height: ${this.height};
-//            }
-//        `);
-//
-//        css.id = 'delete-confirm';
-//        css.type = 'text/css';
-//        css.appendChild(rule);
-//        doc.getElementsByTagName('head')[0].appendChild(css);
-//    }
+    }
 };
 </script>
 
@@ -92,16 +67,4 @@ export default {
     justify-content: space-around;
     width: 100%;
 }
-/*
-.notification-enter-active,
-.notification-leave-active {
-    transition: all .3s ease;
-}
-
-.notification-leave-to,
-.notification-enter {
-    height: 0;
-    opacity: 0;
-}
-*/
 </style>

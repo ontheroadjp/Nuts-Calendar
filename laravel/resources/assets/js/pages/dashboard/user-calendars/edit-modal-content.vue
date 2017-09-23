@@ -1,33 +1,15 @@
 <<template>
-<!--
-    <div class="card"
-         style="transition: height 0.3s ease; height: 600px;"
-        :style="showDeleteConfirm ||
-                showSuccessNotification ||
-                showFailedNotification
-                    ? 'height: 160px'
-                    : ''
-    ">
--->
     <div class="card"
          style="transition: height 0.3s ease; height: 600px;"
         :style="showDeleteConfirm || deleteResult ? 'height: 160px' : ''
     ">
         <div class="modal-header">
-<!--
-            <notification
-                :isActive="showSuccessNotification || showFailedNotification"
-                :type="showSuccessNotification ? 'success' : 'danger'"
-                height="150px"
-                @close="close()"
-            ></notification>
--->
-            <notification
+            <slide-notification
                 :isActive="deleteResult !== ''"
-                :type="deleteResult"
+                :type="deleteResult !== '' ? deleteResult : 'success'"
                 height="150px"
                 @close="close()"
-            ></notification>
+            ></slide-notification>
         </div>
 
         <div style="padding: 40px;">
@@ -97,10 +79,10 @@ import { mapState, mapActions } from 'vuex';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirm from './deleteConfirm.vue';
-import notification from './notification.vue';
+import slideNotification from '../../../components/notification/slide-notification.vue';
 
 export default {
-    components: { textInput, checkboxInput, deleteConfirm, notification },
+    components: { textInput, checkboxInput, deleteConfirm, slideNotification },
 
     props: {
         updateIsLoading: { type: Boolean, default: false },
@@ -110,10 +92,7 @@ export default {
     data() {
         return {
             userCalendarMemberIds: [],
-//            removeIsLoading: false,
             showDeleteConfirm: false,
-//            showSuccessNotification: false,
-//            showFailedNotification: false,
             deleteResult: ''
         }
     },
@@ -179,19 +158,11 @@ export default {
                 notify: false,
 
                 successCb: () => {
-//                    this.showSuccessNotification = true;
                     this.deleteResult = 'success';
-//                    setTimeout(() => {
-//                        this.showDeleteConfirm = false;
-//                    }, 300);
                 },
 
                 failedCb: () => {
-//                    this.showFailedNotification = true;
-                    this.deleteResult = 'danger';
-//                    setTimeout(() => {
-//                        this.showDeleteConfirm = false;
-//                    }, 300);
+                    this.deleteResult = 'failed';
                 }
             })
         },
@@ -200,8 +171,6 @@ export default {
             this.onClose();
             setTimeout(() => {
                 this.showDeleteConfirm = false;
-//                this.showSuccessNotification = false;
-//                this.showFailedNotification = false;
                 this.deleteResult = '';
             }, 1000);
         },

@@ -1,12 +1,12 @@
 <<template>
 <simple-modal :opacity="parseFloat(0.4)" :onClose="close">
     <div class="modal-header">
-        <notification
+        <slide-notification
             :isActive="showSuccessNotification || showFailedNotification"
             :type="showSuccessNotification ? 'success' : 'danger'"
             height="150px"
             @close="close()"
-        ></notification>
+        ></slide-notification>
     </div>
 
     <div class="card" style="padding: 43px;">
@@ -52,12 +52,12 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import simpleModal from './../../../components/modal/simple-modal.vue';
-import textInput from './../../../components/form/text-input.vue';
-import notification from './notification.vue';
+import simpleModal from '../../../components/modal/simple-modal.vue';
+import textInput from '../../../components/form/text-input.vue';
+import slideNotification from '../../../components/notification/slide-notification.vue';
 
 export default {
-    components: { simpleModal, textInput, notification },
+    components: { simpleModal, textInput, slideNotification },
 
     props: {
         onClose: { type: Function, required: true }
