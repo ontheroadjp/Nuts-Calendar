@@ -1,11 +1,9 @@
 <template>
-<slide-panel v-if="isSuccessActive || isFailedActive" :bgColor="bgColor" :height="height">
-    <div style="display: flex; justify-content: center; height: 75%;">
-        <div style="display: flex; justify-content: space-around; align-items: center;">
-            <i v-if="isSuccessActive" class="fa fa-check-circle fa-3x"></i>
-            <i v-else-if="isFailedActive" class="fa fa-exclamation-circle fa-3x"></i>
-        </div>
-        <div v-text="isSuccessActive ? 'Success' : 'Failed'"></div>
+<slide-panel v-if="isActive" :bgColor="bgColor" :height="height">
+    <div style="display: flex; justify-content: center; align-items: center; height: 75%;">
+            <i v-if="type === 'success'" class="fa fa-check-circle fa-3x"></i>
+            <i v-else-if="type === 'danger'" class="fa fa-exclamation-circle fa-3x"></i>
+        <div style="padding-left: 10px;">{{ message }}</div>
     </div>
 
     <div class="notification-buttons">
@@ -24,14 +22,33 @@ export default {
     components: { slidePanel },
 
     props: {
-        isSuccessActive: { type: Boolean, default: false },
-        isFailedActive:  { type: Boolean, default: false },
-        height:          { type: String, default: '300px' }
+        type:            { type: String, required: true, validator: function(value) {
+                                const expectation = [
+                                    'success', 'info', 'warning', 'danger'
+                                ];
+                                return expectation.indexOf(value) > -1;
+                         }},
+        height:          { type: String, default: '300px' },
+        isActive:        { type: Boolean, required: true },
+        message:         { type: String, default: '' }
     },
 
     computed: {
         bgColor: function() {
-            return this.isSuccessActive ? '#23d160' : '#ff3860';
+            switch(this.type) {
+                case 'success':
+                    return '#23d160';
+                    break;
+                case 'info':
+                    return '#3273dc';
+                    break;
+                case 'warning':
+                    return '#ffdd57';
+                    break;
+                case 'danger':
+                    return '#ff3860';
+                    break;
+            }
         }
     },
 

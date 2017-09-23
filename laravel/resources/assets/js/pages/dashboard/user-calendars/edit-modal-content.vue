@@ -10,8 +10,9 @@
 
         <div class="modal-header">
             <notification
-                :isSuccessActive="showSuccessNotification"
-                :isFailedActive="showFailedNotification"
+                :isActive="showSuccessNotification || showFailedNotification"
+                :type="showSuccessNotification ? 'success' : 'danger'"
+                :message="showSuccessNotification ? '成功' : '失敗'"
                 height="150px"
                 @close="close()"
             ></notification>
