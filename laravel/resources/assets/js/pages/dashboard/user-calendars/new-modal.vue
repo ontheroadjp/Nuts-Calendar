@@ -1,9 +1,17 @@
 <<template>
 <simple-modal :opacity="parseFloat(0.4)" :onClose="close">
     <div class="modal-header">
+<!--
         <slide-notification
             :isActive="showSuccessNotification || showFailedNotification"
             :type="showSuccessNotification ? 'success' : 'danger'"
+            height="150px"
+            @close="close()"
+        ></slide-notification>
+-->
+        <slide-notification
+            :isActive="insertResult !== ''"
+            :type="insertResult !== '' ? insertResult : 'success'"
             height="150px"
             @close="close()"
         ></slide-notification>
@@ -31,7 +39,13 @@
         ></text-input>
     </div>
 
+<!--
     <div v-show="!showSuccessNotification && !showFailedNotification"
+         class="modal-footer"
+         style="display: flex; justify-content: flex-end; width: 95%;"
+    >
+-->
+    <div v-show="insertResult === ''"
          class="modal-footer"
          style="display: flex; justify-content: flex-end; width: 95%;"
     >
@@ -65,8 +79,9 @@ export default {
 
     data() {
         return {
-            showSuccessNotification: false,
-            showFailedNotification: false,
+//            showSuccessNotification: false,
+//            showFailedNotification: false,
+            insertResult: '',
             isLoading: false,
 
             textInputId: {
@@ -109,18 +124,21 @@ export default {
                 notify: false,
 
                 successCb: () => {
-                    this.showSuccessNotification = true;
+//                    this.showSuccessNotification = true;
+                    this.insertResult = 'success';
                 },
 
                 failedCb: () => {
-                    this.showFailedNotification = true;
+//                    this.showFailedNotification = true;
+                    this.insertResult = 'failed';
                 }
             });
         },
 
         close() {
-            this.showSuccessNotification = false;
-            this.showFailedNotification = false;
+//            this.showSuccessNotification = false;
+//            this.showFailedNotification = false;
+            this.insertResult = '';
             setTimeout(() => {
                 document.getElementById(this.textInputId.name).value = '';
                 document.getElementById(this.textInputId.description).value = '';
@@ -130,7 +148,7 @@ export default {
             this.onClose();
         }
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>
