@@ -1,6 +1,12 @@
 <template>
-<simple-slide-panel :isActive="isActive" :bgColor="bgColor" :height="height">
-    <div class="panel-body">
+<simple-slide-panel
+    name="notification"
+    :isActive="isActive"
+    :bgColor="bgColor"
+    :height="height"
+    :position="position"
+>
+    <div class="panel-header">
         <icon :type="type" :size=3></icon>
         <div style="padding-left: 10px;"
             v-text="message ? message : defaultMessage"
@@ -24,15 +30,18 @@ export default {
     components: { simpleSlidePanel, icon },
 
     props: {
-        type:     { type: String, required: true, validator: function(value) {
-                         const expectation = [
-                             'success', 'info', 'warning', 'danger', 'failed'
-                         ];
-                         return expectation.indexOf(value) > -1;
-                  }},
+        type: { type: String, required: true, validator: function(value) {
+            const expectation = [
+                'success', 'info', 'warning', 'danger', 'failed'
+            ];
+            return expectation.indexOf(value) > -1;
+        }},
         height:   { type: String, default: '300px' },
         isActive: { type: Boolean, required: true },
-        message:  { type: String, required: false }
+        message:  { type: String, default: '' },
+        position: { type: String, default: 'top', validator: function(value) {
+            return value == 'top' || value == 'bottom'
+        }}
     },
 
     computed: {
@@ -60,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.panel-body {
+.panel-header {
     display: flex;
     justify-content: center;
     align-items: center;

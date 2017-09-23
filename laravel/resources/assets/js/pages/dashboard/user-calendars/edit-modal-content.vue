@@ -62,13 +62,14 @@
                     :disabled="updateIsLoading"
                 >Delete</button>
             </div>
-
-            <deleteConfirm
-                :isActive="showDeleteConfirm"
-                @cancel="showDeleteConfirm = false"
-                @ok="clickDeleteOK()"
-            ></deleteConfirm>
         </div>
+
+        <deleteConfirm
+            :isActive="showDeleteConfirm"
+            height="150px"
+            @cancel="showDeleteConfirm = false"
+            @ok="clickDeleteOK()"
+        ></deleteConfirm>
     </div>
 </template>
 
@@ -184,15 +185,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-header {
-    /* position: absolute; */
-    /* top: 0; */
-    /* background-color: #fff; */
-    /* width: 100%; */
-    /* padding: 5px; */
-    /* text-align: right; */
-}
-
 .modal-footer {
     position: absolute;
     bottom: 0;
