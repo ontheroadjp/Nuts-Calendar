@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import simpleModal from '../../../components/simple-modal.vue';
+import simpleModal from '../../../components/modal/simple-modal.vue';
 import editModalContent from './edit-modal-content.vue';
 
 export default {

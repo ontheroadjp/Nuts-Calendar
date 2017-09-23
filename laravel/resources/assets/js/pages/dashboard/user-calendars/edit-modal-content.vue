@@ -12,6 +12,7 @@
             <notification
                 :isSuccessActive="showSuccessNotification"
                 :isFailedActive="showFailedNotification"
+                height="150px"
                 @close="close()"
             ></notification>
         </div>

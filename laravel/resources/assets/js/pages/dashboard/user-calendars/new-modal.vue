@@ -51,7 +51,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import simpleModal from './../../../components/simple-modal.vue';
+import simpleModal from './../../../components/modal/simple-modal.vue';
 import textInput from './../../../components/form/text-input.vue';
 import notification from './notification.vue';
 

@@ -62,7 +62,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import modal from '../../../../components/modal.vue';
+import modal from '../../../../components/modal/modal.vue';
 import inlineTextInput from '../../../../components/inline-text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 
