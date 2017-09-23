@@ -3,6 +3,13 @@
          style="transition: height 0.3s ease; height: 600px;"
         :style="showDeleteConfirm || deleteResult ? 'height: 160px' : ''
     ">
+        <deleteConfirm
+            :isActive="showDeleteConfirm"
+            height="150px"
+            @cancel="showDeleteConfirm = false"
+            @ok="clickDeleteOK()"
+        ></deleteConfirm>
+
         <notification-slide-panel
             :isActive="deleteResult !== ''"
             :type="deleteResult !== '' ? deleteResult : 'success'"
@@ -64,12 +71,6 @@
             </div>
         </div>
 
-        <deleteConfirm
-            :isActive="showDeleteConfirm"
-            height="150px"
-            @cancel="showDeleteConfirm = false"
-            @ok="clickDeleteOK()"
-        ></deleteConfirm>
     </div>
 </template>
 

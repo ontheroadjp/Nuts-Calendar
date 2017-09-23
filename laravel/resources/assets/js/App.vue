@@ -130,9 +130,8 @@ a {
     box-shadow: none;
     background: none;
     outline: none;
-    & button:hover {
-        border: 1px solid #e6e6e6;
+    &:hover {
+        border: 1px solid #e6e6e6 !important;
     }
 }
-
 </style>
