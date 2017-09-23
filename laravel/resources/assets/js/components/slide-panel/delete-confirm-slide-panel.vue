@@ -2,7 +2,7 @@
 <simple-slide-panel
     name="delete-confirm"
     :isActive="isActive"
-    bgColor="blue"
+    bgColor="rgb(255, 61, 30)"
     :height="height"
     position="bottom"
 >
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div v-show="!isLoading" class="delete-confirm-buttons">
+            <div v-show="!isLoading" class="delete-confirm-buttons strip">
                 <button class="button strip"
                     style="color:#fff"
                     @click="clickCancel()"
@@ -80,5 +80,8 @@ export default {
     display: inline-flex;
     justify-content: space-around;
     width: 100%;
+    & button.strip:hover {
+        border: 1px solid #e6e6e6;
+    }
 }
 </style>

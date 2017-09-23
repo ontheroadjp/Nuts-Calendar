@@ -24,7 +24,7 @@
 
 <script>
 import simpleSlidePanel from './simple-slide-panel.vue';
-import icon from '../notification/notification-icon.vue';
+import icon from '../utility/notification-icon.vue';
 
 export default {
     components: { simpleSlidePanel, icon },
