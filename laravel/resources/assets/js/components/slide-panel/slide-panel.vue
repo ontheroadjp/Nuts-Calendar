@@ -7,7 +7,7 @@
 <script>
 export default {
     props: {
-        bgColor:  { type: String, default: '#f5f5f5' },
+//        bgColor:  { type: String, default: '#f5f5f5' },
         height:   { type: String, default: '300px' }
     },
 

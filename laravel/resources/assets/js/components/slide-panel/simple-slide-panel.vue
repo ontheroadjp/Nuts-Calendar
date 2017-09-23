@@ -1,7 +1,16 @@
 <template>
 <div class="simple-slide-panel">
+<!--
     <slide-panel v-if="isActive" :bgColor="bgColor" :height="height">
         <div class="card slide-panel-content">
+            <slot></slot>
+        </div>
+    </slide-panel>
+-->
+    <slide-panel v-if="isActive" :height="height">
+        <div class="card slide-panel-content"
+             :style="'background-color: ' + bgColor"
+        >
             <slot></slot>
         </div>
     </slide-panel>
@@ -49,7 +58,6 @@ export default {
         const css = doc.createElement('style');
         const rule = document.createTextNode(`
             .slide-panel-content {
-                background-color: ${this.bgColor};
                 margin: 5px;
                 padding: 10px;
                 color: #fff;
