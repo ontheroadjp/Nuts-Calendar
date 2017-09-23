@@ -2,14 +2,14 @@
 <modal>
     <div class="modal-card">
 
-        <section class="modal-card-header" 
-            style="padding: 50px;" 
+        <section class="modal-card-header"
+            style="padding: 50px;"
             :style="[headerStyle]">
 
-            <button 
-                class="delete" 
+            <button
+                class="delete"
                 style="position: absolute; top: 20px; right: 20px;"
-                aria-label="close" 
+                aria-label="close"
                 @click="onClose()"
             ></button>
 
@@ -24,7 +24,7 @@
                 </tr>
                 <slot name="header"></slot>
             </table>
-        </section> 
+        </section>
 
         <section class="modal-card-body" style="padding: 60px">
             <slot name="body"></slot>
@@ -35,7 +35,7 @@
 
 <script>
 //import { mapState } from 'vuex';
-import modal from './modal.vue';
+import modal from './modal/modal.vue';
 
 export default {
     components: { modal },
@@ -61,5 +61,5 @@ export default {
 ////            }
 ////        }
 //    }
-} 
+}
 </script>

@@ -1,11 +1,11 @@
 <template>
     <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
-        <edit-modal-content></edit-modal-content>
+        <edit-modal-content :onClose="onClose"></edit-modal-content>
     </simple-modal>
 </template>
 
 <script>
-import simpleModal from '../../../components/simple-modal.vue';
+import simpleModal from '../../../components/modal/simple-modal.vue';
 import editModalContent from './edit-modal-content.vue';
 
 export default {

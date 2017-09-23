@@ -1,6 +1,6 @@
 <template>
 <modal :opacity="opacity">
-    <div class="modal-card">
+    <div class="modal-card" style="background-color: red;">
 
         <button class="modal-close is-large" aria-label="close"
             style="position: absolute;
@@ -11,16 +11,8 @@
             "
             @click="onClose()"
         ></button>
-<!--
-        <section class="modal-card-header" style="padding: 50px; background-color: #fff">
-            <slot name="header"></slot>
-        </section>
 
-        <section class="modal-card-body thin" style="padding: 0 60px 60px 60px">
-            <slot name="body"></slot>
-        </section>
--->
-            <slot></slot>
+        <slot></slot>
     </div>
 </modal>
 </template>
