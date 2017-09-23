@@ -1,11 +1,6 @@
 <template>
 <slide-panel v-if="isActive" :bgColor="bgColor" :height="height">
     <div class="panel-body">
-<!--
-    <div style="display: flex; justify-content: center; align-items: center; height: 75%;">
-        <i v-if="type === 'success'" class="fa fa-check-circle fa-3x"></i>
-        <i v-else-if="type === 'danger' || type === 'failed'" class="fa fa-exclamation-circle fa-3x"></i>
--->
         <icon :type="type" :size=3></icon>
         <div style="padding-left: 10px;"
             v-text="message ? message : defaultMessage"
