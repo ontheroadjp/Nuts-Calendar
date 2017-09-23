@@ -34,13 +34,7 @@ export default {
     props: {
         isSuccessActive: { type: Boolean, required: true },
         isFailedActive:  { type: Boolean, required: true },
-    },
-
-    date() {
-        return {
-            showSuccessNotification: false,
-            showErrorNotification: false
-        }
+        height:          { type: String, default: '300px' }
     },
 
     methods: {
@@ -48,24 +42,42 @@ export default {
             this.$emit('close');
         },
 
+    },
+
+    mounted: function() {
+        const doc = window.document;
+        const css = doc.createElement('style');
+        const rule = document.createTextNode(`
+            .notification {
+                background-color: red;
+                padding: 10px;
+                color: #fff;
+                text-align: center;
+                overflow: hidden;
+                height: ${this.height};
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: space-between;
+                z-index: 99;
+            }
+
+            .notification-enter-to,
+            .notification-leave {
+                opacity: 1;
+                height: ${this.height};
+            }
+        `);
+
+        css.id = 'delete-confirm';
+        css.type = 'text/css';
+        css.appendChild(rule);
+        doc.getElementsByTagName('head')[0].appendChild(css);
     }
+
 };
 </script>
 
 <style lang="scss" scoped>
-.notification {
-    background-color: red;
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    overflow: hidden;
-    height: 150px;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-    z-index: 99;
-}
-
 .notification-buttons {
     display: inline-flex;
     justify-content: space-around;
@@ -81,11 +93,5 @@ export default {
 .notification-enter {
     height: 0;
     opacity: 0;
-}
-
-.notification-enter-to,
-.notification-leave {
-    opacity: 1;
-    height: 150px;
 }
 </style>
