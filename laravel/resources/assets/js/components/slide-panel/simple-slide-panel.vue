@@ -17,13 +17,22 @@ export default {
     props: {
         height:   { type: String, default: '300px' },
         isActive: { type: Boolean, required: true },
-        bgColor:  { type: String, default: '#fff' }
+        bgColor:  { type: String, default: '#fff' },
+        position: { type: String, default: 'top', validator: function(value) {
+            return value == 'top' || value == 'bottom'
+        }}
     },
 
     mounted: function() {
         const doc = window.document;
         const css = doc.createElement('style');
         const rule = document.createTextNode(`
+            .simple-slide-panel {
+                position: absolute;
+                ${this.position}: 0;
+                width: 100%;
+            }
+
             .slide-panel-content {
                 margin: 5px;
                 padding: 10px;
@@ -45,11 +54,3 @@ export default {
     }
 };
 </script>
-
-<style lang="scss" scoped>
-.simple-slide-panel {
-    position: absolute;
-    top: 0;
-    width: 100%;
-}
-</style>
