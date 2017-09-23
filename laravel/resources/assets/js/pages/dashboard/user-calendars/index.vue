@@ -32,7 +32,7 @@ import { mapState, mapActions } from 'vuex';
 import newModal from './new-modal.vue';
 import editModal from './edit-modal.vue';
 import card from './card.vue';
-import newCard from './new-user-calendar-card.vue';
+import newCard from './card-new.vue';
 
 export default {
     components: { card, newCard, newModal, editModal },
