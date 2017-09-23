@@ -23,7 +23,7 @@ export default {
 
             .slide-panel-enter-active,
             .slide-panel-leave-active {
-                transition: all ${duration} ease;
+                transition: all ${this.duration} ease;
             }
 
             .slide-panel-leave-to,
