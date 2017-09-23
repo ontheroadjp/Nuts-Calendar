@@ -1,9 +1,6 @@
 <<template>
     <div class="card"
-         style="
-            transition: height 0.3s ease;
-            height: 600px;
-         "
+         style="transition: height 0.3s ease; height: 600px;"
         :style="showDeleteConfirm ||
                 showSuccessNotification ||
                 showFailedNotification
@@ -206,6 +203,7 @@ export default {
             this.initUserCalendarMemberIds();
         }
     }
+
 };
 </script>
 
