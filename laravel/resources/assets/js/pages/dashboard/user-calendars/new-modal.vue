@@ -1,12 +1,12 @@
 <<template>
 <simple-modal :opacity="parseFloat(0.4)" :onClose="close">
     <div class="modal-header">
-        <slide-notification
+        <notification-slide-panel
             :isActive="insertResult !== ''"
             :type="insertResult !== '' ? insertResult : 'success'"
             height="150px"
             @close="close()"
-        ></slide-notification>
+        ></notification-slide-panel>
     </div>
 
     <div class="card" style="padding: 43px;">
@@ -54,10 +54,10 @@
 import { mapState, mapActions } from 'vuex';
 import simpleModal from '../../../components/modal/simple-modal.vue';
 import textInput from '../../../components/form/text-input.vue';
-import slideNotification from '../../../components/notification/slide-notification.vue';
+import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
 
 export default {
-    components: { simpleModal, textInput, slideNotification },
+    components: { simpleModal, textInput, notificationSlidePanel },
 
     props: {
         onClose: { type: Function, required: true }
@@ -133,12 +133,12 @@ export default {
 
 <style lang="scss" scoped>
 .modal-header {
-    position: absolute;
-    top: 0;
-    background-color: #fff;
-    width: 100%;
-    padding: 5px;
-    text-align: right;
+    /* position: absolute; */
+    /* top: 0; */
+    /* background-color: #fff; */
+    /* width: 100%; */
+    /* padding: 5px; */
+    /* text-align: right; */
 }
 
 .modal-footer {

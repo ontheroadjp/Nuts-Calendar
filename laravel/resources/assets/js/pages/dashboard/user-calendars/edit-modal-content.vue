@@ -3,14 +3,12 @@
          style="transition: height 0.3s ease; height: 600px;"
         :style="showDeleteConfirm || deleteResult ? 'height: 160px' : ''
     ">
-        <div class="modal-header">
-            <slide-notification
-                :isActive="deleteResult !== ''"
-                :type="deleteResult !== '' ? deleteResult : 'success'"
-                height="150px"
-                @close="close()"
-            ></slide-notification>
-        </div>
+        <notification-slide-panel
+            :isActive="deleteResult !== ''"
+            :type="deleteResult !== '' ? deleteResult : 'success'"
+            height="150px"
+            @close="close()"
+        ></notification-slide-panel>
 
         <div style="padding: 40px;">
             <text-input
@@ -79,10 +77,10 @@ import { mapState, mapActions } from 'vuex';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirm from './deleteConfirm.vue';
-import slideNotification from '../../../components/notification/slide-notification.vue';
+import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
 
 export default {
-    components: { textInput, checkboxInput, deleteConfirm, slideNotification },
+    components: { textInput, checkboxInput, deleteConfirm, notificationSlidePanel },
 
     props: {
         updateIsLoading: { type: Boolean, default: false },
@@ -187,12 +185,12 @@ export default {
 
 <style lang="scss" scoped>
 .modal-header {
-    position: absolute;
-    top: 0;
-    background-color: #fff;
-    width: 100%;
-    padding: 5px;
-    text-align: right;
+    /* position: absolute; */
+    /* top: 0; */
+    /* background-color: #fff; */
+    /* width: 100%; */
+    /* padding: 5px; */
+    /* text-align: right; */
 }
 
 .modal-footer {

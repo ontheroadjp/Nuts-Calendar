@@ -1,8 +1,6 @@
 <template>
     <transition name="slide-panel">
-        <div class="card slide-panel">
-            <slot></slot>
-        </div>
+        <slot></slot>
     </transition>
 </template>
 
@@ -17,18 +15,18 @@ export default {
         const doc = window.document;
         const css = doc.createElement('style');
         const rule = document.createTextNode(`
-            .slide-panel {
-                background-color: ${this.bgColor};
-                padding: 10px;
-                color: #fff;
-                text-align: center;
-                overflow: hidden;
-                height: ${this.height};
-                display: flex;
-                flex-flow: column nowrap;
-                justify-content: space-between;
-                z-index: 99;
-            }
+//            .slide-panel-content {
+//                background-color: ${this.bgColor};
+//                padding: 10px;
+//                color: #fff;
+//                text-align: center;
+//                overflow: hidden;
+//                height: ${this.height};
+//                display: flex;
+//                flex-flow: column nowrap;
+//                justify-content: space-between;
+//                z-index: 99;
+//            }
 
             .slide-panel-enter-to,
             .slide-panel-leave {
