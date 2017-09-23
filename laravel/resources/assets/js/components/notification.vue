@@ -1,12 +1,12 @@
 <template>
     <transition name="notification-slide-in">
-        <div 
-            v-show="notification.isActive" 
+        <div
+            v-show="notification.isActive"
             :class="['notification', notification.type]"
             style="position: fixed; right: 0; margin-right: 20px; z-index: 99;"
             >
-            <button 
-                v-show="notification.isImportant" 
+            <button
+                v-show="notification.isImportant"
                 class="delete"
                 @click="$store.commit('resetNotification')"
                 >
