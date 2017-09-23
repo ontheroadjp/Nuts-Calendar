@@ -2,10 +2,9 @@
 <simple-modal :opacity="parseFloat(0.4)" :onClose="close">
     <div class="modal-header">
         <notification
-            :type="showSuccessNotification ? 'success' : 'danger'"
-            :message="showSuccessNotification ? 'SUCCESS' : 'FAILED'"
-            height="150px"
             :isActive="showSuccessNotification || showFailedNotification"
+            :type="showSuccessNotification ? 'success' : 'danger'"
+            height="150px"
             @close="close()"
         ></notification>
     </div>
