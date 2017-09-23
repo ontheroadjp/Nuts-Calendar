@@ -7,27 +7,14 @@
 <script>
 export default {
     props: {
-//        bgColor:  { type: String, default: '#f5f5f5' },
-        height:   { type: String, default: '300px' }
+        height:   { type: String, default: '300px' },
+        duration: { type: String, default: '.3s' }
     },
 
     mounted: function() {
         const doc = window.document;
         const css = doc.createElement('style');
         const rule = document.createTextNode(`
-//            .slide-panel-content {
-//                background-color: ${this.bgColor};
-//                padding: 10px;
-//                color: #fff;
-//                text-align: center;
-//                overflow: hidden;
-//                height: ${this.height};
-//                display: flex;
-//                flex-flow: column nowrap;
-//                justify-content: space-between;
-//                z-index: 99;
-//            }
-
             .slide-panel-enter-to,
             .slide-panel-leave {
                 opacity: 1;
@@ -36,7 +23,7 @@ export default {
 
             .slide-panel-enter-active,
             .slide-panel-leave-active {
-                transition: all .3s ease;
+                transition: all ${duration} ease;
             }
 
             .slide-panel-leave-to,
