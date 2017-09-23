@@ -77,7 +77,7 @@
 import { mapState, mapActions } from 'vuex';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
-import deleteConfirm from './deleteConfirm.vue';
+import deleteConfirm from '../../../components/slide-panel/delete-confirm-slide-panel.vue';
 import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
 
 export default {

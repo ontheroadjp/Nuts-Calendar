@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import simpleSlidePanel from '../../../components/slide-panel/simple-slide-panel.vue';
+import simpleSlidePanel from './simple-slide-panel.vue';
 
 export default {
     components: { simpleSlidePanel },
