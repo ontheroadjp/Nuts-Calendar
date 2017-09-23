@@ -1,4 +1,5 @@
 <<template>
+<!--
     <div class="card"
          style="transition: height 0.3s ease; height: 600px;"
         :style="showDeleteConfirm ||
@@ -7,12 +8,23 @@
                     ? 'height: 160px'
                     : ''
     ">
-
+-->
+    <div class="card"
+         style="transition: height 0.3s ease; height: 600px;"
+        :style="showDeleteConfirm || deleteResult ? 'height: 160px' : ''
+    ">
         <div class="modal-header">
+<!--
             <notification
                 :isActive="showSuccessNotification || showFailedNotification"
                 :type="showSuccessNotification ? 'success' : 'danger'"
-                :message="showSuccessNotification ? '成功' : '失敗'"
+                height="150px"
+                @close="close()"
+            ></notification>
+-->
+            <notification
+                :isActive="deleteResult !== ''"
+                :type="deleteResult"
                 height="150px"
                 @close="close()"
             ></notification>
@@ -100,8 +112,9 @@ export default {
             userCalendarMemberIds: [],
 //            removeIsLoading: false,
             showDeleteConfirm: false,
-            showSuccessNotification: false,
-            showFailedNotification: false
+//            showSuccessNotification: false,
+//            showFailedNotification: false,
+            deleteResult: ''
         }
     },
 
@@ -166,14 +179,16 @@ export default {
                 notify: false,
 
                 successCb: () => {
-                    this.showSuccessNotification = true;
+//                    this.showSuccessNotification = true;
+                    this.deleteResult = 'success';
 //                    setTimeout(() => {
 //                        this.showDeleteConfirm = false;
 //                    }, 300);
                 },
 
                 failedCb: () => {
-                    this.showFailedNotification = true;
+//                    this.showFailedNotification = true;
+                    this.deleteResult = 'danger';
 //                    setTimeout(() => {
 //                        this.showDeleteConfirm = false;
 //                    }, 300);
@@ -185,8 +200,9 @@ export default {
             this.onClose();
             setTimeout(() => {
                 this.showDeleteConfirm = false;
-                this.showSuccessNotification = false;
-                this.showFailedNotification = false;
+//                this.showSuccessNotification = false;
+//                this.showFailedNotification = false;
+                this.deleteResult = '';
             }, 1000);
         },
 
