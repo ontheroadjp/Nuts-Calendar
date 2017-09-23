@@ -1,74 +1,50 @@
 <<template>
 <simple-modal :opacity="parseFloat(0.4)" :onClose="close">
-    <div class="card">
-        <div style="padding: 40px;">
-            <text-input
-                :id="textInputId.name"
-                inputStyle="font-size: 2rem; font-weight: 200;"
-                :showError="false"
-                :minTextLength="1"
-                :height="110"
-                placeholder="Calendar name"
-                @changeValue="changeName"
-                :disabled="false"
-            ></text-input>
-            <text-input
-                :id="textInputId.description"
-                :showError="false"
-                :minTextLength="1"
-                :height="110"
-                placeholder="Description"
-                @changeValue="changeDescription"
-                :disabled="false"
-            ></text-input>
-        </div>
+    <div class="modal-header">
+        <notification
+            :isSuccessActive="showSuccessNotification"
+            :isFailedActive="showFailedNotification"
+            @close="close()"
+        ></notification>
     </div>
 
-    <div class="modal-footer">
-        <div v-show="!showSuccessNotification && !showErrorNotification"
-            style="display: flex; justify-content: flex-end; width: 95%;"
-        >
-            <button
-                class="button strip thin"
-                @click="close()"
-                :disabled="isLoading"
-            >Cancel</button>
-            <button
-                class="button strip thin"
-                @click="clickCreate()"
-                :disabled="!isReady"
-            >Create</button>
-        </div>
+    <div class="card" style="padding: 43px;">
+        <text-input
+            :id="textInputId.name"
+            inputStyle="font-size: 2rem; font-weight: 200;"
+            :showError="false"
+            :minTextLength="1"
+            :height="110"
+            placeholder="Calendar name"
+            @changeValue="changeName"
+            :disabled="false"
+        ></text-input>
+        <text-input
+            :id="textInputId.description"
+            :showError="false"
+            :minTextLength="1"
+            :height="110"
+            placeholder="Description"
+            @changeValue="changeDescription"
+            :disabled="false"
+        ></text-input>
+    </div>
 
-        <transition name="notification">
-            <div class="card notification"
-                :style="
-                    showSuccessNotification
-                        ? 'background-color: #23d160'
-                        : 'background-color: #ff3860'
-                "
-                v-show="showSuccessNotification || showErrorNotification"
-            >
-                <div style="
-                    display: flex;
-                    justify-content: center;
-                    height: 75%;
-                ">
-                    <div style="display: flex; justify-content: space-around; align-items: center;">
-                        <i v-if="showSuccessNotification" class="fa fa-check-circle fa-3x"></i>
-                        <i v-else-if="showErrorNotification" class="fa fa-exclamation-circle fa-3x"></i>
-                    </div>
-                </div>
-
-                <div class="notification-buttons">
-                    <button class="button strip"
-                        style="color:#fff"
-                        @click="close()"
-                    >OK</button>
-                </div>
-            </div>
-        </transition>
-    </div><!-- // .dialog-footer -->
+    <div v-show="!showSuccessNotification && !showFailedNotification"
+         class="modal-footer"
+         style="display: flex; justify-content: flex-end; width: 95%;"
+    >
+        <button
+            class="button strip thin"
+            @click="close()"
+            :disabled="isLoading"
+        >Cancel</button>
+        <button
+            class="button strip thin"
+            @click="clickCreate()"
+            :disabled="!isReady"
+        >Create</button>
+    </div>
 
 </simple-modal>
 </template>
@@ -77,9 +53,10 @@
 import { mapState, mapActions } from 'vuex';
 import simpleModal from './../../../components/simple-modal.vue';
 import textInput from './../../../components/form/text-input.vue';
+import notification from './notification.vue';
 
 export default {
-    components: { simpleModal, textInput },
+    components: { simpleModal, textInput, notification },
 
     props: {
         onClose: { type: Function, required: true }
@@ -88,7 +65,7 @@ export default {
     data() {
         return {
             showSuccessNotification: false,
-            showErrorNotification: false,
+            showFailedNotification: false,
             isLoading: false,
 
             textInputId: {
@@ -135,14 +112,14 @@ export default {
                 },
 
                 failedCb: () => {
-                    this.showErrorNotification = true;
+                    this.showFailedNotification = true;
                 }
             });
         },
 
         close() {
             this.showSuccessNotification = false;
-            this.showErrorNotification = false;
+            this.showFailedNotification = false;
             setTimeout(() => {
                 document.getElementById(this.textInputId.name).value = '';
                 document.getElementById(this.textInputId.description).value = '';
@@ -156,6 +133,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal-header {
+    position: absolute;
+    top: 0;
+    background-color: #fff;
+    width: 100%;
+    padding: 5px;
+    text-align: right;
+}
+
 .modal-footer {
     position: absolute;
     bottom: 0;
@@ -167,39 +153,5 @@ export default {
     & button:hover {
         border: 1px solid #e6e6e6;
     }
-}
-
-.notification {
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    overflow: hidden;
-    height: 145px;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-}
-
-.notification-buttons {
-    display: inline-flex;
-    justify-content: space-around;
-    width: 100%;
-}
-
-.notification-enter-active,
-.notification-leave-active {
-    transition: all .3s ease;
-}
-
-.notification-leave-to,
-.notification-enter {
-    height: 0;
-    opacity: 0;
-}
-
-.notification-enter-to,
-.notification-leave {
-    opacity: 1;
-    height: 145px;
 }
 </style>
