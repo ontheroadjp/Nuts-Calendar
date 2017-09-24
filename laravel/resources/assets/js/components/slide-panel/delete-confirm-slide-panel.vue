@@ -2,7 +2,7 @@
 <simple-slide-panel
     name="delete-confirm"
     :isActive="isActive"
-    bgColor="rgb(255, 61, 30)"
+    bgColor="red"
     :height="height"
     position="bottom"
 >
