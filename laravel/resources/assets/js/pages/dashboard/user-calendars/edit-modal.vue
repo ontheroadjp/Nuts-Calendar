@@ -13,6 +13,7 @@
                 :initialValue="userCalendar.name"
                 :showError="true"
                 :minTextLength="1"
+                :maxTextLength="30"
                 :height="110"
                 placeholder="Calendar name"
                 @blurValue="blurName"
@@ -23,6 +24,7 @@
                 :initialValue="userCalendar.description"
                 :showError="true"
                 :minTextLength="0"
+                :maxTextLength="200"
                 :height="110"
                 placeholder="Description"
                 @blurValue="blurDescription"
@@ -138,7 +140,7 @@ export default {
 
         initUserCalendarMemberIds: function() {
             this.userCalendarMemberIds = [];
-            this.userCalendarMembers.forEach( ( val ) => {
+            this.userCalendarMembers.forEach((val) => {
                 if( val.user_calendar_id === this.userCalendar.id ) {
                     this.userCalendarMemberIds.push(val.member_id);
                 }
