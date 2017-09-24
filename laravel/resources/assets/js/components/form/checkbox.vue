@@ -20,7 +20,8 @@ export default {
         id:           { type: String, default: '' },
         label:        { type: String, default: 'Check' },
         labelStyle:   { type: String, default: '' },
-        initialValue: { type: [Boolean, Number], default: false },
+//        initialValue: { type: [Boolean, Number], default: false },
+        initialValue: { type: Boolean, required: true },
         disabled:     { type: Boolean, default: false }
     },
 
@@ -48,14 +49,8 @@ export default {
         }
     },
 
-    watch: {
-        initialValue: function() {
-            if( typeof this.initialValue === 'number' ) {
-                this.initialValue > 0 ? this.input = true : this.input = false;
-            } else {
-                this.input = this.initialValue;
-            }
-        }
+    mounted() {
+        this.input = this.initialValue;
     }
 };
 </script>
