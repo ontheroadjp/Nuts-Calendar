@@ -14,7 +14,7 @@ export default {
             commit('prepare', { cellItems, deletingItem } );
         },
 
-        remove( { state, commit } ) {
+        remove( { state, commit, dispatch } ) {
             u.clog('removeItem()');
 
             commit('start');
@@ -28,7 +28,7 @@ export default {
 
                     dispatch('calendar/tableView/updateCellItems',
                         state.cellItems, { root: true }
-                    ),
+                    );
 
                     commit('notifySuccess', {
                         content: 'success remove item',

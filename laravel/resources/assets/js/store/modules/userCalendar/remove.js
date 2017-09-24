@@ -16,12 +16,10 @@ export default {
                 .then(response => {
                     u.clog('success');
 
-                    u.clog('00');
                     commit('userCalendar/remove', {
                         id: id
                     }, { root: true });
 
-                    u.clog('01');
                     if( notify !== false ) {
                         commit('notifySuccess', {
                             content: 'success remove member',
@@ -29,12 +27,10 @@ export default {
                         }, { root: true });
                     }
 
-                    u.clog('02');
                     if( typeof successCb === 'function' ) {
                         successCb();
                     }
 
-                    u.clog('03');
                     commit('isLoading', false);
                 })
 

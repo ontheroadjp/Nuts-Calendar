@@ -58,7 +58,7 @@ export default {
         clickItem(e) {
             u.clog('clickItem()');
             this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
-            this.removePrepare( { event: e, deletingItem: this.item } );
+            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
             this.updatePrepareModal( { event: e } );
             this.insertReset();
             this.$store.commit('dashboard/setValue', {
