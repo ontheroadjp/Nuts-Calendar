@@ -1,12 +1,12 @@
 <<template>
     <div class="card"
-         style="transition: height 0.3s ease; height: 600px;"
-        :style="showDeleteConfirm || deleteResult ? 'height: 160px' : ''
-    ">
+         id="user-calendar-edit-modal"
+         style="transition: height 0.3s ease;"
+    >
         <deleteConfirm
             :isActive="showDeleteConfirm"
             height="150px"
-            @cancel="showDeleteConfirm = false"
+            @cancel="clickDeleteCancel()"
             @ok="clickDeleteOK()"
         ></deleteConfirm>
 
@@ -65,7 +65,7 @@
         <div class="modal-footer">
             <div v-show="!showDeleteConfirm" class="button-panel">
                 <button class="button strip thin"
-                    @click="showDeleteConfirm = true"
+                    @click="clickDeleteButton"
                     :disabled="updateIsLoading"
                 >Delete</button>
             </div>
@@ -80,20 +80,25 @@ import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirm from '../../../components/slide-panel/delete-confirm-slide-panel.vue';
 import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
+import simpleSlidePanel from '../../../components/slide-panel/simple-slide-panel.vue';
 
 export default {
-    components: { textInput, checkboxInput, deleteConfirm, notificationSlidePanel },
+    components: { textInput, checkboxInput, deleteConfirm, notificationSlidePanel, simpleSlidePanel },
 
     props: {
         updateIsLoading: { type: Boolean, default: false },
-        onClose: { type: Function, default: () => {} }
+        onClose: { type: Function, default: () => {} },
+        isActive: { type: Boolean, required: true }
     },
 
     data() {
         return {
             userCalendarMemberIds: [],
             showDeleteConfirm: false,
-            deleteResult: ''
+            deleteResult: '',
+            showMemberGroup: false,
+            modalHeight: '',
+            modalHeightWhenDeleteConfirmOpened: '160px'
         }
     },
 
@@ -145,6 +150,19 @@ export default {
             }
         },
 
+        clickDeleteButton: function() {
+            const el = document.getElementById('user-calendar-edit-modal');
+            this.modalHeight = el.clientHeight;
+            el.style.height = this.modalHeightWhenDeleteConfirmOpened;
+            this.showDeleteConfirm = true;
+        },
+
+        clickDeleteCancel: function() {
+            const el = document.getElementById('user-calendar-edit-modal');
+            el.style.height = this.modalHeight + 'px';
+            this.showDeleteConfirm = false
+        },
+
         clickDeleteOK() {
             this.remove({
                 id: this.userCalendar.id,
@@ -179,9 +197,15 @@ export default {
     watch: {
         userCalendar: function() {
             this.initUserCalendarMemberIds();
+        },
+
+        isActive: function(newVal, oldVal) {
+            if( newVal ) {
+                const el = document.getElementById('user-calendar-edit-modal');
+                el.style.height = el.clientHeight + 'px';
+            }
         }
     }
-
 };
 </script>
 
