@@ -1,8 +1,8 @@
 <template>
     <transition name="modal-fade">
-        <div class="modal is-active">
-            <div class="modal-background" 
-                 :style="[style.blackScreenOpacity]"
+        <div class="modal is-active" v-if="isActive">
+            <div class="modal-background"
+                 :style="[style.blackScreenColor]"
             ></div>
             <slot></slot>
         </div>
@@ -14,13 +14,14 @@
         name: 'modal-base',
 
         props: {
-            opacity: { type: Number, default: 0.85 }
+            opacity:  { type: Number, default: 0.85 },
+            isActive: { type: Boolean, required: true }
         },
 
         computed: {
             style: function() {
                 return {
-                    blackScreenOpacity: {
+                    blackScreenColor: {
                         'background-color': `rgba(10, 10, 10, ${this.opacity})`
                     }
                 }

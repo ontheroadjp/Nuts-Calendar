@@ -1,6 +1,5 @@
 <template>
 <div>
-    <user-calendar-modal :isActive.sync="modal.isActive" :userCalendar="userCalendar"></user-calendar-modal>
     <div :class="['card', 'is-clickable', theme.primary.class]"
         :style="style.calendarCard">
 
@@ -12,28 +11,28 @@
                     <i class="fa fa-calendar"></i>
                 </span>
             </div>
-    
+
             <div class="media-content">
                 <p style="margin-bottom: 10px;">
                     <router-link
                         to="/calendar/view"
-                        class="title thin-200" 
+                        class="title thin-200"
                         @click.native="clickUserCalendar(userCalendar.id)"
                     >{{ userCalendar.name }}
                     </router-link>
                 </p>
-    
+
                 <p class="subtitle thin">
                     {{ userCalendar.description }}
                 </p>
-    
-                <a @click="openDialog(userCalendar)" style="transition: color 0.3s">
+
+                <a @click="clickSettings( userCalendar )" style="transition: color 0.3s">
                     <div class="icon" style="position: absolute; top: 6px; right: 3px; color: #fff">
                         <i class="fa fa-gear" style="margin-right: 5px"></i>
                     </div>
                 </a>
             </div>
-    
+
         </div><!-- // .media -->
         </div><!-- // .card-content -->
     </div><!-- // .card -->
@@ -41,16 +40,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
-import userCalendarModal from './user-calendar-modal.vue';
+import { mapState } from 'vuex';
 
 export default {
-    components: {
-        'user-calendar-modal': userCalendarModal
-    },
-
     props: {
-        userCalendar: { type: Object, required: true }
+        userCalendar:   { type: Object, required: true },
+        clickSettings:  { type: Function, required: true }
     },
 
     data() {
@@ -70,22 +65,15 @@ export default {
             return {
                 calendarCard: {
                     'height': '150px',
-                    'background-image': 'linear-gradient(-135deg, ' + this.theme.secondary.code + ' 40px, transparent 0)'
+                    'background-image': 'linear-gradient(-135deg, '
+                                        + this.theme.secondary.code
+                                        + ' 40px, transparent 0)'
                 }
             }
         }
     },
 
     methods: {
-        ...mapActions('userCalendar/update', {
-            prepare: 'prepare'
-        }),
-
-        openDialog: function( userCalendar ) {
-            this.modal.isActive = true;
-            this.prepare({ userCalendar });
-        },
-
         clickUserCalendar: function(id) {
             u.clog('changeCalendar(' + id + ')');
             this.$store.commit('calendar/setValue', {
@@ -94,5 +82,5 @@ export default {
             });
         }
     }
-}
+};
 </script>

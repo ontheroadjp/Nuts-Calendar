@@ -15,15 +15,15 @@
     import store from './store/index.js';
 
     export default {
-    
+
         store,
-        
+
         components: {
             'navbar': navbar,
             'notification': notification,
             'page-footer': pageFooter
         },
-    
+
         mixins: [ core ],
 
         created() {
@@ -66,7 +66,7 @@
                 if(token) {
                     http.fetchGet('/api/v1/data')
                         .then(response => this.successInit(response))
-                        .catch(error => this.failedInit(error)); 
+                        .catch(error => this.failedInit(error));
                 } else {
                     u.clog('finish')
                 }
@@ -95,7 +95,7 @@
 
             handleLogin(p) {
                 const token = p.response.data.token;
-    
+
                 // temp
                 //if( p.rememberMe ) {
                 if(false) {
@@ -103,7 +103,7 @@
                 } else {
                     localStorage.removeItem('rememberMe');
                 }
-    
+
                 this.initApp();
 
                 this.$router.push('/dashboard');
@@ -123,4 +123,15 @@ a {
 .thin-400 { font-weight: 400; }
 .thin-500 { font-weight: 500; }
 .thin-600 { font-weight: 600; }
+
+.strip {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    outline: none;
+    &:hover {
+        border: 1px solid #e6e6e6 !important;
+    }
+}
 </style>

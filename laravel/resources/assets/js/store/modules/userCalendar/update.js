@@ -2,11 +2,8 @@ export default {
     namespaced: true,
 
     state: {
-        isLoading: {
-            name: false,
-            description: false
-        },
-
+        isLoading: false,
+        editingUserCalendar: '',
         updateValues: {
             id: '',
             name: '',
@@ -19,17 +16,12 @@ export default {
             commit('prepare',{ userCalendar });
         },
 
-        updateName( { commit, dispatch } ) {
-            commit('start', { key: 'name' });
-            dispatch('update');
+        setUpdateValue( { commit }, { key, value } ) {
+            commit('setUpdateValue', { key, value } );
         },
 
-        updateDescription( { commit, dispatch } ) {
-            commit('start', { key: 'description' });
-            dispatch('update');
-        },
-
-        update( { state, commit, rootState } ) {
+        update( { state, commit, rootState }, notify = true) {
+            commit('isLoading', true);
 
             const url = '/api/v1/calendar/' + state.updateValues.id;
             const data = {
@@ -57,12 +49,14 @@ export default {
                         value: description
                     }, { root: true });
 
-                    commit('notifySuccess', {
-                        content: 'success update User Calendar',
-                        isImportant: false
-                    }, { root: true});
+                    if( notify ) {
+                        commit('notifySuccess', {
+                            content: 'success update User Calendar',
+                            isImportant: false
+                        }, { root: true});
+                    }
 
-                    commit('stop');
+                    commit('isLoading', false);
                 })
 
                 .catch( error => {
@@ -73,30 +67,38 @@ export default {
                         isActive: true
                     }, { root: true});
 
-                    commit('stop');
+                    commit('isLoading', false);
                 });
+        },
+
+        reset: function( { commit } ) {
+            commit('reset');
         }
     },
 
     mutations: {
         prepare( state, { userCalendar } ) {
+            state.editingUserCalendar = userCalendar;
+
             Object.keys(state.updateValues).forEach(function(key) {
                 this[key] = userCalendar[key];
             }, state.updateValues );
         },
 
-        start( state, { key } ) {
-            state.isLoading[key] = true;
+        isLoading( state, value ) {
+            state.isLoading = value;
         },
 
         setUpdateValue( state, { key, value } ) {
             state.updateValues[key] = value;
         },
 
-        stop( state ) {
-            Object.keys(state.isLoading).forEach(function(key) {
-                this[key] = false;
-            }, state.isLoading );
+        reset( state ) {
+            state.isLoading = false;
+            state.editingUserCalendar = '';
+            state.updateValues.id = '';
+            state.updateValues.name = '';
+            state.updateValues.description = '';
         }
     }
 };

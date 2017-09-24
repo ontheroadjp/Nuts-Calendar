@@ -1,17 +1,21 @@
 <template>
 <span class="text-input">
-    <input :class="[
-            'text-input', 
+    <input :id="id"
+        :class="[
+            'text-input',
+            'strip',
             inputClass,
-            { 'has-error': showError && errorResult }, 
+            { 'has-error': showError && errorResult },
             { 'disabled': disabled }
-        ]" 
+        ]"
         :style="inputStyle"
-        type="text" 
+        type="text"
         :placeholder="placeholder"
-        v-model="input.value" 
+        v-model.trim="input.value"
         @keyup="onKeyup"
-        :disabled="disabled" />    
+        @keyup.enter="onKeyupEnter"
+        @blur="onBlur"
+        :disabled="disabled" />
 
     <div class="status">
         <span v-show="showError && errorResult" class="error-message">
@@ -28,7 +32,8 @@
 <script>
 export default {
     props: {
-        placeholder:   { type: String, default: 'text input' },
+        id:            { type: String, default: '' },
+        placeholder:   { type: String, default: '' },
         inputClass:    { type: String, default: '' },
         inputStyle:    { type: String, default: '' },
         showError:     { type: Boolean, default: false },
@@ -67,37 +72,59 @@ export default {
 
     methods: {
         onKeyup: function() {
+            this.fireEvent('changeValue');
+        },
+
+        onKeyupEnter() {
+            document.activeElement.blur();
+        },
+
+        onBlur: function() {
+            this.fireEvent('blurValue');
+        },
+
+        fireEvent(eventName) {
             const isReady = !this.errorResult && (this.input.value !== this.initialValue);
 
             const data = {
+                id: this.id,
                 initialValue: this.initialValue,
                 inputValue: this.input.value,
                 error: this.errorResult,
                 isReady: isReady
             }
 
-            this.$emit('changeValue', data);
+            this.$emit(eventName, data);
+        }
+    },
+
+    watch: {
+        initialValue: function() {
+            this.input.value = this.initialValue.trim();
         }
     },
 
     mounted() {
-        this.input.value = this.initialValue;
+        this.input.value = this.initialValue.trim();
     }
-} 
+}
 </script>
 
 <style lang="scss" scoped>
 .text-input {
     width: 100%;
     font-size: 1.2em;
-    border: none;
-    outline: none;
     line-height: 2rem;
     font-weight: 100;
 
     &:focus {
         border-bottom: 1px solid #d2d2d2;
     }
+}
+
+.strip {
+    border: none;
+    outline: none;
 }
 
 .has-error {
@@ -115,7 +142,7 @@ export default {
         font-size: 0.8em;
         color: red;
     }
-} 
+}
 
 .disabled {
     color: rgba(190, 190, 190, 1);

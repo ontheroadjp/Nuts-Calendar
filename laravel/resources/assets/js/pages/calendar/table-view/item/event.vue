@@ -20,7 +20,8 @@
         <strong v-else class="all-day" style="margin-right:8px">
             all-day
         </strong>
-        {{ item.content }}
+
+        <span :style="searchHighlightStyle">{{ item.content }}</span>
 
         <span class="icon is-small"
             v-show="(dragItem.isLoading || deleteItem.isLoading)

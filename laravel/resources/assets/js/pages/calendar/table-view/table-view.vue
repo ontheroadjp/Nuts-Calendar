@@ -43,10 +43,29 @@
 
         <tbody v-if="filteredBody">
             <tr v-for="(day, dayIndex) in filteredBody"
-                :class="{ saturday: isSaturday(day.date), sunday: isSunday(day.date) }">
-
+                :class="{ saturday: isSaturday(day.date),
+                            sunday: isSunday(day.date) || day.holidays.length > 0
+                        }">
                 <td class="date-styling" :style="[style.dayColumnWidth]">
-                    <span>{{ getDateAndDay(day.date) }}</span>
+                    <div style="margin-bottom: 5px;">
+                        <span :style="[ day.is_today ? style.today : '' ]">
+                            {{ getDateAndDay(day.date) }}
+                        </span>
+                    </div>
+
+                    <div v-for="holiday in day.holidays"
+                        class="date-label"
+                        style="background-color: red;"
+                    >{{ holiday.holiday_name }}</div>
+
+                    <div v-show="lang === 'ja'" class="date-label">
+                        {{ rokuyou(day.lunar_month, day.lunar_day) }}
+                    </div>
+
+                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.lunar_month_chinese }} {{ day.lunar_day_chinese }}</div> -->
+                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.constellation }}</div> -->
+                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.week_name }}</div> -->
+                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.animal }}</div> -->
                 </td>
 
                 <template v-for="(cellItems, memberId) in day.items">
@@ -105,7 +124,8 @@ export default {
 
     computed: {
         ...mapState({
-            theme: state => state.app.theme
+            theme: state => state.app.theme,
+            lang: state => state.app.lang
         }),
 
         ...mapState('calendar/tableView/item', {
@@ -138,7 +158,14 @@ export default {
                 dayColumnWidth: {
                     'width': '8%',
                     'min-width': '110px',
-                    'max-width': '110px'
+                    'max-width': '110px',
+                },
+                today: {
+                    'border': '1px solid ' + this.theme.primary.code,
+                    'background-color': this.theme.secondary.code,
+                    'border-radius': '5px',
+                    'color': 'white',
+                    'padding': '5px'
                 }
             };
         }
@@ -175,6 +202,15 @@ export default {
             this.$store.commit('dashboard/setValue', {
                 key: 'disabled', value: false
             });
+        },
+
+        rokuyou: function( month, day ) {
+            const data = [
+                '大安', '赤口',	'先勝',	'友引',	'先負',	'仏滅'
+            ];
+//            return data[Math.round((month + day) % 6)];
+//            return data[Math.ceil((month + day) % 6)];
+            return data[Math.floor((month + day) % 6)];
         }
     }
 };
@@ -203,11 +239,13 @@ $headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
     font-size: 1em;
     background-color: $headerCellAndDayColumnCellColor;
 }
-
-.today {
-    background-color: red;
-    color: #fff;
-    border-radius: 20px;
+.date-label {
+    margin-bottom: 2px;
+    font-size: 0.8rem;
+    background-color: rgb(149, 182, 197);
+    color: white;
+    border-radius: 2px;
+    text-align: center;
 }
 
 .saturday {

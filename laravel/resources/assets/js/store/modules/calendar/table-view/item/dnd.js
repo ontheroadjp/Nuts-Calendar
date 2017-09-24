@@ -60,7 +60,7 @@ export default {
                 e.preventDefault();
             }
 
-            e.dataTransfer.dropEffect = 'move';
+//            e.dataTransfer.dropEffect = 'move'
 
             return false;
         },

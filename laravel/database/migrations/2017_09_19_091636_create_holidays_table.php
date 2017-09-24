@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMembersTable extends Migration
+class CreateHolidaysTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +12,18 @@ class CreateMembersTable extends Migration
      */
     public function up()
     {
-        Schema::create('members', function (Blueprint $table) {
+        Schema::create('holidays', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->string('name');
+            $table->string('region');
+            $table->integer('year');
+            $table->date('date');
+            $table->string('holiday_name');
             $table->timestamps();
 
-            $table
-                ->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+//            $table->foreign('date')
+//                ->references('date')
+//                ->on('calendar');
         });
     }
 
@@ -35,6 +34,6 @@ class CreateMembersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('members');
+        Schema::drop('holidays');
     }
 }

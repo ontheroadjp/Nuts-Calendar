@@ -1,19 +1,19 @@
 <template>
-<transition name="popup-menu">
-    <div v-show="isActive" :style="box">
-        <button class="modal-close" aria-label="close"
-            style="position: absolute; 
-                top: -8px;
-                right: -8px;
-                background-color: rgb(84, 110, 122);
-                z-index: 5;
-            "
-            @click.stop="onClose"
-        ></button>
+    <transition name="popup-menu">
+        <div v-show="isActive" :style="box">
+            <button class="modal-close" aria-label="close"
+                style="position: absolute;
+                    top: -8px;
+                    right: -8px;
+                    background-color: rgb(84, 110, 122);
+                    z-index: 5;
+                "
+                @click.stop="onClose"
+            ></button>
 
-        <slot></slot>
-    </div>
-</transition>
+            <slot></slot>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -26,8 +26,8 @@ export default {
         clickY:      { type: Number,   required: true },
 //        offsetX:     { type: Number,   default: 0 },
         offsetY:     { type: Number,   default: 0 },
-        scrollX:     { type: Number,   required: false }, 
-        scrollY:     { type: Number,   required: false }, 
+        scrollX:     { type: Number,   required: false },
+        scrollY:     { type: Number,   required: false },
         height:      { type: Number,   default: 320 },
         width:       { type: Number,   default: 240 },
         isActive:    { type: Boolean,  required: true },
@@ -46,7 +46,7 @@ export default {
         },
 
         yPosition: function() {
-            // clickY is absolute position toward the window, 
+            // clickY is absolute position toward the window,
             // but the y:return-value must be relative position against a component.
             const y = this.clickY - this.offsetY - this.height;
 
@@ -54,8 +54,8 @@ export default {
 
             if( !isScroll && y < 10 ) {
                 return 10;
-            } 
-            
+            }
+
             if( isScroll && y < this.scrollY - this.offsetY ) {
                 return scrollY - this.offsetY + 10;
             }
@@ -82,7 +82,7 @@ export default {
             this.$emit('update:isActive', false);
         }
     }
-} 
+}
 </script>
 
 <style>

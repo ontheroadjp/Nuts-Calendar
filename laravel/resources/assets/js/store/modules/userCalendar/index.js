@@ -15,6 +15,14 @@ const userCalendar = {
             state.data.userCalendars = userCalendars;
         },
 
+        add( state, { id, userCalendar } ) {
+            Vue.set(state.data.userCalendars, id, userCalendar);
+        },
+
+        remove( state, { id } ) {
+            Vue.delete(state.data.userCalendars, id);
+        },
+
         setValue( state, { id, key, value } ) {
             const t = state.data.userCalendars[id];
             t[key] = value;
@@ -27,5 +35,8 @@ const userCalendar = {
         remove: remove
     }
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
 export default userCalendar;

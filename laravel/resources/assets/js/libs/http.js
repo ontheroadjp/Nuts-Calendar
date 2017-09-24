@@ -31,7 +31,7 @@ export const http = {
 
     fetchRequest(method, uri, data) {
         return new Promise( (resolve,reject) => {
-            http.request( method, uri, data, 
+            http.request( method, uri, data,
                 response => {
                     u.clog('http.fetchRequest(' + uri + ').then() status: ' + response.status);
                     switch(response.status) {
@@ -94,7 +94,7 @@ export const http = {
             return config;
         });
 
-        axios.interceptors.response.use( 
+        axios.interceptors.response.use(
             response => {
                 u.clog('axios.before - response');
 

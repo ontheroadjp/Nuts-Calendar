@@ -46,12 +46,12 @@
     </div>
 
     <!-- jump to the page top button -->
-    <a  href="#top"
+    <a
         v-show="scrollPositionY > fixedHeight && !draggingItem"
-        class="button"
-        style="position: fixed; bottom: 30px; right: 30px; color: #fff"
-        :style="'background-color: ' + theme.primary.code"
-        >{{ t('calendar.jumpToTop') }}
+        class="button to-page-top"
+        :style="'background-color: ' + theme.secondary.code"
+        @click="clickToPageTop()"
+        ><i class="fa fa-chevron-up" style="margin-top: -4px;"></i>
     </a>
 </div>
 </template>
@@ -101,6 +101,8 @@
 
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
+                isEventItemShow: state => state.isEventItemShow,
+                isTaskItemShow: state => state.isTaskItemShow,
                 internalQuery: state => state.query.internal,
                 searchQuery: state => (state.query.search).toLowerCase()
             }),
@@ -153,10 +155,14 @@
                 let columns = day.items;
                 const memberIds = Object.keys(columns);
 
-                memberIds.forEach(function(id) {
+                memberIds.forEach((id) => {
                     const cellItems = columns[id];
-                    cellItems.forEach(function(item) {
-                        result += item.content.toLowerCase() + ' ';
+                    cellItems.forEach((item) => {
+                        if( item.type_id === 1 && this.isEventItemShow ) {
+                            result += item.content.toLowerCase() + ' ';
+                        } else if( item.type_id === 2 && this.isTaskItemShow ) {
+                            result += item.content.toLowerCase() + ' ';
+                        }
                     });
                 });
                 return result;
@@ -177,6 +183,13 @@
             onScrollBody: function() {
                 this.elements.tableHeader.scrollLeft = this.elements.tableBody.scrollLeft;
                 this.scrollPositionX = this.elements.tableBody.scrollLeft;
+            },
+
+            clickToPageTop: function () {
+                for( let i = this.scrollPositionY; i > 0; i-- ) {
+                    //document.documentElement.scrollTop = i;
+                    document.body.scrollTop = i;
+                }
             }
         },
 
@@ -240,6 +253,16 @@
             margin-top: 37px;
         }
     }
+}
+
+.to-page-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: #fff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
 }
 
 .tool-palette-enter-active,
