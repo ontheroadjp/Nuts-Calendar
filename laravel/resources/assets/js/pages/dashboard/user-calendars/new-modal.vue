@@ -1,5 +1,5 @@
 <<template>
-<simple-modal :opacity="parseFloat(0.4)" :onClose="close">
+<simple-modal :opacity="parseFloat(0.4)" :onClose="close" :isActive="isActive">
     <div class="modal-header">
         <notification-slide-panel
             :isActive="insertResult !== ''"
@@ -60,7 +60,8 @@ export default {
     components: { simpleModal, textInput, notificationSlidePanel },
 
     props: {
-        onClose: { type: Function, required: true }
+        onClose: { type: Function, required: true },
+        isActive: { type: Boolean, required: true }
     },
 
     data() {
@@ -120,8 +121,11 @@ export default {
         close() {
             this.insertResult = '';
             setTimeout(() => {
-                document.getElementById(this.textInputId.name).value = '';
-                document.getElementById(this.textInputId.description).value = '';
+                let el = document.getElementById(this.textInputId.name);
+                if(el) el.value = '';
+
+                el = document.getElementById(this.textInputId.description);
+                if(el) el.value = '';
             }, 1000);
             this.input.name = '';
             this.input.description = '';
@@ -132,15 +136,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-header {
-    /* position: absolute; */
-    /* top: 0; */
-    /* background-color: #fff; */
-    /* width: 100%; */
-    /* padding: 5px; */
-    /* text-align: right; */
-}
-
 .modal-footer {
     position: absolute;
     bottom: 0;

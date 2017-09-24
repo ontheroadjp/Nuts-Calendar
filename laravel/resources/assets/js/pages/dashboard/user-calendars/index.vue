@@ -1,7 +1,7 @@
 <<template>
 <div id="dashboard-user-calendar-pane">
     <new-modal
-        v-if="newModal.isActive"
+        :isActive="newModal.isActive"
         :onClose="closeModal"
     ></new-modal>
 

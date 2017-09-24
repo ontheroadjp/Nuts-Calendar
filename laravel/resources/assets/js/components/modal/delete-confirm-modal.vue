@@ -4,12 +4,12 @@
             class="card"
             style="transition: height 0.3s ease;">
 
-            <deleteConfirm
+            <delete-confirm-slide-panel
                 :isActive="showDeleteConfirm"
                 height="150px"
                 @cancel="clickDeleteCancel()"
                 @ok="clickDeleteOK()"
-            ></deleteConfirm>
+            ></delete-confirm-slide-panel>
 
             <notification-slide-panel
                 :isActive="deleteResult !== ''"
@@ -35,11 +35,11 @@
 
 <script>
 import simpleModal from './simple-modal.vue';
-import deleteConfirm from '../slide-panel/delete-confirm-slide-panel.vue';
+import deleteConfirmSlidePanel from '../slide-panel/delete-confirm-slide-panel.vue';
 import notificationSlidePanel from '../slide-panel/notification-slide-panel.vue';
 
 export default {
-    components: { simpleModal, deleteConfirm, notificationSlidePanel },
+    components: { simpleModal, deleteConfirmSlidePanel, notificationSlidePanel },
 
     props: {
         opacity:  { type: Number, default: 0.85 },
@@ -53,7 +53,7 @@ export default {
             modalHeight: '',
             modalHeightWhenDeleteConfirmOpened: '160px',
             showDeleteConfirm: false,
-            isLoading: false
+            isLoading: false,
         }
     },
 
