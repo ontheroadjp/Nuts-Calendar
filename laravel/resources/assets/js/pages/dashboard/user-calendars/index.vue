@@ -66,8 +66,8 @@ export default {
         },
 
         openEditModal: function( userCalendar ) {
-            this.editModal.isActive = true;
             this.prepare({ userCalendar });
+            this.editModal.isActive = true;
         },
 
         closeModal: function() {
