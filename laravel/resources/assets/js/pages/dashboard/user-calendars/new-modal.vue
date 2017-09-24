@@ -136,15 +136,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal-header {
-    /* position: absolute; */
-    /* top: 0; */
-    /* background-color: #fff; */
-    /* width: 100%; */
-    /* padding: 5px; */
-    /* text-align: right; */
-}
-
 .modal-footer {
     position: absolute;
     bottom: 0;
