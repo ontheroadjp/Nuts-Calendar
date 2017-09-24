@@ -1,5 +1,5 @@
 <<template>
-<div id="dashboard-user=calendar-pane">
+<div id="dashboard-user-calendar-pane">
     <new-modal
         v-if="newModal.isActive"
         :onClose="closeModal"
@@ -23,7 +23,7 @@
         <new-card
             :onOpen="openNewModal"
         ></new-card>
-    </div><!-- // .columns is-multiline -->
+    </div>
 </div>
 </template>
 

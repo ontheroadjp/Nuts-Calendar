@@ -1,4 +1,5 @@
 <<template>
+<!--
     <div class="card"
          id="user-calendar-edit-modal"
          style="transition: height 0.3s ease;"
@@ -16,7 +17,8 @@
             height="150px"
             @close="close()"
         ></notification-slide-panel>
-
+-->
+<div>
         <div style="padding: 40px;">
             <text-input
                 id="calendar-name"
@@ -61,7 +63,8 @@
                 </li>
             </ul>
         </div>
-
+</div>
+<!--
         <div class="modal-footer">
             <div v-show="!showDeleteConfirm" class="button-panel">
                 <button class="button strip thin"
@@ -72,18 +75,19 @@
         </div>
 
     </div>
+-->
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
-import deleteConfirm from '../../../components/slide-panel/delete-confirm-slide-panel.vue';
-import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
-import simpleSlidePanel from '../../../components/slide-panel/simple-slide-panel.vue';
+//import deleteConfirm from '../../../components/slide-panel/delete-confirm-slide-panel.vue';
+//import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
 
 export default {
-    components: { textInput, checkboxInput, deleteConfirm, notificationSlidePanel, simpleSlidePanel },
+//    components: { textInput, checkboxInput, deleteConfirm, notificationSlidePanel, simpleSlidePanel },
+    components: { textInput, checkboxInput },
 
     props: {
         updateIsLoading: { type: Boolean, default: false },
@@ -94,11 +98,11 @@ export default {
     data() {
         return {
             userCalendarMemberIds: [],
-            showDeleteConfirm: false,
-            deleteResult: '',
+//            showDeleteConfirm: false,
+//            deleteResult: '',
             showMemberGroup: false,
-            modalHeight: '',
-            modalHeightWhenDeleteConfirmOpened: '160px'
+//            modalHeight: '',
+//            modalHeightWhenDeleteConfirmOpened: '160px'
         }
     },
 
@@ -150,39 +154,39 @@ export default {
             }
         },
 
-        clickDeleteButton: function() {
-            const el = document.getElementById('user-calendar-edit-modal');
-            this.modalHeight = el.clientHeight;
-            el.style.height = this.modalHeightWhenDeleteConfirmOpened;
-            this.showDeleteConfirm = true;
-        },
+//        clickDeleteButton: function() {
+//            const el = document.getElementById('user-calendar-edit-modal');
+//            this.modalHeight = el.clientHeight;
+//            el.style.height = this.modalHeightWhenDeleteConfirmOpened;
+//            this.showDeleteConfirm = true;
+//        },
+//
+//        clickDeleteCancel: function() {
+//            const el = document.getElementById('user-calendar-edit-modal');
+//            el.style.height = this.modalHeight + 'px';
+//            this.showDeleteConfirm = false
+//        },
+//
+//        clickDeleteOK() {
+//            this.remove({
+//                id: this.userCalendar.id,
+//                notify: false,
+//                successCb: () => {
+//                    this.deleteResult = 'success';
+//                },
+//                failedCb: () => {
+//                    this.deleteResult = 'failed';
+//                }
+//            })
+//        },
 
-        clickDeleteCancel: function() {
-            const el = document.getElementById('user-calendar-edit-modal');
-            el.style.height = this.modalHeight + 'px';
-            this.showDeleteConfirm = false
-        },
-
-        clickDeleteOK() {
-            this.remove({
-                id: this.userCalendar.id,
-                notify: false,
-                successCb: () => {
-                    this.deleteResult = 'success';
-                },
-                failedCb: () => {
-                    this.deleteResult = 'failed';
-                }
-            })
-        },
-
-        close: function() {
-            this.onClose();
-            setTimeout(() => {
-                this.showDeleteConfirm = false;
-                this.deleteResult = '';
-            }, 1000);
-        },
+//        close: function() {
+//            this.onClose();
+//            setTimeout(() => {
+//                this.showDeleteConfirm = false;
+//                this.deleteResult = '';
+//            }, 1000);
+//        },
 
         initUserCalendarMemberIds: function() {
             this.userCalendarMemberIds = [];
@@ -191,7 +195,12 @@ export default {
                     this.userCalendarMemberIds.push(val.member_id);
                 }
             });
-        }
+        },
+
+//        setModalHeight: function() {
+//            const el = document.getElementById('user-calendar-edit-modal');
+//            el.style.height = el.clientHeight + 'px';
+//        }
     },
 
     watch: {
@@ -199,17 +208,22 @@ export default {
             this.initUserCalendarMemberIds();
         },
 
-        isActive: function(newVal, oldVal) {
-            if( newVal ) {
-                const el = document.getElementById('user-calendar-edit-modal');
-                el.style.height = el.clientHeight + 'px';
-            }
-        }
+//        isActive: function(newVal, oldVal) {
+//            if(newVal) {
+//                this.setModalHeight();
+//            }
+//        }
+    },
+
+    mounted() {
+        this.initUserCalendarMemberIds();
+//        this.setModalHeight();
     }
 };
 </script>
 
 <style lang="scss" scoped>
+/*
 .modal-footer {
     position: absolute;
     bottom: 0;
@@ -229,4 +243,5 @@ export default {
     flex-end;
     width: 95%;
 }
+*/
 </style>

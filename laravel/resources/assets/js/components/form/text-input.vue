@@ -102,11 +102,11 @@ export default {
         initialValue: function() {
             this.input.value = this.initialValue.trim();
         }
-    }
+    },
 
-//    mounted() {
-//        this.input.value = this.initialValue.trim();
-//    }
+    mounted() {
+        this.input.value = this.initialValue.trim();
+    }
 }
 </script>
 
