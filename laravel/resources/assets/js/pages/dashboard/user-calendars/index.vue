@@ -1,12 +1,12 @@
 <<template>
 <div id="dashboard-user=calendar-pane">
     <new-modal
-        v-show="newModal.isActive"
+        v-if="newModal.isActive"
         :onClose="closeModal"
     ></new-modal>
 
     <edit-modal
-        v-show="editModal.isActive"
+        :isActive="editModal.isActive"
         :onClose="closeModal"
     ></edit-modal>
 

@@ -1,6 +1,6 @@
 <template>
-    <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose">
-        <edit-modal-content :onClose="onClose"></edit-modal-content>
+    <simple-modal :opacity="parseFloat(0.4)" :onClose="onClose" v-show="isActive">
+        <edit-modal-content :onClose="onClose" :isActive="isActive"></edit-modal-content>
     </simple-modal>
 </template>
 
@@ -12,7 +12,8 @@ export default {
     components: { simpleModal, editModalContent },
 
     props: {
-        onClose:        { type: Function, required: true }
+        isActive: { type: Boolean, required: true },
+        onClose:  { type: Function, required: true }
     }
 };
 </script>
