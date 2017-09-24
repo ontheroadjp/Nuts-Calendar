@@ -96,7 +96,6 @@ export default {
 
     watch: {
         isActive: function(newVal, oldVal) {
-            u.clog('watch[ isActive ]@deleteConfirmModal - newVal: ' + newVal);
             if(newVal) {
                 this.$nextTick(() => {
                     this.setModalHeight();
