@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import insert from './insert.js';
 import update from './update.js';
 import remove from './remove.js';
