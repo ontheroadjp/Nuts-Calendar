@@ -1,4 +1,4 @@
-import textInput from '../../../src/components/form/text-input.vue';
+import textInput from '../../../../../src/components/form/text-input.vue';
 import { mount } from 'avoriaz';
 
 describe('text-input.vue', () => {
@@ -62,12 +62,22 @@ describe('text-input.vue', () => {
 
     });
 
-    describe('when fire blur event on form fireEvent() called onece', () => {
-        it('blur event on form', () => {
-            const fireEvent = sinon.spy(wrapper.vm, 'fireEvent');
+    const fireEvent = sinon.spy(wrapper.vm, 'fireEvent');
+
+    describe('when event occured on form, fireEvent() called', () => {
+        it('blur event occured', () => {
             wrapper.find('input#input-id')[0].trigger('blur');
-            expect(typeof wrapper.vm.fireEvent).to.be.eql('function');
-            expect(fireEvent).to.be.calledOnce;
+            expect(fireEvent.callCount).to.be.eql(1);
+        });
+
+        it('keyup event occured', () => {
+            wrapper.find('input#input-id')[0].trigger('keyup');
+            expect(fireEvent.callCount).to.be.eql(2);
+        });
+
+        it('keyup.enter event occured', () => {
+            wrapper.find('input#input-id')[0].trigger('keyup.enter');
+            expect(fireEvent.callCount).to.be.eql(3);
         });
     });
 
