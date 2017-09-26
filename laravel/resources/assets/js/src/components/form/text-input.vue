@@ -1,10 +1,7 @@
 <template>
 <span class="text-input">
     <input :id="id"
-        :class="[
-            'text-input',
-            'strip',
-            inputClass,
+        :class="[ 'text-input', 'strip', inputClass,
             { 'has-error': showError && errorResult },
             { 'disabled': disabled }
         ]"
@@ -18,11 +15,11 @@
         :disabled="disabled" />
 
     <div class="status">
-        <span v-show="showError && errorResult" class="error-message">
+        <span v-if="showError && errorResult" class="error-message">
             {{ errorMessage }}
         </span>
 
-        <span v-show="showCount" class="char-length">
+        <span v-if="showCount" class="char-length">
             {{ input.value.length }}
         </span>
     </div>
