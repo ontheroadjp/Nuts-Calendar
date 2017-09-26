@@ -1,8 +1,7 @@
-
 import checkbox from '../../../../../src/components/form/checkbox.vue';
 import { mount } from 'avoriaz';
 
-describe('checkbox.vue', () => {
+describe('components/form/checkbox.vue', () => {
     const wrapper = mount(checkbox, {
         propsData: {
             id: 'input-id',

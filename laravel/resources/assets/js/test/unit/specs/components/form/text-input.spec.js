@@ -1,7 +1,7 @@
 import textInput from '../../../../../src/components/form/text-input.vue';
 import { mount } from 'avoriaz';
 
-describe('text-input.vue', () => {
+describe('components/form/text-input.vue', () => {
     const wrapper = mount(textInput, {
         propsData: {
             id: 'input-id',
