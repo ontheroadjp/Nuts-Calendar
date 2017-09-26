@@ -18,25 +18,25 @@ export default {
 
     methods: {
         beforeEnter: function() {
-            u.clog('fire @before-enter');
+//            u.clog('fire @before-enter');
             this.$emit('before-enter');
             this.addCssClass();
         },
 
         afterEnter: function() {
-            u.clog('fire @after-enter');
+//            u.clog('fire @after-enter');
             this.$emit('after-enter');
             this.removeCssClass();
         },
 
         beforeLeave: function() {
-            u.clog('fire @before-leave');
+//            u.clog('fire @before-leave');
             this.$emit('before-leave');
             this.addCssClass();
         },
 
         afterLeave: function() {
-            u.clog('fire @after-leave');
+//            u.clog('fire @after-leave');
             this.$emit('after-leave');
             this.removeCssClass();
         },
