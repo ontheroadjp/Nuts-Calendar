@@ -1,9 +1,9 @@
 module.exports = {
-//    root: true,
-//    parser: 'babel-eslint',
-//    parserOptions: {
-//        sourceType: 'module'
-//    },
+    root: true,
+    parser: 'babel-eslint',
+    parserOptions: {
+        sourceType: 'module'
+    },
 
 //    "extends": ["eslint:recommended", "vue"],
     "extends": ["eslint:recommended"],
@@ -19,7 +19,9 @@ module.exports = {
         "it": true,
         "assert": true,
         "dispatch": true,
-        "expect": true
+        "expect": true,
+        "u": true,
+        "http": true
     },
 
     "rules": {
