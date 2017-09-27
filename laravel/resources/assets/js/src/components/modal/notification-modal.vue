@@ -1,25 +1,27 @@
 <template>
     <simple-modal :opacity="opacity" :onClose="onClose" :isActive="isActive">
-        <div id="delete-confirm-modal"
+        <div id="notification-modal"
             class="card"
             style="transition: height 0.3s ease;">
 
+<!--
             <notification-slide-panel
-                :isActive="deleteResult !== ''"
+                :isActive="isShowNotification"
                 :type="deleteResult !== '' ? deleteResult : 'success'"
+                :height="height"
+                @close="close()"
+            ></notification-slide-panel>
+-->
+            <notification-slide-panel
+                :isActive="isShowNotification"
+                :type="type"
                 :height="slideHeight"
                 @close="close()"
             ></notification-slide-panel>
 
-            <delete-confirm-slide-panel
-                :isActive="showDeleteConfirm"
-                :height="slideHeight"
-                @cancel="clickDeleteCancel()"
-                @ok="clickDeleteOK()"
-            ></delete-confirm-slide-panel>
-
             <slot></slot>
 
+<!--
             <div class="modal-footer">
                 <div v-show="!showDeleteConfirm" class="button-panel">
                     <button class="button strip thin"
@@ -28,6 +30,7 @@
                     >Delete</button>
                 </div>
             </div>
+-->
 
         </div>
     </simple-modal>
@@ -42,73 +45,80 @@ export default {
     components: { simpleModal, deleteConfirmSlidePanel, notificationSlidePanel },
 
     props: {
-        slideHeight: { type: String, default: '150px' },
+        slideHeight:   { type: String, default: '150px' },
         opacity:  { type: Number, default: 0.85 },
         isActive: { type: Boolean, required: true },
         onClose:  { type: Function, required: true },
-        deleteResult: { type: String, default: '' } // should be use with .sync option
+//        deleteResult: { type: String, default: '' } // should be use with .sync option
+        isShowNotification: { type: Boolean, required: true },
+        type: { type: String, required: true, validator: function(value) {
+            const expectation = [
+                'success', 'info', 'warning', 'danger', 'failed'
+            ];
+            return expectation.indexOf(value) > -1;
+        }},
     },
 
     data() {
         return {
             modalHeight: '',
             modalHeightWhenSlideOpened: '160px',
-            showDeleteConfirm: false,
+//            showDeleteConfirm: false,
             isLoading: false,
         }
     },
 
     methods: {
-        clickDeleteButton: function() {
-            const el = document.getElementById('delete-confirm-modal');
-            if(!el) return;
+//        clickDeleteButton: function() {
+//            const el = document.getElementById('delete-confirm-modal');
+//            if(!el) return;
+//
+//            this.modalHeight = el.clientHeight;
+//            el.style.height = this.modalHeightWhenSlideOpened;
+//            this.showDeleteConfirm = true;
+//        },
 
-            this.modalHeight = el.clientHeight;
-            el.style.height = this.modalHeightWhenSlideOpened;
-            this.showDeleteConfirm = true;
-        },
+//        clickDeleteCancel: function() {
+//            const el = document.getElementById('delete-confirm-modal');
+//            if(!el) return;
+//
+//            el.style.height = this.modalHeight + 'px';
+//            this.showDeleteConfirm = false
+//        },
 
-        clickDeleteCancel: function() {
-            const el = document.getElementById('delete-confirm-modal');
-            if(!el) return;
-
-            el.style.height = this.modalHeight + 'px';
-            this.showDeleteConfirm = false
-        },
-
-        clickDeleteOK() {
-            this.$emit('onDeleteOK');
-        },
+//        clickDeleteOK() {
+//            this.$emit('onDeleteOK');
+//        },
 
         close: function() {
             this.onClose();
             setTimeout(() => {
                 this.showDeleteConfirm = false;
-                this.$emit('update:deleteResult');
+//                this.$emit('update:deleteResult');
             }, 1000);
         },
 
         setModalHeight: function() {
-            const el = document.getElementById('delete-confirm-modal');
+            const el = document.getElementById('notification-modal');
             if(!el) return;
-            this.modalHeight = el.clientHeight;
             el.style.height = el.clientHeight + 'px';
         }
     },
 
     watch: {
-//        isActive: function(newVal, oldVal) {
-//            if(newVal) {
-//                this.$nextTick(() => {
-//                    this.setModalHeight();
-//                });
-//            }
-//        }
         isActive: function() {
             this.$nextTick(() => {
                 this.setModalHeight();
             });
-        }
+        },
+
+        isShowNotification: function() {
+            const el = document.getElementById('notification-modal');
+            if(!el) return;
+
+            this.modalHeight = el.clientHeight;
+            el.style.height = this.modalHeightWhenSlideOpened;
+        },
     }
 };
 </script>
@@ -134,3 +144,4 @@ export default {
     width: 95%;
 }
 </style>
+

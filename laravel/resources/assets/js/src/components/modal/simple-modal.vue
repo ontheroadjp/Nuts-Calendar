@@ -1,6 +1,6 @@
 <template>
 <modal :opacity="opacity" :isActive="isActive">
-    <div class="modal-card" style="background-color: red;">
+    <div class="modal-card" :style="{'background-color':bgColor}">
 
         <button class="modal-close is-large" aria-label="close"
             style="position: absolute;
@@ -23,6 +23,8 @@ import modal from './modal.vue';
 export default {
     components: { modal },
     props: {
+        height:   { type: String, default: '150px' },
+        bgColor:  { type: String, default: 'red' },
         opacity:  { type: Number, default: 0.85 },
         isActive: { type: Boolean, required: true },
         onClose:  { type: Function, required: true },

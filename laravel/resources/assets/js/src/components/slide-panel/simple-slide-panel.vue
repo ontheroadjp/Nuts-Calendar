@@ -1,14 +1,16 @@
 <template>
-<div :class="name + '-simple-slide-panel'">
-    <slide-panel v-if="isActive" :height="height"
-        @before-enter="addCssClass"
-        @before-leave="addCssClass"
+    <!-- <div :class="name + '-simple-slide-panel'"> -->
+    <transition :name="name + '-simple-slide-panel'" v-if="isActive" :height="height"
+        @before-enter="beforeEnter"
+        @after-enter="afterEnter"
+        @before-leave="beforeLeave"
+        @after-leave="afterLeave"
     >
         <div :class="['card', name + '-simple-slide-panel-content']"
              :style="'background-color: ' + bgColor"
-        ><slot></slot></div>
-    </slide-panel>
-</div>
+        ><slot></slot></div> -->
+    </transition>
+    <!-- </div> -->
 </template>
 
 <script>
@@ -28,10 +30,30 @@ export default {
     },
 
     methods: {
+        beforeEnter: function() {
+//            u.clog('fire @before-enter');
+            this.addCssClass();
+            this.$emit('before-enter');
+            this.addCssClass();
+        },
+
+        afterEnter: function() {
+//            u.clog('fire @after-enter');
+            this.$emit('after-enter');
+//            this.removeCssClass();
+        },
+
+        beforeLeave: function() {
+//            u.clog('fire @before-leave');
+            this.addCssClass();
+            this.$emit('before-leave');
+            this.addCssClass();
+        },
+
         afterLeave: function() {
-            u.clog('fire @after-leave');
+//            u.clog('fire @after-leave');
             this.$emit('after-leave');
-            this.removeCssClass();
+//            this.removeCssClass();
         },
 
         addCssClass: function() {
@@ -65,6 +87,11 @@ export default {
             css.type = 'text/css';
             css.appendChild(rule);
             doc.getElementsByTagName('head')[0].appendChild(css);
+        },
+
+        removeCssClass() {
+            const el = document.getElementById(name + '-slide-panel-css');
+            if(el) el.parentNode.removeChild(el);
         }
     }
 };
