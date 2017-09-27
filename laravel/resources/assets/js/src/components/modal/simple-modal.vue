@@ -1,33 +1,59 @@
 <template>
-<modal :opacity="opacity" :isActive="isActive">
-    <div class="modal-card" :style="{'background-color':bgColor}">
+<transition name="modal-fade">
+    <div class="modal is-active" v-if="isActive">
+        <black-screen :bgColor="blackScreenColor"></black-screen>
+        <!-- <div class="modal-background"
+             :style="{'background-color': blackScreenColor}"
+        ></div> -->
+        <div class="modal-card">
+            <button aria-label="close"
+                class="modal-close is-large"
+                :style="style.closeButton"
+                @click="onClose()"
+            ></button>
 
-        <button class="modal-close is-large" aria-label="close"
-            style="position: absolute;
-                    top: 20px;
-                    right: 20px;
-                    background-color: rgba(84, 110, 122, 0.5);
-                    z-index: 1;
-            "
-            @click="onClose()"
-        ></button>
-
-        <slot></slot>
+            <slot></slot>
+        </div>
     </div>
-</modal>
+</transition>
 </template>
 
 <script>
-import modal from './modal.vue';
+import blackScreen from '../black-screen.vue';
 
 export default {
-    components: { modal },
+    components: { blackScreen },
+
     props: {
-        height:   { type: String, default: '150px' },
-        bgColor:  { type: String, default: 'red' },
-        opacity:  { type: Number, default: 0.85 },
+        blackScreenColor: { type: String, default: 'rgba(10,10,10,0.85)' },
         isActive: { type: Boolean, required: true },
-        onClose:  { type: Function, required: true },
+        onClose: { type: Function, required: true },
+    },
+
+    data() {
+        return {
+            style: {
+                closeButton: {
+                    'position': 'absolute',
+                    'top': '20px',
+                    'right': '20px',
+                    'background-color': 'rgba(84, 110, 122, 0.5)',
+                    'z-index': 1
+                }
+            }
+        }
     }
-}
+};
 </script>
+
+<style scoped>
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+    transition: all 0.4s ease;
+}
+
+.modal-fade-enter,
+.modal-fade-leave-to {
+    opacity: 0;
+}
+</style>

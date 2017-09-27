@@ -1,39 +1,73 @@
 <template>
-    <!-- <div :class="name + '-simple-slide-panel'"> -->
-    <!-- <transition :name="name + '-simple-slide-panel'" v-if="isActive" :height="height" -->
-    <transition :name="name + '-simple-slide-panel'"
+    <transition :name="name + '-slide-panel'"
         @before-enter="beforeEnter"
         @after-enter="afterEnter"
         @before-leave="beforeLeave"
         @after-leave="afterLeave"
     >
         <div v-if="isActive"
-            :class="['card', name + '-simple-slide-panel']"
-            :style="{'background-color': bgColor, height: height}"
+            :class="['card', name + '-slide-panel']"
+            :style="{'background-color': bgColor}"
         ><slot></slot></div>
     </transition>
-    <!-- </div> -->
 </template>
 
 <script>
-//import slidePanel from '../slide-panel/slide-panel.vue';
+import headCss from '../../mixins/headCss.js';
 
 export default {
-//    components: { slidePanel },
+    mixins: [ headCss ],
 
     props: {
-        name:     { type: String, required: true },
-        height:   { type: String, default: '300px' },
+        name: { type: String, required: true },
+        height: { type: String, default: '300px' },
         isActive: { type: Boolean, required: true },
-        bgColor:  { type: String, default: '#fff' },
-        position: { type: String, default: 'bottom', validator: function(value) {
-            return value == 'top' || value == 'bottom'
-        }}
+        bgColor: { type: String, default: '#fff' },
+        position: { type: String, default: 'bottom',
+            validator: function(value) {
+                return value == 'top' || value == 'bottom'
+            }
+        }
+    },
+
+    data() {
+        return {
+            headCssId: this.name + '-slide-panel-css',
+            headCss:`
+                .${this.name}-slide-panel {
+                    position: absolute;
+                    ${this.position}: 0;
+                    width: 100%;
+                }
+
+                .${this.name}-slide-panel {
+                    margin: 5px;
+                    padding: 10px;
+                    width: calc(100% - 10px);
+                    color: #fff;
+                    height: ${this.height};
+                    display: flex;
+                    flex-flow: column nowrap;
+                    z-index: 99;
+                }
+
+                .${this.name}-slide-panel-enter-active,
+                .${this.name}-slide-panel-leave-active {
+                    transition: all 0.3s ease;
+                }
+
+                .${this.name}-slide-panel-leave-to,
+                .${this.name}-slide-panel-enter {
+                    height: 0;
+                    opacity: 0;
+                }
+            `
+        }
     },
 
     methods: {
         beforeEnter: function() {
-            this.addCssClass();
+            this.addCssClass(this.headCssId, this.headCss);
             this.$emit('before-enter');
         },
 
@@ -42,52 +76,13 @@ export default {
         },
 
         beforeLeave: function() {
-            this.addCssClass();
+            this.addCssClass(this.headCssId, this.headCss);
             this.$emit('before-leave');
         },
 
         afterLeave: function() {
             this.$emit('after-leave');
-            this.removeCssClass();
-        },
-
-        addCssClass: function() {
-            const el = document.getElementById(this.name + '-simple-slide-panel-css')
-            if(el) return;
-
-            const doc = window.document;
-            const css = doc.createElement('style');
-            const rule = document.createTextNode(`
-                .${this.name}-simple-slide-panel {
-                    position: absolute;
-                    ${this.position}: 0;
-                    width: 100%;
-                }
-
-                .${this.name}-simple-slide-panel {
-                    margin: 5px;
-                    padding: 10px;
-                    width: calc(100% - 10px);
-                    color: #fff;
-                    text-align: center;
-                    overflow: hidden;
-                    height: ${this.height};
-                    display: flex;
-                    flex-flow: column nowrap;
-                    justify-content: space-between;
-                    z-index: 99;
-                }
-            `);
-
-            css.id = this.name + '-simple-slide-panel-css';
-            css.type = 'text/css';
-            css.appendChild(rule);
-            doc.getElementsByTagName('head')[0].appendChild(css);
-        },
-
-        removeCssClass() {
-            const el = document.getElementById(this.name + '-simple-slide-panel-css');
-            if(el) el.parentNode.removeChild(el);
+            this.removeCssClass(this.headCssId);
         }
     }
 };

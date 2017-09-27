@@ -1,6 +1,6 @@
 <template>
     <delete-confirm-modal
-        :opacity="0.4"
+        blackScreenColor="rgba(10,10,10,0.45)"
         :onClose="onClose"
         :isActive="isActive"
         :deleteResult.sync="deleteResult"

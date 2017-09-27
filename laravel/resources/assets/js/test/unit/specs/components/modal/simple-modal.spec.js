@@ -1,7 +1,7 @@
-import modal from '../../../../../src/components/modal/modal.vue';
+import modal from '../../../../../src/components/modal/simple-modal.vue';
 import { mount } from 'avoriaz';
 
-describe('components/modal/modal.vue', () => {
+describe('components/modal/simple-modal.vue', () => {
 
     const wrapper = mount(modal, {
         propsData: {

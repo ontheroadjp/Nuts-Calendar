@@ -1,5 +1,9 @@
 <template>
-    <simple-modal :opacity="opacity" :onClose="onClose" :isActive="isActive">
+    <simple-modal
+        :blackScreenColor="blackScreenColor"
+        :onClose="onClose"
+        :isActive="isActive"
+    >
         <div id="delete-confirm-modal"
             class="card"
             style="transition: height 0.3s ease;">
@@ -43,10 +47,10 @@ export default {
 
     props: {
         slideHeight: { type: String, default: '150px' },
-        opacity:  { type: Number, default: 0.85 },
+        deleteResult: { type: String, default: '' },    // should be use with .sync option
+        blackScreenColor: { type: String, default: 'rgba(10,10,10,0.85)' },
         isActive: { type: Boolean, required: true },
         onClose:  { type: Function, required: true },
-        deleteResult: { type: String, default: '' } // should be use with .sync option
     },
 
     data() {
@@ -97,13 +101,6 @@ export default {
     },
 
     watch: {
-//        isActive: function(newVal, oldVal) {
-//            if(newVal) {
-//                this.$nextTick(() => {
-//                    this.setModalHeight();
-//                });
-//            }
-//        }
         isActive: function() {
             this.$nextTick(() => {
                 this.setModalHeight();
