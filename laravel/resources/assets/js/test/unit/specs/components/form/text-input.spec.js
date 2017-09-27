@@ -1,84 +1,102 @@
 import textInput from '../../../../../src/components/form/text-input.vue';
 import { mount } from 'avoriaz';
+import { expect } from 'chai';
+import sinon from 'sinon';
 
 describe('components/form/text-input.vue', () => {
-    const wrapper = mount(textInput, {
-        propsData: {
-            id: 'input-id',
-            initialValue: 'hoge',
-            minTextLength: 10,
-            maxTextLength: 20
-        }
-    });
 
-    describe('when component mounted', () => {
-        it('initialValue should equal to \'hoge\'', () => {
-            expect(wrapper.vm.initialValue).to.be.eql('hoge');
+    const propsData = {
+        id: 'input-id',
+        initialValue: 'hoge',
+        minTextLength: 5,
+        maxTextLength: 20
+    };
+
+    describe('value state', () => {
+        const wrapper = mount(textInput, { propsData });
+        const inputForm = wrapper.find('input#input-id')[0];
+
+        it('when mounted', () => {
+            const value = {
+                initial: wrapper.vm.initialValue,
+                input: wrapper.data().input.value,
+                form: inputForm.element.value
+            };
+
+            expect(value.initial).to.be.eql('hoge');
+            expect(value.input).to.be.eql('hoge');
+            expect(value.form).to.be.eql('hoge');
         });
 
-        it('input.value should equal to initialValue', () => {
-            expect(wrapper.data().input.value).to.be.eql(wrapper.vm.initialValue);
-        });
+        it('when form-value is change to \'foo\'', () => {
+            inputForm.element.value = 'foo';
+            inputForm.trigger('input');
+            const value = {
+                initial: wrapper.vm.initialValue,
+                input: wrapper.data().input.value,
+                form: inputForm.element.value
+            };
 
-        it('form value should equal to input.value', () => {
-            const input = wrapper.find('input#input-id')[0]
-            expect(input.element.value).to.be.eql(wrapper.data().input.value);
-        });
-    });
-
-    describe('when form value changed to \'foo\'', () => {
-        it('input.value should equal to \'foo\'', () => {
-            const input = wrapper.find('input#input-id')[0];
-            input.element.value = 'foo';
-            input.trigger('input');
-            expect(wrapper.data().input.value).to.be.eql('foo');
-        });
-
-        it('form value should not equal to initialValue', () => {
-            const input = wrapper.find('input#input-id')[0];
-            expect(input.element.value).to.be.eql('foo');
-            expect(wrapper.vm.initialValue).to.be.eql('hoge');
+            expect(value.initial).to.be.eql('hoge');
+            expect(value.input).to.be.eql('foo');
+            expect(value.form).to.be.eql('foo');
         });
     });
 
     describe('errorResult', () => {
+        // props: { min: 5, max: 20 .. }
+        const wrapper = mount(textInput, { propsData });
+
         it('input.value < minTextLength ', () => {
+            wrapper.data().input.value = '1234';
             expect(wrapper.vm.errorResult).to.be.eql(true)
         });
 
         it('input.value > minTextLength', () => {
-            wrapper.data().input.value = 'hogehogehoge';
+            wrapper.data().input.value = '12345';
             expect(wrapper.vm.errorResult).to.be.eql(false);
         });
 
         it('input.value < maxTextLength', () => {
+            wrapper.data().input.value = '12345678901234567890';
             expect(wrapper.vm.errorResult).to.be.eql(false);
         });
 
         it('input.value > maxTextLength', () => {
-            wrapper.data().input.value = 'hogehogehogehogehogehoge';
+            wrapper.data().input.value = '123456789012345678901';
             expect(wrapper.vm.errorResult).to.be.eql(true);
         });
-
     });
 
-    const fireEvent = sinon.spy(wrapper.vm, 'fireEvent');
+    describe('fire event', () => {
+        const wrapper = mount(textInput, { propsData });
+        const inputForm = wrapper.find('input#input-id')[0]
+        const emitData = {
+            id: wrapper.vm.id,
+            initialValue: wrapper.vm.initialValue,
+            inputValue: wrapper.data().input.value,
+            error: wrapper.vm.errorResult,
+            isReady: false
+        };
 
-    describe('when event occured on form, fireEvent() called', () => {
-        it('blur event occured', () => {
-            wrapper.find('input#input-id')[0].trigger('blur');
-            expect(fireEvent.callCount).to.be.eql(1);
+        it('when keyup event occured', () => {
+            const fireEventSpy = sinon.spy(wrapper.vm, 'fireEvent');
+            const emitSpy = sinon.spy(wrapper.vm, '$emit');
+            inputForm.trigger('keyup');
+            expect(fireEventSpy.callCount).to.be.eql(1);
+            expect(emitSpy.calledWith('changeValue', emitData)).to.be.ok;
+            fireEventSpy.restore();
+            emitSpy.restore();
         });
 
-        it('keyup event occured', () => {
-            wrapper.find('input#input-id')[0].trigger('keyup');
-            expect(fireEvent.callCount).to.be.eql(2);
-        });
-
-        it('keyup.enter event occured', () => {
-            wrapper.find('input#input-id')[0].trigger('keyup.enter');
-            expect(fireEvent.callCount).to.be.eql(3);
+        it('when blur event occured', () => {
+            const fireEventSpy = sinon.spy(wrapper.vm, 'fireEvent');
+            const emitSpy = sinon.spy(wrapper.vm, '$emit');
+            inputForm.trigger('blur');
+            expect(fireEventSpy.callCount).to.be.eql(1);
+            expect(emitSpy.calledWith('blurValue', emitData)).to.be.ok;
+            fireEventSpy.restore();
+            emitSpy.restore();
         });
     });
-
 });
