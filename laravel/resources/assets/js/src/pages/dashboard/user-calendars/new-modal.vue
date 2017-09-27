@@ -1,5 +1,14 @@
-<<template>
-<simple-modal :opacity="parseFloat(0.4)" :onClose="close" :isActive="isActive">
+<template>
+<notification-modal
+    :opacity="parseFloat(0.4)"
+    :onClose="close"
+    slideHeight="150px"
+    bgColor="#fff"
+    :isActive="isActive"
+    :isShowNotification="insertResult !== ''"
+    :type="insertResult !== '' ? insertResult : 'success'"
+>
+<!--
     <div class="modal-header">
         <notification-slide-panel
             :isActive="insertResult !== ''"
@@ -8,7 +17,7 @@
             @close="close()"
         ></notification-slide-panel>
     </div>
-
+-->
     <div class="card" style="padding: 43px;">
         <text-input
             :id="textInputId.name"
@@ -46,18 +55,19 @@
             :disabled="!isReady"
         >Create</button>
     </div>
-
-</simple-modal>
+</notification-modal>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import simpleModal from '../../../components/modal/simple-modal.vue';
+//import simpleModal from '../../../components/modal/simple-modal.vue';
 import textInput from '../../../components/form/text-input.vue';
-import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
+//import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
+import notificationModal from '../../../components/modal/notification-modal.vue';
 
 export default {
-    components: { simpleModal, textInput, notificationSlidePanel },
+//    components: { simpleModal, textInput, notificationSlidePanel },
+    components: { notificationModal, textInput },
 
     props: {
         onClose: { type: Function, required: true },
@@ -83,7 +93,7 @@ export default {
 
     computed: {
         isReady: function() {
-            return this.input.name.length > 1;
+            return this.input.name.length;
         }
     },
 

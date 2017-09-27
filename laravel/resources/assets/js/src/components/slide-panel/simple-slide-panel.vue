@@ -1,21 +1,25 @@
 <template>
-<div :class="name + '-simple-slide-panel'">
-    <slide-panel v-if="isActive" :height="height"
-        @before-enter="addCssClass"
-        @before-leave="addCssClass"
+    <!-- <div :class="name + '-simple-slide-panel'"> -->
+    <!-- <transition :name="name + '-simple-slide-panel'" v-if="isActive" :height="height" -->
+    <transition :name="name + '-simple-slide-panel'"
+        @before-enter="beforeEnter"
+        @after-enter="afterEnter"
+        @before-leave="beforeLeave"
+        @after-leave="afterLeave"
     >
-        <div :class="['card', name + '-simple-slide-panel-content']"
-             :style="'background-color: ' + bgColor"
+        <div v-if="isActive"
+            :class="['card', name + '-simple-slide-panel']"
+            :style="{'background-color': bgColor, height: height}"
         ><slot></slot></div>
-    </slide-panel>
-</div>
+    </transition>
+    <!-- </div> -->
 </template>
 
 <script>
-import slidePanel from '../slide-panel/slide-panel.vue';
+//import slidePanel from '../slide-panel/slide-panel.vue';
 
 export default {
-    components: { slidePanel },
+//    components: { slidePanel },
 
     props: {
         name:     { type: String, required: true },
@@ -28,8 +32,21 @@ export default {
     },
 
     methods: {
+        beforeEnter: function() {
+            this.addCssClass();
+            this.$emit('before-enter');
+        },
+
+        afterEnter: function() {
+            this.$emit('after-enter');
+        },
+
+        beforeLeave: function() {
+            this.addCssClass();
+            this.$emit('before-leave');
+        },
+
         afterLeave: function() {
-            u.clog('fire @after-leave');
             this.$emit('after-leave');
             this.removeCssClass();
         },
@@ -47,9 +64,10 @@ export default {
                     width: 100%;
                 }
 
-                .${this.name}-simple-slide-panel-content {
+                .${this.name}-simple-slide-panel {
                     margin: 5px;
                     padding: 10px;
+                    width: calc(100% - 10px);
                     color: #fff;
                     text-align: center;
                     overflow: hidden;
@@ -65,6 +83,11 @@ export default {
             css.type = 'text/css';
             css.appendChild(rule);
             doc.getElementsByTagName('head')[0].appendChild(css);
+        },
+
+        removeCssClass() {
+            const el = document.getElementById(this.name + '-simple-slide-panel-css');
+            if(el) el.parentNode.removeChild(el);
         }
     }
 };
