@@ -1,5 +1,9 @@
 <template>
-    <simple-modal :blackScreenColor="blackScreenColor" :onClose="onClose" :isActive="isActive">
+    <simple-modal
+        :blackScreenColor="blackScreenColor"
+        :onClose="onClose"
+        :isActive="isActive"
+    >
         <div id="delete-confirm-modal"
             class="card"
             style="transition: height 0.3s ease;">
