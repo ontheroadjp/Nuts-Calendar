@@ -1,6 +1,6 @@
 <template>
 <notification-modal
-    :opacity="parseFloat(0.4)"
+    blackScreenColor="rgba(10,10,10,0.45)"
     :onClose="close"
     slideHeight="150px"
     bgColor="#fff"

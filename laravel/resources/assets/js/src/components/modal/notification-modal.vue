@@ -1,17 +1,9 @@
 <template>
-    <simple-modal :opacity="opacity" :onClose="onClose" :isActive="isActive">
+    <simple-modal :blackScreenColor="blackScreenColor" :onClose="onClose" :isActive="isActive">
         <div id="notification-modal"
             class="card"
             style="transition: height 0.3s ease;">
 
-<!--
-            <notification-slide-panel
-                :isActive="isShowNotification"
-                :type="deleteResult !== '' ? deleteResult : 'success'"
-                :height="height"
-                @close="close()"
-            ></notification-slide-panel>
--->
             <notification-slide-panel
                 :isActive="isShowNotification"
                 :type="type"
@@ -21,35 +13,22 @@
 
             <slot></slot>
 
-<!--
-            <div class="modal-footer">
-                <div v-show="!showDeleteConfirm" class="button-panel">
-                    <button class="button strip thin"
-                        @click="clickDeleteButton"
-                        :disabled="isLoading"
-                    >Delete</button>
-                </div>
-            </div>
--->
-
         </div>
     </simple-modal>
 </template>
 
 <script>
 import simpleModal from './simple-modal.vue';
-import deleteConfirmSlidePanel from '../slide-panel/delete-confirm-slide-panel.vue';
 import notificationSlidePanel from '../slide-panel/notification-slide-panel.vue';
 
 export default {
-    components: { simpleModal, deleteConfirmSlidePanel, notificationSlidePanel },
+    components: { simpleModal, notificationSlidePanel },
 
     props: {
-        slideHeight:   { type: String, default: '150px' },
-        opacity:  { type: Number, default: 0.85 },
+        slideHeight: { type: String, default: '150px' },
+        blackScreenColor: { type: String, default: 'rgba(10, 10, 10, .85)' },
         isActive: { type: Boolean, required: true },
-        onClose:  { type: Function, required: true },
-//        deleteResult: { type: String, default: '' } // should be use with .sync option
+        onClose: { type: Function, required: true },
         isShowNotification: { type: Boolean, required: true },
         type: { type: String, required: true, validator: function(value) {
             const expectation = [
@@ -61,40 +40,17 @@ export default {
 
     data() {
         return {
-            modalHeight: '',
+//            modalHeight: '',
             modalHeightWhenSlideOpened: '160px',
-//            showDeleteConfirm: false,
             isLoading: false,
         }
     },
 
     methods: {
-//        clickDeleteButton: function() {
-//            const el = document.getElementById('delete-confirm-modal');
-//            if(!el) return;
-//
-//            this.modalHeight = el.clientHeight;
-//            el.style.height = this.modalHeightWhenSlideOpened;
-//            this.showDeleteConfirm = true;
-//        },
-
-//        clickDeleteCancel: function() {
-//            const el = document.getElementById('delete-confirm-modal');
-//            if(!el) return;
-//
-//            el.style.height = this.modalHeight + 'px';
-//            this.showDeleteConfirm = false
-//        },
-
-//        clickDeleteOK() {
-//            this.$emit('onDeleteOK');
-//        },
-
         close: function() {
             this.onClose();
             setTimeout(() => {
                 this.showDeleteConfirm = false;
-//                this.$emit('update:deleteResult');
             }, 1000);
         },
 
@@ -116,7 +72,7 @@ export default {
             const el = document.getElementById('notification-modal');
             if(!el) return;
 
-            this.modalHeight = el.clientHeight;
+//            this.modalHeight = el.clientHeight;
             el.style.height = this.modalHeightWhenSlideOpened;
         },
     }
@@ -144,4 +100,3 @@ export default {
     width: 95%;
 }
 </style>
-
