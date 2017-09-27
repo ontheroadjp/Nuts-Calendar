@@ -43,10 +43,10 @@ export default {
 
     props: {
         slideHeight: { type: String, default: '150px' },
+        deleteResult: { type: String, default: '' },    // should be use with .sync option
         blackScreenColor: { type: String, default: 'rgba(10,10,10,0.85)' },
         isActive: { type: Boolean, required: true },
         onClose:  { type: Function, required: true },
-        deleteResult: { type: String, default: '' } // should be use with .sync option
     },
 
     data() {

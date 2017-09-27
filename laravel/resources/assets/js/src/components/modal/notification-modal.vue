@@ -30,12 +30,14 @@ export default {
         isActive: { type: Boolean, required: true },
         onClose: { type: Function, required: true },
         isShowNotification: { type: Boolean, required: true },
-        type: { type: String, required: true, validator: function(value) {
-            const expectation = [
-                'success', 'info', 'warning', 'danger', 'failed'
-            ];
-            return expectation.indexOf(value) > -1;
-        }},
+        type: { type: String, required: true,
+            validator: function(value) {
+                const expectation = [
+                    'success', 'info', 'warning', 'danger', 'failed'
+                ];
+                return expectation.indexOf(value) > -1;
+            }
+        },
     },
 
     data() {
