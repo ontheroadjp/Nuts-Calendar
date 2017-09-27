@@ -1,23 +1,25 @@
 <template>
     <!-- <div :class="name + '-simple-slide-panel'"> -->
-    <transition :name="name + '-simple-slide-panel'" v-if="isActive" :height="height"
+    <!-- <transition :name="name + '-simple-slide-panel'" v-if="isActive" :height="height" -->
+    <transition :name="name + '-simple-slide-panel'"
         @before-enter="beforeEnter"
         @after-enter="afterEnter"
         @before-leave="beforeLeave"
         @after-leave="afterLeave"
     >
-        <div :class="['card', name + '-simple-slide-panel-content']"
-             :style="'background-color: ' + bgColor"
-        ><slot></slot></div> -->
+        <div v-if="isActive"
+            :class="['card', name + '-simple-slide-panel']"
+            :style="{'background-color': bgColor, height: height}"
+        ><slot></slot></div>
     </transition>
     <!-- </div> -->
 </template>
 
 <script>
-import slidePanel from '../slide-panel/slide-panel.vue';
+//import slidePanel from '../slide-panel/slide-panel.vue';
 
 export default {
-    components: { slidePanel },
+//    components: { slidePanel },
 
     props: {
         name:     { type: String, required: true },
@@ -31,29 +33,22 @@ export default {
 
     methods: {
         beforeEnter: function() {
-//            u.clog('fire @before-enter');
             this.addCssClass();
             this.$emit('before-enter');
-            this.addCssClass();
         },
 
         afterEnter: function() {
-//            u.clog('fire @after-enter');
             this.$emit('after-enter');
-//            this.removeCssClass();
         },
 
         beforeLeave: function() {
-//            u.clog('fire @before-leave');
             this.addCssClass();
             this.$emit('before-leave');
-            this.addCssClass();
         },
 
         afterLeave: function() {
-//            u.clog('fire @after-leave');
             this.$emit('after-leave');
-//            this.removeCssClass();
+            this.removeCssClass();
         },
 
         addCssClass: function() {
@@ -69,9 +64,10 @@ export default {
                     width: 100%;
                 }
 
-                .${this.name}-simple-slide-panel-content {
+                .${this.name}-simple-slide-panel {
                     margin: 5px;
                     padding: 10px;
+                    width: calc(100% - 10px);
                     color: #fff;
                     text-align: center;
                     overflow: hidden;
@@ -90,7 +86,7 @@ export default {
         },
 
         removeCssClass() {
-            const el = document.getElementById(name + '-slide-panel-css');
+            const el = document.getElementById(this.name + '-simple-slide-panel-css');
             if(el) el.parentNode.removeChild(el);
         }
     }

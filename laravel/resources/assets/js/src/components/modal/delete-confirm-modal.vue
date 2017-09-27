@@ -4,19 +4,19 @@
             class="card"
             style="transition: height 0.3s ease;">
 
-            <notification-slide-panel
-                :isActive="deleteResult !== ''"
-                :type="deleteResult !== '' ? deleteResult : 'success'"
-                :height="slideHeight"
-                @close="close()"
-            ></notification-slide-panel>
-
             <delete-confirm-slide-panel
                 :isActive="showDeleteConfirm"
                 :height="slideHeight"
                 @cancel="clickDeleteCancel()"
                 @ok="clickDeleteOK()"
             ></delete-confirm-slide-panel>
+
+            <notification-slide-panel
+                :isActive="deleteResult !== ''"
+                :type="deleteResult !== '' ? deleteResult : 'success'"
+                :height="slideHeight"
+                @close="close()"
+            ></notification-slide-panel>
 
             <slot></slot>
 
