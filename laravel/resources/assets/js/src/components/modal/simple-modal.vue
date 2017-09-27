@@ -1,27 +1,17 @@
 <template>
 <transition name="modal-fade">
     <div class="modal is-active" v-if="isActive">
-        <div class="modal-background"
+        <black-screen :bgColor="blackScreenColor"></black-screen>
+        <!-- <div class="modal-background"
              :style="{'background-color': blackScreenColor}"
-        ></div>
-
+        ></div> -->
         <div class="modal-card">
-<!--
-            <button class="modal-close is-large" aria-label="close"
-                style="position: absolute;
-                        top: 20px;
-                        right: 20px;
-                        background-color: rgba(84, 110, 122, 0.5);
-                        z-index: 1;
-                "
-                @click="onClose()"
-            ></button>
--->
             <button aria-label="close"
                 class="modal-close is-large"
                 :style="style.closeButton"
                 @click="onClose()"
             ></button>
+
             <slot></slot>
         </div>
     </div>
@@ -29,17 +19,20 @@
 </template>
 
 <script>
+import blackScreen from '../black-screen.vue';
 
 export default {
+    components: { blackScreen },
+
     props: {
         blackScreenColor: { type: String, default: 'rgba(10,10,10,0.85)' },
         isActive: { type: Boolean, required: true },
         onClose: { type: Function, required: true },
     },
 
-    computed: {
-        style: function() {
-            return {
+    data() {
+        return {
+            style: {
                 closeButton: {
                     'position': 'absolute',
                     'top': '20px',
