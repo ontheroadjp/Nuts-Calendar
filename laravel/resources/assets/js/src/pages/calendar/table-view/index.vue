@@ -9,13 +9,13 @@
 
         <black-screen
             v-if="disabled"
-            color="rgba(242, 242, 242, .6)"
+            bgColor="rgba(242, 242, 242, .6)"
             :onActive="function() {
                 this.$store.commit('calendar/tableView/item/insert/reset');
             }"
         ></black-screen>
 
-        <black-screen v-if="calendarIsLoading">
+        <black-screen v-if="calendarIsLoading" :zIndex="999">
             <div class="loading-black-screen">
                 <i class="fa fa-spinner fa-pulse fa-3x fa-fw"
                     style="margin-bottom: .5em"></i>
