@@ -5,12 +5,6 @@
         @before-leave="beforeLeave"
         @after-leave="afterLeave"
     >
-<!--
-        <div v-if="isActive"
-            :class="['card', name + '-slide-panel']"
-            :style="{'background-color': bgColor, height: height}"
-        ><slot></slot></div>
--->
         <div v-if="isActive"
             :class="['card', name + '-slide-panel']"
             :style="{'background-color': bgColor}"
@@ -19,13 +13,16 @@
 </template>
 
 <script>
+import headCss from '../../mixins/headCss.js';
 
 export default {
+    mixins: [ headCss ],
+
     props: {
-        name:     { type: String, required: true },
-        height:   { type: String, default: '300px' },
+        name: { type: String, required: true },
+        height: { type: String, default: '300px' },
         isActive: { type: Boolean, required: true },
-        bgColor:  { type: String, default: '#fff' },
+        bgColor: { type: String, default: '#fff' },
         position: { type: String, default: 'bottom',
             validator: function(value) {
                 return value == 'top' || value == 'bottom'
@@ -33,33 +30,10 @@ export default {
         }
     },
 
-    methods: {
-        beforeEnter: function() {
-            this.addCssClass();
-            this.$emit('before-enter');
-        },
-
-        afterEnter: function() {
-            this.$emit('after-enter');
-        },
-
-        beforeLeave: function() {
-            this.addCssClass();
-            this.$emit('before-leave');
-        },
-
-        afterLeave: function() {
-            this.$emit('after-leave');
-            this.removeCssClass();
-        },
-
-        addCssClass: function() {
-            const el = document.getElementById(this.name + '-slide-panel-css')
-            if(el) return;
-
-            const doc = window.document;
-            const css = doc.createElement('style');
-            const rule = document.createTextNode(`
+    data() {
+        return {
+            headCssId: this.name + '-slide-panel-css',
+            headCss:`
                 .${this.name}-slide-panel {
                     position: absolute;
                     ${this.position}: 0;
@@ -71,12 +45,9 @@ export default {
                     padding: 10px;
                     width: calc(100% - 10px);
                     color: #fff;
-//                    text-align: center;
-//                    overflow: hidden;
                     height: ${this.height};
                     display: flex;
                     flex-flow: column nowrap;
-//                    justify-content: space-between;
                     z-index: 99;
                 }
 
@@ -90,22 +61,29 @@ export default {
                     height: 0;
                     opacity: 0;
                 }
-            `);
+            `
+        }
+    },
 
-            css.id = this.name + '-slide-panel-css';
-            css.type = 'text/css';
-            css.appendChild(rule);
-            doc.getElementsByTagName('head')[0].appendChild(css);
+    methods: {
+        beforeEnter: function() {
+            this.addCssClass(this.headCssId, this.headCss);
+            this.$emit('before-enter');
         },
 
-        removeCssClass() {
-            const el = document.getElementById(this.name + '-slide-panel-css');
-            if(el) el.parentNode.removeChild(el);
+        afterEnter: function() {
+            this.$emit('after-enter');
+        },
+
+        beforeLeave: function() {
+            this.addCssClass(this.headCssId, this.headCss);
+            this.$emit('before-leave');
+        },
+
+        afterLeave: function() {
+            this.$emit('after-leave');
+            this.removeCssClass(this.headCssId);
         }
     }
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>
