@@ -4,8 +4,10 @@ import { mount } from 'avoriaz';
 describe('components/slide-panel/simple-slide-panel.vue', () => {
     const wrapper = mount(simpleSlidePanel, {
         propsData: {
+            name: 'test-panel',
             height: '600px',
-            duration: '1s'
+            duration: '1s',
+            isActive: false
         }
     });
 
