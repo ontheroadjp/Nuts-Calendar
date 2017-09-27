@@ -8,16 +8,6 @@
     :isShowNotification="insertResult !== ''"
     :type="insertResult !== '' ? insertResult : 'success'"
 >
-<!--
-    <div class="modal-header">
-        <notification-slide-panel
-            :isActive="insertResult !== ''"
-            :type="insertResult !== '' ? insertResult : 'success'"
-            height="150px"
-            @close="close()"
-        ></notification-slide-panel>
-    </div>
--->
     <div class="card" style="padding: 43px;">
         <text-input
             :id="textInputId.name"
@@ -60,13 +50,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-//import simpleModal from '../../../components/modal/simple-modal.vue';
-import textInput from '../../../components/form/text-input.vue';
-//import notificationSlidePanel from '../../../components/slide-panel/notification-slide-panel.vue';
 import notificationModal from '../../../components/modal/notification-modal.vue';
+import textInput from '../../../components/form/text-input.vue';
 
 export default {
-//    components: { simpleModal, textInput, notificationSlidePanel },
     components: { notificationModal, textInput },
 
     props: {
