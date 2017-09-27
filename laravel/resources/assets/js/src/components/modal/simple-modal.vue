@@ -6,6 +6,7 @@
         ></div>
 
         <div class="modal-card">
+<!--
             <button class="modal-close is-large" aria-label="close"
                 style="position: absolute;
                         top: 20px;
@@ -13,6 +14,12 @@
                         background-color: rgba(84, 110, 122, 0.5);
                         z-index: 1;
                 "
+                @click="onClose()"
+            ></button>
+-->
+            <button aria-label="close"
+                class="modal-close is-large"
+                :style="style.closeButton"
                 @click="onClose()"
             ></button>
             <slot></slot>
@@ -28,6 +35,20 @@ export default {
         blackScreenColor: { type: String, default: 'rgba(10,10,10,0.85)' },
         isActive: { type: Boolean, required: true },
         onClose: { type: Function, required: true },
+    },
+
+    computed: {
+        style: function() {
+            return {
+                closeButton: {
+                    'position': 'absolute',
+                    'top': '20px',
+                    'right': '20px',
+                    'background-color': 'rgba(84, 110, 122, 0.5)',
+                    'z-index': 1
+                }
+            }
+        }
     }
 };
 </script>
