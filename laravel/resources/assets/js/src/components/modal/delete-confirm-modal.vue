@@ -26,7 +26,7 @@
 
             <div class="modal-footer">
                 <div v-show="!showDeleteConfirm" class="button-panel">
-                    <button class="button strip thin"
+                    <button id="delete-button" class="button strip thin"
                         @click="clickDeleteButton"
                         :disabled="isLoading"
                     >Delete</button>

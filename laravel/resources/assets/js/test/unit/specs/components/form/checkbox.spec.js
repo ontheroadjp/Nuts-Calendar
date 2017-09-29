@@ -1,57 +1,52 @@
-import checkbox from '../../../../../src/components/form/checkbox.vue';
+import Checkbox from '../../../../../src/components/form/checkbox.vue';
 import { mount } from 'avoriaz';
+//import sinon from 'sinon';
+
 
 describe('components/form/checkbox.vue', () => {
-    const wrapper = mount(checkbox, {
-        propsData: {
-            id: 'input-id',
-            initialValue: false
-        }
-    });
+    const propsData = {
+        id: 'input-id',
+        initialValue: false
+    }
 
-    describe('when component mounted', () => {
-        it('initialValue should equal to false', () => {
+    describe('state values', () => {
+        const wrapper = mount(Checkbox, { propsData });
+        const input = wrapper.find('input#input-id')[0];
+
+        it('should have values when mounted', () => {
             expect(wrapper.vm.initialValue).to.be.eql(false);
-        });
-
-        it('input.value should equal to initialValue', () => {
-            expect(wrapper.data().input).to.be.eql(wrapper.vm.initialValue);
-        });
-
-        it('form value should equal to input.value', () => {
-            const input = wrapper.find('input#input-id')[0]
-            expect(input.element.checked).to.be.eql(wrapper.data().input);
-        });
-
-        it('isReadyResult should be false', () => {
+            expect(wrapper.data().input).to.be.eql(false);
+            expect(input.element.checked).to.be.eql(false);
             expect(wrapper.vm.isReadyResult).to.be.eql(false);
         });
-    });
 
-    describe('when form value changed to true', () => {
-        it('input.value should equal to true', () => {
-            const input = wrapper.find('input#input-id')[0];
+        it('should have values when checkbox is checked', () => {
             input.element.checked = true;
             input.trigger('change');
-            expect(wrapper.data().input).to.be.eql(true);
-        });
 
-        it('form value should not equal to initialValue', () => {
-            const input = wrapper.find('input#input-id')[0];
             expect(wrapper.vm.initialValue).to.be.eql(false);
-        });
-
-        it('isReadyResult should be true', () => {
+            expect(wrapper.data().input).to.be.eql(true);
+            expect(input.element.checked).to.be.eql(true);
             expect(wrapper.vm.isReadyResult).to.be.eql(true);
         });
-
     });
 
-    describe('when event occured on form, onChange() called', () => {
-        const onChange = sinon.spy(wrapper.vm, 'onChange');
-        it('change event occured', () => {
-            wrapper.find('input#input-id')[0].trigger('change');
+    describe('event', () => {
+        const onChange = sinon.spy(Checkbox.methods, 'onChange');
+        const wrapper = mount(Checkbox, { propsData });
+        const emit = sinon.spy(wrapper.vm, '$emit');
+        const input = wrapper.find('input#input-id')[0];
+
+        it('will call $emit via onChange() when change event occured', () => {
+            input.element.checked = true;
+            input.trigger('change');
+
             expect(onChange.callCount).to.be.eql(1);
+            expect(emit.calledWith('changeValue',{
+                value: wrapper.data().input,
+               error: false,
+               isReady: wrapper.vm.isReadyResult
+            })).to.be.ok;
         });
     });
 });

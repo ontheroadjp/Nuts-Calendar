@@ -22,6 +22,7 @@
 import blackScreen from '../black-screen.vue';
 
 export default {
+    name: 'SimpleModal',
     components: { blackScreen },
 
     props: {

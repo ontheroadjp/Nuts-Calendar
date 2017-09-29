@@ -12,7 +12,7 @@ describe('components/form/text-input.vue', () => {
         maxTextLength: 20
     };
 
-    describe('value state', () => {
+    describe('state values', () => {
         const wrapper = mount(textInput, { propsData });
         const inputForm = wrapper.find('input#input-id')[0];
 
@@ -80,23 +80,23 @@ describe('components/form/text-input.vue', () => {
         };
 
         it('when keyup event occured', () => {
-            const fireEventSpy = sinon.spy(wrapper.vm, 'fireEvent');
-            const emitSpy = sinon.spy(wrapper.vm, '$emit');
+            const fireEvent = sinon.spy(wrapper.vm, 'fireEvent');
+            const emit = sinon.spy(wrapper.vm, '$emit');
             inputForm.trigger('keyup');
-            expect(fireEventSpy.callCount).to.be.eql(1);
-            expect(emitSpy.calledWith('changeValue', emitData)).to.be.ok;
-            fireEventSpy.restore();
-            emitSpy.restore();
+            expect(fireEvent.callCount).to.be.eql(1);
+            expect(emit.calledWith('changeValue', emitData)).to.be.ok;
+            fireEvent.restore();
+            emit.restore();
         });
 
         it('when blur event occured', () => {
-            const fireEventSpy = sinon.spy(wrapper.vm, 'fireEvent');
-            const emitSpy = sinon.spy(wrapper.vm, '$emit');
+            const fireEvent = sinon.spy(wrapper.vm, 'fireEvent');
+            const emit = sinon.spy(wrapper.vm, '$emit');
             inputForm.trigger('blur');
-            expect(fireEventSpy.callCount).to.be.eql(1);
-            expect(emitSpy.calledWith('blurValue', emitData)).to.be.ok;
-            fireEventSpy.restore();
-            emitSpy.restore();
+            expect(fireEvent.callCount).to.be.eql(1);
+            expect(emit.calledWith('blurValue', emitData)).to.be.ok;
+            fireEvent.restore();
+            emit.restore();
         });
     });
 });

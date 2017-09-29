@@ -1,66 +1,124 @@
-import deleteConfirmModal from '../../../../../src/components/modal/delete-confirm-modal.vue';
-import simpleModal from '../../../../../src/components/modal/simple-modal.vue';
-import { mount, shallow } from 'avoriaz';
-import sinon from 'sinon';
+import DeleteConfirmModal from '../../../../../src/components/modal/delete-confirm-modal.vue';
+//import proxyquire from 'proxyquire';
+//import { compileToFunctions } from 'vue-template-compiler'
+import { mount } from 'avoriaz';
 
 describe('components/modal/delete-confirm-modal.vue', () => {
-    const setModalHeight = sinon.spy(deleteConfirmModal.methods, 'setModalHeight');
     const onClose = sinon.stub();
 
+    const propsData = {
+        blackScreenColor: 'rgba(217, 217, 217, 0.75)',
+        isActive: true,
+        onClose: onClose
+    };
 
-    const wrapper = mount(deleteConfirmModal, {
-        attachToDocument: true,
-        slots: {
-            default: simpleModal
-        },
-        propsData: {
-            opacity: 0.1,
-            isActive: false,
-            onClose: onClose
-        }
+    describe('HTML elements', () => {
+        const wrapper = mount(DeleteConfirmModal, { propsData });
+        const divs = wrapper.find('div#delete-confirm-modal');
+        const buttons = wrapper.find('button#delete-button');
+
+        it('mounted', () => {
+            expect(divs.length).is.eql(1);
+            expect(buttons.length).is.eql(1);
+        });
     });
 
-//    const simpleModal = mount(simpleModal, {
-//        propsData: {
-//            isActive: wrapper.vm.isActive,
-//            onClose: onClose
-//        }
-//    });
+    describe('activities', () => {
+        const clickDeleteButton = sinon.spy(DeleteConfirmModal.methods, 'clickDeleteButton');
+        const wrapper = mount(DeleteConfirmModal, { propsData });
+        const button = wrapper.find('button#delete-button')[0];
 
-    it('check props', () => {
-        expect(wrapper.vm.opacity).to.be.eql(0.1);
-        expect(wrapper.vm.isActive).to.be.eql(false);
-        expect(typeof wrapper.vm.onClose).to.be.eql('function');
+        it('click button#delete-button', () => {
+            button.trigger('click');
+            expect(clickDeleteButton.callCount).to.be.eql(1);
+        });
+
+        clickDeleteButton.restore();
     });
 
-    describe('when value of isActive is changed', () => {
-        it('new value is true', () => {
-            expect(wrapper.vm.isActive).to.be.eql(false);
+    describe('clickDeleteButton()', () => {
+        const wrapper = mount(DeleteConfirmModal, { propsData, attachToDocument: true });
+        const div = wrapper.find('div#delete-confirm-modal')[0];
+        wrapper.vm.clickDeleteButton();
+
+        it('change values of property', () => {
+            expect(wrapper.data().modalHeight).is.eql(0);
+        });
+
+        it('add attribute to div#delete-confirm-modal element', () => {
+            expect(div.hasStyle(
+                'height', wrapper.data().modalHeightWhenSlideOpened)
+            ).is.true;
+        });
+    });
+
+    describe('clickDeleteCancel()', () => {
+        const wrapper = mount(DeleteConfirmModal, { propsData });
+        const div = wrapper.find('div#delete-confirm-modal')[0];
+        wrapper.vm.clickDeleteCancel();
+
+        it('change a HTML elements', () => {
+            expect(div.hasStyle('height', wrapper.data().modalHeight)).is.true;
+        });
+
+        it('change a state value', () => {
+            wrapper.methods.clickDeleteCancel;
+            expect(wrapper.data().showDeleteConfirm).is.false;
+        });
+    });
+
+    describe('clickDeleteOK()', () => {
+        const wrapper = mount(DeleteConfirmModal, { propsData });
+        const emit = sinon.spy(wrapper.vm, '$emit');
+        wrapper.vm.clickDeleteOK();
+
+        it('fire $emit(\'onDeleteOK\')', () => {
+            expect(emit.callCount).is.eql(1);
+            expect(emit.calledWith('onDeleteOK')).is.to.be.ok;
+        });
+
+        emit.restore();
+    });
+
+    describe('close()', () => {
+        const wrapper = mount(DeleteConfirmModal, { propsData });
+        const emit = sinon.spy(wrapper.vm, '$emit');
+        wrapper.vm.close();
+
+        it('calls onClose()', () => {
+            expect(onClose.callCount).is.eql(1);
+        });
+
+        it('fire $emit(\'update:deleteResult\')', () => {
+            setTimeout(() => {
+                expect(emit.callCount).is.eql(1);
+                expect(emit.calledWith('update:deleteResult')).is.to.be.ok;
+            }, 1010);
+        });
+
+        emit.restore();
+    });
+
+    describe('setModalHeight()', () => {
+        const wrapper = mount(DeleteConfirmModal, { propsData });
+        const el = wrapper.find('#delete-confirm-modal')[0];
+
+        it('sets \'height\' attribute to \'div.#delete-confirm-modal\' element', () => {
+            expect(el.hasStyle('height', wrapper.data().modalHeight)).is.true;
+        });
+    });
+
+    describe('isActive', () => {
+        const setModalHeight = sinon.spy(DeleteConfirmModal.methods, 'setModalHeight');
+        const wrapper = mount(DeleteConfirmModal, { propsData });
+
+        it('calls setModalHeight()', async () => {
             wrapper.setProps({isActive: true});
-            expect(wrapper.vm.isActive).to.be.eql(true);
-            wrapper.vm.$nextTick(() => {
-                expect(setModalHeight.callCount).to.be.eql(1);
+            await wrapper.vm.$nextTick(() => {
+                expect(setModalHeight.callCount).is.eql(1);
             });
         });
 
-        it('new value is false', () => {
-            expect(wrapper.vm.isActive).to.be.eql(true);
-            wrapper.setProps({isActive: false});
-            expect(wrapper.vm.isActive).to.be.eql(false);
-            wrapper.vm.$nextTick(() => {
-                expect(setModalHeight.callCount).to.be.eql(1);
-            });
-        });
-
-//        it('height is changed', () => {
-////            const el = wrapper.element.querySelector('div#delete-confirm-modal');
-//
-////            const simpleModal = shallow(wrapper.vm.$options.components.simpleModal, {
-////                propsData: { isActive: wrapper.vm.isActive, onClose: () => {} }
-////            });
-////            const hoge = simpleModal.find('div#delete-confirm-modal')[0];
-//
-//            console.log(wrapper.element);
-//        });
+        setModalHeight.restore();
     });
 });
