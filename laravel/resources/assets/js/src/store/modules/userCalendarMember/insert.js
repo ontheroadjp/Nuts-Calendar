@@ -10,7 +10,7 @@ export default {
             u.clog('insert()');
             commit('isLoading', true);
 
-            const url =  '/api/v1/calendar/member';
+            const url =  '/api/v1/calendar/member/add';
             const data = {
                 'user_calendar_id': userCalendarId,
                 'member_id': memberId

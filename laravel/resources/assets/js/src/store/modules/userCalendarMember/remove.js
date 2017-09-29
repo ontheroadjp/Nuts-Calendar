@@ -10,7 +10,7 @@ export default {
             u.clog('checkMember()');
             commit('isLoading', true);
 
-            const url =  '/api/v1/calendar/member';
+            const url =  '/api/v1/calendar/member/remove';
             const data = {
                 'user_calendar_id': userCalendarId,
                 'member_id': memberId
