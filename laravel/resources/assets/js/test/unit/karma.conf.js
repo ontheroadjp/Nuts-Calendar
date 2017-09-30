@@ -4,9 +4,10 @@ process.env.CHROME_BIN = require('puppeteer').executablePath()
 module.exports = function (config) {
   config.set({
 //    browsers: ['PhantomJS', 'ChromeHeadless', 'Firefox'],
+    browsers: ['ChromeHeadless', 'Firefox'],
 //    browsers: ['PhantomJS'],
 //    browsers: ['Chrome'],
-    browsers: ['ChromeHeadless'],
+//    browsers: ['ChromeHeadless'],
 //    browsers: ['Firefox'],
     frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
     reporters: ['spec', 'coverage'],

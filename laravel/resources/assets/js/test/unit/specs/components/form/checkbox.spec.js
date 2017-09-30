@@ -20,14 +20,16 @@ describe('components/form/checkbox.vue', () => {
             expect(wrapper.vm.isReadyResult).to.be.eql(false);
         });
 
-        it('should have values when checkbox is checked', () => {
+        it('should have values when checkbox is checked', async () => {
             input.element.checked = true;
             input.trigger('change');
 
-            expect(wrapper.vm.initialValue).to.be.eql(false);
-            expect(wrapper.data().input).to.be.eql(true);
-            expect(input.element.checked).to.be.eql(true);
-            expect(wrapper.vm.isReadyResult).to.be.eql(true);
+            await wrapper.vm.$nextTick(() => {
+                expect(wrapper.vm.initialValue).to.be.eql(false);
+                expect(wrapper.data().input).to.be.eql(true);
+                expect(input.element.checked).to.be.eql(true);
+                expect(wrapper.vm.isReadyResult).to.be.eql(true);
+            });
         });
     });
 
