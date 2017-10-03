@@ -1,15 +1,14 @@
-var webpackConfig = require('../../build/webpack.test.conf')
+var webpackConfig = require('../../build/webpack.test.karma.conf')
 process.env.CHROME_BIN = require('puppeteer').executablePath()
 
 module.exports = function (config) {
   config.set({
-//    browsers: ['PhantomJS', 'ChromeHeadless', 'Firefox'],
-    browsers: ['ChromeHeadless', 'Firefox'],
-//    browsers: ['PhantomJS'],
-//    browsers: ['Chrome'],
+//    browsers: ['ChromeHeadless', 'Firefox'],
+    browsers: ['Chrome', 'Firefox'],
 //    browsers: ['ChromeHeadless'],
+//    browsers: ['Chrome'],
 //    browsers: ['Firefox'],
-    frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
+    frameworks: ['mocha', 'sinon-chai'],
     reporters: ['spec', 'coverage'],
     files: [
         '../../node_modules/es6-promise/dist/es6-promise.auto.js',

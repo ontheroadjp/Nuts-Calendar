@@ -1,7 +1,7 @@
 <template>
 <div class="dropdown">
     <template v-if="label !== ''">
-        <a href="#" class="dropdown-toggle" :style="labelStyle" @click="toggle()">
+        <a :href="'#' + id" class="dropdown-toggle" :style="labelStyle" @click="toggle()">
             <span>
                 <span class="icon is-small">
                     <i class="fa" :class="icon"></i>
@@ -15,7 +15,7 @@
     </template>
 
     <template v-else>
-        <a href="#" class="dropdown-toggle" @click="toggle()">
+        <a :href="'#' + id" class="dropdown-toggle" @click="toggle()">
             <span class="fa-stack fa-lg">
                 <i class="fa fa-circle fa-stack-2x" :style="backIconStyle"></i>
                 <i class="fa fa-stack-1x fa-inverse" :class="icon" :style="frontIconStyle"></i>
@@ -78,7 +78,7 @@ export default {
             .${this.id}-leave-active {
                 transition: all 0.25s ease;
             }
-            
+
             .${this.id}-enter,
             .${this.id}-leave-to {
                 height: 0;

@@ -65,9 +65,9 @@ export default {
 
     watch: {
         isActive: function() {
-            this.$nextTick(() => {
+//            this.$nextTick(() => {
                 this.setModalHeight();
-            });
+//            });
         },
 
         isShowNotification: function() {
@@ -75,7 +75,9 @@ export default {
             if(!el) return;
 
 //            this.modalHeight = el.clientHeight;
-            el.style.height = this.modalHeightWhenSlideOpened;
+            this.$nextTick(() => {
+                el.style.height = this.modalHeightWhenSlideOpened;
+            });
         },
     }
 };

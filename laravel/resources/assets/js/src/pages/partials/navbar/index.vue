@@ -13,7 +13,7 @@
 
     <div class="nav-right nav-menu" style="overflow:visible">
 
-        <router-link to="/" 
+        <router-link to="/"
             class="nav-item thin"
             :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
         >{{ t('navbar.home') }}</router-link>
@@ -29,8 +29,8 @@
         </template>
 
         <template v-else>
-            <router-link 
-                to="/dashboard" 
+            <router-link
+                to="/dashboard"
                 class="nav-item thin"
                 :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
                 @click.native="$store.commit('calendar/setValue', {
@@ -39,7 +39,6 @@
                 })"
             >{{ t('navbar.dashboard') }}
             </router-link>
-
             <user-account-dropdown></user-account-dropdown>
         </template>
 
@@ -51,8 +50,8 @@
 
         <span class="nav-item">
             <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']"
-                :style="{ 
-                    'color': linkColorStyle, 
+                :style="{
+                    'color': linkColorStyle,
                     'pointer-events': pointerEventsStyle,
                     'border': '1px solid ' + linkColorStyle
                 }"
@@ -63,7 +62,7 @@
                 <span>Tweet</span>
             </a>
         </span>
-    
+
     </div><!-- // .nav-right .nav-menu -->
 
 </header>
@@ -80,7 +79,7 @@
     import langDropdown from './lang-dropdown.vue';
 //    import themeChanger from './theme-changer.vue';
 //    import langChanger from './lang-changer.vue';
-    
+
     export default {
         name: 'navbar-index',
         components: {
@@ -106,7 +105,7 @@
             }),
 
             headerStyle: function() {
-                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; ' 
+                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; '
                     + 'box-shadow: none;';
             },
 
@@ -114,7 +113,7 @@
                 if( this.disabled ) return "rgba(242, 242, 242, .3)";
                 return "rgba(242, 242, 242, .75)";
             },
-    
+
             pointerEventsStyle: function() {
                 if( this.disabled ) return 'none';
                 return 'auto';

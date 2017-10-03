@@ -1,8 +1,8 @@
 <template>
-<div class="container" style="width: 100%; height: 100vh">
+<div id="password-reset" class="container" style="width: 100%; height: 100vh">
 <div class="row">
 <div class="col-md-8 col-md-offset-2">
-    <result-view 
+    <result-view
         v-if="passwordResetResult !== ''"
         :status="passwordResetResult"
     ></result-view>
@@ -17,9 +17,9 @@
 
             <div class="control is-horizontal">
                 <p class="control has-icon">
-                    <input 
-                        class="nuts-input-textbox is-medium" 
-                        type="email" 
+                    <input
+                        class="nuts-input-textbox is-medium"
+                        type="email"
                         :placeholder="emailHasError ? errors.email : 'E-Mail Address'"
                         style="margin-bottom: 25px;"
                         v-model="input.email"
@@ -33,9 +33,9 @@
 
             <div class="control is-horizontal">
                 <p class="control has-icon">
-                    <input 
-                        class="nuts-input-textbox is-medium" 
-                        type="password" 
+                    <input
+                        class="nuts-input-textbox is-medium"
+                        type="password"
                         :placeholder="passwordHasError ? errors.password : 'New Password'"
                         style="margin-bottom: 20px;"
                         v-model="input.password"
@@ -48,9 +48,9 @@
 
             <div class="control is-horizontal">
                 <p class="control has-icon">
-                    <input 
-                        class="nuts-input-textbox is-medium" 
-                        type="password" 
+                    <input
+                        class="nuts-input-textbox is-medium"
+                        type="password"
                         :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : 'New Password ( Confirm )'"
                         style="margin-bottom: 20px;"
                         v-model="input.passwordConfirmation"
@@ -62,10 +62,10 @@
             </div>
 
             <p style="text-align: center;">
-                <button 
+                <button
                     type="submit"
-                    class="button is-nuts-primary is-large" 
-                    style="width: 50%" 
+                    class="button is-nuts-primary is-large"
+                    style="width: 50%"
                     @click.prevent="passwordReset()"
                 ><i class="fa fa-btn fa-refresh"></i> Reset Password</button>
             </p>

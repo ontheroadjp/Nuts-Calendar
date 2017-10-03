@@ -1,6 +1,7 @@
 import simpleSlidePanel from '../../../../../src/components/slide-panel/simple-slide-panel.vue';
-import deleteConfirmSlidePanel from '../../../../../src/components/slide-panel/delete-confirm-slide-panel.vue';
-import { mount } from 'avoriaz';
+import { mount } from 'vue-test-utils';
+import { expect } from 'chai';
+import sinon from 'sinon';
 
 describe('components/slide-panel/simple-slide-panel.vue', () => {
     const propsData = {

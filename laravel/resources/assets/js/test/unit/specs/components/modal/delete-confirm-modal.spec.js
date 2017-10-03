@@ -1,7 +1,7 @@
 import DeleteConfirmModal from '../../../../../src/components/modal/delete-confirm-modal.vue';
-//import proxyquire from 'proxyquire';
-//import { compileToFunctions } from 'vue-template-compiler'
-import { mount } from 'avoriaz';
+import { mount } from 'vue-test-utils';
+import { expect } from 'chai';
+import sinon from 'sinon';
 
 describe('components/modal/delete-confirm-modal.vue', () => {
     const onClose = sinon.stub();
@@ -14,19 +14,19 @@ describe('components/modal/delete-confirm-modal.vue', () => {
 
     describe('HTML elements', () => {
         const wrapper = mount(DeleteConfirmModal, { propsData });
-        const divs = wrapper.find('div#delete-confirm-modal');
+        const div = wrapper.find('div#delete-confirm-modal');
         const buttons = wrapper.find('button#delete-button');
 
         it('mounted', () => {
-            expect(divs.length).is.eql(1);
-            expect(buttons.length).is.eql(1);
+            expect(div.is('div')).is.eql(true);
+            expect(buttons.is('button')).is.eql(true);
         });
     });
 
     describe('activities', () => {
         const clickDeleteButton = sinon.spy(DeleteConfirmModal.methods, 'clickDeleteButton');
         const wrapper = mount(DeleteConfirmModal, { propsData });
-        const button = wrapper.find('button#delete-button')[0];
+        const button = wrapper.find('button#delete-button');
 
         it('click button#delete-button', () => {
             button.trigger('click');
@@ -38,31 +38,30 @@ describe('components/modal/delete-confirm-modal.vue', () => {
 
     describe('clickDeleteButton()', () => {
         const wrapper = mount(DeleteConfirmModal, { propsData, attachToDocument: true });
-        const div = wrapper.find('div#delete-confirm-modal')[0];
+        const div = wrapper.find('div#delete-confirm-modal');
         wrapper.vm.clickDeleteButton();
 
         it('change values of property', () => {
-            expect(wrapper.data().modalHeight).is.eql(0);
-            expect(wrapper.data().showDeleteConfirm).is.true;
+            expect(wrapper.vm.modalHeight).is.eql(0);
+            expect(wrapper.vm.showDeleteConfirm).is.true;
         });
 
         it('add style attribute value of \'height\' of div#delete-confirm-modal', () => {
-            expect(div.hasStyle('height',wrapper.data().modalHeightWhenSlideOpened)).to.be.eql(true);
+            expect(div.hasStyle('height',wrapper.vm.modalHeightWhenSlideOpened)).to.be.eql(true);
         });
     });
 
     describe('clickDeleteCancel()', () => {
         const wrapper = mount(DeleteConfirmModal, { propsData });
-        const div = wrapper.find('div#delete-confirm-modal')[0];
+        const div = wrapper.find('div#delete-confirm-modal');
         wrapper.vm.clickDeleteCancel();
 
         it('change a HTML elements', () => {
-            expect(div.hasStyle('height', wrapper.data().modalHeight)).is.true;
+            expect(div.hasStyle('height', wrapper.vm.modalHeight)).is.true;
         });
 
         it('change a state value', () => {
-            wrapper.methods.clickDeleteCancel;
-            expect(wrapper.data().showDeleteConfirm).is.false;
+            expect(wrapper.vm.showDeleteConfirm).is.false;
         });
     });
 
@@ -100,25 +99,23 @@ describe('components/modal/delete-confirm-modal.vue', () => {
 
     describe('setModalHeight()', () => {
         const wrapper = mount(DeleteConfirmModal, { propsData });
-        const el = wrapper.find('#delete-confirm-modal')[0];
+        const el = wrapper.find('#delete-confirm-modal');
 
         it('sets \'height\' attribute to \'div.#delete-confirm-modal\' element', () => {
-            expect(el.hasStyle('height', wrapper.data().modalHeight)).is.true;
+            expect(el.hasStyle('height', wrapper.vm.modalHeight)).is.true;
         });
     });
 
     describe('isActive', () => {
-        const spy = sinon.spy(DeleteConfirmModal.methods, 'setModalHeight');
         const wrapper = mount(DeleteConfirmModal, { propsData });
-
-        wrapper.update();
+        const spy = sinon.spy(wrapper.vm, 'setModalHeight');
 
         it('calls setModalHeight()', () => {
-            wrapper.vm.$nextTick(() => {
+                console.log('----------------------------');
                 wrapper.setProps({isActive: false});
-                wrapper.update();
+                wrapper.setProps({isActive: true});
+            debugger;
                 expect(spy.callCount).is.eql(1);
-            });
         });
 
         spy.restore();

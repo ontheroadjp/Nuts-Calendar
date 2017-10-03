@@ -1,9 +1,9 @@
 <template>
 <div class="wrapper">
-<div class="container" style="width: 100%; height: 100vh">
+<div id="password-mail" class="container" style="width: 100%; height: 100vh">
 <div class="columns">
 <div class="column is-offset-3 is-6">
- 
+
     <result-view
         v-if="passwordMailResult !== ''"
         :status="passwordMailResult"
@@ -14,9 +14,9 @@
 
         <div class="control is-horizontal">
             <p class="control has-icon">
-                <input 
-                    class="nuts-input-textbox" 
-                    type="email" 
+                <input
+                    class="nuts-input-textbox"
+                    type="email"
                     :placeholder="emailHasError ? errors.email : t('passwordMail.email')"
                     style="margin-bottom: 25px;"
                     v-model="input.email"
@@ -39,7 +39,7 @@
         <div class="is-clearfix" style="margin-bottom: 25px"></div>
 
         <p style="text-align: center;">
-            <button 
+            <button
                 type="submit"
                 :class="['button', theme.secondary.class]"
                 style="width: 100%; color: #fff"

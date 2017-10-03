@@ -1,13 +1,13 @@
 <template>
 <div class="nav-item">
-    <dropdown-menu 
+    <dropdown-menu
         id="user-account-dropdown-menu"
         :frontIconStyle="frontIconStyle"
         :backIconStyle="backIconStyle"
         :menuHeight="66"
     >
         <li>
-            <router-link to="/me/settings/general" class="thin" :style="menuItemStyle"> 
+            <router-link to="/me/settings/general" class="thin" :style="menuItemStyle">
                 <span class="icon is-small">
                     <i class="fa fa-gear"></i>
                 </span>
@@ -16,7 +16,7 @@
         </li>
 
         <li>
-            <a href="#" class="thin" :style="menuItemStyle" @click="clickLogout()">
+            <a href="signout" class="thin" :style="menuItemStyle" @click="clickLogout()">
                 <span class="icon is-small">
                     <i class="fa fa-btn fa-arrow-circle-o-right"></i>
                 </span>
