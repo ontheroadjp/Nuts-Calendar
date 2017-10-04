@@ -1,18 +1,30 @@
 <template>
 <div class="wrapper">
+<<<<<<< Updated upstream:laravel/resources/assets/js/pages/user/password-mail.vue
 <div class="container" style="width: 100%; height: 100vh">
 <div class="columns">
 <div class="column is-offset-3 is-6">
  
+=======
+<div id="password-mail" class="container" style="width: 100%; height: 100vh">
+
+>>>>>>> Stashed changes:laravel/resources/assets/js/src/pages/user/password-mail.vue
     <result-view
         v-if="passwordMailResult !== ''"
         :status="passwordMailResult"
     ></result-view>
 
+<<<<<<< Updated upstream:laravel/resources/assets/js/pages/user/password-mail.vue
     <div v-else class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
     <form>
 
         <div class="control is-horizontal">
+=======
+    <div v-else class="columns">
+    <div class="column is-offset-3 is-6">
+    <div class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
+        <form>
+>>>>>>> Stashed changes:laravel/resources/assets/js/src/pages/user/password-mail.vue
             <p class="control has-icon">
                 <input 
                     class="nuts-input-textbox" 
@@ -49,13 +61,18 @@
                     <i class="fa fa-btn fa-envelope"></i>
                 </span><span>{{ t('passwordMail.sendPasswordResetLink') }}</span>
             </button>
+<<<<<<< Updated upstream:laravel/resources/assets/js/pages/user/password-mail.vue
         </p>
 
     </form>
     </div><!-- // .box -->
+=======
+        </form>
+    </div><!-- // .box -->
+    </div><!-- // .column is-x -->
+    </div><!-- v-else // .columns -->
+>>>>>>> Stashed changes:laravel/resources/assets/js/src/pages/user/password-mail.vue
 
-</div><!-- // .column is-x -->
-</div><!-- // .columns -->
 </div><!-- // .container -->
 </div><!-- // .wrapper -->
 </template>
@@ -74,10 +91,10 @@ export default {
         core, userApi
     ],
 
-    computed : {
-        theme : function() {
-            return this.$store.state.app.theme;
-        }
-    }
+//    computed : {
+//        theme : function() {
+//            return this.$store.state.app.theme;
+//        }
+//    }
 }
 </script>
