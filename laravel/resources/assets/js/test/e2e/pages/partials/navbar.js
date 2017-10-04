@@ -8,9 +8,11 @@ module.exports = {
         signinLink: 'a[href="/login"]',
         registerLink: 'a[href="/register"]',
         dashboardLink: 'a[href="/dashboard"]',
-        userAccountDropdownLink: 'a[href="#user-account-dropdown-menu"]',
-        userAccountSettingsLink: 'a[href="/me/settings/general"]',
-        logoutLink: 'a[href="signout"]',
+//        userAccountDropdownLink: 'a[href="#user-account-dropdown-menu"]',
+//        userAccountSettingsLink: 'a[href="/me/settings/general"]',
+        userAccountDropdownLink: 'a#user-account-dropdown-menu',
+        settingsLink: 'a#user-account-settings-menu-item',
+        logoutLink: 'a#sign-out-menu-item',
     },
 
     commands: [{

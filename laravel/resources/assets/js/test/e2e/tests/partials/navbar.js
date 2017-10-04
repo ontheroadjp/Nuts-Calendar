@@ -1,5 +1,5 @@
 describe('navbar', function() {
-    describe('when still not loged in', function() {
+    describe('when not loged in yet', function() {
         it('Home', function(client) {
             const navbar = client.page.partials.navbar();
             client
@@ -62,11 +62,10 @@ describe('navbar', function() {
 
             loginPage.navigate()
                 .signin('hoge@hoge.com', 'hogehoge')
-                .assert.urlEquals(client.launch_url + '/dashboard')
+                .assert.urlEquals(dashboardPage.url())
 
             dashboardPage
                 .click('@membersLink')
-                .pause(1000)
                 .assert.urlEquals(client.launch_url + '/dashboard/members')
 
             navbar
@@ -85,15 +84,15 @@ describe('navbar', function() {
 
             loginPage.navigate()
                 .signin('hoge@hoge.com', 'hogehoge')
-                .assert.urlEquals(client.launch_url + '/dashboard')
+                .assert.urlEquals(dashboardPage.url())
 
             navbar
                 .click('@userAccountDropdownLink')
-                .waitForElementVisible('@userAccountSettingsLink', 5000)
-                .click('@userAccountSettingsLink')
-                .waitForElementVisible('div.container#user-account-settings-general')
+                .waitForElementVisible('@settingsLink', 5000)
+                .click('@settingsLink')
 
             generalSettingsPage
+                .waitForElementVisible('@pageId', 5000)
                 .assert.urlEquals(generalSettingsPage.url())
 
             client.end()
@@ -106,12 +105,12 @@ describe('navbar', function() {
 
             loginPage.navigate()
                 .signin('hoge@hoge.com', 'hogehoge')
-                .assert.urlEquals(client.launch_url + '/dashboard')
+                .assert.urlEquals(dashboardPage.url())
 
             navbar
                 .click('@userAccountDropdownLink')
                 .waitForElementVisible('@logoutLink', 5000)
-                .click('a[href="signout"]')
+                .click('@logoutLink')
                 .pause(1000)
                 .assert.urlEquals(client.launch_rul)
 
