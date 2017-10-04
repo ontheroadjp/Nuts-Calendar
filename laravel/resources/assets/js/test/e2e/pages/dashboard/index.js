@@ -1,6 +1,11 @@
 module.exports = {
+    url: function() {
+        return this.api.launch_url + '/dashboard'
+    },
+
     elements: {
-        dashboard: '#dashboard',
+        pageId: 'div#dashboard',
+        dashboard: 'div#dashboard',
         membersLink: 'a[href="/dashboard/members"'
     },
 
