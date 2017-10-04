@@ -4,7 +4,7 @@ module.exports = {
     },
 
     elements: {
-
+        pageId: 'div.container#user-account-settings-general'
     },
 
     commands: [{
