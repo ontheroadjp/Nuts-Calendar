@@ -12,12 +12,14 @@ module.exports = {
     },
 
     commands: [{
-        signin: function (email, password) {
+        signin: function (email, password, pause=3000) {
             return this.waitForElementPresent('@email', 1000)
+                .clearValue('@email')
+                .clearValue('@password')
                 .setValue('@email', email)
                 .setValue('@password', password)
                 .click('@submitButton')
-                .pause(3000)
+                .pause(pause)
         },
 
         pause: function(time) {
