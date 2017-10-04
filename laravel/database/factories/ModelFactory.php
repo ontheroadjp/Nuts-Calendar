@@ -101,8 +101,15 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
         '00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'
     ];
 
-    $randomTime = $hour[array_rand($hour)]
+    $startTime = $hour[array_rand($hour)]
         .":".$minits[array_rand($minits)];
+
+    $endTime = $hour[array_rand($hour)]
+        .":".$minits[array_rand($minits)];
+
+    if( $startTime > $endTime ) {
+        list($startTime, $endTime) = array($endTime, $startTime);
+    }
 
     foreach( Nuts\Calendar\Models\Member::all(['id']) as $val ) {
         $memberIds[] = $val->id;
@@ -115,8 +122,10 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
     return [
         'member_id' => $faker->randomElement($memberIds),
         'type_id' => $faker->randomElement($itemTypeIds),
-        'content'=> $faker->sentence(),
+        'content'=> $faker->word(),
         'date' => $randomDate,
-        'start_time' => $randomTime
+        'start_time' => $startTime,
+        'end_time' => $endTime,
+        'memo' => $faker->sentence()
     ];
 });

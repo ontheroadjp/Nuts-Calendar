@@ -16,16 +16,16 @@ class UserCalendar extends Model
 //        return $this->hasMany(Member::class,'user_calendar_id','id');
 //    }
 
-    public static function create(array $attributes = [])
-    {
-        $model = new static($attributes);
-
-        $model->save();
-
-        //$model->createMember($model->id);
-
-        return $model;
-    }
+//    public static function create(array $attributes = [])
+//    {
+//        $model = new static($attributes);
+//
+//        $model->save();
+//
+//        $model->createMember($model->id);
+//
+//        return $model;
+//    }
 
 //    protected static function createMember($userCalendarId, $name = 'member')
 //    {

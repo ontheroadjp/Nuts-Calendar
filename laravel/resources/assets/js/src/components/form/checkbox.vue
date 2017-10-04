@@ -1,0 +1,127 @@
+<template>
+    <label style="padding-left: 20px;">
+        <input
+            :id="id"
+            :class="['input-checkbox', {'disabled': disabled}]"
+            type="checkbox"
+            v-model="input"
+            @change="onChange"
+            :disabled="disabled"
+        />
+        <span class="input-checkbox-parts" :style="labelStyle">
+            {{ label }}
+        </span>
+    </label>
+</template>
+
+<script>
+export default {
+    props: {
+        id:           { type: String, default: '' },
+        label:        { type: String, default: 'Check' },
+        labelStyle:   { type: String, default: '' },
+//        initialValue: { type: [Boolean, Number], default: false },
+        initialValue: { type: Boolean, required: true },
+        disabled:     { type: Boolean, default: false }
+    },
+
+    data() {
+        return {
+            input: false
+        }
+    },
+
+    computed: {
+        isReadyResult: function() {
+            return this.initialValue != this.input;
+        }
+    },
+
+    methods: {
+        onChange: function() {
+            const data = {
+                value: this.input,
+                error: false,
+                isReady: this.isReadyResult
+            }
+
+            this.$emit('changeValue', data);
+        }
+    },
+
+    mounted() {
+        this.input = this.initialValue;
+    }
+};
+</script>
+
+<style lang="scss" scoped>
+.input-checkbox {
+    display: none;
+}
+
+.input-checkbox-parts {
+    position: relative;
+    margin-right: 20px;
+    padding-left: 20px;
+    font-size: 0.8em;
+
+    &::before {
+    /*
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 15px;
+        height: 15px;
+        border: 1px solid #999;
+        border-radius: 4px;
+    */
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: -0.5rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        border: 1px solid #999;
+        border-radius: 50%;
+    }
+}
+
+
+.input-checkbox:checked + .input-checkbox-parts {
+    color: #546e7a;
+}
+
+.input-checkbox:checked + .input-checkbox-parts::after {
+/*
+    content: "";
+    display: block;
+    position: absolute;
+    top: -3px;
+    left: 5px;
+    width: 7px;
+    height: 14px;
+    transform: rotate(40deg);
+    border-bottom: 3px solid #41b883;
+    border-right: 3px solid #41b883;
+*/
+    content: "";
+    display: block;
+    position: absolute;
+    top: 3px;
+    left: calc(-0.5rem + 3px);
+    width: 0.8rem;
+    height: 0.8rem;
+    background-color: #5bbdca;
+    border-radius: 50%;
+}
+
+.input-checkbox.disabled + .input-checkbox-parts,
+.input-checkbox.disabled + .input-checkbox-parts::before,
+.input-checkbox.disabled + .input-checkbox-parts::after {
+    color: rgba(190, 190, 190, 1);
+}
+</style>
