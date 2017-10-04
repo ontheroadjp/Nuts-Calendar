@@ -1,9 +1,10 @@
 <template>
+<div id="user-account-settings-general" class="container">
 <div class="columns" style="padding: 0 30px">
 <div class="column is-offset-2 is-8">
-<!--    
+<!--
     <p class="panel-heading">General settings
-        <account-result-message 
+        <account-result-message
             v-show="accountResult.isShow"
             transition="result-fade"
             :message="accountResult.message"
@@ -13,16 +14,16 @@
             class="is-pulled-right"
         ></account-result-message>
     </p>
--->    
+-->
     <form>
     <div class="box" style="padding: 60px; width: 100%;">
 
         <div class="field">
             <label class="label">{{ t('userSettingsGeneral.name') }}</label>
             <p class="control has-icon" style="margin-bottom: 60px">
-                <input 
-                    class="nuts-input-textbox" 
-                    type="text" 
+                <input
+                    class="nuts-input-textbox"
+                    type="text"
                     :placeholder="nameHasError ? error.name : t('userSettingsGeneral.name')"
                     style="margin-bottom: 25px;"
                     v-model="input.name"
@@ -35,28 +36,28 @@
         </div>
 
         <p style="text-align: center;">
-            <button 
-                v-show="! isNameChanged && ! isLoading" 
-                class="button" 
-                :class="theme.secondary.class" 
-                style="width: 25%" 
+            <button
+                v-show="! isNameChanged && ! isLoading"
+                class="button"
+                :class="theme.secondary.class"
+                style="width: 25%"
                 disabled
             >{{ t('userSettingsGeneral.save') }}</button>
 
-            <button 
+            <button
                 v-show="isNameChanged && ! isLoading"
                 type="submit"
-                class="button" 
-                :class="theme.secondary.class" 
-                style="width: 25%" 
+                class="button"
+                :class="theme.secondary.class"
+                style="width: 25%"
                 @click.prevent="putSettings"
                 >{{ t('userSettingsGeneral.save') }}</button>
 
-            <button 
-                v-show="isLoading" 
-                class="button" 
-                :class="theme.primary.class" 
-                style="width: 25%" 
+            <button
+                v-show="isLoading"
+                class="button"
+                :class="theme.primary.class"
+                style="width: 25%"
                 disabled
             ><i class="fa fa-refresh fa-spin"></i></button>
         </p>
@@ -66,6 +67,7 @@
 
 </div><!-- // .column is-xx -->
 </div><!-- // .coluns -->
+</div><!-- // .container -->
 </template>
 
 <script>
@@ -81,7 +83,7 @@
         mixins: [
             core, userApi
         ],
-    
+
         data() {
             return {
                 isLoading: false,
@@ -100,7 +102,7 @@
             },
 
             isNameChanged: function() {
-                return this.input.name !== this.$store.state.user.name 
+                return this.input.name !== this.$store.state.user.name
                     && this.input.name !== '';
             }
         },

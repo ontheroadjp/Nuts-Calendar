@@ -1,6 +1,6 @@
 <template>
 <div class="wrapper">
-<div class="container" style="width: 100%;">
+<div id="dashboard" class="container" style="width: 100%;">
 
     <!-- infomation -->
     <div class="columns is-multiline">

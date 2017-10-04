@@ -1,5 +1,5 @@
 import textInput from '../../../../../src/components/form/text-input.vue';
-import { mount } from 'avoriaz';
+import { mount } from 'vue-test-utils';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -14,12 +14,12 @@ describe('components/form/text-input.vue', () => {
 
     describe('state values', () => {
         const wrapper = mount(textInput, { propsData });
-        const inputForm = wrapper.find('input#input-id')[0];
+        const inputForm = wrapper.find('input#input-id');
 
         it('when mounted', () => {
             const value = {
                 initial: wrapper.vm.initialValue,
-                input: wrapper.data().input.value,
+                input: wrapper.vm.input.value,
                 form: inputForm.element.value
             };
 
@@ -33,7 +33,7 @@ describe('components/form/text-input.vue', () => {
             inputForm.trigger('input');
             const value = {
                 initial: wrapper.vm.initialValue,
-                input: wrapper.data().input.value,
+                input: wrapper.vm.input.value,
                 form: inputForm.element.value
             };
 
@@ -48,33 +48,33 @@ describe('components/form/text-input.vue', () => {
         const wrapper = mount(textInput, { propsData });
 
         it('input.value < minTextLength ', () => {
-            wrapper.data().input.value = '1234';
+            wrapper.vm.input.value = '1234';
             expect(wrapper.vm.errorResult).to.be.eql(true)
         });
 
         it('input.value > minTextLength', () => {
-            wrapper.data().input.value = '12345';
+            wrapper.vm.input.value = '12345';
             expect(wrapper.vm.errorResult).to.be.eql(false);
         });
 
         it('input.value < maxTextLength', () => {
-            wrapper.data().input.value = '12345678901234567890';
+            wrapper.vm.input.value = '12345678901234567890';
             expect(wrapper.vm.errorResult).to.be.eql(false);
         });
 
         it('input.value > maxTextLength', () => {
-            wrapper.data().input.value = '123456789012345678901';
+            wrapper.vm.input.value = '123456789012345678901';
             expect(wrapper.vm.errorResult).to.be.eql(true);
         });
     });
 
     describe('fire event', () => {
         const wrapper = mount(textInput, { propsData });
-        const inputForm = wrapper.find('input#input-id')[0]
+        const inputForm = wrapper.find('input#input-id');
         const emitData = {
             id: wrapper.vm.id,
             initialValue: wrapper.vm.initialValue,
-            inputValue: wrapper.data().input.value,
+            inputValue: wrapper.vm.input.value,
             error: wrapper.vm.errorResult,
             isReady: false
         };

@@ -1,6 +1,6 @@
 <template>
 <div class="wrapper">
-<div class="container" style="width: 100%; height: 100vh">
+<div id="user-registration" class="container" style="width: 100%; height: 100vh">
 <div class="columns">
 <div class="column is-offset-3 is-6">
 
@@ -9,9 +9,9 @@
 
         <div class="control is-horizontal">
             <p class="control has-icon">
-                <input 
-                    class="nuts-input-textbox" 
-                    type="text" 
+                <input
+                    class="nuts-input-textbox"
+                    type="text"
                     :placeholder="nameHasError ? errors.name : t('register.name')"
                     style="margin-bottom: 25px;"
                     v-model="input.name"
@@ -25,9 +25,9 @@
 
         <div class="control is-horizontal">
             <p class="control has-icon">
-                <input 
-                    class="nuts-input-textbox" 
-                    type="email" 
+                <input
+                    class="nuts-input-textbox"
+                    type="email"
                     :placeholder="emailHasError ? errors.email : t('register.email')"
                     style="margin-bottom: 25px;"
                     v-model="input.email"
@@ -40,9 +40,9 @@
 
         <div class="control is-horizontal">
             <p class="control has-icon">
-                <input 
-                    class="nuts-input-textbox" 
-                    type="password" 
+                <input
+                    class="nuts-input-textbox"
+                    type="password"
                     :placeholder="passwordHasError ? errors.password : t('register.password')"
                     style="margin-bottom: 20px;"
                     v-model="input.password"
@@ -55,9 +55,9 @@
 
         <div class="control is-horizontal">
             <p class="control has-icon">
-                <input 
-                    class="nuts-input-textbox" 
-                    type="password" 
+                <input
+                    class="nuts-input-textbox"
+                    type="password"
                     :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : t('register.passwordConfirmation')"
                     style="margin-bottom: 20px;"
                     v-model="input.passwordConfirmation"
@@ -77,10 +77,10 @@
         <div class="is-clearfix" style="margin-bottom: 25px"></div>
 
         <p style="text-align: center;">
-            <button 
+            <button
                 type="submit"
                 :class="['button', theme.secondary.class]"
-                style="width: 100%; color: #fff" 
+                style="width: 100%; color: #fff"
                 @click.prevent="register()"
             >{{ t('register.register') }}</button>
         </p>
