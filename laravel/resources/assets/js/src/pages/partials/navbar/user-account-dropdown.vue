@@ -7,7 +7,7 @@
         :menuHeight="66"
     >
         <li>
-            <router-link to="/me/settings/general" class="thin" :style="menuItemStyle">
+            <router-link id="user-account-settings-menu-item" to="/me/settings/general" class="thin" :style="menuItemStyle">
                 <span class="icon is-small">
                     <i class="fa fa-gear"></i>
                 </span>
@@ -16,7 +16,7 @@
         </li>
 
         <li>
-            <a href="signout" class="thin" :style="menuItemStyle" @click="clickLogout()">
+            <a href="" id="sign-out-menu-item" class="thin" :style="menuItemStyle" @click.prevent="clickLogout()">
                 <span class="icon is-small">
                     <i class="fa fa-btn fa-arrow-circle-o-right"></i>
                 </span>
