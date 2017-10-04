@@ -10,49 +10,43 @@
     ></result-view>
 
     <div v-else class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
-    <form>
-
-        <div class="control is-horizontal">
+        <form>
             <p class="control has-icon">
                 <input
-                    class="nuts-input-textbox"
+                    class="nuts-input-textbox thin"
                     type="email"
                     :placeholder="emailHasError ? errors.email : t('passwordMail.email')"
                     style="margin-bottom: 25px;"
                     v-model="input.email"
                     v-focus
                 >
-                <span class="icon is-small" :style="[emailHasError ? style.error : '']">
-                    <i class="fa fa-envelope"></i>
+                <span class="icon is-small"
+                    :style="[emailHasError ? style.error : '']"
+                ><i class="fa fa-envelope"></i>
                 </span>
             </p>
-        </div>
 
-        <div class="is-clearfix" style="margin-bottom: 25px"></div>
+            <router-link to="/login"
+                class="is-pulled-right thin"
+                style="margin-bottom: 25px;"
+            >{{ t('passwordMail.loginForm') }}
+            </router-link>
 
-        <p class="control is-horizontal is-pulled-right">
-            <a class="btn btn-link">
-                <router-link to="/login">{{ t('passwordMail.loginForm') }}</router-link>
-            </a>
-        </p>
-
-        <div class="is-clearfix" style="margin-bottom: 25px"></div>
-
-        <p style="text-align: center;">
             <button
                 type="submit"
-                :class="['button', theme.secondary.class]"
+                :class="['button', 'thin', theme.secondary.class]"
                 style="width: 100%; color: #fff"
                 @click.prevent="sendPasswordMail()"
             >
                 <span class="icon is-small">
                     <i class="fa fa-btn fa-envelope"></i>
-                </span><span>{{ t('passwordMail.sendPasswordResetLink') }}</span>
+                </span>
+                <span>
+                    {{ t('passwordMail.sendPasswordResetLink') }}
+                </span>
             </button>
-        </p>
-
-    </form>
-    </div><!-- // .box -->
+        </form>
+    </div><!-- v-else // .box -->
 
 </div><!-- // .column is-x -->
 </div><!-- // .columns -->
@@ -66,13 +60,9 @@ import resultView from './password-mail-result.vue';
 import userApi from '../../services/user.js';
 
 export default {
-    components: {
-        resultView: resultView
-    },
+    components: { resultView: resultView },
 
-    mixins: [
-        core, userApi
-    ],
+    mixins: [ core, userApi ],
 
     computed : {
         theme : function() {
