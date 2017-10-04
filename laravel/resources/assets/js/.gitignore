@@ -5,7 +5,9 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+selenium-debug.log
 test/unit/coverage
+test/e2e/screenshots
 
 # Editor directories and files
 .idea
