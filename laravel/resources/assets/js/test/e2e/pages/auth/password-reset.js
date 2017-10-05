@@ -1,5 +1,6 @@
 module.exports = {
     elements: {
+        pageId: 'div#password-reset-result',
         email: 'input#input-email',
         password: 'input#input-password',
         passwordConfirmation: 'input#input-password-confirmation',
