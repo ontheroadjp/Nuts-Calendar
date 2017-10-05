@@ -6,8 +6,8 @@ const config = require('../../config')
 module.exports = {
     src_folders: ['test/e2e/tests'],
     output_folder: 'test/e2e/reports',
-    custom_assertions_path: ['test/e2e/custom-assertions'],
-    custom_commands_path: ['test/e2e/custom-commands'],
+    custom_assertions_path: ['test/e2e/lib/assertions'],
+    custom_commands_path: ['test/e2e/lib/commands'],
     page_objects_path: ['test/e2e/pages'],
     globals_path: 'test/e2e/globals.js',
     test_workers: {

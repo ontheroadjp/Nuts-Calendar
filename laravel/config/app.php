@@ -159,7 +159,7 @@ return [
         /*
          * Laravel debugbar
          */
-        //Barryvdh\Debugbar\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
         /*
          * JWT Auth

@@ -1,3 +1,4 @@
+.DS_Store
 /vendor
 /node_modules
 /public/storage
@@ -5,4 +6,12 @@ Homestead.yaml
 Homestead.json
 .env
 
+resources/assets/js/dist/
+resources/assets/js/.tmp/
 resources/assets/js/node_modules/
+resources/assets/js/pm-debug.log*
+resources/assets/js/arn-debug.log*
+resources/assets/js/arn-error.log*
+resources/assets/js/elenium-debug.log
+resources/assets/js/est/unit/coverage
+resources/assets/js/est/e2e/screenshots
