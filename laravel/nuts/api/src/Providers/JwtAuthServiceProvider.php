@@ -104,7 +104,7 @@ class JwtAuthServiceProvider extends ServiceProvider
 //                });
                 Route::post('register', 'JwtAuthController@register');
                 Route::post('password/reset', 'JwtPasswordController@postReset');
-                Route::post('password/email', 'JwtPasswordController@postEmail');
+                Route::post('password/email/send', 'JwtPasswordController@postEmail');
 
                 Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
                     Route::get('data', 'DataController@index');
