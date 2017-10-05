@@ -243,7 +243,7 @@ export default {
             const inputEmailInvalid = this.isEmailInvalid();
             if(inputEmailInvalid) return;
 
-            http.post('/api/v1/password/email', {
+            http.post('/api/v1/password/email/send', {
                 'email': this.input.email
             },
                 this.successSendPasswordMail(this),
@@ -291,7 +291,7 @@ export default {
                 'password_confirmation': this.input.passwordConfirmation,
                 'token': token
             },
-                this.successPasswordReset(this), 
+                this.successPasswordReset(this),
                 this.failedPasswordReset(this)
             );
         },
