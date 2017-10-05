@@ -7,7 +7,9 @@
         :status="passwordMailResult"
     ></result-view>
 
-    <div v-else class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
+    <div v-else class="columns">
+    <div class="column is-offset-3 is-6">
+    <div class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
         <form>
             <p class="control has-icon">
                 <input
@@ -46,7 +48,7 @@
         </form>
     </div><!-- // .box -->
     </div><!-- // .column is-x -->
-    </div><!-- v-else // .box -->
+    </div><!-- v-else // .columns -->
 
 </div><!-- // .container -->
 </div><!-- // .wrapper -->

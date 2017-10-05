@@ -6,8 +6,8 @@
         text-align: center;
     ">
         <span>
-            <i :class="['fa', 'fa-3x', 'fa-btn', icon]"></i> 
-            <span style="font-size: 36px; margin-left: 20px;">{{ message }}</span>
+            <i :class="['fa', 'fa-3x', 'fa-btn', icon]"></i>
+            <span id="result-message" style="font-size: 36px; margin-left: 20px;">{{ message }}</span>
         </span>
         <p v-if="status === 'failed'">
             <a @click="$parent.passwordMailResult = ''">{{ t('passwordMailResult.tryAgain') }}</a>
@@ -34,7 +34,7 @@ export default {
         },
 
         message: function() {
-            return this.status === 'success' 
+            return this.status === 'success'
                 ? this.t('passwordMailResult.success')
                 : this.t('passwordMailResult.failed');
         }
