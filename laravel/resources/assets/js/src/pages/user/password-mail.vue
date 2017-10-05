@@ -1,15 +1,15 @@
 <template>
 <div class="wrapper">
 <div id="password-mail" class="container" style="width: 100%; height: 100vh">
-<div class="columns">
-<div class="column is-offset-3 is-6">
 
     <result-view
         v-if="passwordMailResult !== ''"
         :status="passwordMailResult"
     ></result-view>
 
-    <div v-else class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
+    <div v-else class="columns">
+    <div class="column is-offset-3 is-6">
+    <div class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
         <form>
             <p class="control has-icon">
                 <input
@@ -46,10 +46,10 @@
                 </span>
             </button>
         </form>
-    </div><!-- v-else // .box -->
+    </div><!-- // .box -->
+    </div><!-- // .column is-x -->
+    </div><!-- v-else // .columns -->
 
-</div><!-- // .column is-x -->
-</div><!-- // .columns -->
 </div><!-- // .container -->
 </div><!-- // .wrapper -->
 </template>
@@ -64,10 +64,10 @@ export default {
 
     mixins: [ core, userApi ],
 
-    computed : {
-        theme : function() {
-            return this.$store.state.app.theme;
-        }
-    }
+//    computed : {
+//        theme : function() {
+//            return this.$store.state.app.theme;
+//        }
+//    }
 }
 </script>

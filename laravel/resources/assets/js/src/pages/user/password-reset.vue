@@ -1,23 +1,20 @@
 <template>
 <div id="password-reset" class="container" style="width: 100%; height: 100vh">
-<div class="row">
-<div class="col-md-8 col-md-offset-2">
+<div class="wrapper">
+
     <result-view
         v-if="passwordResetResult !== ''"
         :status="passwordResetResult"
     ></result-view>
 
-    <div class="panel" style="margin-top: 120px;" v-else>
-        <div style="
-            padding: 60px;
-            width: 100%;
-        ">
-
-            <form>
-
+    <div v-else class="columns">
+    <div class="column is-offset-3 is-6">
+    <div class="box" style="padding: 60px; width: 100%; margin-top: 120px;">
+        <form>
             <div class="control is-horizontal">
                 <p class="control has-icon">
                     <input
+                        id="input-email"
                         class="nuts-input-textbox is-medium"
                         type="email"
                         :placeholder="emailHasError ? errors.email : 'E-Mail Address'"
@@ -34,6 +31,7 @@
             <div class="control is-horizontal">
                 <p class="control has-icon">
                     <input
+                        id="input-password"
                         class="nuts-input-textbox is-medium"
                         type="password"
                         :placeholder="passwordHasError ? errors.password : 'New Password'"
@@ -49,6 +47,7 @@
             <div class="control is-horizontal">
                 <p class="control has-icon">
                     <input
+                        id="input-password-confirmation"
                         class="nuts-input-textbox is-medium"
                         type="password"
                         :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : 'New Password ( Confirm )'"
@@ -64,28 +63,39 @@
             <p style="text-align: center;">
                 <button
                     type="submit"
-                    class="button is-nuts-primary is-large"
-                    style="width: 50%"
+                    :class="['button', 'thin', theme.secondary.class]"
+                    style="width: 100%; color: #fff"
                     @click.prevent="passwordReset()"
-                ><i class="fa fa-btn fa-refresh"></i> Reset Password</button>
+                >
+                    <span class="icon is-small">
+                        <i class="fa fa-btn fa-refresh"></i>
+                    </span>
+                    <span>Reset Password</span>
+                </button>
             </p>
+        </form>
+    </div><!-- // .box -->
+    </div><!-- // .column is-x -->
+    </div><!-- v-else // .columns -->
 
-            </form>
-
-        </div>
-    </div><!-- // .panel -->
-</div><!-- // .col-x -->
-</div><!-- // .row -->
+</div><!-- // .wrapper -->
 </div><!-- // .container -->
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import resultView from './password-reset-result.vue';
 import userApi from '../../services/user.js';
 
 export default {
     components: {
         resultView: resultView
+    },
+
+    computed: {
+        ...mapState({
+            theme: state => state.app.theme
+        })
     },
 
     mixins: [

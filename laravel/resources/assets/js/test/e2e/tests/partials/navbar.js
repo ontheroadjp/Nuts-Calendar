@@ -108,11 +108,12 @@ describe('navbar', function() {
                 .assert.urlEquals(dashboardPage.url())
 
             navbar
-                .click('@userAccountDropdownLink')
-                .waitForElementVisible('@logoutLink', 5000)
-                .click('@logoutLink')
-                .pause(1000)
-                .assert.urlEquals(client.launch_rul)
+                .signout();
+//                .click('@userAccountDropdownLink')
+//                .waitForElementVisible('@logoutLink', 5000)
+//                .click('@logoutLink')
+//                .pause(1000)
+//                .assert.urlEquals(client.launch_rul)
 
             client.end()
         });

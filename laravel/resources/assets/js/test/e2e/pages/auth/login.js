@@ -13,7 +13,7 @@ module.exports = {
 
     commands: [{
         signin: function (email, password, pause=3000) {
-            return this.waitForElementPresent('@email', 1000)
+            return this.waitForElementPresent('@email', 3000)
                 .clearValue('@email')
                 .clearValue('@password')
                 .setValue('@email', email)
