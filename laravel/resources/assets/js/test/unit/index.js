@@ -1,6 +1,22 @@
 import Vue from 'vue'
-
 Vue.config.productionTip = false
+
+// utils
+import { utils } from '../../src/libs/utils.js';
+window.u = utils;
+
+// jwt-token
+import { jwtToken } from '../../src/libs/jwt-token.js';
+window.jwtToken = jwtToken;
+
+//// http
+//import { http } from '../../src/libs/http.js';
+//window.http = http;
+//http.init();
+
+// event bus
+import { eventBus } from '../../src/libs/event.js';
+window.eventBus = eventBus;
 
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/)
