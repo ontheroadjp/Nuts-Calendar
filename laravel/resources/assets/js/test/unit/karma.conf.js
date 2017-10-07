@@ -21,8 +21,11 @@ module.exports = function (config) {
         webpackMiddleware: {
             noInfo: true
         },
-        logLevel: config.LOG_INFO,
-//        logLevel: config.DEBUG,
+//        logLevel: config.LOG_DISABLE,
+//        logLevel: config.LOG_ERROR,
+        logLevel: config.LOG_WARN,
+//        logLevel: config.LOG_INFO,
+//        logLevel: config.LOG_DEBUG,
         coverageReporter: {
             dir: './coverage',
             reporters: [
