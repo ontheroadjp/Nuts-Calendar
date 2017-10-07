@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import PasswordMail from '../../../../../src/pages/user/password-mail.vue';
 import { mount } from 'vue-test-utils';
 import { expect } from 'chai';
@@ -12,12 +11,20 @@ describe('pages/user/password-mail.vue', () => {
         const resolved = new Promise.resolve();
         const stub = sinon.stub(axios, 'post').returns(resolved);
 
-        it('clear MailCatcher', () => {
-            axios.delete('http://localhost:1080/messages');
-        });
+//        it('clear MailCatcher', () => {
+//            axios.delete('http://localhost:1080/messages')
+//                .then((response) => {
+//                    console.log(response);
+//                })
+//                .catch((error) => {
+//                    console.log(error);
+//                });
+//        });
 
         it('called', (done) => {
-            wrapper.vm.input.email = 'hoge@hoge.com';
+            wrapper.setData({
+                input: { email: 'hoge@hoge.com' }
+            });
             expect(wrapper.vm.isEmailInvalid()).to.be.false;
             wrapper.vm.sendPasswordMail()
             resolved.then(() => {
@@ -27,15 +34,15 @@ describe('pages/user/password-mail.vue', () => {
         });
     });
 
-    describe('MailCatcher', () => {
-        it('reset email', () => {
-            console.log('-----------------------------------');
-            axios.get('http://localhost:1080/messages/1.source')
-                .then((response) => {
-                    console.log(response.data);
-                });
-            console.log('-----------------------------------');
-        });
-    });
+//    describe('MailCatcher', () => {
+//        it('reset email', () => {
+//            console.log('-----------------------------------');
+//            axios.get('http://localhost:1080/messages/1.source')
+//                .then((response) => {
+//                    console.log(response.data);
+//                });
+//            console.log('-----------------------------------');
+//        });
+//    });
 
 });
