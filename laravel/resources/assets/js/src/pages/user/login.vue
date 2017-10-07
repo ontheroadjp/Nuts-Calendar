@@ -125,7 +125,6 @@ export default {
 
         successLogin: self => {
             console.log('success!!!!!!!!!!!!!');
-            return;
             return response => {
                 eventBus.fire('nuts.login.success', {
                     response: response,
