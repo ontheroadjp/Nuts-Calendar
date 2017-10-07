@@ -11,15 +11,15 @@ describe('pages/user/password-mail.vue', () => {
         const resolved = new Promise.resolve();
         const stub = sinon.stub(axios, 'post').returns(resolved);
 
-//        it('clear MailCatcher', () => {
-//            axios.delete('http://localhost:1080/messages')
-//                .then((response) => {
-//                    console.log(response);
-//                })
-//                .catch((error) => {
-//                    console.log(error);
-//                });
-//        });
+        before(()=> {
+            axios.delete('http://localhost:1080/messages')
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
 
         it('called', (done) => {
             wrapper.setData({
