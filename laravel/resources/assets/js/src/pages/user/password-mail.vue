@@ -55,19 +55,75 @@
 </template>
 
 <script>
+//import http from 'axios';
+import axios from 'axios';
 import core from '../../mixins/core.js';
 import resultView from './password-mail-result.vue';
 import userApi from '../../services/user.js';
 
 export default {
-    components: { resultView: resultView },
+    components: { resultView },
 
     mixins: [ core, userApi ],
 
-//    computed : {
-//        theme : function() {
-//            return this.$store.state.app.theme;
+    data() {
+        return {
+            passwordMailResult: '',
+        }
+    },
+
+    methods: {
+        sendPasswordMail: function() {
+            this.error.email = '';
+
+//            const inputEmailInvalid = this.isEmailInvalid();
+//            if(inputEmailInvalid) return;
+
+            if(this.isEmailInvalid()) return;
+
+            axios.post('/api/v1/password/email/send', {
+                email: this.input.email
+            })
+            .then((response) => {
+                this.passwordMailResult = 'success';
+            })
+            .catch((error) => {
+                this.passwordMailResult = 'failed';
+            })
+
+//            http.post('/api/v1/password/email/send', {
+//                'email': this.input.email
+//            },
+//                this.successSendPasswordMail(this),
+//                this.failedSendPasswordMail(this)
+//            );
+        },
+
+//        successSendPasswordMail: () => {
+//            console.log('-------------- success ---------------');
+//            return response => {
+//                this.passwordMailResult = 'success';
+//            };
+//        },
+//
+//        failedSendPasswordMail: () => {
+//            console.log('-------------- catch ---------------');
+//            return error => {
+//                this.passwordMailResult = 'failed';
+//            };
 //        }
-//    }
+
+//        successSendPasswordMail: self => {
+//            return response => {
+//                self.passwordMailResult = 'success';
+//            };
+//        },
+//
+//        failedSendPasswordMail: self => {
+//            return error => {
+//                self.passwordMailResult = 'failed';
+//            };
+//        }
+    }
 }
 </script>

@@ -14,7 +14,7 @@
     "karma-single-run": "npm run unit:karma-single-run -s",
     "karma": "npm run unit:karma -s",
     "mocha": "npm run unit:mocha -s",
-    "e2e": "cross-env PORT=9999 node test/e2e/runner.js",
+    "nightwatch": "cross-env PORT=9999 node test/e2e/runner.js",
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {

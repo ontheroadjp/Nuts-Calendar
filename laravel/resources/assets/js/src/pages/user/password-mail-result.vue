@@ -7,10 +7,15 @@
     ">
         <span>
             <i :class="['fa', 'fa-3x', 'fa-btn', icon]"></i>
-            <span id="result-message" style="font-size: 36px; margin-left: 20px;">{{ message }}</span>
+            <span
+                id="result-message"
+                style="font-size: 36px; margin-left: 20px;"
+            >{{ message }}</span>
         </span>
         <p v-if="status === 'failed'">
-            <a @click="$parent.passwordMailResult = ''">{{ t('passwordMailResult.tryAgain') }}</a>
+            <a @click="$parent.passwordMailResult = ''">
+                {{ t('passwordMailResult.tryAgain') }}
+            </a>
         </p>
     </div>
 </div>
@@ -20,13 +25,9 @@
 import core from '../../mixins/core.js';
 
 export default {
-    props: [
-        'status'
-    ],
+    props: [ 'status' ],
 
-    mixins: [
-        core
-    ],
+    mixins: [ core ],
 
     computed: {
         icon: function() {

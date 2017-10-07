@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const http = {
     request (method, url, data, successCb = null, errorCb = null) {
-        u.clog('http.request');
+        u.clog('http.request()');
 
         axios.request({
             url,
