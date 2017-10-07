@@ -88,18 +88,20 @@ import resultView from './password-reset-result.vue';
 import userApi from '../../services/user.js';
 
 export default {
-    components: {
-        resultView: resultView
+    components: { resultView },
+
+    mixins: [ userApi ],
+
+    data() {
+        return {
+            passwordResetResult: ''
+        }
     },
 
     computed: {
         ...mapState({
             theme: state => state.app.theme
         })
-    },
-
-    mixins: [
-        userApi
-    ]
+    }
 }
 </script>
