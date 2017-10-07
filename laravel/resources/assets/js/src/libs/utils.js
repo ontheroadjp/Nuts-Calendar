@@ -4,5 +4,9 @@ export const utils = {
 
     clog: function(message) {
         if(this.debug) console.log('%s', message);
+    },
+
+    setDebugMode: function(mode) {
+        this.debug = mode; // true or false
     }
 }
