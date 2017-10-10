@@ -5,7 +5,8 @@
 
     <div class="nav-left" style="padding-left: 20px;">
         <a class="nav-item is-brand" href="/">
-            <img src="/images/bulma-type-white.png" alt="Bulma logo">
+            <!-- <img src="/images/bulma-type-white.png" alt="Bulma logo"> -->
+            <img src="/images/nuts-logo-white.png" alt="Nuts logo">
         </a>
     </div>
 
@@ -18,7 +19,8 @@
             :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
         >{{ t('navbar.home') }}</router-link>
 
-        <template v-if="! $store.state.user.name">
+        <!-- <template v-if="! $store.state.user.data.name"> -->
+        <template v-if="! username">
             <router-link to="/login" class="nav-item thin">
                 {{ t('navbar.login') }}
             </router-link>
@@ -91,15 +93,15 @@
 //            'langChanger': langChanger
         },
 
-        mixins: [
-            core
-        ],
+        mixins: [ core ],
 
-        props: [
-            'height'
-        ],
+        props: [ 'height' ],
 
         computed: {
+            ...mapState('user', {
+                username: state => state.data.name
+            }),
+
             ...mapState('dashboard', {
                 disabled: state => state.disabled
             }),
