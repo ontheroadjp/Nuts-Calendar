@@ -3,6 +3,7 @@
         blackScreenColor="rgba(10,10,10,0.45)"
         :onClose="onClose"
         :isActive="isActive"
+        :isLoading="isLoading"
         :deleteResult.sync="deleteResult"
         @onDeleteOK="clickDeleteOK()"
     >
@@ -36,12 +37,15 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import focus from '../../../directives/focus.js';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirmModal from '../../../components/modal/delete-confirm-modal.vue';
 
 export default {
     components: { textInput, checkboxInput, deleteConfirmModal },
+
+    directives: { focus },
 
     props: {
         isActive: { type: Boolean, required: true },
@@ -57,6 +61,10 @@ export default {
     computed: {
         ...mapState('member/update', {
             member: state => state.editingMember
+        }),
+
+        ...mapState('member/remove', {
+            isLoading: state => state.isLoading
         }),
 
         ...mapState('userCalendarMember', {

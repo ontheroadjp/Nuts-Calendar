@@ -11,6 +11,7 @@
             <delete-confirm-slide-panel
                 :isActive="showDeleteConfirm"
                 :height="slideHeight"
+                :isLoading="isLoading"
                 @cancel="clickDeleteCancel()"
                 @ok="clickDeleteOK()"
             ></delete-confirm-slide-panel>
@@ -49,6 +50,7 @@ export default {
         slideHeight: { type: String, default: '150px' },
         deleteResult: { type: String, default: '' },    // should be use with .sync option
         blackScreenColor: { type: String, default: 'rgba(10,10,10,0.85)' },
+        isLoading: { type: Boolean, default: false },
         isActive: { type: Boolean, required: true },
         onClose:  { type: Function, required: true },
     },
@@ -58,7 +60,7 @@ export default {
             modalHeight: '',
             modalHeightWhenSlideOpened: '160px',
             showDeleteConfirm: false,
-            isLoading: false,
+//            isLoading: false,
         }
     },
 
