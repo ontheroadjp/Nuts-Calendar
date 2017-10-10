@@ -19,8 +19,15 @@ class CreateUserCalendarMembersTable extends Migration
             $table->integer('member_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('user_calendar_id')->references('id')->on('user_calendars');
-            $table->foreign('member_id')->references('id')->on('members');
+            $table->foreign('user_calendar_id')
+                ->references('id')
+                ->on('user_calendars')
+                ->onDelete('cascade');
+
+            $table->foreign('member_id')
+                ->references('id')
+                ->on('members')
+                ->onDelete('cascade');
         });
 
 
