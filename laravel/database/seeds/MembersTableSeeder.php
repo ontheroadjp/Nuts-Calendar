@@ -12,6 +12,6 @@ class MembersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Nuts\Calendar\Models\Member::class, 8)->create();
+        factory(Nuts\Calendar\Models\Member::class, 6)->create();
     }
 }
