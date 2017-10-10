@@ -10,7 +10,7 @@
     "build": "node build/build.js",
     "unit:karma-single-run": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "unit:karma": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js",
-    "unit:mocha": "mocha-webpack --webpack-config build/webpack.test.mocha-webpack.conf.js test/unit/specs --recursive --require test/unit/mocha-webpack-setup.js --watch",
+    "unit:mocha": "mocha-webpack --webpack-config build/webpack.test.mocha-webpack.conf.js test/unit/specs --recursive --require test/unit/mocha-webpack.conf.js --watch",
     "karma-single-run": "npm run unit:karma-single-run -s",
     "karma": "npm run unit:karma -s",
     "mocha": "npm run unit:mocha -s",

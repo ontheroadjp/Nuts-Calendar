@@ -28,7 +28,7 @@
     background-color: transparent;
     color: #363636;
     max-width: 100%;
-    width: 100%;    
+    width: 100%;
     .is-medium {
         font-size: 1.25rem;
     },
@@ -38,7 +38,8 @@
     outline: none;
 
     &:focus {
-        border-color: $primary-color;
+//        border-color: $primary-color;
+        border-color: rgba(84, 110, 122, 0.5);
     }
 
 }
@@ -95,7 +96,7 @@
             background-color: $primary-color !important;
             box-shadow: inset 0 0 0 7px #fff;
         }
-    }  
+    }
 }
 
 // ----------------------------------------------------------
@@ -141,7 +142,7 @@ input[type="checkbox"].nuts-input-checkbox {
     }
     /*checked時の見た目*/
     &:checked + label {
-        color: $primary-color;            
+        color: $primary-color;
         &::before {
             font-size: 35px;
             background: #fff !important;
@@ -149,5 +150,5 @@ input[type="checkbox"].nuts-input-checkbox {
             color: $primary-color !important;
             line-height: 12px;
         }
-    }  
+    }
 }

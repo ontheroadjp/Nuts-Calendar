@@ -92,9 +92,7 @@ import core from '../../mixins/core.js';
 import userApi from '../../services/user.js';
 
 export default {
-    mixins: [
-        core, userApi
-    ],
+    mixins: [ core, userApi ],
 
     data() {
         return {
@@ -124,8 +122,6 @@ export default {
         },
 
         successLogin: self => {
-            console.log('success!!!!!!!!!!!!!');
-            return;
             return response => {
                 eventBus.fire('nuts.login.success', {
                     response: response,
@@ -135,7 +131,6 @@ export default {
         },
 
         failedLogin: self => {
-            console.log('failed!!!!!!!!!!!!!');
             return error => {
                 if (error.response) {
                     if( error.response.status === 422 || error.response.status === 500) {
@@ -143,13 +138,11 @@ export default {
                             content: 'We couldn\'t verify your credentials.',
                             isImportant: false
                         });
-//                        const m = 'We couldn\'t verify your credentials.';
-//                        self.error.authentication = m;
                     }
 
                     if( error.response.status === 429) {
                         self.$store.commit('notifyDanger', {
-                            content: 'Too many login attempts. Try it again after ',
+                            content: 'Too many login attempts. Try it again later.',
                             isImportant: true
                         });
 //                        const m = 'Too many login attempts. Try it again after ';
@@ -171,8 +164,7 @@ export default {
                     u.clog('Error: ' + error.message + '@user.vue - login()');
                 }
             };
-        },
-
+        }
     }
-}
+};
 </script>

@@ -27,7 +27,7 @@
                 </p>
 
                 <a @click="clickSettings( userCalendar )" style="transition: color 0.3s">
-                    <div class="icon" style="position: absolute; top: 6px; right: 3px; color: #fff">
+                    <div class="icon" style="position: absolute; top: 0px; right: -2px; color: #fff">
                         <i class="fa fa-gear" style="margin-right: 5px"></i>
                     </div>
                 </a>
@@ -67,7 +67,7 @@ export default {
                     'height': '150px',
                     'background-image': 'linear-gradient(-135deg, '
                                         + this.theme.secondary.code
-                                        + ' 40px, transparent 0)'
+                                        + ' 30px, transparent 0)'
                 }
             }
         }

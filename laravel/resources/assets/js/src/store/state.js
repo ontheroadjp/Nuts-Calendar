@@ -32,9 +32,9 @@ export default {
         }
     },
 
-    user: {
-        name: null,
-        token: null,
-        rememberMe: false
-    }
+//    user: {
+//        name: null,
+//        token: null,
+//        rememberMe: false
+//    }
 };

@@ -2,8 +2,10 @@
 
 このディレクトリ(`resources/assets/js/`) に移動して、
 
-* `npm run test` で Lint & Test 実行
-* `npm run lint` で Lint 実行
+* `npm run karma` で Karma 実行
+* `npm run mocha` で mocha-webpack 実行
+* `npm run nightwatch` で nightwatch 実行
+* `npm run lint` で ESLint 実行
 * `npm run build` で `dist/` ディレクトリへ production ビルド
 
 webpack / Lint / テスト(`mocha`, `chai` など) の関連ファイルは `vue-cli`（``vue init webpack``）で取得したものを配置。
@@ -24,11 +26,10 @@ webpack / Lint / テスト(`mocha`, `chai` など) の関連ファイルは `vue
   },
   "devDependencies": {
     "avoriaz": "^4.2.0",
-    
+
    // ...
-   
+
   }
 ```
 
-``npm install 
 

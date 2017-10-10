@@ -1,9 +1,7 @@
 import { focus } from '../directives/focus.js';
 
 export default {
-    directives: {
-        focus
-    },
+    directives: { focus },
 
     data() {
         return {
@@ -31,7 +29,7 @@ export default {
             },
 
 //            passwordMailResult: '',
-            passwordResetResult: '',
+//            passwordResetResult: '',
 
             style: {
                 error: {
