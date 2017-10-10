@@ -65,6 +65,10 @@ export default {
                     commit('isLoading', false);
                     commit('reset');
                 });
+        },
+
+        reset({ commit }) {
+            commit('reset');
         }
     },
 
@@ -91,6 +95,8 @@ export default {
         },
 
         reset( state ) {
+            state.editingMember = '';
+            state.isLoading = false;
             Object.keys(state.updateValues).forEach(function(key) {
                 this[key] = '';
             }, state.updateValues );
