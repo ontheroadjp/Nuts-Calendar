@@ -202,7 +202,8 @@ export default {
 
         ...mapActions('member/update', {
             prepareUpdate: 'prepare',
-            update: 'update'
+            update: 'update',
+            reset: 'reset'
         }),
 
         ...mapActions('member/remove', {

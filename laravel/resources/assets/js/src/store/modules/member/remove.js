@@ -6,24 +6,26 @@ export default {
     },
 
     actions: {
-        remove( { commit, state }, { index } ) {
+        remove( { commit, state }, { id, notify, successCb, failedCb } ) {
             u.clog('remove()');
             commit('isLoading', true);
 
-            const url = '/api/v1/member/' + index;
+            const url = '/api/v1/member/' + id;
 
             http.fetchDelete(url)
                 .then(response => {
                     u.clog('success');
 
-                    commit('member/remove', {
-                        id: index
-                    }, { root: true });
+                    commit('member/remove', { id }, { root: true });
 
-                    commit('notifySuccess', {
-                        content: 'success remove member',
-                        isImportant: false
-                    }, { root: true });
+                    if(notify) {
+                        commit('notifySuccess', {
+                            content: 'success remove member',
+                            isImportant: false
+                        }, { root: true });
+                    }
+
+                    successCb();
 
                     commit('isLoading', false);
                 })
@@ -35,6 +37,8 @@ export default {
                         content: 'failed remove member',
                         isImportant: false
                     }, { root: true });
+
+                    failedCb();
 
                     commit('isLoading', false);
                 });

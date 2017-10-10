@@ -76,7 +76,7 @@ export default {
             return {
                 userCalendars: Object.keys(this.userCalendars).length,
                 members: Object.keys(this.members).length,
-                myGroups: 1
+                myGroups: 0
             }
         },
 

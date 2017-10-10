@@ -7,8 +7,13 @@
         <div class="media">
 
             <div class="media-left">
-                <span class="icon">
-                    <i class="fa fa-calendar"></i>
+                <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"
+                        style="color: rgb(240, 240, 240)"
+                    ></i>
+                    <i class="fa fa-stack-1x fa-inverse fa-calendar"
+                        :style="'color: ' + theme.secondary.code"
+                    ></i>
                 </span>
             </div>
 
@@ -16,7 +21,8 @@
                 <p style="margin-bottom: 10px;">
                     <router-link
                         to="/calendar/view"
-                        class="title thin-200"
+                        class="thin-200"
+                        style="font-size: 1.4rem;"
                         @click.native="clickUserCalendar(userCalendar.id)"
                     >{{ userCalendar.name }}
                     </router-link>

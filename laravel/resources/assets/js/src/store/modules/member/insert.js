@@ -4,7 +4,8 @@ export default {
     state: {
         isLoading: false,
         insertValues: {
-            name: ''
+            name: '',
+            description: ''
         }
     },
 
@@ -20,7 +21,8 @@ export default {
             const url = '/api/v1/member';
 
             const params = {
-                'name': state.insertValues.name
+                name: state.insertValues.name,
+                description: state.insertValues.description
             };
 
             http.fetchPost(url, params)
