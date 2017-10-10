@@ -2,17 +2,23 @@ export default {
     namespaced: true,
 
     state: {
+        editingMember: '',
         isLoading: false,
         updateValues: {
             id: '',
             name: '',
+            description: '',
             isShow: true
         }
     },
 
     actions: {
-        prepare( { commit }, { id, name, isShow } ) {
-            commit('prepare', { id, name, isShow } );
+//        prepare( { commit }, { id, name, isShow } ) {
+//            commit('prepare', { id, name, isShow } );
+//        },
+
+        prepare( { commit }, { editingMember, isShow } ) {
+            commit('prepare', { editingMember, isShow } );
         },
 
         setUpdateValue( { commit }, { key, value } ) {
@@ -25,7 +31,8 @@ export default {
 
             const url = '/api/v1/member/' + state.updateValues.id;
             const data = {
-                'name': state.updateValues.name
+                'name': state.updateValues.name,
+                'description': state.updateValues.description,
             };
 
             http.fetchPut(url, data)
@@ -66,9 +73,16 @@ export default {
             state.isLoading = value;
         },
 
-        prepare( state, { id, name, isShow } ) {
-            state.updateValues.id = id;
-            state.updateValues.name = name;
+//        prepare( state, { id, name, isShow } ) {
+//            state.updateValues.id = id;
+//            state.updateValues.name = name;
+//            state.updateValues.isShow = isShow;
+//        },
+
+        prepare( state, { editingMember, isShow } ) {
+            state.editingMember = editingMember;
+            state.updateValues.id = editingMember.id;
+            state.updateValues.name = editingMember.name;
             state.updateValues.isShow = isShow;
         },
 
