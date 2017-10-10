@@ -52,8 +52,8 @@ class JwtAuthServiceProvider extends ServiceProvider
                 Route::delete('calendar/{id}', 'UserCalendarsController@destroy');
 
                 // user calendar members
-                Route::post('calendar/member', 'UserCalendarsController@addMember');
-                Route::delete('calendar/member', 'UserCalendarsController@removeMember');
+                Route::post('calendar/member/add', 'UserCalendarsController@addMember');
+                Route::delete('calendar/member/remove', 'UserCalendarsController@removeMember');
 
 //                // user calendar members
 //                $url = 'uscrCalendarMembers/{user_calendar_id}';
@@ -104,7 +104,7 @@ class JwtAuthServiceProvider extends ServiceProvider
 //                });
                 Route::post('register', 'JwtAuthController@register');
                 Route::post('password/reset', 'JwtPasswordController@postReset');
-                Route::post('password/email', 'JwtPasswordController@postEmail');
+                Route::post('password/email/send', 'JwtPasswordController@postEmail');
 
                 Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
                     Route::get('data', 'DataController@index');

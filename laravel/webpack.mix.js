@@ -22,14 +22,14 @@ mix.webpackConfig({
     },
 })
 
-mix.js('resources/assets/js/main.js', 'public/js')
+mix.js('resources/assets/js/src/main.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css')
-    .extract(['vue', 'vuex', 'vue-router', 'axios'])
+    .extract(['vue', 'vuex', 'vue-router', 'axios', 'moment', 'chroma-js'])
     .version();
 
 mix.copyDirectory('node_modules/font-awesome/fonts', 'public/fonts');
 mix.copyDirectory('resources/assets/images', 'public/images');
-mix.copyDirectory('resources/assets/html', 'public');
+mix.copy('resources/assets/static/*', 'public');
 
 // Full API
 // mix.js(src, output);

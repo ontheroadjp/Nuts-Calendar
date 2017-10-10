@@ -5,7 +5,7 @@ namespace Nuts\Api\Controllers;
 use Validator;
 use Password;
 use Illuminate\Http\Request;
-//use Nuts\Api\Responses\JsonResponse;
+use Illuminate\Mail\Message;
 use Nuts\Api\Responses\JwtAuthJsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -25,6 +25,7 @@ class JwtPasswordController extends Controller
 
     /**
      * Validate the request of sending reset link.
+     * (override of Illuminate\Foundation\Auth\ResetsPasswords trait)
      *
      * @param  \Illuminate\Http\Request  $request
      * @return void|json
@@ -41,12 +42,26 @@ class JwtPasswordController extends Controller
         }
     }
 
+    /**
+     * Get the response for after the reset link has been successfully sent.
+     * (override of Illuminate\Foundation\Auth\ResetsPasswords trait)
+     *
+     * @param  string  $response
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     protected function getSendResetLinkEmailSuccessResponse($response)
     {
         $message = "send reset link email successfully";
         return $this->sendJson(200, $message);
     }
 
+    /**
+     * Get the response for after the reset link could not be sent.
+     * (override of Illuminate\Foundation\Auth\ResetsPasswords trait)
+     *
+     * @param  string  $response
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     protected function getSendResetLinkEmailFailureResponse($response)
     {
         $message = "could not send the reset link email";
@@ -83,6 +98,20 @@ class JwtPasswordController extends Controller
         if ($validator->fails()) {
             return $validator->messages();
         }
+    }
+
+    /**
+     * Get the Closure which is used to build the password reset email message.
+     * (override of Illuminate\Foundation\Auth\ResetsPasswords trait)
+     *
+     * @return \Closure
+     */
+    protected function resetEmailBuilder()
+    {
+        return function (Message $message, $user, $token) {
+            $message->subject($this->getEmailSubject());
+            $message->getSwiftMessage()->getHeaders()->addTextHeader('X-Token', $token);
+        };
     }
 
     /**
