@@ -154,9 +154,12 @@ export default {
     // ---------------------------------------------
     // auth
 
-    login( state, name ) {
-        state.user.name = name;
-    },
+//    initUser( state, user ) {
+//        state.user.name = user.name;
+//        state.user.maxCalendars = user.max_calendars;
+//        state.user.maxCalendars = user.max_members;
+//        state.user.maxCalendars = user.max_shared_members;
+//    },
 
     logout( state ) {
         window.sessionStorage.clear();
