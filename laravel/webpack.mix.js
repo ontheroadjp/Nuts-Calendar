@@ -29,7 +29,7 @@ mix.js('resources/assets/js/src/main.js', 'public/js')
 
 mix.copyDirectory('node_modules/font-awesome/fonts', 'public/fonts');
 mix.copyDirectory('resources/assets/images', 'public/images');
-mix.copyDirectory('resources/assets/html', 'public');
+mix.copy('resources/assets/static/*', 'public');
 
 // Full API
 // mix.js(src, output);
