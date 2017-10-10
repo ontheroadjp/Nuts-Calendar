@@ -77,10 +77,12 @@ class MembersController extends Controller
 
         $userId = $request->user()->id;
         $name = $request->input('name');
+        $description = $request->input('description');
 
         $item = Member::create([
             'user_id' => $userId,
-            'name' => $name
+            'name' => $name,
+            'description' => $description,
         ]);
 
         $item->save();
