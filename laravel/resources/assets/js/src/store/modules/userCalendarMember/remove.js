@@ -1,3 +1,5 @@
+import { IS_LOADING } from '../../mutation-types.js';
+
 export default {
     namespaced: true,
 
@@ -8,7 +10,8 @@ export default {
     actions: {
         remove({ commit }, { userCalendarId, memberId }) {
             u.clog('checkMember()');
-            commit('isLoading', true);
+//            commit('isLoading', true);
+            commit(IS_LOADING, true);
 
             const url =  '/api/v1/calendar/member/remove';
             const data = {
@@ -28,19 +31,21 @@ export default {
                         obj: response.data
                     }, { root: true });
 
-                    commit('isLoading', false);
+//                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 })
 
                 .catch( error => {
                     u.clog('error: ' + error.response.status);
-                    commit('isLoading', false);
+//                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 });
         }
 
     },
 
     mutations: {
-        isLoading( state, value ) {
+        [IS_LOADING]( state, value ) {
             state.isLoading = value;
         }
     }

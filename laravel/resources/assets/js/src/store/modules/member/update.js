@@ -1,3 +1,7 @@
+import {
+    PREPARE, SET_UPDATE_VALUE, IS_LOADING, NOTIFY_SUCCESS, NOTIFY_DANGER, RESET
+} from '../../mutation-types.js';
+
 export default {
     namespaced: true,
 
@@ -18,16 +22,19 @@ export default {
 //        },
 
         prepare( { commit }, { editingMember, isShow } ) {
-            commit('prepare', { editingMember, isShow } );
+//            commit('prepare', { editingMember, isShow } );
+            commit(PREPARE, { editingMember, isShow } );
         },
 
         setUpdateValue( { commit }, { key, value } ) {
-            commit('setUpdateValue', { key, value } );
+//            commit('setUpdateValue', { key, value } );
+            commit(SET_UPDATE_VALUE, { key, value } );
         },
 
         update( { state, commit, rootState } ) {
             u.clog('update()');
-            commit('isLoading', true);
+//            commit('isLoading', true);
+            commit(IS_LOADING, true);
 
             const url = '/api/v1/member/' + state.updateValues.id;
             const data = {
@@ -42,7 +49,13 @@ export default {
                     commit('member/setValue', {
                         id: response.data.id,
                         key: 'name',
-                        name: response.data.name
+                        value: response.data.name
+                    }, { root: true });
+
+                    commit('member/setValue', {
+                        id: response.data.id,
+                        key: 'description',
+                        value: response.data.description
                     }, { root: true });
 
                     commit('notifySuccess', {
@@ -50,8 +63,10 @@ export default {
                         isImportant: false
                     }, { root: true});
 
-                    commit('isLoading', false);
-                    commit('reset');
+//                    commit('isLoading', false);
+//                    commit('reset');
+                    commit(IS_LOADING, false);
+                    commit(RESET);
                 })
 
                 .catch( error => {
@@ -62,18 +77,22 @@ export default {
                         isActive: true
                     }, { root: true});
 
-                    commit('isLoading', false);
-                    commit('reset');
+//                    commit('isLoading', false);
+//                    commit('reset');
+                    commit(IS_LOADING, false);
+                    commit(RESET);
                 });
         },
 
         reset({ commit }) {
-            commit('reset');
+//            commit('reset');
+            commit(RESET);
         }
     },
 
     mutations: {
-        isLoading( state, value ) {
+//        isLoading( state, value ) {
+        [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
 
@@ -83,23 +102,28 @@ export default {
 //            state.updateValues.isShow = isShow;
 //        },
 
-        prepare( state, { editingMember, isShow } ) {
+//        prepare( state, { editingMember, isShow } ) {
+        [PREPARE]( state, { editingMember, isShow } ) {
             state.editingMember = editingMember;
             state.updateValues.id = editingMember.id;
             state.updateValues.name = editingMember.name;
+            state.updateValues.description = editingMember.description;
             state.updateValues.isShow = isShow;
         },
 
-        setUpdateValue( state, { key, value } ) {
+//        setUpdateValue( state, { key, value } ) {
+        [SET_UPDATE_VALUE]( state, { key, value } ) {
             state.updateValues[key] = value;
         },
 
-        reset( state ) {
+//        reset( state ) {
+        [RESET]( state ) {
             state.editingMember = '';
             state.isLoading = false;
             Object.keys(state.updateValues).forEach(function(key) {
                 this[key] = '';
             }, state.updateValues );
+            state.updateValues.isShow = false;
         }
     }
 };
