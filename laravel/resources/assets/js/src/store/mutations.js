@@ -1,4 +1,13 @@
 //import Vue from 'vue';
+import {
+    NOTIFY_PRIMARY,
+    NOTIFY_SUCCESS,
+    NOTIFY_INFO,
+    NOTIFY_WARNING,
+    NOTIFY_DANGER,
+    SET_NOTIFICATION,
+    RESET_NOTIFICATION,
+} from './mutation-types.js' ;
 
 export default {
 
@@ -16,7 +25,7 @@ export default {
     // ---------------------------------------------
     // notification
 
-    notifyPrimary( state, { content, isImportant } ) {
+    [NOTIFY_PRIMARY]( state, { content, isImportant } ) {
         if(!content || typeof(isImportant) !== 'boolean' ) return;
         state.app.message.notification.content = content;
         state.app.message.notification.type = 'is-primary';
@@ -24,7 +33,7 @@ export default {
         state.app.message.notification.isActive = true;
     },
 
-    notifySuccess( state, { content, isImportant } ) {
+    [NOTIFY_SUCCESS]( state, { content, isImportant } ) {
         if(!content || typeof(isImportant) !== 'boolean' ) return;
         state.app.message.notification.content = content;
         state.app.message.notification.type = 'is-success';
@@ -32,7 +41,7 @@ export default {
         state.app.message.notification.isActive = true;
     },
 
-    notifyInfo( state, { content, isImportant } ) {
+    [NOTIFY_INFO]( state, { content, isImportant } ) {
         if(!content || typeof(isImportant) !== 'boolean' ) return;
         state.app.message.notification.content = content;
         state.app.message.notification.type = 'is-info';
@@ -40,7 +49,7 @@ export default {
         state.app.message.notification.isActive = true;
     },
 
-    notifyWarning( state, { content, isImportant } ) {
+    [NOTIFY_WARNING]( state, { content, isImportant } ) {
         if(!content || typeof(isImportant) !== 'boolean' ) return;
         state.app.message.notification.content = content;
         state.app.message.notification.type = 'is-warning';
@@ -48,7 +57,7 @@ export default {
         state.app.message.notification.isActive = true;
     },
 
-    notifyDanger( state, { content, isImportant } ) {
+    [NOTIFY_DANGER]( state, { content, isImportant } ) {
         if(!content || typeof(isImportant) !== 'boolean' ) return;
         state.app.message.notification.content = content;
         state.app.message.notification.type = 'is-danger';
@@ -56,7 +65,7 @@ export default {
         state.app.message.notification.isActive = true;
     },
 
-    setNotification( state, { content, type, isImportant, isActive } ) {
+    [SET_NOTIFICATION]( state, { content, type, isImportant, isActive } ) {
         if(!content || !type || typeof(isImportant) !== 'boolean' || typeof(isActive) !== 'boolean' ) true;
         state.app.message.notification.content = content;
         state.app.message.notification.type = type;
@@ -64,7 +73,7 @@ export default {
         state.app.message.notification.isActive = isActive;
     },
 
-    resetNotification( state ) {
+    [RESET_NOTIFICATION]( state ) {
         state.app.message.notification.content = '';
         state.app.message.notification.type = '';
         state.app.message.notification.isImportant = false;

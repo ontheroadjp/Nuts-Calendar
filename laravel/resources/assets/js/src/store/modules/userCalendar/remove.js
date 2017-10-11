@@ -1,4 +1,8 @@
-import { IS_LOADING } from '../../mutation-types.js';
+import {
+    IS_LOADING,
+    NOTIFY_SUCCESS,
+    NOTIFY_DANGER,
+} from '../../mutation-types.js';
 
 export default {
     namespaced: true,
@@ -24,7 +28,7 @@ export default {
                     }, { root: true });
 
                     if(notify) {
-                        commit('notifySuccess', {
+                        commit(NOTIFY_SUCCESS, {
                             content: 'success remove calendar',
                             isImportant: false
                         }, { root: true });
@@ -42,7 +46,7 @@ export default {
                     u.clog('failed');
 
                     if( notify !== false ) {
-                        commit('notifyDanger', {
+                        commit(NOTIFY_DANGER, {
                             content: 'failed remove member',
                             isImportant: false
                         }, { root: true });

@@ -1,4 +1,10 @@
-import { SET_INSERT_VALUE, IS_LOADING, RESET } from '../../mutation-types.js';
+import {
+    SET_INSERT_VALUE,
+    IS_LOADING,
+    NOTIFY_SUCCESS,
+    NOTIFY_DANGER,
+    RESET
+} from '../../mutation-types.js';
 
 export default {
     namespaced: true,
@@ -41,7 +47,7 @@ export default {
                     }, { root: true } );
 
                     if(notify) {
-                        commit('notifySuccess', {
+                        commit(NOTIFY_SUCCESS, {
                             content: 'success add calendar',
                             isImportant: false
                         }, { root: true });
@@ -62,7 +68,7 @@ export default {
                     u.clog('failed');
 
                     if(notify !== false) {
-                        commit('notifyDanger', {
+                        commit(NOTIFY_DANGER, {
                             content: 'failed add calendar',
                             isImportant: false
                         }, { root: true });

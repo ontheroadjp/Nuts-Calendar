@@ -134,14 +134,14 @@ export default {
             return error => {
                 if (error.response) {
                     if( error.response.status === 422 || error.response.status === 500) {
-                        self.$store.commit('notifyDanger', {
+                        self.$store.commit(NOTIFY__DANGER, {
                             content: 'We couldn\'t verify your credentials.',
                             isImportant: false
                         });
                     }
 
                     if( error.response.status === 429) {
-                        self.$store.commit('notifyDanger', {
+                        self.$store.commit(NOTIFY_DANGER, {
                             content: 'Too many login attempts. Try it again later.',
                             isImportant: true
                         });

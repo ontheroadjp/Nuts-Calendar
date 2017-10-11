@@ -1,5 +1,10 @@
 import {
-    PREPARE, SET_UPDATE_VALUE, IS_LOADING, NOTIFY_SUCCESS, NOTIFY_DANGER, RESET
+    PREPARE,
+    SET_UPDATE_VALUE,
+    IS_LOADING,
+    NOTIFY_SUCCESS,
+    NOTIFY_DANGER,
+    RESET
 } from '../../mutation-types.js';
 
 export default {
@@ -58,7 +63,7 @@ export default {
                         value: response.data.description
                     }, { root: true });
 
-                    commit('notifySuccess', {
+                    commit(NOTIFY_SUCCESS, {
                         content: 'success update member',
                         isImportant: false
                     }, { root: true});
@@ -71,7 +76,7 @@ export default {
                 .catch( error => {
                     u.clog('failed');
 
-                    commit('notifyDanger', {
+                    commit(NOTIFY_DANGER, {
                         content: 'failed update member',
                         isActive: true
                     }, { root: true});

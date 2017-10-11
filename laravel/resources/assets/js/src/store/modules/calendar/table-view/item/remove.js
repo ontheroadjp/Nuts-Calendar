@@ -30,7 +30,7 @@ export default {
                         state.cellItems, { root: true }
                     );
 
-                    commit('notifySuccess', {
+                    commit(NOTIFY_SUCCESS, {
                         content: 'success remove item',
                         isImportant: false
                     }, { root: true });
@@ -41,7 +41,7 @@ export default {
                 .catch(error => {
                     u.clog('failed');
 
-                    commit('notifyDanger', {
+                    commit(NOTIFY_DANGER, {
                         content: 'failed remove item',
                         isImportant: false
                     }, { root: true });

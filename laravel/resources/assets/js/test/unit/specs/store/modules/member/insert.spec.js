@@ -7,7 +7,7 @@ import Promise from 'bluebird';
 describe('store/module/member/insert.js', () => {
     const { state } = insertModule;
     const { setInsertValue, insert, reset } = insertModule.actions;
-    const { IS_LOADING, RESET, SET_INSERT_VALUE } = insertModule.mutations;
+    const { IS_LOADING, RESET, SET_INSERT_VALUE, NOTIFY_SUCCESS, NOTIFY_DANGER } = insertModule.mutations;
 
     const userCalendar = {
         id: 1,
@@ -43,7 +43,7 @@ describe('store/module/member/insert.js', () => {
             testAction(insert, null, state, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'member/add', payload: { id: 123456, member: responseData.data } },
-                { type: 'notifySuccess', payload: {content: 'success add member', isImportant: false} },
+                { type: 'NOTIFY_SUCCESS', payload: {content: 'success add member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
                 { type: 'RESET', payload: null }
             ], done);

@@ -1,4 +1,10 @@
-import { SET_INSERT_VALUE, IS_LOADING, RESET } from '../../mutation-types.js';
+import {
+    SET_INSERT_VALUE,
+    IS_LOADING,
+    RESET,
+    NOTIFY_SUCCESS,
+    NOTIFY_DANGER
+} from '../../mutation-types.js';
 
 export default {
     namespaced: true,
@@ -41,7 +47,7 @@ export default {
                         member: data
                     }, { root: true } );
 
-                    commit('notifySuccess', {
+                    commit(NOTIFY_SUCCESS, {
                         content: 'success add member',
                         isImportant: false
                     }, { root: true });
@@ -55,7 +61,7 @@ export default {
                 .catch(error => {
                     u.clog('failed');
 
-                    commit('notifyDanger', {
+                    commit(NOTIFY_DANGER, {
                         content: 'failed add member',
                         isImportant: false
                     }, { root: true });

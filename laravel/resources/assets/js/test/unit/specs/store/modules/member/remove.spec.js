@@ -7,7 +7,7 @@ import Promise from 'bluebird';
 describe('store/module/member/remove.js', () => {
     const { state } = removeModule;
     const { remove } = removeModule.actions;
-    const { IS_LOADING } = removeModule.mutations;
+    const { IS_LOADING, NOTIFY_SUCCESS, NOTIFY_DANGER } = removeModule.mutations;
 
     describe('actions', () => {
         it('remove', (done) => {
@@ -32,7 +32,7 @@ describe('store/module/member/remove.js', () => {
             testAction(remove, actionPayload, state, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'member/remove', payload: { id: 100 } },
-//                { type: 'notifySuccess', payload: {content: 'success remove member', isImportant: false} },
+//                { type: 'NOTIFY_SUCCESS', payload: {content: 'success remove member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
             ], done);
 

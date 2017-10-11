@@ -8,7 +8,7 @@ import Promise from 'bluebird';
 describe('store/module/userCalendar/update.js', () => {
     const { state } = updateModule;
     const { prepare, setUpdateValue, update, reset } = updateModule.actions;
-    const { PREPARE, IS_LOADING, SET_UPDATE_VALUE, RESET } = updateModule.mutations;
+    const { PREPARE, IS_LOADING, SET_UPDATE_VALUE, RESET, NOTIFY_SUCCESS, NOTIFY_DANGER } = updateModule.mutations;
 
     const editingMember = {
         id: 1,
@@ -43,7 +43,7 @@ describe('store/module/userCalendar/update.js', () => {
                 { type: 'IS_LOADING', payload: true },
                 { type: 'member/setValue', payload: { id: 100, key: 'name', value: 'updated name' } },
                 { type: 'member/setValue', payload: { id: 100, key: 'description', value: 'updated description' } },
-                { type: 'notifySuccess', payload: { content: 'success update member', isImportant: false } },
+                { type: 'NOTIFY_SUCCESS', payload: { content: 'success update member', isImportant: false } },
                 { type: 'IS_LOADING', payload: false }
             ], done);
 
