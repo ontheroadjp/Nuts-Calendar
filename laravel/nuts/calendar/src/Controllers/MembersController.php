@@ -101,7 +101,7 @@ class MembersController extends Controller
         if( $item instanceof \Illuminate\Http\JsonResponse ) return $item;
 
         $item->fill($request->only(
-            ['name']
+            ['name', 'description']
         ));
         $item->save();
         return $item;
