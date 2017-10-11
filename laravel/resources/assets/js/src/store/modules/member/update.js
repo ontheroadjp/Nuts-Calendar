@@ -66,7 +66,6 @@ export default {
 //                    commit('isLoading', false);
 //                    commit('reset');
                     commit(IS_LOADING, false);
-                    commit(RESET);
                 })
 
                 .catch( error => {
@@ -80,7 +79,6 @@ export default {
 //                    commit('isLoading', false);
 //                    commit('reset');
                     commit(IS_LOADING, false);
-                    commit(RESET);
                 });
         },
 
