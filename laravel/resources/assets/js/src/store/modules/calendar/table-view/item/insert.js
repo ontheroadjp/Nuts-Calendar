@@ -40,7 +40,7 @@ export default {
             u.clog('insertItem()');
 
             if( ! state.newItem.content ) {
-                commit('notifyDanger', {
+                commit(NOTIFY_DANGER, {
                     content: 'no content',
                     isImportant: false
                 }, { root: true });
@@ -76,7 +76,7 @@ export default {
                         state.enterCell.cellItems, { root: true }
                     );
 
-                    commit('notifySuccess', {
+                    commit(NOTIFY_SUCCESS, {
                         content: 'success add task',
                         isImportant: false
                     }, { root: true });
@@ -87,7 +87,7 @@ export default {
                 .catch(error => {
                     u.clog('failed');
 
-                    commit('notifyDanger', {
+                    commit(NOTIFY_DANGER, {
                         content: 'failed add task',
                         isImportant: false
                     }, { root: true });

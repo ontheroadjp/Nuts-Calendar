@@ -11,7 +11,7 @@
                     <i class="fa fa-circle fa-stack-2x"
                         style="color: rgb(240, 240, 240)"
                     ></i>
-                    <i class="fa fa-stack-1x fa-inverse fa-calendar"
+                    <i class="fa fa-stack-1x fa-inverse fa-users"
                         :style="'color: ' + theme.secondary.code"
                     ></i>
                 </span>

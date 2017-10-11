@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 describe('store/module/item/index.js', () => {
     const { state } = itemModule;
-    const { init } = itemModule.mutations;
+    const { init, add, remove } = itemModule.mutations;
     const items = {
         1: { id: 1, name: 'item 1' },
         2: { id: 2, name: 'item 2' },
@@ -16,8 +16,31 @@ describe('store/module/item/index.js', () => {
         8: { id: 8, name: 'item 8' },
     };
 
-    it('init', () => {
-        init(state, items);
-        expect(Object.keys(state.data.items).length).is.eql(8);
+    describe('mutations', () => {
+
+        const itemA = { id: 1000, name: 'itemA' };
+        const itemB = { id: 2000, name: 'itemB' };
+        const itemC = { id: 3000, name: 'itemC' };
+
+        it('init', () => {
+            init(state, items);
+            expect(Object.keys(state.data.items).length).is.eql(8);
+        });
+
+        it('add', () => {
+            add(state, itemA);
+            expect(Object.keys(state.data.items).length).is.eql(9);
+            add(state, itemB);
+            add(state, itemC);
+            expect(Object.keys(state.data.items).length).is.eql(11);
+        });
+
+        it('remove', () => {
+            remove(state, itemA);
+            expect(Object.keys(state.data.items).length).is.eql(10);
+            remove(state, itemB);
+            remove(state, itemC);
+            expect(Object.keys(state.data.items).length).is.eql(8);
+        });
     });
 });

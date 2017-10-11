@@ -12,11 +12,13 @@ describe('store/module/user/index.js', () => {
         max_shared_members: 1
     };
 
-    it('init', () => {
-        init(state, user);
-        expect(state.data.name).is.eql(user.name);
-        expect(state.data.maxCalendars).is.eql(user.max_calendars);
-        expect(state.data.maxMembers).is.eql(user.max_members);
-        expect(state.data.maxSharedMembers).is.eql(user.max_shared_members);
+    describe('mutations', () => {
+        it('init', () => {
+            init(state, user);
+            expect(state.data.name).is.eql(user.name);
+            expect(state.data.maxCalendars).is.eql(user.max_calendars);
+            expect(state.data.maxMembers).is.eql(user.max_members);
+            expect(state.data.maxSharedMembers).is.eql(user.max_shared_members);
+        });
     });
 });

@@ -3,26 +3,25 @@
         blackScreenColor="rgba(10,10,10,0.45)"
         :onClose="onClose"
         :isActive="isActive"
-        :isLoading="isLoading"
         :deleteResult.sync="deleteResult"
         @onDeleteOK="clickDeleteOK()"
     >
         <div style="padding: 40px;">
             <text-input
-                id="member-name"
+                id="calendar-name"
                 inputStyle="font-size: 2rem; font-weight: 200;"
-                :initialValue="member.name"
+                :initialValue="userCalendar.name"
                 :showError="true"
                 :minTextLength="1"
                 :maxTextLength="30"
                 :height="110"
-                placeholder="Member/Role name"
+                placeholder="Calendar name"
                 @blurValue="blurName"
                 :disabled="false"
             ></text-input>
             <text-input
                 id="description"
-                :initialValue="member.description"
+                :initialValue="userCalendar.description"
                 :showError="true"
                 :minTextLength="0"
                 :maxTextLength="200"
@@ -32,20 +31,38 @@
                 :disabled="false"
             ></text-input>
         </div>
+
+        <div style="padding: 40px 60px; background-color: whitesmoke; margin-bottom: 32px;">
+            <ul class="members">
+                <li v-for="member in members" class="member">
+                    <div class="card" style="margin-bottom: 5px; padding: 10px;">
+                        <checkbox-input
+                            :id="member.name"
+                            :label="member.name"
+                            labelStyle="font-size: 1rem; font-weight: 100;"
+                            :initialValue="userCalendarMemberIds.indexOf(member.id) !== -1"
+                            @changeValue="changeMemberGroup(
+                                member.name,
+                                userCalendar.id,
+                                member.id
+                            )"
+                            :disabled="false"
+                        ></checkbox-input>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </delete-confirm-modal>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import focus from '../../../directives/focus.js';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirmModal from '../../../components/modal/delete-confirm-modal.vue';
 
 export default {
     components: { textInput, checkboxInput, deleteConfirmModal },
-
-    directives: { focus },
 
     props: {
         isActive: { type: Boolean, required: true },
@@ -54,17 +71,19 @@ export default {
 
     data() {
         return {
+            userCalendarMemberIds: [],
+            showMemberGroup: false,
             deleteResult: ''
         }
     },
 
     computed: {
-        ...mapState('member/update', {
-            member: state => state.editingMember
+        ...mapState('member', {
+            members: state => state.data.members
         }),
 
-        ...mapState('member/remove', {
-            isLoading: state => state.isLoading
+        ...mapState('userCalendar', {
+            userCalendar: state => state.update.editingUserCalendar
         }),
 
         ...mapState('userCalendarMember', {
@@ -73,10 +92,15 @@ export default {
     },
 
     methods: {
-        ...mapActions('member', {
+        ...mapActions('userCalendar', {
             remove: 'remove/remove',
             update: 'update/update',
             setUpdateValue: 'update/setUpdateValue'
+        }),
+
+        ...mapActions('userCalendarMember', {
+            insertUserCalendarMember: 'insert/insert',
+            removeUserCalendarMember: 'remove/remove'
         }),
 
         blurName(data) {
@@ -103,7 +127,7 @@ export default {
 
         clickDeleteOK: function() {
             this.remove({
-                id: this.member.id,
+                id: this.userCalendar.id,
                 notify: false,
                 successCb: () => {
                     this.deleteResult = 'success';
@@ -112,7 +136,26 @@ export default {
                     this.deleteResult = 'failed';
                 }
             });
+        },
+
+        initUserCalendarMemberIds: function() {
+            this.userCalendarMemberIds = [];
+            this.userCalendarMembers.forEach((val) => {
+                if( val.user_calendar_id === this.userCalendar.id ) {
+                    this.userCalendarMemberIds.push(val.member_id);
+                }
+            });
         }
+    },
+
+    watch: {
+        userCalendar: function() {
+            this.initUserCalendarMemberIds();
+        }
+    },
+
+    mounted() {
+        this.initUserCalendarMemberIds();
     }
 };
 </script>

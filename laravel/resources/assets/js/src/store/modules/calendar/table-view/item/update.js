@@ -64,7 +64,7 @@ export default {
                         state.cellItems, { root: true }
                     );
 
-                    commit('notifySuccess', {
+                    commit(NOTIFY_SUCCESS, {
                         content: 'success update task',
                         isImportant: false
                     }, { root: true });
@@ -76,7 +76,7 @@ export default {
                     u.clog('failed');
 
                     commit('toggleTaskDone');
-                    commit('notifyDanger', {
+                    commit(NOTIFY_DANGER, {
                         content: 'failed update member',
                         isActive: true
                     }, { root: true});
