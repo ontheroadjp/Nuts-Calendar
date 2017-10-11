@@ -25,10 +25,10 @@ u.setDebugMode(false)
 //import { jwtToken } from '../../src/libs/jwt-token.js';
 //window.jwtToken = jwtToken;
 
-//// http
-//import { http } from '../../src/libs/http.js';
-//window.http = http;
-//http.init();
+// http
+import { http } from '../../src/libs/http.js';
+window.http = http;
+http.init();
 
 //// event bus
 //import { eventBus } from '../../src/libs/event.js';

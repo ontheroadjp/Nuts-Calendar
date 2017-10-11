@@ -161,7 +161,7 @@ export default {
 //            return error => {
 //                if (error.response) {
 //                    if( error.response.status === 422 || error.response.status === 500) {
-//                        self.$store.commit('notifyDanger', {
+//                        self.$store.commit(NOTIFY_DANGER, {
 //                            content: 'We couldn\'t verify your credentials.',
 //                            isImportant: false
 //                        });
@@ -170,7 +170,7 @@ export default {
 //                    }
 //
 //                    if( error.response.status === 429) {
-//                        self.$store.commit('notifyDanger', {
+//                        self.$store.commit(NOTIFY_DANGER, {
 //                            content: 'Too many login attempts. Try it again after ',
 //                            isImportant: true
 //                        });

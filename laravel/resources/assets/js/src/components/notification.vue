@@ -8,7 +8,7 @@
             <button
                 v-show="notification.isImportant"
                 class="delete"
-                @click="$store.commit('resetNotification')"
+                @click="$store.commit(RESET_NOTIFICATION)"
                 >
             </button>
             <span class="icon">
@@ -38,7 +38,7 @@ export default {
         'notification.isActive': function(newVal) {
             if(newVal && !this.notification.isImportant) {
                 setTimeout( () => {
-                    this.$store.commit('resetNotification')
+                    this.$store.commit(RESET_NOTIFICATION)
                 }, this.$store.state.app.message.notification.autoClose);
             }
         }
