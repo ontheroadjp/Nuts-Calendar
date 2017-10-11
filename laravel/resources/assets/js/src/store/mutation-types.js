@@ -12,7 +12,6 @@ export const RESET_NOTIFICATION = 'RESET_NOTIFICATION'
 // --------------------------------------------
 // modules
 // --------------------------------------------
-
 // index
 export const INIT = 'INIT'
 export const ADD = 'ADD'
@@ -20,6 +19,8 @@ export const REMOVE = 'REMOVE'
 
 // insert, update, remove
 export const IS_LOADING = 'IS_LOADING'
+
+// insert, update
 export const RESET = 'RESET'
 
 // insert
