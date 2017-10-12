@@ -20,13 +20,13 @@ describe('store/module/userCalendar/update.js', () => {
         it('prepare', (done) => {
             testAction(prepare, { userCalendar }, state, [
                 { type: 'PREPARE', payload: { userCalendar } }
-            ], done);
+            ], null, done);
         });
 
         it('setUpdateValue', (done) => {
             testAction(setUpdateValue, { key: 'name', value: 'updated name' }, state, [
                 { type: 'SET_UPDATE_VALUE', payload: { key: 'name', value: 'updated name' } }
-            ], done);
+            ], null, done);
         });
 
         it('update', (done) => {
@@ -45,7 +45,7 @@ describe('store/module/userCalendar/update.js', () => {
                 { type: 'userCalendar/setValue', payload: { id: 100, key: 'description', value: 'updated description' } },
 //                { type: 'NOTIFY_SUCCESS', payload: { content: 'success update User Calendar', isImportant: false } },
                 { type: 'IS_LOADING', payload: false }
-            ], done);
+            ], null, done);
 
             httpStub.restore();
         });
@@ -53,7 +53,7 @@ describe('store/module/userCalendar/update.js', () => {
         it('reset', (done) => {
             testAction(reset, null, state, [
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
         });
     });
 

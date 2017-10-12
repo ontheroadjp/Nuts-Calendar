@@ -34,7 +34,7 @@ describe('store/module/userCalendar/remove.js', () => {
                 { type: 'userCalendar/remove', payload: { id: 100 } },
 //                { type: 'NOTIFY_SUCCESS', payload: {content: 'success add calendar', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
-            ], done);
+            ], null, done);
 
             // these does not work.
             //expect(successCb.callCount).to.be.eql(1);

@@ -19,7 +19,7 @@ describe('store/module/member/insert.js', () => {
         it('setInsertValue', (done) => {
             testAction(setInsertValue, { key: 'name', value: 'new member name' }, state, [
                 { type: 'SET_INSERT_VALUE', payload: { key: 'name', value: 'new member name' } }
-            ], done);
+            ], null, done);
         });
 
         it('insert', (done) => {
@@ -46,7 +46,7 @@ describe('store/module/member/insert.js', () => {
                 { type: 'NOTIFY_SUCCESS', payload: {content: 'success add member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
 
             // these does not work.
             //expect(successCb.callCount).to.be.eql(1);
@@ -58,7 +58,7 @@ describe('store/module/member/insert.js', () => {
         it('reset', (done) => {
             testAction(reset, null, state, [
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
         });
     });
 
