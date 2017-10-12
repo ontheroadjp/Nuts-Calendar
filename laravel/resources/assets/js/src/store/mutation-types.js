@@ -21,6 +21,18 @@ export const SET_VALUE = 'SET_VALUE';
 export const SORT_CELL_ITEMS = 'SORT_CELL_ITEMS';
 export const CHECK_TIME = 'CHECK_TIME';
 
+// tableView/item/insert
+export const INSERT = 'INSERT';
+
+// tableView: toolPalette
+export const TOGGLE_TABLE_TOOL_PALETTE = 'TOGGLE_TABLE_TOOL_PALETTE';
+export const TOGGLE_SHOW_HIDE_COLUMN = 'TOGGLE_SHOW_HIDE_COLUMN';
+export const TOGGLE_SHOW_HIDE_EVENT_ITEM = 'TOGGLE_SHOW_HIDE_EVENT_ITEM';
+export const TOGGLE_SHOW_HIDE_TASK_ITEM = 'TOGGLE_SHOW_HIDE_TASK_ITEM';
+export const TOGGLE_SHOW_HIDE_END_TIME = 'TOGGLE_SHOW_HIDE_END_TIME';
+export const SET_SEARCH_QUERY = 'SET_SEARCH_QUERY';
+export const SET_INTERNAL_QUERY = 'SET_INTERNAL_QUERY';
+
 // --------------------------------------------
 // modules (store)
 // --------------------------------------------
