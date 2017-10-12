@@ -19,21 +19,21 @@ describe('store/module/calendar/index.js', () => {
     };
 
     describe('actions', () => {
-        it('insert', (done) => {
+        it('fetchCalendar', (done) => {
             const response = {
                 data: calendars
             };
             const resolved = new Promise.resolve(response);
             const httpStub = sinon.stub(http, 'fetchGet').returns(resolved);
 
-            testAction(fetchCalendar, { calendarId: 8 }, state, [
+            testAction(fetchCalendar, { calendarId: 8 }, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'IS_LOADING', payload: false }
             ], [
                 { type: 'tableView/updateCellItems', payload: calendars.days[0].items.memberId },
             ], done);
 
-            httpStub.restore();
+            http.fetchGet.restore();
         });
     });
 

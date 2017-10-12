@@ -29,7 +29,7 @@ describe('store/module/userCalendar/remove.js', () => {
             const successCb = sinon.stub(actionPayload, 'successCb');
             const failedCb = sinon.stub(actionPayload, 'failedCb');
 
-            testAction(remove, actionPayload, state, [
+            testAction(remove, actionPayload, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'userCalendar/remove', payload: { id: 100 } },
 //                { type: 'NOTIFY_SUCCESS', payload: {content: 'success add calendar', isImportant: false} },
@@ -42,7 +42,7 @@ describe('store/module/userCalendar/remove.js', () => {
 
             successCb.restore();
             failedCb.restore();
-            httpStub.restore();
+            http.fetchDelete.restore();
         });
     });
 

@@ -1,9 +1,11 @@
-export const testAction = (action, payload, state, expectedMutations, expectedDispatchers, done) => {
+//export const testAction = (action, payload, state, expectedMutations, expectedDispatchers, done) => {
+export const testAction = (action, payload, context, expectedMutations, expectedDispatchers, done) => {
     let commitCount = 0;
     let dispatchCount = 0;
 
     // commit mock
-    const commit = (type, payload) => {
+//    const commit = (type, payload) => {
+    context.commit = (type, payload) => {
         const mutation = expectedMutations[commitCount]
 
         try {
@@ -22,7 +24,8 @@ export const testAction = (action, payload, state, expectedMutations, expectedDi
     };
 
     // dispatch mock
-    const dispatch = (type, payload) => {
+//    const dispatch = (type, payload) => {
+    context.dispatch = (type, payload) => {
         const dispatcher = expectedDispatchers[dispatchCount]
 
         try {
@@ -41,7 +44,8 @@ export const testAction = (action, payload, state, expectedMutations, expectedDi
     };
 
     // call action
-    action({ commit, state, dispatch }, payload)
+//    action({ commit, state, dispatch }, payload)
+    action(context, payload)
 
     // check that all mutations and dispachers are called
     if (expectedMutations.length === 0 && expectedDispatchers.length === 0) {
