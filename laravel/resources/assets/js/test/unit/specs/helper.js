@@ -1,9 +1,10 @@
-export const testAction = (action, payload, state, expectedMutations, done) => {
-    let count = 0
+export const testAction = (action, payload, state, expectedMutations, expectedDispatchers, done) => {
+    let commitCount = 0;
+    let dispatchCount = 0;
 
-    // コミットをモックする
+    // commit mock
     const commit = (type, payload) => {
-        const mutation = expectedMutations[count]
+        const mutation = expectedMutations[commitCount]
 
         try {
             expect(mutation.type).to.equal(type)
@@ -14,18 +15,38 @@ export const testAction = (action, payload, state, expectedMutations, done) => {
             done(error)
         }
 
-        count++
-        if (count >= expectedMutations.length) {
+        commitCount++
+        if (commitCount >= expectedMutations.length) {
             done()
         }
-    }
+    };
 
-    // モック化したストアと引数でアクションを呼び出す
-    action({ commit, state }, payload)
+    // dispatch mock
+    const dispatch = (type, payload) => {
+        const dispatcher = expectedDispatchers[dispatchCount]
 
-    // 呼び出されるべきミューテーションが残っていないか確認する
-    if (expectedMutations.length === 0) {
-        expect(count).to.equal(0)
+        try {
+            expect(dispatcher.type).to.equal(type)
+            if (payload) {
+                expect(dispatcher.payload).to.deep.equal(payload)
+            }
+        } catch (error) {
+            done(error)
+        }
+
+        dispatchCount++
+        if (dispatchCount >= expectedDispatchers.length) {
+            done()
+        }
+    };
+
+    // call action
+    action({ commit, state, dispatch }, payload)
+
+    // check that all mutations and dispachers are called
+    if (expectedMutations.length === 0 && expectedDispatchers.length === 0) {
+        expect(commitCount).to.equal(0)
+        expect(dispatchCount).to.equal(0)
         done()
     }
 }
