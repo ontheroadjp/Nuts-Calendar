@@ -29,13 +29,13 @@ describe('store/module/userCalendarMember/insert.js', () => {
                 memberId: 200
             }
 
-            testAction(insert, actionPayload, state, [
+            testAction(insert, actionPayload, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'userCalendarMember/add', payload: { obj: responseData.data } },
                 { type: 'IS_LOADING', payload: false }
-            ], done);
+            ], null, done);
 
-            httpStub.restore();
+            http.fetchPost.restore();
         });
     });
 

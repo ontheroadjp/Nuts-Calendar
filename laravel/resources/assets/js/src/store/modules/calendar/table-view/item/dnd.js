@@ -4,7 +4,7 @@ export default {
     state: {
         isLoading: false,
         isDropped: false,
-        isInTrash: false,
+//        isInTrash: false,
         draggingItem: '',
         fromCell: {
             cellAddress: '',
@@ -101,12 +101,12 @@ export default {
                     u.clog('failed');
                     commit('reverseItem', { y, m });
 
-                    commit('calendar/tableView/sortCellItems',
+                    commit('calendar/tableView/SORT_CELL_ITEMS',
                         state.enterCell.cellItems,
                         { root: true }
                     );
 
-                    commit('calendar/tableView/sortCellItems',
+                    commit('calendar/tableView/SORT_CELL_ITEMS',
                         state.fromCell.cellItems,
                         { root: true }
                     );

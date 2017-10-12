@@ -24,13 +24,13 @@ describe('store/module/userCalendarMember/remove.js', () => {
                 memberId: 1234
             }
 
-            testAction(remove, actionPayload, state, [
+            testAction(remove, actionPayload, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'userCalendarMember/remove', payload: { obj: responseData.data } },
                 { type: 'IS_LOADING', payload: false },
-            ], done);
+            ], null, done);
 
-            httpStub.restore();
+            http.fetchDelete.restore();
         });
     });
 

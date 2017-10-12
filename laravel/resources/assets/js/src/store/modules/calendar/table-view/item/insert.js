@@ -1,3 +1,7 @@
+import {
+    PREPARE, IS_LOADING, SET_VALUE, INSERT, RESET
+} from '../../../../mutation-types.js';
+
 export default {
     namespaced: true,
 
@@ -21,11 +25,11 @@ export default {
     actions: {
         prepare( { commit, rootGetters }, { dayIndex, memberId, cellItems } ) {
 //            const cellItems = rootGetters.getCellItems(dayIndex, memberId);
-            commit('prepare', { dayIndex, memberId, cellItems });
+            commit(PREPARE, { dayIndex, memberId, cellItems });
         },
 
         setValue( { commit }, { key, value } ) {
-            commit('setValue', { key, value } );
+            commit(SET_VALUE, { key, value } );
         },
 
         insertEvent( { commit, dispatch } ) {
@@ -48,7 +52,7 @@ export default {
             }
 
 //            commit('start');
-            commit('isLoading', true);
+            commit(IS_LOADING, true);
 
             const y = rootState.calendar.currentYear;
             const m = rootState.calendar.currentMonth;
@@ -68,7 +72,7 @@ export default {
 
             http.fetchPost(url, params)
                 .then(response => {
-                    commit('insert', {
+                    commit(INSERT, {
                         item: response.data
                     });
 
@@ -81,8 +85,8 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-                    commit('isLoading', false);
-                    commit('reset');
+                    commit(IS_LOADING, false);
+                    commit(RESET);
                 })
                 .catch(error => {
                     u.clog('failed');
@@ -92,29 +96,29 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-                    commit('isLoading', false);
-                    commit('reset');
+                    commit(IS_LOADING, false);
+                    commit(RESET);
                 });
         },
 
         reset( { commit } ) {
-            commit('reset');
+            commit(RESET);
         }
     },
 
     mutations: {
-        prepare( state, { dayIndex, memberId, cellItems } ) {
+        [PREPARE]( state, { dayIndex, memberId, cellItems } ) {
             state.enterCell.dayIndex = dayIndex;
             state.enterCell.memberId = memberId;
             state.enterCell.cellItems = cellItems;
             state.isActive = true;
         },
 
-        isLoading( state, value ) {
+        [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
 
-        setValue( state, { key, value } ) {
+        [SET_VALUE]( state, { key, value } ) {
             state.newItem[key] = value;
         },
 
@@ -122,11 +126,11 @@ export default {
 //            state.isLoading = true;
 //        },
 
-        insert( state, { item } ) {
+        [INSERT]( state, { item } ) {
             state.enterCell.cellItems.push(item);
         },
 
-        reset( state ) {
+        [RESET]( state ) {
             state.isActive = false;
 //            state.isLoading = false;
             state.enterCell.dayIndex = '';

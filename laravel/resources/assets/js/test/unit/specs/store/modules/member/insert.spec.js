@@ -17,9 +17,9 @@ describe('store/module/member/insert.js', () => {
 
     describe('actions', () => {
         it('setInsertValue', (done) => {
-            testAction(setInsertValue, { key: 'name', value: 'new member name' }, state, [
+            testAction(setInsertValue, { key: 'name', value: 'new member name' }, { state }, [
                 { type: 'SET_INSERT_VALUE', payload: { key: 'name', value: 'new member name' } }
-            ], done);
+            ], null, done);
         });
 
         it('insert', (done) => {
@@ -31,34 +31,21 @@ describe('store/module/member/insert.js', () => {
             const resolved = new Promise.resolve(responseData);
             const httpStub = sinon.stub(http, 'fetchPost').returns(resolved);
 
-//            const actionPayload = {
-//                notify: false,
-//                successCb: () => {},
-//                failedCb: () => {}
-//            }
-
-//            const successCb = sinon.stub(actionPayload, 'successCb').returns('OKK');
-//            const failedCb = sinon.stub(actionPayload, 'failedCb');
-
-            testAction(insert, null, state, [
+            testAction(insert, null, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'member/add', payload: { id: 123456, member: responseData.data } },
                 { type: 'NOTIFY_SUCCESS', payload: {content: 'success add member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
 
-            // these does not work.
-            //expect(successCb.callCount).to.be.eql(1);
-            //expect(failedCb.callCount).to.be.eql(0);
-
-            httpStub.restore();
+            http.fetchPost.restore();
         });
 
         it('reset', (done) => {
-            testAction(reset, null, state, [
+            testAction(reset, null, { state }, [
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
         });
     });
 

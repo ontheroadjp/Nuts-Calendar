@@ -1,3 +1,13 @@
+import {
+    TOGGLE_SHOW_HIDE_COLUMN,
+    TOGGLE_TABLE_TOOL_PALETTE,
+    TOGGLE_SHOW_HIDE_EVENT_ITEM,
+    TOGGLE_SHOW_HIDE_TASK_ITEM,
+    TOGGLE_SHOW_HIDE_END_TIME,
+    SET_SEARCH_QUERY,
+    SET_INTERNAL_QUERY
+} from '../../../mutation-types.js';
+
 export default {
     namespaced: true,
 
@@ -18,61 +28,61 @@ export default {
 
     actions: {
         toggleTableToolPalette( { commit }, { value } ) {
-            commit('toggleTableToolPalette', { value });
+            commit(TOGGLE_TABLE_TOOL_PALETTE, { value });
         },
 
         toggleShowHideColumn({ commit, rootState }, { id, value }) {
             const member = rootState.calendar.data.members[id];
-            commit('toggleShowHideColumn', { member, value });
+            commit(TOGGLE_SHOW_HIDE_COLUMN, { member, value });
         },
 
         toggleShowHideEventItem( { commit }, { value } ) {
-            commit('toggleShowHideEventItem', { value });
+            commit(TOGGLE_SHOW_HIDE_EVENT_ITEM, { value });
         },
 
         toggleShowHideTaskItem( { commit }, { value } ) {
-            commit('toggleShowHideTaskItem', { value });
+            commit(TOGGLE_SHOW_HIDE_TASK_ITEM, { value });
         },
 
         toggleShowHideEndTime( { commit }, { value } ) {
-            commit('toggleShowHideEndTime', { value });
+            commit(TOGGLE_SHOW_HIDE_END_TIME, { value });
         },
 
         setSearchQuery( { commit }, { value } ) {
-            commit('setSearchQuery', { value: value.toLowerCase() });
+            commit(SET_SEARCH_QUERY, { value: value.toLowerCase() });
         },
 
         setInternalQuery( { commit }, { value } ) {
-            commit('setInternalQuery', { value });
+            commit(SET_INTERNAL_QUERY, { value });
         }
     },
 
     mutations: {
-        toggleShowHideColumn(state, { member, value }) {
+        [TOGGLE_SHOW_HIDE_COLUMN](state, { member, value }) {
             member.isShow = value;
         },
 
-        toggleTableToolPalette( state, { value } ) {
+        [TOGGLE_TABLE_TOOL_PALETTE]( state, { value } ) {
             state.toolPalette.isActive = value;
         },
 
-        toggleShowHideEventItem( state, { value } ) {
+        [TOGGLE_SHOW_HIDE_EVENT_ITEM]( state, { value } ) {
             state.isEventItemShow = value;
         },
 
-        toggleShowHideTaskItem( state, { value } ) {
+        [TOGGLE_SHOW_HIDE_TASK_ITEM]( state, { value } ) {
             state.isTaskItemShow = value;
         },
 
-        toggleShowHideEndTime( state, { value } ) {
+        [TOGGLE_SHOW_HIDE_END_TIME]( state, { value } ) {
             state.isEndTimeShow = value;
         },
 
-        setSearchQuery( state, { value } ) {
+        [SET_SEARCH_QUERY]( state, { value } ) {
             state.query.search = value;
         },
 
-        setInternalQuery( state, { value } ) {
+        [SET_INTERNAL_QUERY]( state, { value } ) {
             state.query.internal = value;
         }
     }

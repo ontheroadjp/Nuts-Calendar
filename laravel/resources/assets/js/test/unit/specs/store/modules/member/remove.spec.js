@@ -29,12 +29,12 @@ describe('store/module/member/remove.js', () => {
             const successCb = sinon.stub(actionPayload, 'successCb');
             const failedCb = sinon.stub(actionPayload, 'failedCb');
 
-            testAction(remove, actionPayload, state, [
+            testAction(remove, actionPayload, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'member/remove', payload: { id: 100 } },
 //                { type: 'NOTIFY_SUCCESS', payload: {content: 'success remove member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
-            ], done);
+            ], null, done);
 
             // these does not work.
             //expect(successCb.callCount).to.be.eql(1);
@@ -42,7 +42,7 @@ describe('store/module/member/remove.js', () => {
 
             successCb.restore();
             failedCb.restore();
-            httpStub.restore();
+            http.fetchDelete.restore();
         });
     });
 

@@ -18,15 +18,15 @@ describe('store/module/userCalendar/update.js', () => {
 
     describe('actions', () => {
         it('prepare', (done) => {
-            testAction(prepare, { editingMember, isShow: true }, state, [
+            testAction(prepare, { editingMember, isShow: true }, { state }, [
                 { type: 'PREPARE', payload: { editingMember, isShow: true } }
-            ], done);
+            ], null, done);
         });
 
         it('setUpdateValue', (done) => {
-            testAction(setUpdateValue, { key: 'name', value: 'updated name' }, state, [
+            testAction(setUpdateValue, { key: 'name', value: 'updated name' }, { state }, [
                 { type: 'SET_UPDATE_VALUE', payload: { key: 'name', value: 'updated name' } }
-            ], done);
+            ], null, done);
         });
 
         it('update', (done) => {
@@ -39,21 +39,21 @@ describe('store/module/userCalendar/update.js', () => {
             });
             const httpStub = sinon.stub(http, 'fetchPut').returns(resolved);
 
-            testAction(update, null, state, [
+            testAction(update, null, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'member/setValue', payload: { id: 100, key: 'name', value: 'updated name' } },
                 { type: 'member/setValue', payload: { id: 100, key: 'description', value: 'updated description' } },
                 { type: 'NOTIFY_SUCCESS', payload: { content: 'success update member', isImportant: false } },
                 { type: 'IS_LOADING', payload: false }
-            ], done);
+            ], null, done);
 
-            httpStub.restore();
+            http.fetchPut.restore();
         });
 
         it('reset', (done) => {
-            testAction(reset, null, state, [
+            testAction(reset, null, { state }, [
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
         });
     });
 

@@ -17,9 +17,9 @@ describe('store/module/userCalendar/insert.js', () => {
 
     describe('actions', () => {
         it('setInsertValue', (done) => {
-            testAction(setInsertValue, { key: 'name', value: 'new calendar name' }, state, [
+            testAction(setInsertValue, { key: 'name', value: 'new calendar name' }, { state }, [
                 { type: 'SET_INSERT_VALUE', payload: { key: 'name', value: 'new calendar name' } }
-            ], done);
+            ], null, done);
         });
 
         it('insert', (done) => {
@@ -40,25 +40,25 @@ describe('store/module/userCalendar/insert.js', () => {
             const successCb = sinon.stub(actionPayload, 'successCb').returns('OKK');
             const failedCb = sinon.stub(actionPayload, 'failedCb');
 
-            testAction(insert, actionPayload, state, [
+            testAction(insert, actionPayload, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'userCalendar/add', payload: { id: 123, userCalendar: responseData.data } },
 //                { type: 'NOTIFY_SUCCESS', payload: {content: 'success add calendar', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
 
             // these does not work.
             //expect(successCb.callCount).to.be.eql(1);
             //expect(failedCb.callCount).to.be.eql(0);
 
-            httpStub.restore();
+            http.fetchPost.restore();
         });
 
         it('reset', (done) => {
-            testAction(reset, null, state, [
+            testAction(reset, null, { state }, [
                 { type: 'RESET', payload: null }
-            ], done);
+            ], null, done);
         });
     });
 
