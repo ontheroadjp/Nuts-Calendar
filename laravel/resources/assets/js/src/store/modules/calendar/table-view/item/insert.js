@@ -1,5 +1,5 @@
 import {
-    PREPARE, IS_LOADING, SET_VALUE, INSERT, RESET
+    PREPARE, IS_LOADING, SET_VALUE, INSERT, RESET, NOTIFY_SUCCESS, NOTIFY_DANGER
 } from '../../../../mutation-types.js';
 
 export default {
