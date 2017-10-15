@@ -34,7 +34,7 @@ describe('store/module/member/remove.js', () => {
                 { type: 'member/remove', payload: { id: 100 } },
 //                { type: 'NOTIFY_SUCCESS', payload: {content: 'success remove member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
-            ], null, done);
+            ], done);
 
             // these does not work.
             //expect(successCb.callCount).to.be.eql(1);

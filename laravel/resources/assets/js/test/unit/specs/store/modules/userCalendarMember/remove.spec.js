@@ -28,7 +28,7 @@ describe('store/module/userCalendarMember/remove.js', () => {
                 { type: 'IS_LOADING', payload: true },
                 { type: 'userCalendarMember/remove', payload: { obj: responseData.data } },
                 { type: 'IS_LOADING', payload: false },
-            ], null, done);
+            ], done);
 
             http.fetchDelete.restore();
         });
