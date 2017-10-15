@@ -1,32 +1,24 @@
-import insertModule from '../../../../../../src/store/modules/member/insert.js';
+import vuexModule from '../../../../../../src/store/modules/member/insert.js';
 import { testAction } from '../../../helper.js';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
 describe('store/module/member/insert.js', () => {
-    const { state } = insertModule;
-    const { setInsertValue, insert, reset } = insertModule.actions;
-    const { IS_LOADING, RESET, SET_INSERT_VALUE, NOTIFY_SUCCESS, NOTIFY_DANGER } = insertModule.mutations;
-
-    const userCalendar = {
-        id: 1,
-        name: 'user calendar 1',
-        description: 'test description'
-    };
+    const { state } = vuexModule;
+    const { setInsertValue, insert, reset } = vuexModule.actions;
+    const { IS_LOADING, RESET, SET_INSERT_VALUE, NOTIFY_SUCCESS, NOTIFY_DANGER } = vuexModule.mutations;
 
     describe('actions', () => {
         it('setInsertValue', (done) => {
             testAction(setInsertValue, { key: 'name', value: 'new member name' }, { state }, [
                 { type: 'SET_INSERT_VALUE', payload: { key: 'name', value: 'new member name' } }
-            ], null, done);
+            ], done);
         });
 
         it('insert', (done) => {
             const responseData = {
-                data: {
-                    id: 123456
-                }
+                data: { id: 123456 }
             };
             const resolved = new Promise.resolve(responseData);
             const httpStub = sinon.stub(http, 'fetchPost').returns(resolved);
@@ -37,7 +29,7 @@ describe('store/module/member/insert.js', () => {
                 { type: 'NOTIFY_SUCCESS', payload: {content: 'success add member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
                 { type: 'RESET', payload: null }
-            ], null, done);
+            ], done);
 
             http.fetchPost.restore();
         });
@@ -45,7 +37,7 @@ describe('store/module/member/insert.js', () => {
         it('reset', (done) => {
             testAction(reset, null, { state }, [
                 { type: 'RESET', payload: null }
-            ], null, done);
+            ], done);
         });
     });
 

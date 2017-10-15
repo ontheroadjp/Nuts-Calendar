@@ -1,52 +1,53 @@
-export const testAction = (action, payload, context, expectedMutations, expectedDispatchers, done) => {
-    let commitCount = 0;
-    let dispatchCount = 0;
+/**
+ * Helper function for the vuex action testing
+ *
+ * @param { string } action action name
+ * @param { object } payload attributes of the action
+ * @param { object } context attributes of the action
+ * @param { array } expected expected mutations and dispaches ex.[{ type:'insert', payload:{id: 123} }]
+ * @param { object } done
+ */
+export const testAction = (action, payload, context, expected, done) => {
+    let count = 0;
 
     // commit mock
     context.commit = (type, payload) => {
-        const mutation = expectedMutations[commitCount]
+        const expectation = expected[count];
 
         try {
-            expect(mutation.type).to.equal(type)
-            if (payload) {
-                expect(mutation.payload).to.deep.equal(payload)
-            }
+            expect(expectation.type).to.equal(type);
+            if (payload) expect(expectation.payload).to.deep.equal(payload);
+
         } catch (error) {
-            done(error)
+            done(error);
         }
 
-        commitCount++
-        if (commitCount >= expectedMutations.length) {
-            done()
-        }
+        count++
+        if (count >= expected.length) done();
     };
 
-    // dispatch mock
+    // commit mock
     context.dispatch = (type, payload) => {
-        const dispatcher = expectedDispatchers[dispatchCount]
+        const expectation = expected[count];
 
         try {
-            expect(dispatcher.type).to.equal(type)
-            if (payload) {
-                expect(dispatcher.payload).to.deep.equal(payload)
-            }
+            expect(expectation.type).to.equal(type);
+            if (payload) expect(expectation.payload).to.deep.equal(payload);
+
         } catch (error) {
-            done(error)
+            done(error);
         }
 
-        dispatchCount++
-        if (dispatchCount >= expectedDispatchers.length) {
-            done()
-        }
+        count++
+        if (count >= expected.length) done();
     };
 
     // call action
-    action(context, payload)
+    action(context, payload);
 
     // check that all mutations and dispachers are called
-    if (expectedMutations.length === 0 && expectedDispatchers.length === 0) {
-        expect(commitCount).to.equal(0)
-        expect(dispatchCount).to.equal(0)
-        done()
+    if (expected.length === 0 ) {
+        expect(count).to.equal(0);
+        done();
     }
-}
+};

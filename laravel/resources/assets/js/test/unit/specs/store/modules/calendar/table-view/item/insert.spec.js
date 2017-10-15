@@ -13,23 +13,23 @@ describe('store/module/calendar/table-view/item/insert.js', () => {
         it('prepare', (done) => {
             testAction(prepare, { dayIndex: 12, memberId: 21, cellItems: {}}, state, [
                 { type: 'PREPARE', payload: { dayIndex: 12, memberId: 21, cellItems: {} } }
-            ], null, done);
+            ], done);
         });
 
         it('setValue', (done) => {
             testAction(setValue, {key: 'newItem.content', value: 'test content'}, state, [
                 { type: 'SET_VALUE', payload: {key: 'newItem.content', value: 'test content'}}
-            ], null, done);
+            ], done);
         });
 
         it('insertEvent', (done) => {
-            testAction(insertEvent, null, state, null, [
-                { type: 'insert', payload: {typeId: 1}}
+            testAction(insertEvent, null, state, [
+                { type: 'insert', payload: {typeId: 1} }
             ], done);
         });
 
         it('insertTask', (done) => {
-            testAction(insertTask, null, state, null, [
+            testAction(insertTask, null, state, [
                 { type: 'insert', payload: {typeId: 2}}
             ], done);
         });
@@ -57,11 +57,10 @@ describe('store/module/calendar/table-view/item/insert.js', () => {
             testAction(insert, actionPayload, { state, rootState }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'INSERT', payload: { item: {id: 1234567890} } },
+                { type: 'calendar/tableView/updateCellItems', payload: {} },
                 { type: 'NOTIFY_SUCCESS', payload: {content: 'success add task', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
-                { type: 'RESET', payload: null }
-            ], [
-                { type: 'calendar/tableView/updateCellItems', payload: {} }
+                { type: 'RESET', payload: null },
             ], done);
 
             http.fetchPost.restore();
@@ -70,7 +69,7 @@ describe('store/module/calendar/table-view/item/insert.js', () => {
         it('reset', (done) => {
             testAction(reset, null, state, [
                 { type: 'RESET', payload: null }
-            ], null, done);
+            ], done);
         });
     });
 

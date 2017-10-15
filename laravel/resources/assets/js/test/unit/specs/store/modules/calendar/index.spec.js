@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
-describe('store/module/calendar/index.js', () => {
+describe('store/modules/calendar/index.js', () => {
     const { state } = testModule;
     const { fetchCalendar } = testModule.actions;
     const { INIT, SET_VALUE, IS_LOADING } = testModule.mutations;
@@ -28,9 +28,12 @@ describe('store/module/calendar/index.js', () => {
 
             testAction(fetchCalendar, { calendarId: 8 }, { state }, [
                 { type: 'IS_LOADING', payload: true },
-                { type: 'IS_LOADING', payload: false }
-            ], [
                 { type: 'tableView/updateCellItems', payload: calendars.days[0].items.memberId },
+                { type: 'tableView/updateCellItems', payload: calendars.days[1].items.memberId },
+                { type: 'tableView/updateCellItems', payload: calendars.days[2].items.memberId },
+                { type: 'tableView/updateCellItems', payload: calendars.days[3].items.memberId },
+                { type: 'INIT', payload: calendars.days },
+                { type: 'IS_LOADING', payload: false },
             ], done);
 
             http.fetchGet.restore();
