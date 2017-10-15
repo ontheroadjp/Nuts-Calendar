@@ -1,3 +1,12 @@
+function actionAssert(type, payload, expectation, done) {
+    try {
+        expect(type).to.equal(expectation.type);
+        if (payload) expect(payload).to.deep.equal(expectation.payload);
+    } catch (error) {
+        done(error);
+    }
+}
+
 /**
  * Helper function for the vuex action testing
  *
@@ -12,34 +21,14 @@ export const testAction = (action, payload, context, expected, done) => {
 
     // commit mock
     context.commit = (type, payload) => {
-        const expectation = expected[count];
-
-        try {
-            expect(expectation.type).to.equal(type);
-            if (payload) expect(expectation.payload).to.deep.equal(payload);
-
-        } catch (error) {
-            done(error);
-        }
-
-        count++
-        if (count >= expected.length) done();
+        actionAssert(type, payload, expected[count], done);
+        if (++count >= expected.length) done();
     };
 
-    // commit mock
+    // dispatch mock
     context.dispatch = (type, payload) => {
-        const expectation = expected[count];
-
-        try {
-            expect(expectation.type).to.equal(type);
-            if (payload) expect(expectation.payload).to.deep.equal(payload);
-
-        } catch (error) {
-            done(error);
-        }
-
-        count++
-        if (count >= expected.length) done();
+        actionAssert(type, payload, expected[count], done);
+        if (++count >= expected.length) done();
     };
 
     // call action
