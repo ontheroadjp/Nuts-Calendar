@@ -28,9 +28,12 @@ describe('store/modules/calendar/index.js', () => {
 
             testAction(fetchCalendar, { calendarId: 8 }, { state }, [
                 { type: 'IS_LOADING', payload: true },
-                { type: 'IS_LOADING', payload: false }
-            ], [
                 { type: 'tableView/updateCellItems', payload: calendars.days[0].items.memberId },
+                { type: 'tableView/updateCellItems', payload: calendars.days[1].items.memberId },
+                { type: 'tableView/updateCellItems', payload: calendars.days[2].items.memberId },
+                { type: 'tableView/updateCellItems', payload: calendars.days[3].items.memberId },
+                { type: 'INIT', payload: calendars.days },
+                { type: 'IS_LOADING', payload: false },
             ], done);
 
             http.fetchGet.restore();
