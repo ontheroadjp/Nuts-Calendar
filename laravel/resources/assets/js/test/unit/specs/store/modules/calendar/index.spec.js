@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
-describe('store/module/calendar/index.js', () => {
+describe('store/modules/calendar/index.js', () => {
     const { state } = testModule;
     const { fetchCalendar } = testModule.actions;
     const { INIT, SET_VALUE, IS_LOADING } = testModule.mutations;
