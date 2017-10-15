@@ -1,4 +1,4 @@
-import { PREPARE, IS_LOADING, REMOVE, RESET } from '../../../../mutation-types.js';
+import { PREPARE, IS_LOADING, REMOVE, NOTIFY_SUCCESS, NOTIFY_DANGER, RESET } from '../../../../mutation-types.js';
 
 export default {
     namespaced: true,
@@ -13,15 +13,12 @@ export default {
     actions: {
         prepare( { commit, dispatch, rootGetters }, { cellItems, deletingItem } ) {
             u.clog('prepare()');
-//            commit('prepare', { cellItems, deletingItem } );
             commit(PREPARE, { cellItems, deletingItem } );
         },
 
         remove( { state, commit, dispatch } ) {
             u.clog('removeItem()');
 
-//            commit('start');
-//            commit('isLoading', true);
             commit(IS_LOADING, true);
             const url = '/api/v1/item/' + state.deletingItem.id;
 
@@ -29,7 +26,6 @@ export default {
                 .then(response => {
                     u.clog('success');
 
-//                    commit('remove');
                     commit(REMOVE);
 
                     dispatch('calendar/tableView/updateCellItems',
@@ -41,7 +37,6 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-//                    commit('reset');
                     commit(RESET);
                 })
 
@@ -53,30 +48,22 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-//                    commit('reset');
                     commit(RESET);
                 });
         },
 
         reset( { commit } ) {
-//            commit('reset');
             commit(RESET);
         }
     },
 
     mutations: {
-//        prepare( state, { cellItems, deletingItem } ) {
         [PREPARE]( state, { cellItems, deletingItem } ) {
             state.cellItems = cellItems;
             state.deletingItem = deletingItem;
             state.isActive = true;
         },
 
-//        start( state ) {
-//            state.isLoading = true;
-//        },
-
-//        isLoading( state, value ) {
         [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
