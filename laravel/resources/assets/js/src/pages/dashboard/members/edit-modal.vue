@@ -37,7 +37,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import focus from '../../../directives/focus.js';
+//import focus from '../../../directives/focus.js';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirmModal from '../../../components/modal/delete-confirm-modal.vue';
@@ -45,7 +45,7 @@ import deleteConfirmModal from '../../../components/modal/delete-confirm-modal.v
 export default {
     components: { textInput, checkboxInput, deleteConfirmModal },
 
-    directives: { focus },
+//    directives: { focus },
 
     props: {
         isActive: { type: Boolean, required: true },
