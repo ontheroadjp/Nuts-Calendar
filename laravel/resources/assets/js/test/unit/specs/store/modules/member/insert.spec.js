@@ -1,46 +1,29 @@
-import insertModule from '../../../../../../src/store/modules/member/insert.js';
+import vuexModule from '../../../../../../src/store/modules/member/insert.js';
 import { testAction } from '../../../helper.js';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
 describe('store/module/member/insert.js', () => {
-    const { state } = insertModule;
-    const { setInsertValue, insert, reset } = insertModule.actions;
-    const { IS_LOADING, RESET, SET_INSERT_VALUE, NOTIFY_SUCCESS, NOTIFY_DANGER } = insertModule.mutations;
-
-    const userCalendar = {
-        id: 1,
-        name: 'user calendar 1',
-        description: 'test description'
-    };
+    const { state } = vuexModule;
+    const { setInsertValue, insert, reset } = vuexModule.actions;
+    const { IS_LOADING, RESET, SET_INSERT_VALUE, NOTIFY_SUCCESS, NOTIFY_DANGER } = vuexModule.mutations;
 
     describe('actions', () => {
         it('setInsertValue', (done) => {
-            testAction(setInsertValue, { key: 'name', value: 'new member name' }, state, [
+            testAction(setInsertValue, { key: 'name', value: 'new member name' }, { state }, [
                 { type: 'SET_INSERT_VALUE', payload: { key: 'name', value: 'new member name' } }
             ], done);
         });
 
         it('insert', (done) => {
             const responseData = {
-                data: {
-                    id: 123456
-                }
+                data: { id: 123456 }
             };
             const resolved = new Promise.resolve(responseData);
             const httpStub = sinon.stub(http, 'fetchPost').returns(resolved);
 
-//            const actionPayload = {
-//                notify: false,
-//                successCb: () => {},
-//                failedCb: () => {}
-//            }
-
-//            const successCb = sinon.stub(actionPayload, 'successCb').returns('OKK');
-//            const failedCb = sinon.stub(actionPayload, 'failedCb');
-
-            testAction(insert, null, state, [
+            testAction(insert, null, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'member/add', payload: { id: 123456, member: responseData.data } },
                 { type: 'NOTIFY_SUCCESS', payload: {content: 'success add member', isImportant: false} },
@@ -48,15 +31,11 @@ describe('store/module/member/insert.js', () => {
                 { type: 'RESET', payload: null }
             ], done);
 
-            // these does not work.
-            //expect(successCb.callCount).to.be.eql(1);
-            //expect(failedCb.callCount).to.be.eql(0);
-
-            httpStub.restore();
+            http.fetchPost.restore();
         });
 
         it('reset', (done) => {
-            testAction(reset, null, state, [
+            testAction(reset, null, { state }, [
                 { type: 'RESET', payload: null }
             ], done);
         });

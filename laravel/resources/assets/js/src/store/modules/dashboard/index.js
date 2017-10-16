@@ -1,3 +1,5 @@
+import { SET_VALUE } from '../../mutation-types.js';
+
 export default {
     namespaced: true,
 
@@ -6,7 +8,7 @@ export default {
     },
 
     mutations: {
-        setValue: function( state, { key, value } ) {
+        [SET_VALUE]( state, { key, value } ) {
             state[key] = value;
         }
     }

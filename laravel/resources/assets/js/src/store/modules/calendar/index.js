@@ -4,6 +4,13 @@ import insert       from './table-view/item/insert.js';
 import update       from './table-view/item/update.js';
 import remove       from './table-view/item/remove.js';
 import dnd          from './table-view/item/dnd.js';
+import {
+    INIT,
+    SET_VALUE,
+    IS_LOADING,
+    SORT_CELL_ITEMS,
+    CHECK_TIME
+} from '../../mutation-types.js';
 
 const now = new Date();
 
@@ -17,7 +24,6 @@ const calendar = {
         currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
         data: {
             calendars: []
-//            members: []
         }
     },
 
@@ -26,7 +32,7 @@ const calendar = {
             u.clog('fetchCalendar(' + calendarId + ')');
             if(calendarId === 'dashboard') return;
 
-            commit('isLoading', true);
+            commit(IS_LOADING, true);
 
             const id = calendarId;
             const y = state.currentYear;
@@ -39,51 +45,40 @@ const calendar = {
 
                     response.data.days.forEach((day)=> {
                         Object.keys(day.items).forEach(memberId => {
-
                             dispatch('tableView/updateCellItems', day.items[memberId]);
-
-//                            commit('tableView/sortCellItems', day.items[memberId]);
-//                            commit('tableView/checkTime', day.items[memberId]);
-
-//                            commit('calendar/tableView/sortCellItems', day.items[memberId],
-//                                {root: true}
-//                            );
-//                            commit('calendar/tableView/checkTime', day.items[memberId],
-//                                {root: true}
-//                            );
                         });
                     });
 
-                    commit('init', response.data.days );
+                    commit(INIT, response.data.days );
 
                     Object.keys(response.data.members).forEach(function(key) {
                         const val = this[key];
                         val.isShow = true;
                     }, response.data.members);
 
-                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 })
 
                 .catch( error => {
                     u.clog('failed');
-                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 });
             }
     },
 
     mutations: {
-        init( state, calendars ) {
+        [INIT]( state, calendars ) {
             state.data.calendars = calendars;
         },
 
-        setValue( state, { key, value } ) {
+        [SET_VALUE]( state, { key, value } ) {
             state[key] = value;
             if(key == 'currentId') {
                 localStorage.setItem('currentCalendarId', value);
             }
         },
 
-        isLoading( state, value ) {
+        [IS_LOADING]( state, value ) {
             state.isLoading = value;
         }
     },
@@ -94,20 +89,13 @@ const calendar = {
 
             actions: {
                 updateCellItems( { commit }, cellItems ) {
-                    commit('sortCellItems', cellItems);
-                    commit('checkTime', cellItems);
+                    commit(SORT_CELL_ITEMS, cellItems);
+                    commit(CHECK_TIME, cellItems);
                 }
             },
 
             mutations: {
-//                setIndexForItem( state, cellItems ) {
-//                    cellItems.forEach(function(item, index) {
-//                        item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
-//                        item.itemIndex = index;
-//                    });
-//                },
-
-                sortCellItems( state, cellItems ) {
+                [SORT_CELL_ITEMS]( state, cellItems ) {
                     u.clog('>> sortCellItems()');
                     if(cellItems.length < 1) return;
                     cellItems.sort((a, b) => {
@@ -149,7 +137,7 @@ const calendar = {
                     });
                 },
 
-                checkTime( state, cellItems ) {
+                [CHECK_TIME]( state, cellItems ) {
                     let prev = '';
                     const cellItemsLength = cellItems.length;
 
