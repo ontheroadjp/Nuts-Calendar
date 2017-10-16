@@ -1,3 +1,15 @@
+import {
+    PREPARE,
+    PREPARE_MODAL,
+    TOGGLE_TASK_DONE,
+    SET_INPUT_VALUE,
+    UPDATE,
+    IS_LOADING,
+    NOTIFY_SUCCESS,
+    NOTIFY_DANGERR,
+    RESET
+} from '../../../../mutation-types.js';
+
 export default {
     namespaced: true,
 
@@ -20,25 +32,25 @@ export default {
     actions: {
         prepare( { commit }, { event, cellItems, editingItem } ) {
             u.clog('prepare()');
-            commit('prepare', { event, cellItems, editingItem } );
+            commit(PREPARE, { event, cellItems, editingItem } );
         },
 
         prepareModal( { commit }, { event } ) {
             u.clog('prepareModal()');
-            commit('prepareModal', { event } );
+            commit(PREPARE_MODAL, { event } );
         },
 
         toggleTaskDone( { dispatch, commit } ) {
-            commit('toggleTaskDone');
+            commit(TOGGLE_TASK_DONE);
             dispatch('update');
         },
 
         setInputValue( { commit }, { key, value } ) {
-            commit('setInputValue', { key, value } );
+            commit(SET_INPUT_VALUE, { key, value } );
         },
 
         update( { state, dispatch, commit } ) {
-            commit('isLoading', true);
+            commit(IS_LOADING, true);
             u.clog('update()');
 
             const url = '/api/v1/item/' + state.editingItem.id;
@@ -58,7 +70,7 @@ export default {
                 .then( response => {
                     u.clog('success');
 
-                    commit('update', data);
+                    commit(UPDATE, data);
 
                     dispatch('calendar/tableView/updateCellItems',
                         state.cellItems, { root: true }
@@ -69,29 +81,29 @@ export default {
                         isImportant: false
                     }, { root: true });
 
-                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 })
 
                 .catch( error => {
                     u.clog('failed');
 
-                    commit('toggleTaskDone');
+                    commit(TOGGLE_TASK_DONE);
                     commit(NOTIFY_DANGER, {
                         content: 'failed update member',
                         isActive: true
                     }, { root: true});
 
-                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 });
         },
 
         reset( { commit } ) {
-            commit('reset');
+            commit(RESET);
         }
     },
 
     mutations: {
-        prepare( state, { cellItems, editingItem } ) {
+        [PREPARE]( state, { cellItems, editingItem } ) {
             state.cellItems = cellItems;
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
@@ -101,31 +113,31 @@ export default {
             state.input.memo = editingItem.memo;
         },
 
-        prepareModal( state, { event } ) {
+        [PREPARE_MODAL]( state, { event } ) {
             state.clickX = event.pageX;
             state.clickY = event.pageY;
             state.isActive = true;
         },
 
-        isLoading( state, value ) {
+        [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
 
-        toggleTaskDone( state ) {
+        [TOGGLE_TASK_DONE]( state ) {
             state.editingItem.is_done = !state.editingItem.is_done;
         },
 
-        setInputValue( state, { key, value } ) {
+        [SET_INPUT_VALUE]( state, { key, value } ) {
             state.input[key] = value;
         },
 
-        update( state, data ) {
+        [UPDATE]( state, data ) {
             Object.keys(data).forEach((key) => {
                 state.editingItem[key] = data[key];
             });
         },
 
-        reset( state ) {
+        [RESET]( state ) {
             state.isActive = false,
             state.cellItems = '',
             state.editingItem = '',
