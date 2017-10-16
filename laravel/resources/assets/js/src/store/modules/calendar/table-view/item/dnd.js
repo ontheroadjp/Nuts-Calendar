@@ -1,3 +1,13 @@
+import {
+    DRAG_START,
+    DRAG_ENTER,
+    DRAG_OVER,
+    DROP,
+    REVERSE_ITEM,
+    SET_ON_MINI_CAL,
+    DRAG_END
+} from '../../../../mutation-types.js'
+
 export default {
     namespaced: true,
 
@@ -33,7 +43,7 @@ export default {
             const dayIndex = draggingItem.dayIndex;
             const memberId = draggingItem.member_id;
 
-            commit('dragStart', {
+            commit(DRAG_START, {
                 dayIndex: dayIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
@@ -46,7 +56,7 @@ export default {
 
         dragEnter( { state, commit, rootGetters }, { dayString, memberId, cellItems } ) {
             const dayIndex = rootGetters.getRowIndex(dayString);
-            commit('dragEnter', {
+            commit(DRAG_ENTER, {
                 dayIndex: dayIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
@@ -71,7 +81,7 @@ export default {
 
             const y = rootState.calendar.currentYear;
             const m = rootState.calendar.currentMonth;
-            commit('drop', { y, m });
+            commit(DROP, { y, m });
 
             // update cellItems
             dispatch('calendar/tableView/updateCellItems',
@@ -95,11 +105,11 @@ export default {
             http.fetchPut(url, params)
                 .then(response => {
                     u.clog('success');
-                    commit('dragEnd');
+                    commit(DRAG_END);
                 })
                 .catch(error => {
                     u.clog('failed');
-                    commit('reverseItem', { y, m });
+                    commit(REVERSE_ITEM, { y, m });
 
                     commit('calendar/tableView/SORT_CELL_ITEMS',
                         state.enterCell.cellItems,
@@ -111,7 +121,7 @@ export default {
                         { root: true }
                     );
 
-                    commit('dragEnd');
+                    commit(DRAG_END);
                 });
         },
 
@@ -127,18 +137,18 @@ export default {
         },
 
         setOnMiniCal( { commit }, { value } ) {
-            commit('setOnMiniCal', { value });
+            commit(SET_ON_MINI_CAL, { value });
         },
 
         dragEnd( { state, commit } ) {
             if( !state.isLoading ) {
-                commit('dragEnd');
+                commit(DRAG_END);
             }
         }
     },
 
     mutations: {
-        dragStart( state, p ) {
+        [DRAG_START]( state, p ) {
             state.fromCell.cellAddress = p.cellAddress;
             state.fromCell.dayIndex = p.dayIndex;
             state.fromCell.memberId = p.memberId;
@@ -147,15 +157,15 @@ export default {
             state.draggingItem = p.draggingItem;
         },
 
-        dragEnter( state, p ) {
+        [DRAG_ENTER]( state, p ) {
             state.enterCell.cellAddress = p.cellAddress;
-            state.enterCell.cellItems = p.cellItems;
             state.enterCell.dayIndex = p.dayIndex;
             state.enterCell.memberId = p.memberId;
+            state.enterCell.cellItems = p.cellItems;
             state.onMiniCal = '';
         },
 
-        drop( state, { y, m } ) {
+        [DROP]( state, { y, m } ) {
             state.isLoading = true;
             state.isDropped = true;
 
@@ -170,9 +180,9 @@ export default {
             state.enterCell.cellItems.push(state.draggingItem);
         },
 
-        reverseItem( state, { y, m } ) {
+        [REVERSE_ITEM]( state, { y, m } ) {
             // update item
-            state.draggintItem.date = y + '-' + m + '-' + (state.fromCell.dayIndex + 1);
+            state.draggingItem.date = y + '-' + m + '-' + (state.fromCell.dayIndex + 1);
             state.draggingItem.member_id = state.fromCell.memberId;
 
             // remove item
@@ -182,29 +192,29 @@ export default {
             state.fromCell.cellItems.push(state.draggingItem);
         },
 
-        setOnMiniCal( state, { value } ) {
+        [SET_ON_MINI_CAL]( state, { value } ) {
             u.clog('setOnMiniCal(' + value + ')');
             state.onMiniCal = value;
             state.enterCell.cellAddress = '';
             state.enterCell.dayIndex = '';
             state.enterCell.memberId = '';
-            state.enterCell.cellItems = '';
+            state.enterCell.cellItems = [];
         },
 
-        dragEnd( state ) {
+        [DRAG_END]( state ) {
             state.isLoading = false;
             state.isDropped = false;
-            state.enterTrash = false;
+//            state.enterTrash = false;
             state.draggingItem = '';
             state.fromCell.cellAddress = '';
             state.fromCell.dayIndex = '';
             state.fromCell.memberId = '';
-            state.fromCell.cellItems = '';
+            state.fromCell.cellItems = [];
             state.fromCell.itemIndex = '';
             state.enterCell.cellAddress = '';
             state.enterCell.dayIndex = '';
             state.enterCell.memberId = '';
-            state.enterCell.cellItems = '';
+            state.enterCell.cellItems = [];
             state.onMiniCal = '';
         }
     }
