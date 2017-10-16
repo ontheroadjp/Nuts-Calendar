@@ -1,7 +1,7 @@
 function actionAssert(type, payload, expectation, done) {
     try {
-        expect(type).to.equal(expectation.type);
-        if (payload) expect(payload).to.deep.equal(expectation.payload);
+        expect(expectation.type).to.equal(type);
+        if (payload) expect(expectation.payload).to.deep.equal(payload);
     } catch (error) {
         done(error);
     }
