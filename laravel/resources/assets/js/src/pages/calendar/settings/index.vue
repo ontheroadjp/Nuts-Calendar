@@ -62,8 +62,8 @@
         methods: {
             clickUserCalendar: function(uCalendar) {
 //                this.$store.commit('setCurrentCalendarId', uCalendar.id);
-                this.$store.commit('calendar/setValue', {
-                    key: 'currentId', 
+                this.$store.commit('calendar/SET_VALUE', {
+                    key: 'currentId',
                     value: uCalendar.id
                 });
             }
@@ -73,8 +73,8 @@
             const calId = localStorage.getItem('currentCalendarId');
             if(calId) {
 //                this.$store.commit('setCurrentCalendarId', calId);
-                this.$store.commit('calendar/setValue', {
-                    key: 'currentId', 
+                this.$store.commit('calendar/SET_VALUE', {
+                    key: 'currentId',
                     value: calId
                 });
             }

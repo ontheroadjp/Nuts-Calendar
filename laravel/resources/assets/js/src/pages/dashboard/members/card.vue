@@ -100,7 +100,7 @@ export default {
     methods: {
         clickMember: function(id) {
 //            u.clog('changeCalendar(' + id + ')');
-//            this.$store.commit('calendar/setValue', {
+//            this.$store.commit('calendar/SET_VALUE', {
 //                key: 'currentId', id,
 //                value: id
 //            });
