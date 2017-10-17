@@ -77,10 +77,12 @@ class MembersController extends Controller
 
         $userId = $request->user()->id;
         $name = $request->input('name');
+        $description = $request->input('description');
 
         $item = Member::create([
             'user_id' => $userId,
-            'name' => $name
+            'name' => $name,
+            'description' => $description,
         ]);
 
         $item->save();
@@ -99,7 +101,7 @@ class MembersController extends Controller
         if( $item instanceof \Illuminate\Http\JsonResponse ) return $item;
 
         $item->fill($request->only(
-            ['name']
+            ['name', 'description']
         ));
         $item->save();
         return $item;

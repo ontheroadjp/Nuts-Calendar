@@ -92,15 +92,79 @@ import core from '../../mixins/core.js';
 import userApi from '../../services/user.js';
 
 export default {
-    mixins: [
-        core, userApi
-    ],
+    mixins: [ core, userApi ],
 
     data() {
         return {
             hasError: false,
             isRunning: false
         }
+    },
+
+    methods: {
+        login: function() {
+            u.clog('login()');
+            this.error.authentication = '';
+            this.error.email = '';
+            this.error.password = '';
+
+            const inputEmailInvalid = this.isEmailInvalid();
+            const inputPasswordInvalid = this.isPasswordInvalid();
+            if( inputEmailInvalid || inputPasswordInvalid) return;
+
+            http.post( 'http://localhost:8080/api/v1/login', {
+                'email': this.input.email,
+                'password': this.input.password
+            },
+                this.successLogin(this),
+                this.failedLogin(this)
+            );
+        },
+
+        successLogin: self => {
+            return response => {
+                eventBus.fire('nuts.login.success', {
+                    response: response,
+                    rememberMe: jwtToken.rememberMe
+                }, 'user.js');
+            };
+        },
+
+        failedLogin: self => {
+            return error => {
+                if (error.response) {
+                    if( error.response.status === 422 || error.response.status === 500) {
+                        self.$store.commit(NOTIFY__DANGER, {
+                            content: 'We couldn\'t verify your credentials.',
+                            isImportant: false
+                        });
+                    }
+
+                    if( error.response.status === 429) {
+                        self.$store.commit(NOTIFY_DANGER, {
+                            content: 'Too many login attempts. Try it again later.',
+                            isImportant: true
+                        });
+//                        const m = 'Too many login attempts. Try it again after ';
+//                        const min = error.response.data.retryAfter.minuts;
+//                        self.error.authentication = m + min + ' minuts.';
+                    }
+
+                    if( error.response.data.email ) {
+                        self.error.email = error.response.data.email[0];
+                        self.input.email = '';
+                    }
+
+                    if( error.response.data.password ) {
+                        self.error.password = error.response.data.password[0];
+                        self.input.password = '';
+                    }
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    u.clog('Error: ' + error.message + '@user.vue - login()');
+                }
+            };
+        }
     }
-}
+};
 </script>

@@ -107,15 +107,13 @@ describe('components/modal/delete-confirm-modal.vue', () => {
     });
 
     describe('isActive', () => {
+        const spy = sinon.spy(DeleteConfirmModal.methods, 'setModalHeight');
         const wrapper = mount(DeleteConfirmModal, { propsData });
-        const spy = sinon.spy(wrapper.vm, 'setModalHeight');
+        wrapper.setProps({isActive: false});
+        const el = wrapper.find('delete-confirm-modal');
 
-        it('calls setModalHeight()', () => {
-                console.log('----------------------------');
-                wrapper.setProps({isActive: false});
-                wrapper.setProps({isActive: true});
-            debugger;
-                expect(spy.callCount).is.eql(1);
+        it('calls setModalHeight() via watch()', () => {
+            expect(spy.callCount).is.eql(1);
         });
 
         spy.restore();

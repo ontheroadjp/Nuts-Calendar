@@ -65,6 +65,7 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
 
     return [
         'name' => $faker->name,
+        'description' => $faker->sentence,
         'user_id' => $faker->randomElement($userIds),
     ];
 });

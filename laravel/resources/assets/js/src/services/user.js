@@ -1,8 +1,7 @@
 import { focus } from '../directives/focus.js';
+
 export default {
-    directives: {
-        focus
-    },
+    directives: { focus },
 
     data() {
         return {
@@ -29,8 +28,8 @@ export default {
 //                rememberMe: '',
             },
 
-            passwordMailResult: '',
-            passwordResetResult: '',
+//            passwordMailResult: '',
+//            passwordResetResult: '',
 
             style: {
                 error: {
@@ -127,101 +126,104 @@ export default {
 
         // --------------------------------------------------------------
 
-        login: function() {
-            u.clog('login()');
-            this.error.authentication = '';
-            this.error.email = '';
-            this.error.password = '';
-
-            const inputEmailInvalid = this.isEmailInvalid();
-            const inputPasswordInvalid = this.isPasswordInvalid();
-            if( inputEmailInvalid || inputPasswordInvalid) return;
-
-            http.post( '/api/v1/login', {
-                'email': this.input.email,
-                'password': this.input.password
-            },
-                this.successLogin(this),
-                this.failedLogin(this)
-            );
-        },
-
-        successLogin: self => {
-            return response => {
-                eventBus.fire('nuts.login.success', {
-                    response: response,
-                    rememberMe: jwtToken.rememberMe
-                }, 'user.vue');
-            };
-        },
-
-        failedLogin: self => {
-            return error => {
-                if (error.response) {
-                    if( error.response.status === 422 || error.response.status === 500) {
-                        self.$store.commit('notifyDanger', {
-                            content: 'We couldn\'t verify your credentials.',
-                            isImportant: false
-                        });
-//                        const m = 'We couldn\'t verify your credentials.';
-//                        self.error.authentication = m;
-                    }
-
-                    if( error.response.status === 429) {
-                        self.$store.commit('notifyDanger', {
-                            content: 'Too many login attempts. Try it again after ',
-                            isImportant: true
-                        });
-//                        const m = 'Too many login attempts. Try it again after ';
-//                        const min = error.response.data.retryAfter.minuts;
-//                        self.error.authentication = m + min + ' minuts.';
-                    }
-
-                    if( error.response.data.email ) {
-                        self.error.email = error.response.data.email[0];
-                        self.input.email = '';
-                    }
-
-                    if( error.response.data.password ) {
-                        self.error.password = error.response.data.password[0];
-                        self.input.password = '';
-                    }
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    u.clog('Error: ' + error.message + '@user.vue - login()');
-                }
-            };
-        },
-
+//        login: function() {
+//            u.clog('login()');
+//            this.error.authentication = '';
+//            this.error.email = '';
+//            this.error.password = '';
+//
+//            const inputEmailInvalid = this.isEmailInvalid();
+//            const inputPasswordInvalid = this.isPasswordInvalid();
+//            if( inputEmailInvalid || inputPasswordInvalid) return;
+//
+//            http.post( 'http://localhost:8080/api/v1/login', {
+//                'email': this.input.email,
+//                'password': this.input.password
+//            },
+//                this.successLogin(this),
+//                this.failedLogin(this)
+//            );
+//        },
+//
+//        successLogin: self => {
+//            console.log('success!!!!!!!!!!!!!');
+//            return;
+//            return response => {
+//                eventBus.fire('nuts.login.success', {
+//                    response: response,
+//                    rememberMe: jwtToken.rememberMe
+//                }, 'user.js');
+//            };
+//        },
+//
+//        failedLogin: self => {
+//            console.log('failed!!!!!!!!!!!!!');
+//            return error => {
+//                if (error.response) {
+//                    if( error.response.status === 422 || error.response.status === 500) {
+//                        self.$store.commit(NOTIFY_DANGER, {
+//                            content: 'We couldn\'t verify your credentials.',
+//                            isImportant: false
+//                        });
+////                        const m = 'We couldn\'t verify your credentials.';
+////                        self.error.authentication = m;
+//                    }
+//
+//                    if( error.response.status === 429) {
+//                        self.$store.commit(NOTIFY_DANGER, {
+//                            content: 'Too many login attempts. Try it again after ',
+//                            isImportant: true
+//                        });
+////                        const m = 'Too many login attempts. Try it again after ';
+////                        const min = error.response.data.retryAfter.minuts;
+////                        self.error.authentication = m + min + ' minuts.';
+//                    }
+//
+//                    if( error.response.data.email ) {
+//                        self.error.email = error.response.data.email[0];
+//                        self.input.email = '';
+//                    }
+//
+//                    if( error.response.data.password ) {
+//                        self.error.password = error.response.data.password[0];
+//                        self.input.password = '';
+//                    }
+//                } else {
+//                    // Something happened in setting up the request that triggered an Error
+//                    u.clog('Error: ' + error.message + '@user.vue - login()');
+//                }
+//            };
+//        },
+//
         // --------------------------------------------------------------
 
-        register: function() {
-            u.clog('register()');
-            this.error.name = '';
-            this.error.email = '';
-            this.error.password = '';
-            this.error.passwordConfirmation = '';
-
-            const inputNameInvalid = this.isNameInvalid();
-            //const inputEmailInvalid = this.isEmailInvalid();
-            const inputPasswordInvalid = this.isPasswordInvalid();
-            const inputPasswordConfirmationInvalid = this.isPasswordConfirmationInvalid();
-            if( inputNameInvalid
-                    || inputPasswordInvalid
-                    || inputPasswordInvalid
-                    || inputPasswordConfirmationInvalid
-            ) return;
-
-            http.post( '/api/v1/register', {
-                'name': this.input.name,
-                'email': this.input.email,
-                'password': this.input.password,
-                'password_confirmation': this.input.passwordConfirmation
-            },
-                this.successLogin(this),
-                this.failedLogin(this)
-            );
-        },
+//        register: function() {
+//            u.clog('register()');
+//            this.error.name = '';
+//            this.error.email = '';
+//            this.error.password = '';
+//            this.error.passwordConfirmation = '';
+//
+//            const inputNameInvalid = this.isNameInvalid();
+//            //const inputEmailInvalid = this.isEmailInvalid();
+//            const inputPasswordInvalid = this.isPasswordInvalid();
+//            const inputPasswordConfirmationInvalid = this.isPasswordConfirmationInvalid();
+//            if( inputNameInvalid
+//                    || inputPasswordInvalid
+//                    || inputPasswordInvalid
+//                    || inputPasswordConfirmationInvalid
+//            ) return;
+//
+//            http.post( '/api/v1/register', {
+//                'name': this.input.name,
+//                'email': this.input.email,
+//                'password': this.input.password,
+//                'password_confirmation': this.input.passwordConfirmation
+//            },
+//                this.successLogin(this),
+//                this.failedLogin(this)
+//            );
+//        },
 
         // -----------------------------------------------------
 
@@ -236,34 +238,34 @@ export default {
 
         // -----------------------------------------------------
 
-        sendPasswordMail: function() {
-            u.clog('sendPasswordMail()');
-            this.error.email = '';
-
-            const inputEmailInvalid = this.isEmailInvalid();
-            if(inputEmailInvalid) return;
-
-            http.post('/api/v1/password/email/send', {
-                'email': this.input.email
-            },
-                this.successSendPasswordMail(this),
-                this.failedSendPasswordMail(this)
-            );
-        },
-
-        successSendPasswordMail: self => {
-            return response => {
-                u.clog('success sent reset password mail');
-                self.passwordMailResult = 'success';
-            };
-        },
-
-        failedSendPasswordMail: self => {
-            return error => {
-                u.clog('error sent reset password mail');
-                self.passwordMailResult = 'failed';
-            };
-        },
+//        sendPasswordMail: function() {
+//            u.clog('sendPasswordMail()');
+//            this.error.email = '';
+//
+//            const inputEmailInvalid = this.isEmailInvalid();
+//            if(inputEmailInvalid) return;
+//
+//            http.post('/api/v1/password/email/send', {
+//                'email': this.input.email
+//            },
+//                this.successSendPasswordMail(this),
+//                this.failedSendPasswordMail(this)
+//            );
+//        },
+//
+//        successSendPasswordMail: self => {
+//            return response => {
+//                u.clog('success sent reset password mail');
+//                self.passwordMailResult = 'success';
+//            };
+//        },
+//
+//        failedSendPasswordMail: self => {
+//            return error => {
+//                u.clog('error sent reset password mail');
+//                self.passwordMailResult = 'failed';
+//            };
+//        },
 
         // -----------------------------------------------------
 

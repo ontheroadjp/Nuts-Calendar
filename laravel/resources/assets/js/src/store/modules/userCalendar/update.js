@@ -1,3 +1,12 @@
+import {
+    PREPARE,
+    SET_UPDATE_VALUE,
+    IS_LOADING,
+    NOTIFY_SUCCESS,
+    NOTIFY_DANGER,
+    RESET
+} from '../../mutation-types.js';
+
 export default {
     namespaced: true,
 
@@ -13,15 +22,19 @@ export default {
 
     actions: {
         prepare( { commit }, { userCalendar } ) {
-            commit('prepare',{ userCalendar });
+//            commit('prepare',{ userCalendar });
+            commit(PREPARE, { userCalendar });
         },
 
         setUpdateValue( { commit }, { key, value } ) {
-            commit('setUpdateValue', { key, value } );
+//            commit('setUpdateValue', { key, value } );
+            commit(SET_UPDATE_VALUE, { key, value } );
         },
 
-        update( { state, commit, rootState }, notify = true) {
-            commit('isLoading', true);
+//        update( { state, commit, rootState }, notify = true) {
+        update( { state, commit }, notify = true) {
+//            commit('isLoading', true);
+            commit(IS_LOADING, true);
 
             const url = '/api/v1/calendar/' + state.updateValues.id;
             const data = {
@@ -50,34 +63,38 @@ export default {
                     }, { root: true });
 
                     if( notify ) {
-                        commit('notifySuccess', {
+                        commit(NOTIFY_SUCCESS, {
                             content: 'success update User Calendar',
                             isImportant: false
                         }, { root: true});
                     }
 
-                    commit('isLoading', false);
+//                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 })
 
                 .catch( error => {
                     u.clog('failed');
 
-                    commit('notifyDanger', {
+                    commit(NOTIFY_DANGER, {
                         content: 'failed update User Calendar',
                         isActive: true
                     }, { root: true});
 
-                    commit('isLoading', false);
+//                    commit('isLoading', false);
+                    commit(IS_LOADING, false);
                 });
         },
 
         reset: function( { commit } ) {
-            commit('reset');
+//            commit('reset');
+            commit(RESET);
         }
     },
 
     mutations: {
-        prepare( state, { userCalendar } ) {
+//        prepare( state, { userCalendar } ) {
+        [PREPARE]( state, { userCalendar } ) {
             state.editingUserCalendar = userCalendar;
 
             Object.keys(state.updateValues).forEach(function(key) {
@@ -85,15 +102,18 @@ export default {
             }, state.updateValues );
         },
 
-        isLoading( state, value ) {
+//        isLoading( state, value ) {
+        [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
 
-        setUpdateValue( state, { key, value } ) {
+//        setUpdateValue( state, { key, value } ) {
+        [SET_UPDATE_VALUE]( state, { key, value } ) {
             state.updateValues[key] = value;
         },
 
-        reset( state ) {
+//        reset( state ) {
+        [RESET]( state ) {
             state.isLoading = false;
             state.editingUserCalendar = '';
             state.updateValues.id = '';

@@ -1,5 +1,4 @@
 <?php
-
 namespace Nuts\Calendar\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -7,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = [
-        'user_id', 'name', 'order'
+        'user_id', 'name', 'description', 'order'
     ];
 
     protected $appends = [
@@ -20,7 +19,12 @@ class Member extends Model
 
     public function items()
     {
-        return $this->hasMany(Item::class,'member_id','id')->orderBy('order', 'asc');
+        return $this->hasMany(Item::class, 'member_id', 'id')->orderBy('order', 'asc');
+    }
+
+    public function userCalendarMembers()
+    {
+        return $this->hasMany(UserCalendarMember::class, 'user_calendar_id', 'id');
     }
 
     public static function findOrAbort($id){

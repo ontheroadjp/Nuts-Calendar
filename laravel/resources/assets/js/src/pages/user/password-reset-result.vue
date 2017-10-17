@@ -10,7 +10,7 @@
             <span style="font-size: 36px; margin-left: 20px;">{{ message }}</span>
         </span>
         <p v-if="status === 'success'">
-            <router-link to="/login">Login</router-link>
+            <router-link to="/login">Click here to return to the login page.</router-link>
         </p>
     </div>
 </div>
@@ -29,7 +29,7 @@ export default {
 
         message: function() {
             return this.status === 'success'
-                ? 'Password reset successfully'
+                ? 'Your password has been successfully changed.'
                 : 'Password reset failed';
         }
     }

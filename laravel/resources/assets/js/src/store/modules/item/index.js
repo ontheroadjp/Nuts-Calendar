@@ -7,7 +7,7 @@ const item = {
     namespaced: true,
     state: {
         data: {
-            items: []
+            items: {}
         }
     },
 

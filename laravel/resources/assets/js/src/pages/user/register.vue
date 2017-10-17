@@ -101,6 +101,37 @@ import userApi from '../../services/user.js';
 export default {
     mixins: [
         core, userApi
-    ]
+    ],
+
+    methods: {
+        register: function() {
+            u.clog('register()');
+            this.error.name = '';
+            this.error.email = '';
+            this.error.password = '';
+            this.error.passwordConfirmation = '';
+
+            const inputNameInvalid = this.isNameInvalid();
+            //const inputEmailInvalid = this.isEmailInvalid();
+            const inputPasswordInvalid = this.isPasswordInvalid();
+            const inputPasswordConfirmationInvalid = this.isPasswordConfirmationInvalid();
+            if( inputNameInvalid
+                    || inputPasswordInvalid
+                    || inputPasswordInvalid
+                    || inputPasswordConfirmationInvalid
+            ) return;
+
+            http.post( '/api/v1/register', {
+                'name': this.input.name,
+                'email': this.input.email,
+                'password': this.input.password,
+                'password_confirmation': this.input.passwordConfirmation
+            },
+                this.successLogin(this),
+                this.failedLogin(this)
+            );
+        },
+
+    }
 }
 </script>

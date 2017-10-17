@@ -4,30 +4,30 @@
 
     <span v-for="yearLabel in yearLabels" class="tag" style="margin-left: 20px">
         {{ yearLabel + ': '}}
-        <span 
-            v-if="yearLabel === monthLabel.split('-')[0]" 
+        <span
+            v-if="yearLabel === monthLabel.split('-')[0]"
             v-for="monthLabel in monthLabels"
         >
             <span class="tag"
                 :style="[
-                    style.monthLabel, 
+                    style.monthLabel,
                     onMiniCal === monthLabel ? style.labelSelected : '',
                     monthLabel === currentYear + '-' + currentMonth + '-01' ? style.thisMonth : ''
                 ]"
                 @dragenter="handleDragEnter(monthLabel)"
             >{{ labelString(monthLabel) }}
-        
-                <mini-cal 
+
+                <mini-cal
                     :isShow="onMiniCal === monthLabel"
                     :weeks="weeks"
-                    :value="monthLabel" 
+                    :value="monthLabel"
                     :style="style.miniCal"
                 ></mini-cal>
-        
+
             </span>
         </span><!-- // v-for -->
     </span>
-    
+
     <span class="icon">
         <i class="fa fa-trash"></i>
     </span>
@@ -38,6 +38,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import { SET_ON_MINI_CAL } from '../../../../store/mutation-types.js';
 import miniCal from '../../../../components/mini-cal.vue';
 import moment from 'moment';
 import chroma from 'chroma-js';
@@ -46,7 +47,7 @@ export default {
     components: {
         'mini-cal': miniCal
     },
-    
+
     computed: {
         ...mapState({
             currentYear: state => state.calendar.currentYear,
@@ -123,7 +124,7 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item/dnd', {
-            setOnMiniCal: 'setOnMiniCal',
+            setOnMiniCal: 'SET_ON_MINI_CAL',
             dragOver: 'dragOver'
         }),
 

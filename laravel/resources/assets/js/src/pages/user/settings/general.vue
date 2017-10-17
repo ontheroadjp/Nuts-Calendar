@@ -140,10 +140,10 @@
             const self = this;
             if(! this.$store.state.app.ready ) {
                 eventBus.listen('nuts.app.ready', function() {
-                    self.input.name = self.$store.state.user.name;
+                    self.input.name = self.$store.state.user.data.name;
                 }, 'AccountSettings.vue');
             } else {
-                self.input.name = self.$store.state.user.name;
+                self.input.name = self.$store.state.user.data.name;
             }
         }
     }
