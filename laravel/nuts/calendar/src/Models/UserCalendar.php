@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserCalendar extends Model
 {
     protected $fillable = [
-        'user_id', 'name', 'description'
+        'id', 'user_id', 'name', 'description'
     ];
 
 //    public function members()
