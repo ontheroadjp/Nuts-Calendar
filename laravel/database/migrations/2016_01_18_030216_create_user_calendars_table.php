@@ -16,7 +16,7 @@ class CreateUserCalendarsTable extends Migration
     {
         Schema::create('user_calendars', function (Blueprint $table) {
             $table->string('id')->primary()->unique();
-            $table->string('user_id')->nullable(false);
+            $table->string('user_id', 40)->nullable(false);
             $table->string('name')->nullable(false);
             $table->string('description');
             $table->timestamps();

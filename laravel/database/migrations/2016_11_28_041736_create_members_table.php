@@ -15,9 +15,8 @@ class CreateMembersTable extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-//            $table->increments('id');
-            $table->string('id')->nullable(false)->unique();
-            $table->string('user_id')->nullable(false);
+            $table->string('id', 40)->nullable(false)->unique();
+            $table->string('user_id', 40)->nullable(false);
             $table->string('name')->nullable(false);
             $table->string('description');
             $table->timestamps();
