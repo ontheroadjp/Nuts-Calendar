@@ -8,13 +8,14 @@ export default {
     },
 
     actions: {
-        insert({ commit }, { userCalendarId, memberId }) {
+        insert({ commit }, { userId, userCalendarId, memberId }) {
             u.clog('insert()');
 //            commit('isLoading', true);
             commit(IS_LOADING, true);
 
             const url =  '/api/v1/calendar/member/add';
             const data = {
+                'user_id': userId,
                 'user_calendar_id': userCalendarId,
                 'member_id': memberId
             };

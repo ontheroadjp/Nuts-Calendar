@@ -84,6 +84,7 @@ class UserCalendarsController extends Controller
     public function addMember(Request $request)
     {
         return UserCalendarMember::create([
+            'user_id' => $request->input('user_id'),
             'user_calendar_id' => $request->input('user_calendar_id'),
             'member_id' => $request->input('member_id')
         ]);

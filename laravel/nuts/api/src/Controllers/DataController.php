@@ -48,8 +48,9 @@ class DataController extends BaseController
 //            ->get();
 
 //        $members = Member::all()->keyBy('id')->sort();
+//        $userCalendarMembers = UserCalendarMember::all();
         $members = Member::where('user_id', $userId)->get()->keyBy('id')->sort();
-        $userCalendarMembers = UserCalendarMember::all();
+        $userCalendarMembers = UserCalendarMember::where('user_id', $userId)->get();
 
         // calendar
 //        $currentCalendarId = $userCalendarKeys[0];
@@ -65,7 +66,7 @@ class DataController extends BaseController
             'code' => 200,
             'message' => 'application data',
 //            'currentuser' => auth()->user(),
-            'currentuser' => $user,
+            'user' => $user,
             'usercalendar' => $userCalendars,
             'usercalendar_members' => $userCalendarMembers,
             'members' => $members,

@@ -25,6 +25,7 @@ describe('store/module/userCalendarMember/insert.js', () => {
             const httpStub = sinon.stub(http, 'fetchPost').returns(resolved);
 
             const actionPayload = {
+                userId: 111,
                 userCalendarId: 150,
                 memberId: 200
             }
