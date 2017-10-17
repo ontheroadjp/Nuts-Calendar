@@ -30,15 +30,15 @@ class UserCalendarsController extends Controller
             'name' => 'required'
         ]);
 
-        $userId = $request->user()->id;
-        $name = $request->input('name');
-        $description = $request->input('description');
+//        $userId = $request->user()->id;
+//        $name = $request->input('name');
+//        $description = $request->input('description');
 
         $userCalendar = UserCalendar::create([
             'id' => 'uc_'.md5( uniqid(mt_rand(), true) ),
-            'user_id' => $userId,
-            'name' => $name,
-            'description' => $description
+            'user_id' => $request->user()->id,
+            'name' => $request->input('name'),
+            'description' => $request->input('description')
         ]);
 
         $userCalendar->save();
