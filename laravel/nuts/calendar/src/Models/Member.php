@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
+    public $incrementing = false;
+
     protected $fillable = [
         'user_id', 'name', 'description', 'order'
     ];

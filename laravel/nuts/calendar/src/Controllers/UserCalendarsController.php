@@ -15,7 +15,7 @@ class UserCalendarsController extends Controller
         //$userId = $request->user()->id;
         $user = JWTAuth::parseToken()->toUser();
         $userId = $user->id;
-        return UserCalendar::where('user_id', $userId)->get()->keyBy('id');
+        return UserCalendar::where('user_id', $userId)->get()->keyBy('id')->sort();
     }
 
     /**
@@ -35,6 +35,7 @@ class UserCalendarsController extends Controller
         $description = $request->input('description');
 
         $userCalendar = UserCalendar::create([
+            'id' => 'uc_'.md5( uniqid(mt_rand(), true) ),
             'user_id' => $userId,
             'name' => $name,
             'description' => $description

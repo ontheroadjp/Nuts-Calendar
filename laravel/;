@@ -31,8 +31,8 @@ class DataController extends BaseController
 //        $user = auth()->user();
         $user = JWTAuth::parseToken()->toUser();
         $userId = $user->id;
-        $userCalendars = UserCalendar::where('user_id', $userId)->get()->keyBy('id')->sort();
-//        $userCalendars = UserCalendar::where('user_id', $userId)->get();
+//        $userCalendars = UserCalendar::where('user_id', $userId)->get()->keyBy('id')->sort();
+        $userCalendars = UserCalendar::where('user_id', $userId)->get()->sort();
 
 //        $userCalendarKeys = $userCalendars->keys()->all();
 

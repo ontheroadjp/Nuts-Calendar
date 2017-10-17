@@ -39,7 +39,7 @@ function getPrimaryKey() {
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'id' => 'user_'.md5( uniqid(mt_rand(), true) ),
+        'id' => 'u_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => bcrypt(str_random(10)),
@@ -53,6 +53,7 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
     }
 
     return [
+        'id' => 'uc_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->word,
         'description' => $faker->sentence,
         'user_id' => $faker->randomElement($userIds),
@@ -89,6 +90,7 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
     }
 
     return [
+        'id' => 'm_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->name,
         'description' => $faker->sentence,
         'user_id' => $faker->randomElement($userIds),

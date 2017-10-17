@@ -5,6 +5,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateUserCalendarsTable extends Migration
 {
+    public $incrementing = false;
+
     /**
      * Run the migrations.
      *
@@ -13,10 +15,9 @@ class CreateUserCalendarsTable extends Migration
     public function up()
     {
         Schema::create('user_calendars', function (Blueprint $table) {
-            $table->increments('id');
-//            $table->integer('user_id')->unsigned();
-            $table->string('user_id')->unique();
-            $table->string('name');
+            $table->string('id')->primary()->unique();
+            $table->string('user_id')->nullable(false);
+            $table->string('name')->nullable(false);
             $table->string('description');
             $table->timestamps();
 
