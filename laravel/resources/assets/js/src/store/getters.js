@@ -20,7 +20,8 @@ export default {
         const result = {};
 
         Object.keys(members).forEach(function(key) {
-            if( ids.indexOf(parseInt(key)) != -1 ) {
+//            if( ids.indexOf(parseInt(key)) != -1 ) {
+            if( ids.indexOf(key) != -1 ) {
                 result[key] = this[key];
             }
         }, members);

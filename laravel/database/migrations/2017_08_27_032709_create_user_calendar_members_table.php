@@ -14,7 +14,7 @@ class CreateUserCalendarMembersTable extends Migration
     {
         Schema::create('user_calendar_members', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->increments('id');
+            $table->increments('id')->primary();
 //            $table->integer('user_calendar_id')->unsigned();
 //            $table->integer('member_id')->unsigned();
             $table->string('user_calendar_id')->nullable(false);
