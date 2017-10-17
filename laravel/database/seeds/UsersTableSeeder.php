@@ -14,6 +14,7 @@ class UsersTableSeeder extends Seeder
         //factory(App\User::class, 3)->create();
 
         App\User::create([
+            'id' => md5( uniqid(mt_rand(), true) ),
             'name' => 'hoge',
             'email' => 'hoge@hoge.com',
             'password' => bcrypt('hogehoge'),
