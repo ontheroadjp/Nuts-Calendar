@@ -2,30 +2,6 @@
 
 use Faker\Factory as FakerFactory;
 
-function getPrimaryKey() {
-//    return md5( uniqid(mt_rand(), true) );
-
-    // 奇数その1の乗算
-	$v *= 0x1ca7bc5b;
-	$v &= 0x7FFFFFFF; // 下位31ビットだけ残して正の数であることを保つ
-
-	// ビット上下逆転
-	$v = ($v >> 15) | (($v & 0x7FFF) << 16);
-
-	// 奇数その2（奇数その1の逆数）の乗算
-	$v *= 0x6b5f13d3;
-	$v &= 0x7FFFFFFF; // 下位31ビットだけ残して正の数であることを保つ
-
-	// ビット上下逆転
-	$v = ($v >> 15) | (($v & 0x7FFF) << 16);
-
-	// 奇数その1の乗算
-	$v *= 0x1ca7bc5b;
-	$v &= 0x7FFFFFFF; // 下位31ビットだけ残して正の数であることを保つ
-
-	return $v;
-}
-
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -59,30 +35,6 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
         'user_id' => $faker->randomElement($userIds),
     ];
 });
-
-//function autoIncrement()
-//{
-//    for ($i = 0; $i < 1000; $i++) {
-//        yield $i;
-//    }
-//}
-//
-//$autoIncrement = autoIncrement();
-//$factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) use ($autoIncrement) {
-//    $autoIncrement->next();
-//    $colors = ['primary', 'info', 'danger'];
-//
-//    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
-//        $userCalendarIds[] = $val->id;
-//    }
-//
-//    return [
-//        'name' => $faker->name,
-//        'order' => $autoIncrement->current(),
-//        'color' => $faker->randomElement($colors),
-//        'user_calendar_id' => $faker->randomElement($userCalendarIds),
-//    ];
-//});
 
 $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) {
     foreach( App\User::all(['id']) as $val ) {
