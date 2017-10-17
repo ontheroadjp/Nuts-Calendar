@@ -16,7 +16,6 @@ class CreateItemsTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
-//            $table->integer('member_id')->unsigned();
             $table->string('member_id');
             $table->integer('type_id')->unsigned();
             $table->string('content')->nullable(false);

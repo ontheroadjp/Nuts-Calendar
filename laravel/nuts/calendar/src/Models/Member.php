@@ -29,6 +29,11 @@ class Member extends Model
         return $this->hasMany(UserCalendarMember::class, 'user_calendar_id', 'id');
     }
 
+    public function groupMembers()
+    {
+        return $this->hasMany(GroupMembers::class, 'member_id', 'id');
+    }
+
     public static function findOrAbort($id){
         if (!$item = Member::find($id)) {
             $error = [
