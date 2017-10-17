@@ -15,6 +15,7 @@ use Faker\Factory as FakerFactory;
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
+        'id' => 'u_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => bcrypt(str_random(10)),
@@ -28,35 +29,12 @@ $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Gener
     }
 
     return [
+        'id' => 'uc_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->word,
         'description' => $faker->sentence,
         'user_id' => $faker->randomElement($userIds),
     ];
 });
-
-//function autoIncrement()
-//{
-//    for ($i = 0; $i < 1000; $i++) {
-//        yield $i;
-//    }
-//}
-//
-//$autoIncrement = autoIncrement();
-//$factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) use ($autoIncrement) {
-//    $autoIncrement->next();
-//    $colors = ['primary', 'info', 'danger'];
-//
-//    foreach( Nuts\Calendar\Models\UserCalendar::all(['id']) as $val ) {
-//        $userCalendarIds[] = $val->id;
-//    }
-//
-//    return [
-//        'name' => $faker->name,
-//        'order' => $autoIncrement->current(),
-//        'color' => $faker->randomElement($colors),
-//        'user_calendar_id' => $faker->randomElement($userCalendarIds),
-//    ];
-//});
 
 $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $faker) {
     foreach( App\User::all(['id']) as $val ) {
@@ -64,6 +42,7 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
     }
 
     return [
+        'id' => 'm_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->name,
         'description' => $faker->sentence,
         'user_id' => $faker->randomElement($userIds),

@@ -15,7 +15,7 @@ class UserCalendarsController extends Controller
         //$userId = $request->user()->id;
         $user = JWTAuth::parseToken()->toUser();
         $userId = $user->id;
-        return UserCalendar::where('user_id', $userId)->get()->keyBy('id');
+        return UserCalendar::where('user_id', $userId)->get()->keyBy('id')->sort();
     }
 
     /**
@@ -30,14 +30,15 @@ class UserCalendarsController extends Controller
             'name' => 'required'
         ]);
 
-        $userId = $request->user()->id;
-        $name = $request->input('name');
-        $description = $request->input('description');
+//        $userId = $request->user()->id;
+//        $name = $request->input('name');
+//        $description = $request->input('description');
 
         $userCalendar = UserCalendar::create([
-            'user_id' => $userId,
-            'name' => $name,
-            'description' => $description
+            'id' => 'uc_'.md5( uniqid(mt_rand(), true) ),
+            'user_id' => $request->user()->id,
+            'name' => $request->input('name'),
+            'description' => $request->input('description')
         ]);
 
         $userCalendar->save();
@@ -83,6 +84,7 @@ class UserCalendarsController extends Controller
     public function addMember(Request $request)
     {
         return UserCalendarMember::create([
+            'user_id' => $request->input('user_id'),
             'user_calendar_id' => $request->input('user_calendar_id'),
             'member_id' => $request->input('member_id')
         ]);

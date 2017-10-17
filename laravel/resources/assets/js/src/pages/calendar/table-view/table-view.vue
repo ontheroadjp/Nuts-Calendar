@@ -30,12 +30,12 @@
                     style="padding: 0.4rem 1rem"
                     :style="[style.dayColumnWidth]"
                 ></th>
-                <template v-for="(member, memberId) in filteredColumns">
-                    <th v-show="!showColumns || showColumns.indexOf(memberId) > -1"
+                <template v-for="(member, index) in filteredColumns">
+                    <th v-show="!showColumns || showColumns.indexOf(index) > -1"
                         class="header-styling thin"
                         style="padding: 0.4rem 1rem"
                         :style="[columnWidth]"
-                        ><span>{{ member.name }}({{ member.id}})</span>
+                        ><span>{{ member.name }}</span>
                     </th>
                 </template>
             </tr>

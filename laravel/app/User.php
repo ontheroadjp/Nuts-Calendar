@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
+    public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -36,17 +38,16 @@ class User extends Authenticatable
 
         $model->save();
 
-        $model->createUserCalendar($model->id, 'First Calendar');
+//        $model->createUserCalendar($model->id, 'First Calendar');
 
         return $model;
     }
 
-    public static function createUserCalendar($user_id, $name = 'Calendar')
-    {
-        return UserCalendar::create([
-            'user_id' => $user_id,
-            'name' => $name,
-        ]);
-    }
-
+//    public static function createUserCalendar($user_id, $name = 'Calendar')
+//    {
+//        return UserCalendar::create([
+//            'user_id' => $user_id,
+//            'name' => $name,
+//        ]);
+//    }
 }

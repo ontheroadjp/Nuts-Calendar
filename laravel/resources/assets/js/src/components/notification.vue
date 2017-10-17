@@ -26,6 +26,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { RESET_NOTIFICATION } from '../store/mutation-types.js';
 
 export default {
     computed: {

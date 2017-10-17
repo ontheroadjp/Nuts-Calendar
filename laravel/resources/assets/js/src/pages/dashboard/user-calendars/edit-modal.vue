@@ -43,6 +43,7 @@
                             :initialValue="userCalendarMemberIds.indexOf(member.id) !== -1"
                             @changeValue="changeMemberGroup(
                                 member.name,
+                                userId,
                                 userCalendar.id,
                                 member.id
                             )"
@@ -78,6 +79,10 @@ export default {
     },
 
     computed: {
+        ...mapState('user', {
+            userId: state => state.data.user.id
+        }),
+
         ...mapState('member', {
             members: state => state.data.members
         }),
@@ -117,11 +122,11 @@ export default {
             }
         },
 
-        changeMemberGroup(elementId, userCalendarId, memberId) {
+        changeMemberGroup(elementId, userId, userCalendarId, memberId) {
             if( document.getElementById(elementId).checked ) {
-                this.insertUserCalendarMember({ userCalendarId, memberId });
+                this.insertUserCalendarMember({ userId, userCalendarId, memberId });
             } else {
-                this.removeUserCalendarMember({ userCalendarId, memberId });
+                this.removeUserCalendarMember({ userId, userCalendarId, memberId });
             }
         },
 

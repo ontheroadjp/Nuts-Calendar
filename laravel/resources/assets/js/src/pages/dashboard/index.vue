@@ -19,9 +19,9 @@
             v-else-if="$route.path === '/dashboard/members'"
         ></members-pane>
 
-        <my-groups-pane
-            v-else-if="$route.path === '/dashboard/mygroups'"
-        ></my-groups-pane>
+        <groups-pane
+            v-else-if="$route.path === '/dashboard/groups'"
+        ></groups-pane>
     </menu-tabs>
 
 </div>
@@ -34,12 +34,12 @@ import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
 import userCalendarsPane from './user-calendars/index.vue';
 import membersPane from './members/index.vue';
-import myGroupsPane from './my-groups/index.vue';
+import groupsPane from './groups/index.vue';
 
 export default {
 
     components: {
-        menuTabs, todayDateCard, userCalendarsPane, membersPane, myGroupsPane
+        menuTabs, todayDateCard, userCalendarsPane, membersPane, groupsPane
     },
 
 //    data() {
@@ -81,7 +81,7 @@ export default {
             return {
                 userCalendars: Object.keys(this.userCalendars).length,
                 members: Object.keys(this.members).length,
-                myGroups: 0
+                groups: 0
             }
         },
 
@@ -95,8 +95,8 @@ export default {
                     label: `Members(${this.count.members}/${this.maxMembers})`,
                     icon: 'fa-user'
                 },
-                '/dashboard/mygroups': {
-                    label: `My Groups(${this.count.myGroups}/${this.maxSharedMembers})`,
+                '/dashboard/groups': {
+                    label: `Groups(${this.count.groups}/${this.maxSharedMembers})`,
                     icon: 'fa-users'
                 },
                 '/dashboard/applications': {

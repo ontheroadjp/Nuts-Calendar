@@ -35,7 +35,7 @@
                 to="/dashboard"
                 class="nav-item thin"
                 :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
-                @click.native="$store.commit('calendar/setValue', {
+                @click.native="$store.commit('calendar/SET_VALUE', {
                     key: 'currentId',
                     value: 'dashboard'
                 })"

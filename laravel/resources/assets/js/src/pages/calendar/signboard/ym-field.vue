@@ -80,7 +80,7 @@ export default {
             },
 
             set(value) {
-                this.$store.commit('calendar/setValue', {
+                this.$store.commit('calendar/SET_VALUE', {
                     key: 'currentYear',
                     value: value
                 });
@@ -93,7 +93,7 @@ export default {
             },
 
             set(value) {
-                this.$store.commit('calendar/setValue', {
+                this.$store.commit('calendar/SET_VALUE', {
                     key: 'currentMonth',
                     value: value
                 });

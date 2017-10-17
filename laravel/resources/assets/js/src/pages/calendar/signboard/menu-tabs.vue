@@ -7,9 +7,9 @@
     <li :class="{ 'is-active': currentCalendarId === 'dashboard' }"
         @click="changeCalendar('dashboard')">
 
-        <router-link to="/dashboard" 
+        <router-link to="/dashboard"
             :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
-            @click="changeCalendar('dashboard')" 
+            @click="changeCalendar('dashboard')"
         >
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
@@ -20,18 +20,18 @@
     </li>
 
     <!-- USER CALENDARS -->
-    <li v-for="uCalendar in userCalendars" 
+    <li v-for="uCalendar in userCalendars"
         :class="{'is-active': currentCalendarId == uCalendar.id && !disabled}"
         @click="changeCalendar(uCalendar.id)">
 
-        <router-link to="/calendar/view" 
+        <router-link to="/calendar/view"
             :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
         >
             <span class="icon is-small">
                 <i v-if="!calendarIsLoading" class="fa fa-calendar"></i>
-                <i v-if="calendarIsLoading && currentCalendarId !== uCalendar.id" 
+                <i v-if="calendarIsLoading && currentCalendarId !== uCalendar.id"
                     class="fa fa-calendar"></i>
-                <i v-if="calendarIsLoading && currentCalendarId === uCalendar.id" 
+                <i v-if="calendarIsLoading && currentCalendarId === uCalendar.id"
                     class="fa fa-refresh fa-spin"></i>
             </span>
                 {{ uCalendar.name }}
@@ -115,8 +115,8 @@ export default {
             if( this.currentCalendarId == id ) return;
             u.clog('changeCalendar(' + id + ')');
 //            this.$store.commit('setCurrentCalendarId', id);
-            this.$store.commit('calendar/setValue', {
-                key: 'currentId', 
+            this.$store.commit('calendar/SET_VALUE', {
+                key: 'currentId',
                 value: id
             });
         },
@@ -127,7 +127,7 @@ export default {
 //        },
 
         toggleToolPalet() {
-            this.toggleTableToolPalette({ value: !this.isToolPaletteOpen }); 
+            this.toggleTableToolPalette({ value: !this.isToolPaletteOpen });
         }
     },
 
@@ -135,8 +135,8 @@ export default {
         const id = localStorage.getItem('currentCalendarId');
         if(id) {
 //            this.$store.commit('setCurrentCalendarId', id);
-            this.$store.commit('calendar/setValue', {
-                key: 'currentId', 
+            this.$store.commit('calendar/SET_VALUE', {
+                key: 'currentId',
                 value: id
             });
         }

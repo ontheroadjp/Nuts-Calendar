@@ -5,7 +5,7 @@
     <div id="home" class="container">
 
         <div class="contents" style="width: 40%;">
-            <h1 class="title thin-300" style="color:#fff">Nuts <strong>Calendar</strong></h1>
+            <h1 class="title thin-300" style="color:#fff">Nuts <strong>Calendar</strong>(BETA)</h1>
             <div style="margin-bottom: 30px;">
                 <h2 class="subtitle thin" style="color:#fff">
                     Grasp the schedules of your own multiple roles,

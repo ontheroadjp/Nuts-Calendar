@@ -15,6 +15,7 @@ describe('store/module/user/index.js', () => {
     describe('mutations', () => {
         it('init', () => {
             init(state, user);
+            expect(state.data.user).is.eql(user);
             expect(state.data.name).is.eql(user.name);
             expect(state.data.maxCalendars).is.eql(user.max_calendars);
             expect(state.data.maxMembers).is.eql(user.max_members);

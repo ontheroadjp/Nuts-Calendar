@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
+    public $incrementing = false;
+
     protected $fillable = [
         'user_id', 'name', 'description', 'order'
     ];
@@ -25,6 +27,11 @@ class Member extends Model
     public function userCalendarMembers()
     {
         return $this->hasMany(UserCalendarMember::class, 'user_calendar_id', 'id');
+    }
+
+    public function groupMembers()
+    {
+        return $this->hasMany(GroupMembers::class, 'member_id', 'id');
     }
 
     public static function findOrAbort($id){

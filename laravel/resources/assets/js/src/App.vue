@@ -79,7 +79,7 @@
 //                this.$store.commit('initMembersForUserCalendar', response.data.members );
 //                this.$store.commit('initMembers', response.data.members );
 
-                this.$store.commit('user/init', response.data.currentuser);
+                this.$store.commit('user/init', response.data.user);
                 this.$store.commit('userCalendar/init', response.data.usercalendar );
                 this.$store.commit('userCalendarMember/init', response.data.usercalendar_members );
                 this.$store.commit('member/init', response.data.members );
