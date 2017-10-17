@@ -2,6 +2,30 @@
 
 use Faker\Factory as FakerFactory;
 
+function getPrimaryKey() {
+//    return md5( uniqid(mt_rand(), true) );
+
+    // 奇数その1の乗算
+	$v *= 0x1ca7bc5b;
+	$v &= 0x7FFFFFFF; // 下位31ビットだけ残して正の数であることを保つ
+
+	// ビット上下逆転
+	$v = ($v >> 15) | (($v & 0x7FFF) << 16);
+
+	// 奇数その2（奇数その1の逆数）の乗算
+	$v *= 0x6b5f13d3;
+	$v &= 0x7FFFFFFF; // 下位31ビットだけ残して正の数であることを保つ
+
+	// ビット上下逆転
+	$v = ($v >> 15) | (($v & 0x7FFF) << 16);
+
+	// 奇数その1の乗算
+	$v *= 0x1ca7bc5b;
+	$v &= 0x7FFFFFFF; // 下位31ビットだけ残して正の数であることを保つ
+
+	return $v;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -15,6 +39,7 @@ use Faker\Factory as FakerFactory;
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
+        'id' => 'user_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
         'password' => bcrypt(str_random(10)),
