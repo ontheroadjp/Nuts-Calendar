@@ -9,6 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserCalendarMember extends Model
 {
     protected $fillable = [
-        'user_calendar_id', 'member_id'
+        'user_id', 'user_calendar_id', 'member_id'
     ];
 }
