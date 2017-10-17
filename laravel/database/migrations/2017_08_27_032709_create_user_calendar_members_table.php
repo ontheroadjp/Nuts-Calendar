@@ -16,7 +16,8 @@ class CreateUserCalendarMembersTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('user_calendar_id')->unsigned();
-            $table->integer('member_id')->unsigned();
+//            $table->integer('member_id')->unsigned();
+            $table->string('member_id');
             $table->timestamps();
 
             $table->foreign('user_calendar_id')

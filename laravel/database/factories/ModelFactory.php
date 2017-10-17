@@ -89,6 +89,7 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
     }
 
     return [
+        'id' => 'user_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->name,
         'description' => $faker->sentence,
         'user_id' => $faker->randomElement($userIds),
