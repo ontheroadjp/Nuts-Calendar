@@ -121,7 +121,8 @@ export default {
 
             return {
                 fontSize: '1.8em',
-                color: 'rgb(242, 242, 242)'
+                color: 'rgb(242, 242, 242)',
+                cursor: 'pointer'
             }
         },
 
@@ -133,7 +134,7 @@ export default {
     methods: {
         togglePicker: function() {
             this.editing = !this.editing;
-            this.$store.commit('dashboard/setValue', {
+            this.$store.commit('dashboard/SET_VALUE', {
                 key: 'disabled', value: this.editing
             });
         }

@@ -93,7 +93,7 @@ export default {
             this.updatePrepareModal( { event: e } );
             this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
             this.insertReset();
-            this.$store.commit('dashboard/setValue', {
+            this.$store.commit('dashboard/SET_VALUE', {
                 key: 'disabled', value: true
             });
         }
