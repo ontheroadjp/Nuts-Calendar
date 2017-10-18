@@ -46,12 +46,22 @@ class Calendar extends Model
                                     ->keys()
                                     ->toArray();
 
+//        var_dump($allMembers);
+
         $members = [];
-        foreach( $allMembers as $val ) {
-            if( in_array($val['id'], $userCalendarMemberIds) ) {
-                $members += [$val['id'] => $val];
+//        foreach( $allMembers as $val ) {
+//            if( in_array($val['id'], $userCalendarMemberIds) ) {
+//                $members += [$val['id'] => $val];
+//            }
+//        }
+
+        foreach( $allMembers as $key => $val ) {
+            if( in_array($key, $userCalendarMemberIds) ) {
+                $members += [$key => $val];
             }
         }
+
+        array_multisort(array_column($members, 'created_at'), SORT_ASC, $members);
 
         $calendar = $this->fetchCalendarWithHolidayAndItems($year,$month);
         $calendar = $this->tidyItems($calendar, collect($members));
@@ -82,6 +92,7 @@ class Calendar extends Model
             // gather items into array key by member_id
             $items_group_by = $calendar[$n]['items']
                 ->groupBy('member_id');
+
 
             // remove items(key = member_id) which doesn't exist in $members
             $items_group_by = collect(
