@@ -11,7 +11,7 @@
             v-if="disabled"
             bgColor="rgba(40, 40, 40, .6)"
             :onActive="function() {
-                this.$store.commit('calendar/tableView/item/insert/reset');
+                this.$store.commit('calendar/tableView/item/insert/RESET');
             }"
             :zIndex="1"
         ></black-screen>

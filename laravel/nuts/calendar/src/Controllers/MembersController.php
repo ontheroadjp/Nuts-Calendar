@@ -75,18 +75,19 @@ class MembersController extends Controller
             'name' => 'required',
         ]);
 
-        $userId = $request->user()->id;
-        $name = $request->input('name');
-        $description = $request->input('description');
+//        $userId = $request->user()->id;
+//        $name = $request->input('name');
+//        $description = $request->input('description');
 
-        $item = Member::create([
-            'user_id' => $userId,
-            'name' => $name,
-            'description' => $description,
+        $model = Member::create([
+            'id' => 'm_'.md5( uniqid(mt_rand(), true) ),
+            'user_id' => $request->user()->id,
+            'name' => $request->input('name'),
+            'description' => $request->input('description')
         ]);
 
-        $item->save();
-        return $item;
+        $model->save();
+        return $model;
     }
 
     /**

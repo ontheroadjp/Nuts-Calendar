@@ -199,7 +199,7 @@ export default {
         popupMenuClose() {
             this.updateReset();
             this.removeReset();
-            this.$store.commit('dashboard/setValue', {
+            this.$store.commit('dashboard/SET_VALUE', {
                 key: 'disabled', value: false
             });
         },

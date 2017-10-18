@@ -8,7 +8,7 @@ class Member extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'user_id', 'name', 'description', 'order'
+        'id', 'user_id', 'name', 'description', 'order'
     ];
 
     protected $appends = [

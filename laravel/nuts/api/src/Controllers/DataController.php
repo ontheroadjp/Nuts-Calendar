@@ -22,7 +22,7 @@ class DataController extends BaseController
     {
         $user = auth()->user();
         $userCalendars = UserCalendar::where('user_id', $user->id)->get()->keyBy('id')->sort();
-        $members = Member::with('groupMembers')->where('user_id', $user->id)->get()->keyBy('id')->sort();
+        $members = Member::with('groupMembers')->where('user_id', $user->id)->get()->keyBy('id')->sortBy('created_at');
         $userCalendarMembers = UserCalendarMember::where('user_id', $user->id)->get();
 
         return response()->json([
