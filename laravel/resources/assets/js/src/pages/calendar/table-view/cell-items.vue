@@ -11,8 +11,6 @@
         @drop.stop="handleDrop()"
         >
 
-        {{ memberId }}
-
         <div v-for="(item, itemIndex) in cellItems"
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
