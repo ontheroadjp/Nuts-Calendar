@@ -25,40 +25,32 @@ npm run dev
 http://localhost:8080
 ```
 
-## Development
+## Javascript Development
 
 ```bash
 cd Nuts-Calendar/laravel
 npm run watch
 ```
 
-## Javascript
-
-installing test package such as karma
+### Test
 
 ```bash
 cd Nuts-Calendar/laravel/resources/assets/js
 npm install
-```
 
-run test
+# Unit test
+npm run karma
 
-```bash
-cd Nuts-Calendar/laravel/resources/assets/js
-npm run test
-```
+# e2e test
+npm run nightwatch
 
-linting
-
-```bash
-cd Nuts-Calendar/laravel/resources/assets/js
+# linting
 npm run lint
 ```
 
-
 ## CSS
 
-linting
+### Test
 
 ```bash
 cd Nuts-Calendar/laravel
