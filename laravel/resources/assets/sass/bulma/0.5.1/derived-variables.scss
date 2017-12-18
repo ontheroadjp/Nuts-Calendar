@@ -84,6 +84,11 @@ $sizes: $size-1 $size-2 $size-3 $size-4 $size-5 $size-6 $size-7 !default
 //////////////////////////////////////////////
 // 5. adding and override
 
+$ruri: #1e50a2 !default
+$ruri-secondary: rgb(50, 115, 220) !default
+$ruri-invert: findColorInvert($ruri) !default
+$ruri-secondary-invert: findColorInvert($ruri-secondary) !default
+
 $koiai: #002E4E !default
 $koiai-secondary: #1960b7 !default
 $koiai-invert: findColorInvert($koiai) !default
@@ -122,15 +127,17 @@ $colors: (
     warning: ($warning, $warning-invert),
     danger: ($danger, $danger-invert),
 
-    koiai: ($koiai, $koiai-invert), 
-    nadeshiko: ($nadeshiko, $nadeshiko-invert), 
-    mikan: ($mikan, $mikan-invert), 
-    sumire: ($sumire, $sumire-invert), 
-    moegi: ($moegi, $moegi-invert), 
+    ruri: ($ruri, $ruri-invert),
+    koiai: ($koiai, $koiai-invert),
+    nadeshiko: ($nadeshiko, $nadeshiko-invert),
+    mikan: ($mikan, $mikan-invert),
+    sumire: ($sumire, $sumire-invert),
+    moegi: ($moegi, $moegi-invert),
 
-    koiai-secondary: ($koiai-secondary, $koiai-secondary-invert), 
-    nadeshiko-secondary: ($nadeshiko-secondary, $nadeshiko-secondary-invert), 
-    mikan-secondary: ($mikan-secondary, $mikan-secondary-invert), 
-    sumire-secondary: ($sumire-secondary, $sumire-secondary-invert), 
-    moegi-secondary: ($moegi-secondary, $moegi-secondary-invert), 
+    ruri-secondary: ($ruri-secondary, $ruri-secondary-invert),
+    koiai-secondary: ($koiai-secondary, $koiai-secondary-invert),
+    nadeshiko-secondary: ($nadeshiko-secondary, $nadeshiko-secondary-invert),
+    mikan-secondary: ($mikan-secondary, $mikan-secondary-invert),
+    sumire-secondary: ($sumire-secondary, $sumire-secondary-invert),
+    moegi-secondary: ($moegi-secondary, $moegi-secondary-invert),
 ) !default

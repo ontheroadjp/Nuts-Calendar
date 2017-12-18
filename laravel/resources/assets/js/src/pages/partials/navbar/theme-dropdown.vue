@@ -1,10 +1,10 @@
 <template>
 <div class="nav-item">
-    <dropdown-menu 
+    <dropdown-menu
         id="theme-dropdown-menu"
-        :label="t('theme.' + selectedTheme)" 
+        :label="t('theme.' + selectedTheme)"
         :labelStyle="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
-        icon="" 
+        icon=""
         :backIconStyle="backIconStyle"
         :menuHeight="145"
     >
@@ -61,6 +61,7 @@ export default {
 
         menuItems: function() {
             return [
+                { value: "ruri", label: this.t('theme.ruri') },
                 { value: "koiai", label: this.t('theme.koiai') },
                 { value: "nadeshiko", label: this.t('theme.nadeshiko') },
                 { value: "mikan", label: this.t('theme.mikan') },

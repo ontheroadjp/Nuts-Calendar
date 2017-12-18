@@ -6,10 +6,11 @@ export default {
             login: 'ログイン',
             register: 'ユーザー登録',
             dashboard: 'ダッシュボード',
-            accountSettings: 'アカウント設定', 
+            accountSettings: 'アカウント設定',
             logout: 'ログアウト'
         },
         theme: {
+            ruri: '瑠璃',
             koiai: '濃藍',
             nadeshiko: '撫子',
             mikan: '蜜柑',

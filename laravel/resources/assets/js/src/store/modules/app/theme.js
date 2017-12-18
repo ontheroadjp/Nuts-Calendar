@@ -32,6 +32,21 @@ export default {
             localStorage.setItem('theme', name);
             state.name = name;
             switch (name) {
+                case 'ruri':
+    //                state.background = '#f0f0f1';
+                    state.primary.class = 'is-ruri';
+                    state.primary.classInvert = 'is-ruri-invert';
+                    state.primary.code = '#1e50a2';
+                    state.primary.codeInvert = '#164a84';
+
+                    state.secondary.class = 'is-ruri-secondary';
+                    state.secondary.classInvert = 'is-ruri-invert';
+                    state.secondary.code = '#fff';
+                    state.secondary.codeInvert = '';
+
+                    state.accent.code = '';
+                    break;
+
                 case 'koiai':
     //                state.background = '#f0f0f1';
                     state.primary.class = 'is-koiai';

@@ -5,10 +5,11 @@ export const en = {
             login: 'Sign in',
             register: 'Register',
             dashboard: 'Dashboard',
-            accountSettings: 'Account Settings', 
+            accountSettings: 'Account Settings',
             logout: 'Sign out'
         },
         theme: {
+            ruri: 'ruri',
             koiai: 'koiai',
             nadeshiko: 'nadeshiko',
             mikan: 'mikan',

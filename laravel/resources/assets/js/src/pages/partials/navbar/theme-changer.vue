@@ -2,13 +2,13 @@
 <div class="nav-item">
     <p class="control is-expanded">
         <span class="select is-fullwidth">
-            <select 
+            <select
                 class="thin"
-                :style="selectStyle" 
-                v-model="selectedTheme" 
+                :style="selectStyle"
+                v-model="selectedTheme"
                 @change="setTheme()"
-                ><option 
-                    v-for="option in options" 
+                ><option
+                    v-for="option in options"
                     :value="option.value"
                     >{{ option.label }}
                 </option>
@@ -35,6 +35,7 @@ export default {
     computed: {
         options: function() {
             return [
+                { value: "ruri", label: this.t('theme.ruri') },
                 { value: "koiai", label: this.t('theme.koiai') },
                 { value: "nadeshiko", label: this.t('theme.nadeshiko') },
                 { value: "mikan", label: this.t('theme.mikan') },
