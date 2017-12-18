@@ -1,10 +1,10 @@
-import Login from '../../../../../src/pages/user/login.vue';
+import Login from '../../../../../src/pages/user/login/index.vue';
 import userService from '../../../../../src/services/user.js';
 import { mount } from 'vue-test-utils';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-describe('pages/user/login.vue', () => {
+describe('pages/user/login/index.vue', () => {
     describe('Input form errors', () => {
         const wrapper = mount(Login);
 

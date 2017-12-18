@@ -1,5 +1,5 @@
 import root from '../pages/root.vue';
-import login from '../pages/user/login.vue';
+import login from '../pages/user/login/index.vue';
 import register from '../pages/user/register.vue';
 import passwordEmail from '../pages/user/password-mail.vue';
 import passwordReset from '../pages/user/password-reset.vue';
