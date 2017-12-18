@@ -30,6 +30,7 @@
                     style="padding: 0.4rem 1rem"
                     :style="[style.dayColumnWidth]"
                 ></th>
+
                 <template v-for="(member, index) in filteredColumns">
                     <th v-show="!showColumns || showColumns.indexOf(index) > -1"
                         class="header-styling thin"
@@ -38,6 +39,11 @@
                         ><span>{{ member.name }}</span>
                     </th>
                 </template>
+
+                <th class="header-styling thin"
+                    style="padding: 0.4rem 1rem"
+                    :style="[style.dayColumnWidth]"
+                ></th>
             </tr>
         </thead>
 
@@ -46,27 +52,12 @@
                 :class="{ saturday: isSaturday(day.date),
                             sunday: isSunday(day.date) || day.holidays.length > 0
                         }">
-                <td class="date-styling" :style="[style.dayColumnWidth]">
-                    <div style="margin-bottom: 5px;">
-                        <span :style="[ day.is_today ? style.today : '' ]">
-                            {{ getDateAndDay(day.date) }}
-                        </span>
-                    </div>
 
-                    <div v-for="holiday in day.holidays"
-                        class="date-label"
-                        style="background-color: red;"
-                    >{{ holiday.holiday_name }}</div>
-
-                    <div v-show="lang === 'ja'" class="date-label">
-                        {{ rokuyou(day.lunar_month, day.lunar_day) }}
-                    </div>
-
-                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.lunar_month_chinese }} {{ day.lunar_day_chinese }}</div> -->
-                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.constellation }}</div> -->
-                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.week_name }}</div> -->
-                    <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.animal }}</div> -->
-                </td>
+                <dayColumn
+                    :day="day"
+                    :today="style.today"
+                    :dayColumnWidth="style.dayColumnWidth"
+                ></dayColumn>
 
                 <template v-for="(cellItems, memberId) in day.items">
                     <cell-items
@@ -77,6 +68,12 @@
                         :columnWidth="columnWidth"
                     ></cell-items>
                 </template>
+
+                <dayColumn
+                    :day="day"
+                    :today="style.today"
+                    :dayColumnWidth="style.dayColumnWidth"
+                ></dayColumn>
             </tr>
         </tbody>
     </table>
@@ -89,6 +86,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
+import dayColumn from './day-column.vue';
 import cellItems from './cell-items.vue';
 import popupMenu from '../../../components/popup-menu.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
@@ -100,7 +98,7 @@ export default {
     name: 'table-view-content',
 
     components: {
-        popupMenu, cellItems, itemEditPopupContent, miniCalBar
+        popupMenu, dayColumn, cellItems, itemEditPopupContent, miniCalBar
     },
 
     mixins: [ dateUtilities ],
@@ -202,15 +200,6 @@ export default {
             this.$store.commit('dashboard/SET_VALUE', {
                 key: 'disabled', value: false
             });
-        },
-
-        rokuyou: function( month, day ) {
-            const data = [
-                '大安', '赤口',	'先勝',	'友引',	'先負',	'仏滅'
-            ];
-//            return data[Math.round((month + day) % 6)];
-//            return data[Math.ceil((month + day) % 6)];
-            return data[Math.floor((month + day) % 6)];
         }
     }
 };
@@ -233,19 +222,6 @@ $headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
 
 .header-styling {
     background-color: $headerCellAndDayColumnCellColor;
-}
-
-.date-styling {
-    font-size: 1em;
-    background-color: $headerCellAndDayColumnCellColor;
-}
-.date-label {
-    margin-bottom: 2px;
-    font-size: 0.8rem;
-    background-color: rgb(149, 182, 197);
-    color: white;
-    border-radius: 2px;
-    text-align: center;
 }
 
 .saturday {
