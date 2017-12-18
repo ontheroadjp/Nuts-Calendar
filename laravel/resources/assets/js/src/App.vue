@@ -57,7 +57,7 @@
                 if(theme) {
                     this.$store.commit('setTheme', theme);
                 } else {
-                    this.$store.commit('setTheme', 'koiai');
+                    this.$store.commit('setTheme', 'ruri');
                 }
             },
 
