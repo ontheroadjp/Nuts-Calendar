@@ -3,12 +3,12 @@
         <div
             v-show="notification.isActive"
             :class="['notification', notification.type]"
-            style="position: fixed; right: 0; margin-right: 20px; z-index: 99;"
+            style="position: fixed; top: 60px; right: 0; margin-right: 10px; z-index: 99;"
             >
             <button
                 v-show="notification.isImportant"
                 class="delete"
-                @click="$store.commit(RESET_NOTIFICATION)"
+                @click="$store.commit('RESET_NOTIFICATION')"
                 >
             </button>
             <span class="icon">
