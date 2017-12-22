@@ -3,7 +3,7 @@
         <div class="container">
             <div class="content has-text-centered">
                 <p>
-                <strong>Bulma</strong> by <a href="//jgthms.com">Jeremy Thomas</a>. The source code is licensed
+                <strong>Nuts Days</strong> by <a href="//jgthms.com">Nuts, LLC</a>. The source code is licensed
                 <a href="//opensource.org/licenses/mit-license.php">MIT</a>. The website content
                 is licensed <a href="//creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</a>.
                 </p>

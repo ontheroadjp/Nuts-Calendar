@@ -1,5 +1,11 @@
 export const en = {
     state: {
+        root: {
+            subtitle: 'Grasp the schedules of your own multiple roles, family members, lovers, and colleagues with one simple calendar !!',
+            startNow: 'Get started. It\'s free!',
+            login: 'sign in',
+            alreadyHasAccount: 'Already have account'
+        },
         navbar: {
             home: 'Home',
             login: 'Sign in',

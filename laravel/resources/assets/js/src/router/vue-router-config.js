@@ -21,6 +21,7 @@ export const routes = [
         component: root,
         meta: {
             auth: false,
+            navbar: false,
             footer: false
         }
     },
@@ -30,6 +31,7 @@ export const routes = [
         component: login,
         meta: {
             auth: false,
+            navbar: false,
             footer: true
         }
     },
@@ -39,6 +41,7 @@ export const routes = [
         component: passwordEmail,
         meta: {
             auth: false,
+            navbar: true,
             footer: true
         }
     },
@@ -48,6 +51,7 @@ export const routes = [
         component: passwordReset,
         meta: {
             auth: false,
+            navbar: true,
             footer: true
         }
     },
@@ -57,6 +61,7 @@ export const routes = [
         component: register,
         meta: {
             auth: false,
+            navbar: true,
             footer: true
         }
     },
@@ -66,6 +71,7 @@ export const routes = [
         component: userAccountSettings,
         meta: {
             auth: true,
+            navbar: true,
             footer: true
         }
     },
@@ -75,6 +81,7 @@ export const routes = [
         component: dashboard,
         meta: {
             auth: true,
+            navbar: true,
             footer: true
         },
         children: [
@@ -83,6 +90,7 @@ export const routes = [
                 component: dashboard,
                 meta: {
                     auth: true,
+                    navbar: true,
                     footer: true
                 }
             }
@@ -94,6 +102,7 @@ export const routes = [
         component: calendar,
         meta: {
             auth: true,
+            navbar: true,
             footer: true
         },
         children: [
@@ -102,6 +111,7 @@ export const routes = [
                 component: tableView,
                 meta: {
                     auth: true,
+                    navbar: true,
                     footer: false
                 }
             }

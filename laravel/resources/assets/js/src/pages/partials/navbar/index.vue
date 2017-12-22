@@ -1,71 +1,69 @@
 <template>
-<section id="headerNav" :class="['hero', theme.primary.class, 'is-medium']">
+<section id="headerNav" :class="['hero', theme.primary.class, 'is-medium']" v-if="$route.meta.navbar">
 <div class="hero-head">
 <header class="nav navbar-fixed-top" :style="headerStyle">
 
-    <div class="nav-left" style="padding-left: 20px;">
-        <a class="nav-item is-brand" href="/">
-            <!-- <img src="/images/bulma-type-white.png" alt="Bulma logo"> -->
-            <img src="/images/nuts-logo-white.png" alt="Nuts logo">
-        </a>
-    </div>
+    <template>
+        <div class="nav-left" style="padding-left: 20px;">
+            <a class="nav-item is-brand" href="/">
+                <img src="/images/nuts-logo-white.png" alt="Nuts logo">
+            </a>
+        </div>
 
-    <hamburger-menu></hamburger-menu>
+        <hamburger-menu></hamburger-menu>
 
-    <div class="nav-right nav-menu" style="overflow:visible">
+        <div class="nav-right nav-menu" style="overflow:visible">
 
-        <router-link to="/"
-            class="nav-item thin"
-            :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
-        >{{ t('navbar.home') }}</router-link>
-
-        <!-- <template v-if="! $store.state.user.data.name"> -->
-        <template v-if="! username">
-            <router-link to="/login" class="nav-item thin">
-                {{ t('navbar.login') }}
-            </router-link>
-
-            <router-link to="/register" class="nav-item thin">
-                {{ t('navbar.register') }}
-            </router-link>
-        </template>
-
-        <template v-else>
-            <router-link
-                to="/dashboard"
+            <router-link to="/"
                 class="nav-item thin"
                 :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
-                @click.native="$store.commit('calendar/SET_VALUE', {
-                    key: 'currentId',
-                    value: 'dashboard'
-                })"
-            >{{ t('navbar.dashboard') }}
-            </router-link>
-            <user-account-dropdown></user-account-dropdown>
-        </template>
+            >{{ t('navbar.home') }}</router-link>
 
-        <theme-dropdown></theme-dropdown>
-        <lang-dropdown></lang-dropdown>
+            <template v-if="! username">
+                <router-link to="/login" class="nav-item thin">
+                    {{ t('navbar.login') }}
+                </router-link>
 
-        <!-- <theme-changer></theme-changer> -->
-        <!-- <lang-changer></lang-changer> -->
+                <router-link to="/register" class="nav-item thin">
+                    {{ t('navbar.register') }}
+                </router-link>
+            </template>
 
-        <span class="nav-item">
-            <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']"
-                :style="{
-                    'color': linkColorStyle,
-                    'pointer-events': pointerEventsStyle,
-                    'border': '1px solid ' + linkColorStyle
-                }"
-            >
-                <span class="icon">
-                    <i class="fa fa-twitter"></i>
-                </span>
-                <span>Tweet</span>
-            </a>
-        </span>
+            <template v-else>
+                <router-link
+                    to="/dashboard"
+                    class="nav-item thin"
+                    :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+                    @click.native="$store.commit('calendar/SET_VALUE', {
+                        key: 'currentId',
+                        value: 'dashboard'
+                    })"
+                >{{ t('navbar.dashboard') }}
+                </router-link>
+                <user-account-dropdown></user-account-dropdown>
+            </template>
 
-    </div><!-- // .nav-right .nav-menu -->
+            <theme-dropdown></theme-dropdown>
+            <lang-dropdown></lang-dropdown>
+
+            <span class="nav-item">
+                <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']"
+                    :style="{
+                        'color': linkColorStyle,
+                        'pointer-events': pointerEventsStyle,
+                        'border': '1px solid ' + linkColorStyle
+                    }"
+                >
+                    <span class="icon">
+                        <i class="fa fa-twitter"></i>
+                    </span>
+                    <span>Tweet</span>
+                </a>
+            </span>
+
+        </div><!-- // .nav-right .nav-menu -->
+
+    </template>
 
 </header>
 </div><!-- // .hero-head -->

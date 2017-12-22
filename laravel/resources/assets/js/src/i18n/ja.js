@@ -1,6 +1,13 @@
 export default {
     namespaced: true,
     state: {
+        root: {
+            title: 'タイトル',
+            subtitle: '家族、仕事、プライベート、仲間の予定やタスクも一つのカレンダーで',
+            login: 'ログイン',
+            startNow: '今すぐ無料で始める',
+            alreadyHasAccount: 'すでにアカウントを持っています'
+        },
         navbar: {
             home: 'ホーム',
             login: 'ログイン',
