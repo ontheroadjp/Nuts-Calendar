@@ -94,8 +94,8 @@ $koiai-secondary: #1960b7 !default
 $koiai-invert: findColorInvert($koiai) !default
 $koiai-secondary-invert: findColorInvert($koiai-secondary) !default
 
-$nadeshiko: #F6ADC6 !default
-$nadeshiko-secondary: #ee6896 !default
+$nadeshiko: #ee6896 !default
+$nadeshiko-secondary: #F6ADC6 !default
 //$nadeshiko-invert: findColorInvert($nadeshiko) !default
 $nadeshiko-invert: rgba(204, 3, 72, 1) !default
 $nadeshiko-secondary-invert: findColorInvert($nadeshiko-secondary) !default

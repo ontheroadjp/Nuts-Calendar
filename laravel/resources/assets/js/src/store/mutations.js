@@ -116,16 +116,30 @@ export default {
                 state.app.theme.accent.code = '';
                 break;
             case 'nadeshiko':
+////                state.app.theme.background = '#f0f0f1';
+//                state.app.theme.primary.class = 'is-nadeshiko';
+//                state.app.theme.primary.classInvert = 'is-nadeshiko-invert';
+//                state.app.theme.primary.code = '#f6adc6';
+//                state.app.theme.primary.codeInvert = '#49343b';
+//
+//                state.app.theme.secondary.class = 'is-nadeshiko-secondary';
+//                state.app.theme.secondary.classInvert = 'is-nadeshiko-secondary-invert';
+//                state.app.theme.secondary.code = '#ee6896';
+//                state.app.theme.secondary.codeInvert = '';
+//
+//                state.app.theme.accent.code = '';
+//                break;
+
 //                state.app.theme.background = '#f0f0f1';
                 state.app.theme.primary.class = 'is-nadeshiko';
                 state.app.theme.primary.classInvert = 'is-nadeshiko-invert';
-                state.app.theme.primary.code = '#f6adc6';
-                state.app.theme.primary.codeInvert = '#49343b';
+                state.app.theme.primary.code = '#ee6896';
+                state.app.theme.primary.codeInvert = '';
 
                 state.app.theme.secondary.class = 'is-nadeshiko-secondary';
                 state.app.theme.secondary.classInvert = 'is-nadeshiko-secondary-invert';
-                state.app.theme.secondary.code = '#ee6896';
-                state.app.theme.secondary.codeInvert = '';
+                state.app.theme.secondary.code = '#f6adc6';
+                state.app.theme.secondary.codeInvert = '#49343b';
 
                 state.app.theme.accent.code = '';
                 break;
