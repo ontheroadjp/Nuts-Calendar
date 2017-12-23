@@ -31,16 +31,15 @@ export default {
 
 <style lang="scss" scoped>
     .item {
-        align-items: center;
-        border-radius: 3px;
-        display: inline-flex;
-        font-size: 12px;
-        justify-content: center;
         padding-left: 10px;
         padding-right: 10px;
+        border-radius: 3px;
+/*        font-size: 12px; */
+        font-size: 0.75rem;
         vertical-align: top;
-        margin-bottom: 5px;
+        margin-bottom: 1px;
         line-height: 2em;
+        width: 100%;
 
         &.is-event {
             color: #023a31;
