@@ -226,9 +226,17 @@ $headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
 
 .saturday {
     background-color: rgb(228, 247, 255) !important;
+
+    & td:nth-child(1) {
+        color: blue;
+    }
 }
 
 .sunday {
     background-color: rgb(253, 231, 231) !important;
+
+    & td:nth-child(1) {
+        color: red;
+    }
 }
 </style>

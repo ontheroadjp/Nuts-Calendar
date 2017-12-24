@@ -31,21 +31,23 @@ export default {
 
 <style lang="scss" scoped>
     .item {
+        display: inline-flex;
         padding-left: 10px;
         padding-right: 10px;
         border-radius: 3px;
 /*        font-size: 12px; */
         font-size: 0.75rem;
         vertical-align: top;
-        margin-bottom: 1px;
-        line-height: 2em;
         width: 100%;
 
         &.is-event {
             color: #023a31;
+            padding: 3px 0;
         }
 
         &.is-task {
+            margin-bottom: 2px;
+            padding: 5px;
             background-color: rgb(240, 240, 240);
             color: #363636;
         }
