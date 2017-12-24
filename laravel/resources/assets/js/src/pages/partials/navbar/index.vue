@@ -75,8 +75,6 @@
     import userAccountDropdown from './user-account-dropdown.vue';
     import themeDropdown from './theme-dropdown.vue';
     import langDropdown from './lang-dropdown.vue';
-//    import themeChanger from './theme-changer.vue';
-//    import langChanger from './lang-changer.vue';
 
     export default {
         name: 'navbar-index',
@@ -85,8 +83,6 @@
             'user-account-dropdown': userAccountDropdown,
             'theme-dropdown': themeDropdown,
             'lang-dropdown': langDropdown
-//            'themeChanger': themeChanger,
-//            'langChanger': langChanger
         },
 
         mixins: [ core ],
@@ -109,12 +105,9 @@
             }),
 
             headerStyle: function() {
-//                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; '
-//                    + 'box-shadow: none;';
                 return {
                         'border-bottom': `1px solid this.theme.secondary.code`,
                         'box-shadow': 'none',
-                        'color': this.linkColor
                     }
             },
 

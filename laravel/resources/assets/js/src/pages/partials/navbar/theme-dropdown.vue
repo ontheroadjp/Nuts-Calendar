@@ -90,8 +90,6 @@ export default {
         },
 
         linkColorStyle: function() {
-//            if( this.disabled ) return "rgba(242, 242, 242, 0.3)";
-//            return "";
             if( this.disabled ) return { 'color': chroma(this.color).alpha(0.3) };
             return { 'color': this.color };
         },
