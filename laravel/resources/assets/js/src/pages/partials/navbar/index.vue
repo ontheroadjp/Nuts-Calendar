@@ -16,7 +16,7 @@
 
             <router-link to="/"
                 class="nav-item thin"
-                :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+                :style="[ linkColorStyle, pointerEventsStyle ]"
             >{{ t('navbar.home') }}</router-link>
 
             <template v-if="! username">
@@ -33,7 +33,7 @@
                 <router-link
                     to="/dashboard"
                     class="nav-item thin"
-                    :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+                    :style="[ linkColorStyle, pointerEventsStyle ]"
                     @click.native="$store.commit('calendar/SET_VALUE', {
                         key: 'currentId',
                         value: 'dashboard'
@@ -43,16 +43,14 @@
                 <user-account-dropdown></user-account-dropdown>
             </template>
 
-            <theme-dropdown></theme-dropdown>
-            <lang-dropdown></lang-dropdown>
+            <theme-dropdown :color="linkColor"></theme-dropdown>
+            <lang-dropdown :color="linkColor"></lang-dropdown>
 
             <span class="nav-item">
                 <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']"
-                    :style="{
-                        'color': linkColorStyle,
-                        'pointer-events': pointerEventsStyle,
-                        'border': '1px solid ' + linkColorStyle
-                    }"
+                    :style="[linkColorStyle, pointerEventsStyle, {
+                            'border': '1px solid ' + linkColor
+                    }]"
                 >
                     <span class="icon">
                         <i class="fa fa-twitter"></i>
@@ -95,6 +93,12 @@
 
         props: [ 'height' ],
 
+        data() {
+            return {
+                linkColor: 'rgb(242, 242, 242)'
+            }
+        },
+
         computed: {
             ...mapState('user', {
                 username: state => state.data.name
@@ -105,18 +109,26 @@
             }),
 
             headerStyle: function() {
-                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; '
-                    + 'box-shadow: none;';
+//                return 'border-bottom: 1px solid ' + this.theme.secondary.code + '; '
+//                    + 'box-shadow: none;';
+                return {
+                        'border-bottom': `1px solid this.theme.secondary.code`,
+                        'box-shadow': 'none',
+                        'color': this.linkColor
+                    }
             },
 
             linkColorStyle: function() {
-                if( this.disabled ) return "rgba(242, 242, 242, .3)";
-                return "rgba(242, 242, 242, .75)";
+                if( this.disabled ) return chroma(this.linkColor).alpha(0.3);
+                return { 'color': this.linkColor }
             },
 
             pointerEventsStyle: function() {
-                if( this.disabled ) return 'none';
-                return 'auto';
+                if( this.disabled ) {
+                    return { 'pointer-events': 'none' };
+                }
+
+                return { 'pointer-events': 'auto' };
             }
         },
 

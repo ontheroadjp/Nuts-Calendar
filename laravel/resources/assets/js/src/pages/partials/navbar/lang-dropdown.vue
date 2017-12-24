@@ -1,10 +1,10 @@
 <template>
 <div class="nav-item">
-    <dropdown-menu 
+    <dropdown-menu
         id="lang-dropdown-menu"
-        :label="menuItems[selectedLang].label" 
-        :labelStyle="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
-        icon="" 
+        :label="menuItems[selectedLang].label"
+        :labelStyle="[linkColorStyle, pointerEventsStyle]"
+        icon=""
         :backIconStyle="backIconStyle"
         :menuHeight="40"
     >
@@ -27,6 +27,12 @@ import { mapState, mapGetters } from 'vuex';
 import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {
+    props: {
+        color: {
+            type: String
+        }
+    },
+
     components: {
         'dropdown-menu': dropdownMenu
     },
@@ -65,13 +71,15 @@ export default {
         },
 
         linkColorStyle: function() {
-            if( this.disabled ) return "rgba(242, 242, 242, 0.3)";
-            return "";
+//            if( this.disabled ) return "rgba(242, 242, 242, 0.3)";
+//            return "";
+            if( this.disabled ) return { 'color': chroma(this.color).alpha(0.3) };
+            return { 'color': this.color };
         },
 
         pointerEventsStyle: function() {
-            if( this.disabled ) return 'none';
-            return 'auto';
+            if( this.disabled ) return { 'pointer-events': 'none' };
+            return { 'pointer-events': 'auto' };
         }
     },
 
