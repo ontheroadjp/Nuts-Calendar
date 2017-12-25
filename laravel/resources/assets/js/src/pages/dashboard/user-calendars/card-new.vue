@@ -14,7 +14,7 @@
                     style="margin-left:1px; color: #fff"></i>
             </a>
                 <button class="button strip">
-                    <span>Create New Calendar</span>
+                    <span>{{ t('dashboard.createNewCalendar') }}</span>
                 </button>
         </div>
     </div>
@@ -22,10 +22,14 @@
 </template>
 
 <script>
+import core from '../../../mixins/core.js';
+
 export default {
     props: {
         onOpen: { type: Function, required: true }
     },
+
+    mixins: [ core ],
 
     methods: {
         clickNewCalendar: function() {

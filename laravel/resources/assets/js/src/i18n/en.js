@@ -64,6 +64,16 @@ export const en = {
             newPasswordConfirmation: 'New Password (confirmation)',
             changePassword: 'Change Password'
         },
+        dashboard: {
+            createNewCalendar: 'Create New Calendar',
+            createNewMember: 'Create New Member / Role'
+        },
+        dashboardMenu: {
+            calendars: 'Calendars',
+            members: 'Members',
+            groups: 'Groups',
+            applications: 'Applications'
+        },
         calendarMenu: {
             dashboard: 'Dashboard',
             createNewOne: 'Create New one'

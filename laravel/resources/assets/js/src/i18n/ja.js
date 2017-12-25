@@ -66,6 +66,16 @@ export default {
             newPasswordConfirmation: '新規パスワード（確認）',
             changePassword: 'パスワード変更'
         },
+        dashboard: {
+            createNewCalendar: '新しいカレンダーを作成',
+            createNewMember: '新しいメンバー/役割を作成'
+        },
+        dashboardMenu: {
+            calendars: 'カレンダー',
+            members: 'メンバー',
+            groups: 'グループ',
+            applications: 'アプリケーション'
+        },
         calendarMenu: {
             dashboard: 'ダッシュボード',
             createNewOne: '新規作成'

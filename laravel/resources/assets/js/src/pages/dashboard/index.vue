@@ -35,12 +35,15 @@ import menuTabs from './menu-tabs.vue';
 import userCalendarsPane from './user-calendars/index.vue';
 import membersPane from './members/index.vue';
 import groupsPane from './groups/index.vue';
+import core from '../../mixins/core.js';
 
 export default {
 
     components: {
         menuTabs, todayDateCard, userCalendarsPane, membersPane, groupsPane
     },
+
+    mixins: [ core ],
 
 //    data() {
 //        return {
@@ -88,19 +91,19 @@ export default {
         tabs: function() {
             return {
                 '/dashboard': {
-                    label: `Calendars(${this.count.userCalendars}/${this.maxCalendars})`,
+                    label: `${this.t('dashboardMenu.calendars')}(${this.count.userCalendars}/${this.maxCalendars})`,
                     icon: 'fa-calendar'
                 },
                 '/dashboard/members': {
-                    label: `Members(${this.count.members}/${this.maxMembers})`,
+                    label: `${this.t('dashboardMenu.members')}(${this.count.members}/${this.maxMembers})`,
                     icon: 'fa-user'
                 },
                 '/dashboard/groups': {
-                    label: `Groups(${this.count.groups}/${this.maxSharedMembers})`,
+                    label: `${this.t('dashboardMenu.groups')}(${this.count.groups}/${this.maxSharedMembers})`,
                     icon: 'fa-users'
                 },
                 '/dashboard/applications': {
-                    label: 'Applications',
+                    label: this.t('dashboardMenu.applications'),
                     icon: 'fa-paw'
                 }
             }
