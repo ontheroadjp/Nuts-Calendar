@@ -1,12 +1,17 @@
 <template>
-<section id="headerNav" :class="['hero', theme.primary.class, 'is-medium']" v-if="$route.meta.navbar">
+<section
+    v-show="$route.meta.navbar.enable"
+    id="headerNav"
+    :class="['hero', theme.primary.class, 'is-medium']"
+>
+
 <div class="hero-head">
 <header class="nav navbar-fixed-top" :style="headerStyle">
 
     <template>
         <div class="nav-left" style="padding-left: 20px;">
             <a class="nav-item is-brand" href="/">
-                <img src="/images/nuts-logo-white.png" alt="Nuts logo">
+                <img v-show="$route.meta.navbar.logo" src="/images/nuts-logo-white.png" alt="Nuts logo">
             </a>
         </div>
 
@@ -15,6 +20,7 @@
         <div class="nav-right nav-menu" style="overflow:visible">
 
             <router-link to="/"
+                v-show="$route.meta.navbar.home"
                 class="nav-item thin"
                 :style="[ linkColorStyle, pointerEventsStyle ]"
             >{{ t('navbar.home') }}</router-link>
@@ -31,6 +37,7 @@
 
             <template v-else>
                 <router-link
+                    v-show="$route.meta.navbar.dashboard"
                     to="/dashboard"
                     class="nav-item thin"
                     :style="[ linkColorStyle, pointerEventsStyle ]"
@@ -43,10 +50,10 @@
                 <user-account-dropdown></user-account-dropdown>
             </template>
 
-            <theme-dropdown :color="linkColor"></theme-dropdown>
-            <lang-dropdown :color="linkColor"></lang-dropdown>
+            <theme-dropdown v-show="$route.meta.navbar.theme" :color="linkColor"></theme-dropdown>
+            <lang-dropdown v-show="$route.meta.navbar.lang" e:color="linkColor"></lang-dropdown>
 
-            <span class="nav-item">
+            <span v-show="$route.meta.navbar.twitter" class="nav-item">
                 <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']"
                     :style="[linkColorStyle, pointerEventsStyle, {
                             'border': '1px solid ' + linkColor

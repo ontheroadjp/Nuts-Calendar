@@ -21,7 +21,16 @@ export const routes = [
         component: root,
         meta: {
             auth: false,
-            navbar: false,
+            navbar: {
+                enable: false,
+                logo: false,
+                home: false,
+                dashboard: false,
+                userAcount: false,
+                theme: false,
+                lang: false,
+                twitter: false
+            },
             footer: false
         }
     },
@@ -31,7 +40,16 @@ export const routes = [
         component: login,
         meta: {
             auth: false,
-            navbar: false,
+            navbar: {
+                enable: false,
+                logo: false,
+                home: false,
+                dashboard: false,
+                userAcount: false,
+                theme: false,
+                lang: false,
+                twitter: false
+            },
             footer: true
         }
     },
@@ -41,7 +59,16 @@ export const routes = [
         component: passwordEmail,
         meta: {
             auth: false,
-            navbar: true,
+            navbar: {
+                enable: true,
+                logo: false,
+                home: false,
+                dashboard: false,
+                userAcount: false,
+                theme: false,
+                lang: false,
+                twitter: false
+            },
             footer: true
         }
     },
@@ -51,7 +78,16 @@ export const routes = [
         component: passwordReset,
         meta: {
             auth: false,
-            navbar: true,
+            navbar: {
+                enable: true,
+                logo: false,
+                home: false,
+                dashboard: false,
+                userAcount: false,
+                theme: false,
+                lang: false,
+                twitter: false
+            },
             footer: true
         }
     },
@@ -61,7 +97,16 @@ export const routes = [
         component: register,
         meta: {
             auth: false,
-            navbar: true,
+            navbar: {
+                enable: true,
+                logo: false,
+                home: false,
+                dashboard: false,
+                userAcount: false,
+                theme: false,
+                lang: false,
+                twitter: false
+            },
             footer: true
         }
     },
@@ -71,7 +116,16 @@ export const routes = [
         component: userAccountSettings,
         meta: {
             auth: true,
-            navbar: true,
+            navbar: {
+                enable: true,
+                logo: true,
+                home: false,
+                dashboard: true,
+                userAcount: false,
+                theme: false,
+                lang: false,
+                twitter: false
+            },
             footer: true
         }
     },
@@ -81,7 +135,16 @@ export const routes = [
         component: dashboard,
         meta: {
             auth: true,
-            navbar: true,
+            navbar: {
+                enable: true,
+                logo: true,
+                home: false,
+                dashboard: false,
+                userAcount: false,
+                theme: true,
+                lang: true,
+                twitter: false
+            },
             footer: true
         },
         children: [
@@ -90,7 +153,16 @@ export const routes = [
                 component: dashboard,
                 meta: {
                     auth: true,
-                    navbar: true,
+                    navbar: {
+                        enable: true,
+                        logo: true,
+                        home: false,
+                        dashboard: false,
+                        userAcount: false,
+                        theme: false,
+                        lang: false,
+                        twitter: false
+                    },
                     footer: true
                 }
             }
@@ -102,7 +174,16 @@ export const routes = [
         component: calendar,
         meta: {
             auth: true,
-            navbar: true,
+            navbar: {
+                enable: true,
+                logo: true,
+                home: true,
+                dashboard: false,
+                userAcount: false,
+                theme: false,
+                lang: false,
+                twitter: false
+            },
             footer: true
         },
         children: [
@@ -111,7 +192,16 @@ export const routes = [
                 component: tableView,
                 meta: {
                     auth: true,
-                    navbar: true,
+                    navbar: {
+                        enable: true,
+                        logo: true,
+                        home: false,
+                        dashboard: false,
+                        userAcount: false,
+                        theme: true,
+                        lang: true,
+                        twitter: false
+                    },
                     footer: false
                 }
             }
