@@ -3,7 +3,7 @@
     <dropdown-menu
         id="lang-dropdown-menu"
         :label="menuItems[selectedLang].label"
-        :labelStyle="[linkColorStyle, pointerEventsStyle]"
+        :labelStyle="linkColorStyle"
         icon=""
         :backIconStyle="backIconStyle"
         :menuHeight="40"

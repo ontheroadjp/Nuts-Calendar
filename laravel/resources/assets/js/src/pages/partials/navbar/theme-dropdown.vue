@@ -1,9 +1,20 @@
 <template>
+    <!--
 <div class="nav-item">
     <dropdown-menu
         id="theme-dropdown-menu"
         :label="t('theme.' + selectedTheme)"
         :labelStyle="[linkColorStyle, pointerEventsStyle]"
+        icon=""
+        :backIconStyle="backIconStyle"
+        :menuHeight="145"
+    >
+    -->
+<div class="nav-item">
+    <dropdown-menu
+        id="theme-dropdown-menu"
+        :label="t('theme.' + selectedTheme)"
+        :labelStyle="linkColorStyle"
         icon=""
         :backIconStyle="backIconStyle"
         :menuHeight="145"
