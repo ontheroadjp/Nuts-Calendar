@@ -1,40 +1,14 @@
 <template>
-    <!--
-<div class="nav-item">
     <dropdown-menu
-        id="theme-dropdown-menu"
-        :label="t('theme.' + selectedTheme)"
-        :labelStyle="[linkColorStyle, pointerEventsStyle]"
-        icon=""
-        :backIconStyle="backIconStyle"
-        :menuHeight="145"
-    >
-    -->
-<div class="nav-item">
-    <dropdown-menu
-        id="theme-dropdown-menu"
-        :label="t('theme.' + selectedTheme)"
+        id="lang-dropdown-menu"
+        :label="menuItems[selectedLang].label"
         :labelStyle="linkColorStyle"
         icon=""
         :backIconStyle="backIconStyle"
-        :menuHeight="145"
+        :menuHeight="40"
     >
         <template v-for="item in menuItems">
-            <li v-if="selectedTheme == item.value" :style="selectedStyle">
-                <span style="
-                    display: block;
-                    padding: 3px 20px;
-                    color: white;
-                    white-space: nowrap;
-                ">
-                    <span class="icon is-small">
-                        <i class="fa fa-btn fa-snowflake-o"></i>
-                    </span>
-                    <span>{{ item.label }}</span>
-                </span>
-            </li>
-
-            <li v-else>
+            <li v-if="selectedLang != item.value">
                 <a class="thin" :style="menuItemStyle" @click="clickMenuItem(item.value)">
                     <span class="icon is-small">
                         <i class="fa fa-btn fa-snowflake-o"></i>
@@ -44,12 +18,10 @@
             </li>
         </template>
     </dropdown-menu>
-</div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import chroma from 'chroma-js';
 import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {
@@ -67,7 +39,7 @@ export default {
     computed: {
         ...mapState({
             theme: state => state.app.theme,
-            selectedTheme: state => state.app.theme.name
+            selectedLang: state => state.app.lang
         }),
 
         ...mapState('dashboard', {
@@ -79,14 +51,10 @@ export default {
         }),
 
         menuItems: function() {
-            return [
-                { value: "ruri", label: this.t('theme.ruri') },
-                { value: "koiai", label: this.t('theme.koiai') },
-                { value: "nadeshiko", label: this.t('theme.nadeshiko') },
-                { value: "mikan", label: this.t('theme.mikan') },
-                { value: "sumire", label: this.t('theme.sumire') },
-                { value: "moegi", label: this.t('theme.moegi') }
-            ]
+            return {
+                en: { value: "en", label: 'English' },
+                ja: { value: "ja", label: '日本語' }
+            }
         },
 
         selectedStyle: function() {
@@ -113,10 +81,10 @@ export default {
     },
 
     methods: {
-        clickMenuItem: function(themeName) {
-            u.clog('changeTheme: ' + themeName);
-            localStorage.setItem('theme', themeName);
-            this.$store.commit('setTheme', themeName);
+        clickMenuItem: function(value) {
+            u.clog('changeLang: ' + value);
+            localStorage.setItem('lang', value);
+            this.$store.commit('setLang', value);
         }
     }
 }

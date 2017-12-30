@@ -1,18 +1,25 @@
 <template>
     <label>
-        <input 
-            :class="['input-checkbox', {'disabled': disabled}]" 
-            type="checkbox" 
-            v-model="input" 
+        <input
+            :class="['input-checkbox', {'disabled': disabled}]"
+            type="checkbox"
+            v-model="input"
             @change="onChange"
             :disabled="disabled"
         />
-        <span class="input-checkbox-parts">{{ label }}</span>
+        <!--
+        <span class="input-checkbox-parts">{{ i18nLabel }}</span>
+        -->
+        <span class="input-checkbox-parts">{{ t('item.' + label) }}</span>
     </label>
 </template>
 
 <script>
+import core from '../../../../mixins/core.js';
+
 export default {
+    mixins: [ core ],
+
     props: {
         label:        { type: String, default: 'Check' },
         initialValue: { type: [Boolean, Number], required: true },
@@ -50,7 +57,7 @@ export default {
             this.input = this.initialValue;
         }
     }
-}    
+}
 </script>
 
 <style lang="scss" scoped>

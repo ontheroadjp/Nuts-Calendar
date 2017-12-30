@@ -15,12 +15,12 @@ export const en = {
             logout: 'Sign out'
         },
         theme: {
-            ruri: 'ruri',
-            koiai: 'koiai',
-            nadeshiko: 'nadeshiko',
-            mikan: 'mikan',
-            sumire: 'sumire',
-            moegi: 'moegi'
+            ruri: 'Ruri',
+            koiai: 'Koiai',
+            nadeshiko: 'Nadeshiko',
+            mikan: 'Mikan',
+            sumire: 'Sumire',
+            moegi: 'Moegi'
         },
         login: {
             email: 'Email Address',
@@ -72,11 +72,30 @@ export const en = {
             calendars: 'Calendars',
             members: 'Members',
             groups: 'Groups',
-            applications: 'Applications'
+            applications: 'Applications',
+            settings: 'settings'
+        },
+        settingsPane: {
+            general: 'General',
+            theme: 'Theme',
+            language: 'Language',
+            userAccount: 'User Account',
+            username: 'Username',
+            changePassword: 'Change Password',
+            save: 'Save'
         },
         calendarMenu: {
             dashboard: 'Dashboard',
             createNewOne: 'Create New one'
+        },
+        item: {
+            allDay: 'All-day',
+            memo: 'Memo',
+            delete: 'Delete',
+            save: 'Save',
+            confirmation: 'Are you sure to delete ?',
+            cancel: 'Cancel',
+            ok: 'OK'
         },
         calendar: {
             jumpToTop: 'Jump to top'

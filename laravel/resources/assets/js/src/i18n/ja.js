@@ -74,11 +74,30 @@ export default {
             calendars: 'カレンダー',
             members: 'メンバー',
             groups: 'グループ',
-            applications: 'アプリケーション'
+            applications: 'アプリケーション',
+            settings: '設定'
+        },
+        settingsPane: {
+            general: '基本設定',
+            theme: 'テーマ',
+            language: '言語',
+            userAccount: 'アカウント設定',
+            username: 'ユーザー名',
+            changePassword: 'パスワード変更',
+            save: '保存する'
         },
         calendarMenu: {
             dashboard: 'ダッシュボード',
             createNewOne: '新規作成'
+        },
+        item: {
+            allDay: '終日',
+            memo: 'メモ',
+            delete: '削除',
+            save: '保存',
+            confirmation: '削除しますか？',
+            cancel: 'キャンセル',
+            ok: 'OK'
         },
         calendar: {
             jumpToTop: 'ページ先頭へ'

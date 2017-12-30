@@ -15,13 +15,13 @@
             style="
                 margin-right: 8px;
             ">
-                <span :style="startTimeStyle">
+                <span class="{ 'thin-500': !item.hasStartTimeError }" :style="startTimeStyle">
                     {{ item.start_time | timeFormatter }}
                 </span>
 
                 <span v-if="isEndTimeShow">
                     <span>|</span>
-                    <span :style="endTimeStyle">
+                    <span :class="{ 'thin-500': !item.hasEndTimeError }" :style="endTimeStyle">
                         {{ item.end_time | timeFormatter }}
                     </span>
                 </span>
@@ -52,7 +52,8 @@ export default {
 
     data() {
         return {
-            displayVertically: false
+            displayVertically: false,
+            timeErrorColor: '#ff3860'
         }
     },
 
@@ -69,14 +70,14 @@ export default {
 
         startTimeStyle: function() {
             if(this.item.hasStartTimeError) {
-                return { color: 'red' };
+                return { color: this.timeErrorColor };
             }
             return {};
         },
 
         endTimeStyle: function() {
             if(this.item.hasEndTimeError) {
-                return { color: 'red' };
+                return { color: this.timeErrorColor };
             }
             return {};
         },
@@ -113,6 +114,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.is-event {
+    margin-bottom: 2px;
+    padding: 5px;
+    background-color: rgb(240, 240, 240);
+    color: #023a31;
+}
+
 .vertial {
     display: inline-flex;
     flex-flow: column nowrap;

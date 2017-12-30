@@ -39,17 +39,5 @@ export default {
         font-size: 0.75rem;
         vertical-align: top;
         width: 100%;
-
-        &.is-event {
-            color: #023a31;
-            padding: 3px 0;
-        }
-
-        &.is-task {
-            margin-bottom: 2px;
-            padding: 5px;
-            background-color: rgb(240, 240, 240);
-            color: #363636;
-        }
     }
 </style>

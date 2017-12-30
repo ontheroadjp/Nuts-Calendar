@@ -10,7 +10,6 @@
         :menuHeight="145"
     >
     -->
-<div class="nav-item">
     <dropdown-menu
         id="theme-dropdown-menu"
         :label="t('theme.' + selectedTheme)"
@@ -44,12 +43,10 @@
             </li>
         </template>
     </dropdown-menu>
-</div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex';
-import chroma from 'chroma-js';
 import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {

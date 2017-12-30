@@ -1,13 +1,7 @@
 <template>
     <transition name="popup-menu">
         <div v-show="isActive" :style="box">
-            <button class="modal-close" aria-label="close"
-                style="position: absolute;
-                    top: -8px;
-                    right: -8px;
-                    background-color: rgb(84, 110, 122);
-                    z-index: 5;
-                "
+            <button class="modal-close popup-close" aria-label="close"
                 @click.stop="onClose"
             ></button>
 
@@ -86,6 +80,15 @@ export default {
 </script>
 
 <style>
+.popup-close {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: rgb(84, 110, 122);
+    z-index: 5;
+    border: 2px solid #fff;
+}
+
 .popup-menu-enter,
 .popup-menu-leave-to {
     opacity: 0;

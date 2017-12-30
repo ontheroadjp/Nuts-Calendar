@@ -12,7 +12,7 @@
         <!-- select bar -->
         <div v-else
             class="card thin ym-picker"
-            :style="{ backgroundColor: theme.secondary.code }"
+            :style="[{ backgroundColor: theme.secondary.code }, {zIndex: '999'}]"
         >
             <button class="delete delete-button" @click="togglePicker"></button>
 

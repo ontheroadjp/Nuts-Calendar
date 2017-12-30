@@ -22,6 +22,14 @@
         <groups-pane
             v-else-if="$route.path === '/dashboard/groups'"
         ></groups-pane>
+
+        <applications-pane
+            v-else-if="$route.path === '/dashboard/applications'"
+        ></applications-pane>
+
+        <settings-pane
+            v-else-if="$route.path === '/dashboard/settings'"
+        ></settings-pane>
     </menu-tabs>
 
 </div>
@@ -35,29 +43,20 @@ import menuTabs from './menu-tabs.vue';
 import userCalendarsPane from './user-calendars/index.vue';
 import membersPane from './members/index.vue';
 import groupsPane from './groups/index.vue';
+import applicationsPane from './applications/index.vue';
+import settingsPane from './settings/index.vue';
 import core from '../../mixins/core.js';
 
 export default {
 
     components: {
-        menuTabs, todayDateCard, userCalendarsPane, membersPane, groupsPane
+        menuTabs, todayDateCard, userCalendarsPane, membersPane, groupsPane, applicationsPane, settingsPane
     },
 
     mixins: [ core ],
 
-//    data() {
-//        return {
-//            tabs: {
-//                '/dashboard': { label: 'Calendars', icon: 'fa-calendar'},
-//                '/dashboard/members': { label: 'Members/Roles', icon: 'fa-user'},
-//                '/dashboard/shareMembers': { label: 'Share Members', icon: 'fa-users'},
-//                '/dashboard/applications': { label: 'Applications', icon: 'fa-paw'}
-//            }
-//        }
-//    },
-
     beforeRouteEnter(to, from, next) {
-        const types = ['', 'members'];
+        const types = ['', 'members', 'groups', 'applications', 'settings'];
 
         if( typeof to.params.type === 'undefined' ) {
             next();
@@ -105,6 +104,10 @@ export default {
                 '/dashboard/applications': {
                     label: this.t('dashboardMenu.applications'),
                     icon: 'fa-paw'
+                },
+                '/dashboard/settings': {
+                    label: this.t('dashboardMenu.settings'),
+                    icon: 'fa-wrench'
                 }
             }
         }

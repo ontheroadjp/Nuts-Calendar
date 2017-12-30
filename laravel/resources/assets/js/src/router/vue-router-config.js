@@ -3,7 +3,7 @@ import login from '../pages/user/login/index.vue';
 import register from '../pages/user/register.vue';
 import passwordEmail from '../pages/user/password-mail.vue';
 import passwordReset from '../pages/user/password-reset.vue';
-import userAccountSettings from '../pages/user/settings/index.vue';
+//import userAccountSettings from '../pages/user/settings/index.vue';
 import dashboard from '../pages/dashboard/index.vue';
 import calendar from '../pages/calendar/index.vue';
 import tableView from '../pages/calendar/table-view/index.vue';
@@ -41,9 +41,9 @@ export const routes = [
         meta: {
             auth: false,
             navbar: {
-                enable: false,
-                logo: false,
-                home: false,
+                enable: true,
+                logo: true,
+                home: true,
                 dashboard: false,
                 userAcount: false,
                 theme: false,
@@ -111,24 +111,24 @@ export const routes = [
         }
     },
 
-    {
-        path: '/me/settings/:type',
-        component: userAccountSettings,
-        meta: {
-            auth: true,
-            navbar: {
-                enable: true,
-                logo: true,
-                home: false,
-                dashboard: true,
-                userAcount: false,
-                theme: false,
-                lang: false,
-                twitter: false
-            },
-            footer: true
-        }
-    },
+//    {
+//        path: '/me/settings/:type',
+//        component: userAccountSettings,
+//        meta: {
+//            auth: true,
+//            navbar: {
+//                enable: true,
+//                logo: true,
+//                home: false,
+//                dashboard: true,
+//                userAcount: false,
+//                theme: false,
+//                lang: false,
+//                twitter: false
+//            },
+//            footer: true
+//        }
+//    },
 
     {
         path: '/dashboard',

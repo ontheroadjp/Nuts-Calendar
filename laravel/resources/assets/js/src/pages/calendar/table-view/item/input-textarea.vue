@@ -1,10 +1,10 @@
 <template>
 <span>
-    <textarea 
-        :class="['input-textarea', 'textarea', 'thin', { hasError: errorResult }]" 
-        style="box-shadow: none;" 
-        :placeholder="placeholder"
+    <textarea
+        :class="['input-textarea', 'textarea', 'thin', { hasError: errorResult }]"
+        style="box-shadow: none;"
         v-model="input"
+        :placeholder="t('item.' + placeholder)"
         @keyup="onKeyup"
         :disabled="disabled"
     ></textarea>
@@ -14,7 +14,11 @@
 </template>
 
 <script>
+import core from '../../../../mixins/core.js';
+
 export default {
+    mixins: [ core ],
+
     props: {
         initialValue:  { type: String, default: '' },
         placeholder:   { type: String, default: '' },
@@ -42,7 +46,7 @@ export default {
                 return this.minTextLength !== 0;
             }
 
-            return this.input.length > this.maxTextLength || 
+            return this.input.length > this.maxTextLength ||
                     this.input.length < this.minTextLength;
         },
 
@@ -66,13 +70,13 @@ export default {
     mounted() {
         this.input = this.initialValue;
     }
-} 
+}
 </script>
 
 <style lang="scss" scoped>
 .input-textarea {
     height: 110px;
-    width: 100%; 
+    width: 100%;
     padding: .4rem;
     border: 1px solid #d2d2d2;
     border-radius: 0;

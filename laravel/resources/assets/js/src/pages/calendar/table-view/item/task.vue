@@ -75,6 +75,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.is-task {
+    margin-bottom: 2px;
+    padding: 5px;
+    background-color: rgb(240, 240, 240);
+}
+
 .task-done {
     text-decoration: line-through;
 }

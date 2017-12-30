@@ -51,7 +51,7 @@
             </template>
 
             <theme-dropdown v-show="$route.meta.navbar.theme" :color="linkColor"></theme-dropdown>
-            <lang-dropdown v-show="$route.meta.navbar.lang" e:color="linkColor"></lang-dropdown>
+            <lang-dropdown v-show="$route.meta.navbar.lang" :color="linkColor"></lang-dropdown>
 
             <span v-show="$route.meta.navbar.twitter" class="nav-item">
                 <a :class="['button', theme.primary.class, 'is-inverted', 'is-outlined']"
@@ -78,6 +78,7 @@
 <script>
     import { mapState } from 'vuex';
     import core from '../../../mixins/core.js';
+    import chroma from 'chroma-js';
     import hamburgerMenu from './hamburger-menu.vue';
     import userAccountDropdown from './user-account-dropdown.vue';
     import themeDropdown from './theme-dropdown.vue';
@@ -120,7 +121,8 @@
 
             linkColorStyle: function() {
                 if( this.disabled ) return chroma(this.linkColor).alpha(0.3);
-                return { 'color': this.linkColor }
+//                return { 'color': this.linkColor }
+                return {};
             },
 
             pointerEventsStyle: function() {

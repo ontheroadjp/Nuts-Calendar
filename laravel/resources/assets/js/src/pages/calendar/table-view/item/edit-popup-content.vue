@@ -27,7 +27,7 @@
 
         <div class="all-day">
             <all-day-checkbox
-                label="All-day"
+                label="allDay"
                 :initialValue="editingItem.is_all_day"
                 @changeValue="onChangeAllDay"
                 :disabled="showDeleteConfirm || updateIsLoading"
@@ -37,8 +37,8 @@
         <div class="memo">
             <memo-textarea
                 :initialValue="editingItem.memo"
-                :minTextLength="5"
-                :maxTextLength="30"
+                :minTextLength="0"
+                :maxTextLength="300"
                 :showError="true"
                 placeholder="memo"
                 @changeValue="onChangeMemo"
@@ -53,13 +53,13 @@
                 class="button strip thin"
                 @click="showDeleteConfirm = true"
                 :disabled="updateIsLoading"
-            >Delete</button>
+            >{{ t('item.delete') }}</button>
 
             <button class="button strip thin"
                 :disabled="!isReadyResult"
                 @click="clickSave()">
                 <span v-if="!updateIsLoading" class="icon is-small" style="width:100%">
-                    Save
+                    {{ t('item.save') }}
                 </span>
                 <span v-else class="icon is-small" style="width:100%">
                     <i class="fa fa-refresh fa-spin"></i>
@@ -73,22 +73,23 @@
                     display: flex;
                     justify-content: center;
                 ">
-                    <i v-if="!removeIsLoading" class="fa fa-exclamation-circle fa-5x" style="margin-top:60px"></i>
+                    <i v-if="!removeIsLoading" class="fa fa-exclamation-circle fa-5x" style="margin-top:30px"></i>
                     <i v-else class="fa fa-refresh fa-spin fa-3x" style="margin-top:60px"></i>
                 </p>
-                <p v-show="!removeIsLoading">Delete {{ input.content }} ?</p>
+                <p v-show="!removeIsLoading">{{ t('item.confirmation') }}</p>
+                <p v-show="!removeIsLoading">{{ input.content }}</p>
 
                 <div v-show="!removeIsLoading" class="delete-confirm-buttons">
                     <button class="button strip"
                         style="color:#fff"
                         @click="showDeleteConfirm = false"
                         :disabled="updateIsLoading"
-                    >Cancel</button>
+                    >{{ t('item.cancel') }}</button>
 
                     <button class="button strip"
                         style="color:#fff"
                         @click="clickDeleteOK()"
-                    >OK</button>
+                    >{{ t('item.ok') }}</button>
                 </div>
 
             </div>
@@ -99,6 +100,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import core from '../../../../mixins/core.js';
 import textInput from '../../../../components/form/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 import allDayCheckbox from './all-day-checkbox.vue';
@@ -106,6 +108,8 @@ import memoTextarea from './input-textarea.vue';
 
 export default {
     components: { textInput, timeRangePicker, allDayCheckbox, memoTextarea },
+
+    mixins: [ core ],
 
     props: {
         'height': { type: Number, default: 320 },
@@ -306,6 +310,10 @@ export default {
     & button:hover {
         border: 1px solid #e6e6e6;
     }
+}
+
+.button[disabled] {
+    background: none;
 }
 
 .delete-confirm {

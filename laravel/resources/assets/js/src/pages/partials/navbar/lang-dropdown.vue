@@ -24,12 +24,14 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex';
+import chroma from 'chroma-js';
 import dropdownMenu from '../../../components/DropdownMenu/DropdownMenu.vue';
 
 export default {
     props: {
         color: {
-            type: String
+            type: String,
+            default: '#4a4a4a'
         }
     },
 
