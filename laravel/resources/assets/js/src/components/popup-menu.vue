@@ -1,7 +1,10 @@
 <template>
     <transition name="popup-menu">
         <div v-show="isActive" :style="box">
-            <button class="modal-close popup-close" aria-label="close"
+            <button
+                class="modal-close popup-close"
+                style="background-color: rgb(84, 110, 122);"
+                aria-label="close"
                 @click.stop="onClose"
             ></button>
 

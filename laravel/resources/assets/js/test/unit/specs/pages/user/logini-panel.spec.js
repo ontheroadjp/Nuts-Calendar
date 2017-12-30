@@ -1,12 +1,12 @@
-import Login from '../../../../../src/pages/user/login/index.vue';
+import LoginPanel from '../../../../../src/pages/user/login/login-panel.vue';
 import userService from '../../../../../src/services/user.js';
 import { mount } from 'vue-test-utils';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-describe('pages/user/login/index.vue', () => {
+describe('pages/user/login/login-panel.vue', () => {
     describe('Input form errors', () => {
-        const wrapper = mount(Login);
+        const wrapper = mount(LoginPanel);
 
         const setEmail = (value) => {
             wrapper.vm.input.email = value;
@@ -54,7 +54,7 @@ describe('pages/user/login/index.vue', () => {
     });
 
     describe('login()', () => {
-        const wrapper = mount(Login);
+        const wrapper = mount(LoginPanel);
         it('called', () => {
             expect(wrapper.vm.error.authentication).to.be.eql('');
             expect(wrapper.vm.error.email).to.be.eql('');
