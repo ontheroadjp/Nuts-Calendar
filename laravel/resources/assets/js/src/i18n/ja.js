@@ -91,7 +91,7 @@ export default {
             createNewOne: '新規作成'
         },
         calendarToolPalette: {
-            search: '検索',
+            search: 'キーワードで検索',
             date: '曜日',
             all: '全て',
             mon: '月',
