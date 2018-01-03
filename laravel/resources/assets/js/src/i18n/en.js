@@ -88,6 +88,22 @@ export const en = {
             dashboard: 'Dashboard',
             createNewOne: 'Create New one'
         },
+        calendarToolPalette: {
+            search: 'Search',
+            date: 'Date',
+            all: 'All',
+            mon: 'Mon',
+            tue: 'Tue',
+            wed: 'Wed',
+            thu: 'Thu',
+            fri: 'Fri',
+            sat: 'Sat',
+            sun: 'Sun',
+            item: 'Item',
+            event: 'Event',
+            task: 'Task',
+            endTime: 'End time'
+        },
         item: {
             allDay: 'All-day',
             memo: 'Memo',

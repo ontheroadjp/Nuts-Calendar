@@ -1,35 +1,44 @@
 <template>
 <span>
-    <button :class="[ 'button', { off: !isEventItemShow } ]" 
+    <button :class="[ 'button', { off: !isEventItemShow } ]"
             @click="clickEventItemButton()"
             :disabled="disabled">
-        <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
-        <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
-        <span class="thin button-label">Event</span>
+        <span class="icon">
+            <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
+            <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
+        </span>
+        <span class="thin button-label">{{ t('calendarToolPalette.event') }}</span>
     </button>
 
-    <button :class="['button', { off: !isTaskItemShow }]" 
+    <button :class="['button', { off: !isTaskItemShow }]"
             :disabled="disabled"
             @click="clickTaskItemButton()">
-        <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
-        <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
-        <span class="thin button-label">Task</span>
+        <span class="icon">
+            <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
+            <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
+        </span>
+        <span class="thin button-label">{{ t('calendarToolPalette.task') }}</span>
     </button>
 
     <button :class="['button', { off: !isEndTimeShow }]"
         :disabled="disabled"
         @click="clickEndTimeButton()">
-        <i v-show="isEndTimeShow" class="fa fa-toggle-on"></i>
-        <i v-show="!isEndTimeShow" class="fa fa-toggle-off"></i>
-        <span class="thin button-label">End time</span>
+        <span class="icon">
+            <i v-show="isEndTimeShow" class="fa fa-toggle-on"></i>
+            <i v-show="!isEndTimeShow" class="fa fa-toggle-off"></i>
+        </span>
+        <span class="thin button-label">{{ t('calendarToolPalette.endTime') }}</span>
     </button>
 </span>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import core from '../../../../mixins/core.js';
 
 export default {
+    mixins: [ core ],
+
     props: {
         disabled: { type: Boolean, default: false }
     },
@@ -61,7 +70,7 @@ export default {
             this.toggleShowHideEndTime({ value: !this.isEndTimeShow });
         }
     }
-} 
+};
 </script>
 
 <style lang="scss" scoped>
