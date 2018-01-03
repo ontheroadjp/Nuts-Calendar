@@ -2,24 +2,24 @@
 <template>
 <span class="time-picker">
 
-    <input :class="['display-time', 'thin', { disabled: disabled }]" 
-        type="text" 
-        :style="[style.input]" 
-        v-model="displayTime" 
-        @click.stop="toggleDropdown($event)" 
+    <input :class="['display-time', 'thin', { disabled: disabled }]"
+        type="text"
+        :style="[style.input]"
+        v-model="displayTime"
+        @click.stop="toggleDropdown($event)"
         :disabled="disabled"
         readonly />
 
-    <div v-show="error && !disabled" class="error-message">Error</div>
+    <div v-show="error && !disabled" class="error-message">{{ t('timePicker.error') }}</div>
 
-    <span class="clear-btn" 
-        v-if="!hideClearButton" 
-        v-show="!showDropdown && showClearBtn" 
+    <span class="clear-btn"
+        v-if="!hideClearButton"
+        v-show="!showDropdown && showClearBtn"
         @click.stop="clearTime"
     >&times;</span>
 
-    <div class="time-picker-overlay" 
-        v-if="showDropdown" 
+    <div class="time-picker-overlay"
+        v-if="showDropdown"
         @click.stop="toggleDropdown($event)"
     ></div>
 
@@ -27,42 +27,42 @@
         <div class="select-list thin" :style="[style.selectList]">
             <ul class="hours">
                 <li class="hint" v-text="hourType"></li>
-                <li v-for="hr in hours" 
-                    v-text="hr" 
-                    :class="{active: hour === hr}" 
+                <li v-for="hr in hours"
+                    v-text="hr"
+                    :class="{active: hour === hr}"
                     @click.stop="select('hour', hr)"
                 ></li>
             </ul>
             <ul class="minutes">
                 <li class="hint" v-text="minuteType"></li>
-                <li v-for="m in minutes" 
-                    v-text="m" 
-                    :class="{active: minute === m}" 
+                <li v-for="m in minutes"
+                    v-text="m"
+                    :class="{active: minute === m}"
                     @click.stop="select('minute', m)"
                 ></li>
             </ul>
             <ul class="seconds" v-if="secondType">
                 <li class="hint" v-text="secondType"></li>
-                <li v-for="s in seconds" 
-                    v-text="s" 
-                    :class="{active: second === s}" 
+                <li v-for="s in seconds"
+                    v-text="s"
+                    :class="{active: second === s}"
                     @click.stop="select('second', s)"
                 ></li>
             </ul>
             <ul class="apms" v-if="apmType">
                 <li class="hint" v-text="apmType"></li>
-                <li v-for="a in apms" 
-                    v-text="a" 
-                    :class="{active: apm === a}" 
+                <li v-for="a in apms"
+                    v-text="a"
+                    :class="{active: apm === a}"
                     @click.stop="select('apm', a)"
                 ></li>
             </ul>
         </div><!-- / .select-list -->
 
-        <div class="thin" 
-            :style="[style.dropdownFooter]" 
+        <div class="thin"
+            :style="[style.dropdownFooter]"
             @click.stop="toggleDropdown($event)"
-        >done</div>
+        >{{ t('timePicker.done') }}</div>
 
     </div><!-- // .dropdown -->
 
@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import core from '../mixins/core.js';
+
 const CONFIG = {
     HOUR_TOKENS: ['HH', 'H', 'hh', 'h', 'kk', 'k'],
     MINUTE_TOKENS: ['mm', 'm'],
@@ -92,6 +94,8 @@ export default {
         inputWidth:         { type: Number, default: 100 }, // by px
         disabled:           { type: Boolean, default: false }
     },
+
+    mixins: [ core ],
 
     data() {
         return {
@@ -138,8 +142,8 @@ export default {
         },
 
         showClearBtn () {
-            if ( ((this.hour && this.hour !== '') || 
-                 (this.minute && this.minute !== '')) && 
+            if ( ((this.hour && this.hour !== '') ||
+                 (this.minute && this.minute !== '')) &&
                  !this.disabled
             ) {
                 return true
@@ -148,8 +152,8 @@ export default {
         },
 
         error: function() {
-            if( (this.hour == '' && this.minute != '') 
-                || (this.hour != '' && this.minute == '') 
+            if( (this.hour == '' && this.minute != '')
+                || (this.hour != '' && this.minute == '')
             ) { return true; }
 
             return false;
@@ -182,6 +186,7 @@ export default {
                     'color': '#fff',
                     'text-align': 'center',
                     'cursor': 'pointer',
+                    'border': '1px solid #fff',
                     'border-radius': '5px',
                     'z-index': '99'
                 }
@@ -227,8 +232,8 @@ export default {
         },
 
         checkAcceptingType (validValues, formatString, fallbackValue) {
-            if (!validValues || !formatString || !formatString.length) { 
-                return '' 
+            if (!validValues || !formatString || !formatString.length) {
+                return ''
             }
 
             for (let i = 0; i < validValues.length; i++) {
@@ -384,8 +389,8 @@ export default {
                             value = hourValue % 24
                         }
 
-                        fullValues[token] = (token === 'HH' && value < 10) 
-                            ? `0${value}` 
+                        fullValues[token] = (token === 'HH' && value < 10)
+                            ? `0${value}`
                             : String(value)
                             break
 
@@ -486,8 +491,8 @@ export default {
         },
 
         fireEvents() {
-            const ready = !this.error 
-                    && ( (this.hour != this.initialValue.HH) 
+            const ready = !this.error
+                    && ( (this.hour != this.initialValue.HH)
                     || (this.minute != this.initialValue.mm) );
 
             const data = {
@@ -688,12 +693,12 @@ export default {
             align-items: stretch;
             justify-content: space-between;
         }
-        
+
         & ul {
             padding: 0;
             margin: 0;
             list-style: none;
-        
+
             flex: 1;
             overflow-x: hidden;
             overflow-y: auto;

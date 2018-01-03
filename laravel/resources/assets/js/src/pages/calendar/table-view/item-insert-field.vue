@@ -2,7 +2,7 @@
 <div id="item-input-field">
     <input type="text"
            class="input item-input-field"
-           placeholder="Content here.."
+           :placeholder="t('itemInsert.contentHere')"
            v-model="newItemContent"
            v-focus
     />
@@ -10,17 +10,17 @@
         v-show="!addItem.isLoading"
         @click.stop="clickEvent()"
         @blur="clickEvent()"
-        >Event
+        >{{ t('itemInsert.event') }}
     </a>
 
     <a  class="button is-small"
         v-show="!addItem.isLoading"
         @click.stop="clickTask()"
         @blur="clickTask()"
-        >Task
+        >{{ t('itemInsert.task') }}
     </a>
 
-    <a  class="button is-small" 
+    <a  class="button is-small"
         v-show="addItem.isLoading"
         ><span class="icon is-small">
             <i class="fa fa-refresh fa-spin"></i>
@@ -28,9 +28,9 @@
     </a>
 
     <a  v-show="!addItem.isLoading"
-        @click.stop="clickCancel()" 
+        @click.stop="clickCancel()"
         style="border: none; background: none;"
-        ><i 
+        ><i
             class="fa fa-times-circle"
             style="
                 color: black;
@@ -45,9 +45,12 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 import { focus } from '../../../directives/focus.js';
+import core from '../../../mixins/core.js';
 
 export default {
     name: 'add-item-field',
+
+    mixins: [ core ],
 
     directives: { focus },
 

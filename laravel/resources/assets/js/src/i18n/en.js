@@ -88,6 +88,27 @@ export const en = {
             dashboard: 'Dashboard',
             createNewOne: 'Create New one'
         },
+        calendarToolPalette: {
+            search: 'Search',
+            date: 'Date',
+            all: 'All',
+            mon: 'Mon',
+            tue: 'Tue',
+            wed: 'Wed',
+            thu: 'Thu',
+            fri: 'Fri',
+            sat: 'Sat',
+            sun: 'Sun',
+            item: 'Item',
+            event: 'Event',
+            task: 'Task',
+            endTime: 'End time'
+        },
+        itemInsert: {
+            contentHere: 'Title',
+            event: 'Event',
+            task: 'Task'
+        },
         item: {
             allDay: 'All-day',
             memo: 'Memo',
@@ -96,6 +117,12 @@ export const en = {
             confirmation: 'Are you sure to delete ?',
             cancel: 'Cancel',
             ok: 'OK'
+        },
+        timePicker: {
+            hh: 'HH',
+            mm: 'MM',
+            error: 'Error',
+            done: 'OK'
         },
         calendar: {
             jumpToTop: 'Jump to top'

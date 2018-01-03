@@ -15,7 +15,7 @@
             style="
                 margin-right: 8px;
             ">
-                <span class="{ 'thin-500': !item.hasStartTimeError }" :style="startTimeStyle">
+                <span :class="{ 'thin-500': !item.hasStartTimeError }" :style="startTimeStyle">
                     {{ item.start_time | timeFormatter }}
                 </span>
 

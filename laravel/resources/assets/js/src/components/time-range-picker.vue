@@ -1,7 +1,7 @@
 <template>
 <div class="time-range-picker">
     <div>
-        <startTimePicker 
+        <startTimePicker
             format="HH:mm"
             :initialValue="initial.start"
             :minute-interval="minuteInterval"
@@ -11,11 +11,11 @@
             :disabled="disabled"
         ></startTimePicker>
 
-        <span :class="{ 'disabled': disabled }" 
+        <span :class="{ 'disabled': disabled }"
             style="margin: 0 5px; line-height: 2rem;"
         >to</span>
 
-        <endTimePicker 
+        <endTimePicker
             format="HH:mm"
             :initialValue="initial.end"
             :minute-interval="minuteInterval"
@@ -27,18 +27,21 @@
         ></endTimePicker>
     </div>
 
-    <div v-show="errorResult && !error.start && !error.end && !disabled" 
+    <div v-show="errorResult && !error.start && !error.end && !disabled"
         class="error-message"
-    >Error</div>
+    >{{ t('timePicker.error') }}</div>
 </div>
 </template>
 
 <script>
+import core from '../mixins/core.js';
 import startTimePicker from './time-picker.vue';
 import endTimePicker from './time-picker.vue';
 
 export default {
     components: { startTimePicker, endTimePicker },
+
+    mixins: [ core ],
 
     props: {
         minuteInterval:     { type: Number, default: 5 },
@@ -81,7 +84,7 @@ export default {
             if( this.input.start.HH == '' && this.input.start.mm == '' ) return '';
             return this.input.start.HH + ':' + this.input.start.mm;
         },
-        
+
         formattedEndTime: function() {
             if( this.error.end ) return '';
             if( this.input.end.HH == '' && this.input.end.mm == '' ) return '';
@@ -136,7 +139,7 @@ export default {
             this.isDropdownOpened = data.isDropdownOpened;
             this.fireEvent();
         },
-        
+
         fireEvent() {
             const data = {
                 value: {

@@ -5,20 +5,22 @@
     <span class="level-left">
         <span class="level-item select">
             <select v-model="selected" :disabled="disabled">
-                <option value="date" selected>Date</option>
+                <option value="date" selected>{{ t('calendarToolPalette.date') }}</option>
+<!--
                 <option value="member">Member</option>
-                <option value="item">Item</option>
+-->
+                <option value="item">{{ t('calendarToolPalette.item') }}</option>
             </select>
         </span>
 
         <span v-show="selected === 'date'" class="level-item">
             <date-pane :disabled="disabled"></date-pane>
         </span>
-
+<!--
         <span v-show="selected === 'member'" class="level-item">
             <member-pane :disabled="disabled"></member-pane>
         </span>
-
+-->
         <span v-show="selected === 'item'" class="level-item">
             <item-pane :disabled="disabled"></item-pane>
         </span>
@@ -36,15 +38,19 @@
 
 <script>
 import { mapState } from 'vuex';
+import core from '../../../../mixins/core.js';
 import datePane from './date-pane.vue';
-import memberPane from './member-pane.vue';
+//import memberPane from './member-pane.vue';
 import itemPane from './item-pane.vue';
 import searchBox from './search-box.vue';
 
 export default {
     name: 'calendar-tool-palett',
 
-    components: { datePane, memberPane, itemPane, searchBox },
+//    components: { datePane, memberPane, itemPane, searchBox },
+    components: { datePane, itemPane, searchBox },
+
+    mixins: [ core ],
 
     data() {
         return {
@@ -65,5 +71,5 @@ export default {
     background:#f0f0f0;
     padding:5px;
     overflow: scroll;
-} 
+}
 </style>

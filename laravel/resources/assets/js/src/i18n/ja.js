@@ -90,6 +90,27 @@ export default {
             dashboard: 'ダッシュボード',
             createNewOne: '新規作成'
         },
+        calendarToolPalette: {
+            search: '検索',
+            date: '曜日',
+            all: '全て',
+            mon: '月',
+            tue: '火',
+            wed: '水',
+            thu: '木',
+            fri: '金',
+            sat: '土',
+            sun: '日',
+            item: 'アイテム',
+            event: '予定',
+            task: 'タスク',
+            endTime: '終了時刻'
+        },
+        itemInsert: {
+            contentHere: 'タイトル',
+            event: '予定',
+            task: 'タスク'
+        },
         item: {
             allDay: '終日',
             memo: 'メモ',
@@ -98,6 +119,12 @@ export default {
             confirmation: '削除しますか？',
             cancel: 'キャンセル',
             ok: 'OK'
+        },
+        timePicker: {
+            hh: '時',
+            mm: '分',
+            error: 'エラー',
+            done: 'OK'
         },
         calendar: {
             jumpToTop: 'ページ先頭へ'

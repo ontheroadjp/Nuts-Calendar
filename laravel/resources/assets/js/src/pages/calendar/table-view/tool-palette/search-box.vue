@@ -2,17 +2,17 @@
     <div class="control">
 
         <div class="control has-icon has-addons">
-            <input class="input" 
-                type="text" 
-                v-model="query" 
-                placeholder="Search"
+            <input class="input"
+                type="text"
+                v-model="query"
+                :placeholder="t('calendarToolPalette.search')"
                 :disabled="disabled" />
 
             <span class="icon is-small">
                 <i class="fa fa-search"></i>
             </span>
 
-            <a :class="['button', theme.secondary.class, 'is-outlined']" 
+            <a :class="['button', theme.secondary.class, 'is-outlined']"
                 @click="clearField"
             >Clear</a>
         </div>
@@ -22,8 +22,11 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import core from '../../../../mixins/core.js';
 
 export default {
+    mixins: [ core ],
+
     props: {
         disabled: { type: Boolean, default: false }
     },

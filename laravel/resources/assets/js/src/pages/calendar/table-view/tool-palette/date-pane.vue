@@ -1,62 +1,62 @@
 <template>
 <span>
-    <button 
-        class="button" 
+    <button
+        class="button"
         style="margin-right:8px"
         @click="setInternalQuery({ value: '' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">All</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.all') }}</span>
     </button>
 
-    <button 
-        class="button" 
+    <button
+        class="button"
         style="background-color:#fff0f0"
         @click="setInternalQuery({ value: '0' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">Sun</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.sun') }}</span>
     </button>
 
-    <button 
-        class="button" 
+    <button
+        class="button"
         @click="setInternalQuery({ value: '1' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">Mon</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.mon') }}</span>
     </button>
 
-    <button 
-        class="button" 
+    <button
+        class="button"
         @click="setInternalQuery({ value: '2' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">Tue</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.tue') }}</span>
     </button>
 
-    <button 
-        class="button" 
+    <button
+        class="button"
         @click="setInternalQuery({ value: '3' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">Wed</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.wed') }}</span>
     </button>
 
-    <button 
-        class="button" 
+    <button
+        class="button"
         @click="setInternalQuery({ value: '4' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">Thu</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.thu') }}</span>
     </button>
 
-    <button 
-        class="button" 
+    <button
+        class="button"
         @click="setInternalQuery({ value: '5' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">Fri</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.fri') }}</span>
     </button>
 
-    <button 
-        class="button" 
+    <button
+        class="button"
         style="background-color:#f0f0ff; margin-right:15px"
         @click="setInternalQuery({ value: '6' })"
-        :disabled="disabled" 
-        ><span class="date-label thin">Sat</span>
+        :disabled="disabled"
+        ><span class="date-label thin">{{ t('calendarToolPalette.sat') }}</span>
     </button>
 
 </span>
@@ -64,8 +64,11 @@
 
 <script>
 import { mapActions } from 'vuex';
+import core from '../../../../mixins/core.js';
 
 export default {
+    mixins: [ core ],
+
     props: {
         disabled: { type: Boolean, default: false }
     },
@@ -75,7 +78,7 @@ export default {
             setInternalQuery: 'setInternalQuery'
         })
     }
-} 
+}
 </script>
 
 <style lang="scss" scoped>
