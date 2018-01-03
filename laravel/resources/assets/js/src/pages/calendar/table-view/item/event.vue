@@ -28,7 +28,7 @@
         </span>
 
         <span v-else class="all-day" style="margin-right:8px">
-            all-day
+            <i class="fa fa-circle" style="color: #fb04a4;"></i>
         </span>
 
         <span :style="searchHighlightStyle">{{ item.content }}</span>
