@@ -1,7 +1,7 @@
 version: '2'
 services:
     laravel:
-        image: nutsllc/toybox-laravel:5.2-php7.0-apache
+        image: nutsllc/toybox-php:7.0-apache
         environment:
             - ALL_PHP_MODULES=enable
             - OPCACHE=disable
@@ -9,6 +9,7 @@ services:
             - MAIL_HOST=mailcatcher
             - MAIL_PORT=1025
             - PATH=$PATH:/var/www/laravel/vendor/bin
+            - DOCUMENT_ROOT=/var/www/laravel/public
         volumes:
             - "./laravel:/var/www/laravel"
         ports:
