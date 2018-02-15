@@ -2,19 +2,11 @@
     <span class="item is-event"
         @click.stop="clickItem($event)">
 
-<!--
-        <span v-if="!item.is_all_day" :class="[{'vertial': displayVertically}, 'thin-400']"
-            style="
-                margin-right: 8px;
-                background-color: #ace6e6;
-                padding: 2px 5px;
-                border-radius: 3px;
-            ">
--->
-        <span v-if="!item.is_all_day" :class="[{'vertial': displayVertically}, 'thin-400']"
-            style="
-                margin-right: 8px;
-            ">
+        <span
+            v-if="!item.is_all_day"
+            :class="[{'vertial': displayVertically}, 'thin-400']"
+            style="margin-right: 8px;"
+        >
                 <span :class="{ 'thin-500': !item.hasStartTimeError }" :style="startTimeStyle">
                     {{ item.start_time | timeFormatter }}
                 </span>
