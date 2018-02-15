@@ -1,9 +1,8 @@
 <template>
-    <td v-show="!showColumns || showColumns.indexOf(memberId) > -1"
-        :style="[ columnWidth,
-            dragItem.enterCell.cellAddress
-                == getCellAddress(getRowIndex(day.date), memberId)
-                ? dragEnterStyle : ''
+    <td :style="[ columnWidth,
+            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(day.date), memberId)
+                ? dragEnterStyle
+                : ''
         ]"
         @click="clickCell(dayIndex, memberId, cellItems)"
         @dragenter="handleDragEnter(day.date, memberId, cellItems)"
@@ -34,6 +33,7 @@
             v-if="addItem.enterCell.dayIndex === dayIndex
                 && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
+
     </td>
 </template>
 
@@ -49,7 +49,8 @@ export default {
         day:         { type: Object, required: true },
         dayIndex:    { type: Number, required: true },
         cellItems:   { type: Array, required: true },
-        memberId:    { type: [Number, String], required: true },
+//        memberId:    { type: [Number, String], required: true },
+        memberId:    { type: [String], required: true },
         columnWidth: { type: Object, required: true }
     },
 
