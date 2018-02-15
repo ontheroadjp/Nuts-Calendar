@@ -50,7 +50,13 @@ import core from '../../mixins/core.js';
 export default {
 
     components: {
-        menuTabs, todayDateCard, userCalendarsPane, membersPane, groupsPane, applicationsPane, settingsPane
+        menuTabs,
+        todayDateCard,
+        userCalendarsPane,
+        membersPane,
+        groupsPane,
+        applicationsPane,
+        settingsPane
     },
 
     mixins: [ core ],
