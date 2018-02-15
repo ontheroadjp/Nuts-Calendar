@@ -96,6 +96,7 @@ export default {
             const params = {
                 'member_id': state.draggingItem.member_id,
                 'content': state.draggingItem.content,
+                'is_all_day': state.draggingItem.is_all_day,
                 'start_time': state.draggingItem.start_time,
                 'end_time': state.draggingItem.end_time,
                 'is_done': state.draggingItem.is_done,
