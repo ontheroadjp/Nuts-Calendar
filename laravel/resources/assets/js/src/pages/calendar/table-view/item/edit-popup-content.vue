@@ -155,6 +155,9 @@ export default {
         }),
 
         errorResult: function() {
+            if(this.input.allDay) {
+                return this.error.content && this.error.allDay && this.error.memo;
+            }
             return (Object.values(this.error).indexOf(true) !== -1);
         },
 
