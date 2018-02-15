@@ -40,7 +40,8 @@
                     </th>
                 </template>
 
-                <th class="header-styling thin"
+                <th v-if="showRightDay"
+                    class="header-styling thin"
                     style="padding: 0.4rem 1rem"
                     :style="[style.dayColumnWidth]"
                 ></th>
@@ -69,13 +70,12 @@
                     ></cell-items>
                 </template>
 
-<!--
                 <dayColumn
+                    v-if="showRightDay"
                     :day="day"
                     :today="style.today"
                     :dayColumnWidth="style.dayColumnWidth"
                 ></dayColumn>
--->
             </tr>
         </tbody>
     </table>
@@ -118,7 +118,8 @@ export default {
     data() {
         return {
             fixedScrollPositionX: 0,
-            fixedScrollPositionY: 0
+            fixedScrollPositionY: 0,
+            showRightDay: false
         };
     },
 
