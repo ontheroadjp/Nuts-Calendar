@@ -59,21 +59,23 @@
                     :dayColumnWidth="style.dayColumnWidth"
                 ></dayColumn>
 
-                <template v-for="(cellItems, memberId) in day.items">
+                <template v-for="(memberId, index) in showColumns">
                     <cell-items
                         :day="day"
                         :dayIndex="dayIndex"
-                        :cellItems="cellItems"
+                        :cellItems="day.items[memberId]"
                         :memberId="memberId"
                         :columnWidth="columnWidth"
                     ></cell-items>
                 </template>
 
+<!--
                 <dayColumn
                     :day="day"
                     :today="style.today"
                     :dayColumnWidth="style.dayColumnWidth"
                 ></dayColumn>
+-->
             </tr>
         </tbody>
     </table>
@@ -125,6 +127,10 @@ export default {
             theme: state => state.app.theme,
             lang: state => state.app.lang
         }),
+
+//        ...mapState('userCalendarMember/data', {
+//            userCalendarMembers: state => state.userCalendarMembers
+//        }),
 
         ...mapState('calendar/tableView/item', {
             editItem: state => state.update
