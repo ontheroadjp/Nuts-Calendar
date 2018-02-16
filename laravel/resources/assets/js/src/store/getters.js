@@ -6,11 +6,6 @@ export default {
         return state.i18n[state.app.lang][g][k];
     },
 
-    getUserplan: (state, getters) => {
-        const userplanId = state.user.data.user.userplan_id;
-        return state.userplan.data.userplans[userplanId];
-    },
-
     filteredMembers: (state, getters) => {
         const currentCalendarId = state.calendar.currentId;
         const ids = [];
@@ -25,7 +20,6 @@ export default {
         const result = {};
 
         Object.keys(members).forEach(function(key) {
-//            if( ids.indexOf(parseInt(key)) != -1 ) {
             if( ids.indexOf(key) != -1 ) {
                 result[key] = this[key];
             }
