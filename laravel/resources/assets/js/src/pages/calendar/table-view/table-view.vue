@@ -96,7 +96,6 @@ import miniCalBar from './footer-bar/mini-cal-bar.vue';
 import dateUtilities from '../../../mixins/date-utilities.js';
 
 export default {
-    //name: 'table-view-content',
     name: 'table-view-content',
 
     components: {
@@ -128,10 +127,6 @@ export default {
             theme: state => state.app.theme,
             lang: state => state.app.lang
         }),
-
-//        ...mapState('userCalendarMember/data', {
-//            userCalendarMembers: state => state.userCalendarMembers
-//        }),
 
         ...mapState('calendar/tableView/item', {
             editItem: state => state.update
