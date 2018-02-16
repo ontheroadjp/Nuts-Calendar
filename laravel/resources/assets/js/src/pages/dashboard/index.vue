@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import todayDateCard from './today-date-card.vue';
 import menuTabs from './menu-tabs.vue';
 import userCalendarsPane from './user-calendars/index.vue';
@@ -75,9 +75,9 @@ export default {
 
     computed: {
         ...mapState('user', {
-            maxCalendars: state => state.data.maxCalendars,
-            maxMembers: state => state.data.maxMembers,
-            maxSharedMembers: state => state.data.maxSharedMembers
+            maxCalendars: state => state.data.userPlan.max_calendars,
+            maxMembers: state => state.data.userPlan.max_members,
+            maxSharedMembers: state => state.data.userPlan.max_shared_members
         }),
 
         ...mapState({

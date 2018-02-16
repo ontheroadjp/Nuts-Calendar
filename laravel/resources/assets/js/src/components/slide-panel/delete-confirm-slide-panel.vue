@@ -27,12 +27,12 @@
                     style="color:#fff"
                     @click="clickCancel()"
                     :disabled="isLoading"
-                >Cancel</button>
+                >{{ cancelButtonLabel }}</button>
 
                 <button class="button strip"
                     style="color:#fff"
                     @click="clickOK()"
-                >OK</button>
+                >{{ okButtonLabel }}</button>
             </div>
         </div>
 </simple-slide-panel>
@@ -50,7 +50,9 @@ export default {
         }},
         isActive:  { type: Boolean, required: true },
         isLoading: { type: Boolean, default: false },
-        message:   { type: String, default: 'Are you sure ?' }
+        message:   { type: String, default: 'Are you sure ?' },
+        okButtonLabel:      { type: String, default: 'OK' },
+        cancelButtonLabel:  { type: String, default: 'Cancel' }
     },
 
     methods: {

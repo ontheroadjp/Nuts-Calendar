@@ -38,7 +38,7 @@ export default {
         }),
 
         ...mapState('user', {
-            maxCalendars: state => state.data.maxCalendars,
+            maxCalendars: state => state.data.userPlan.max_calendars,
         }),
 
         arrowCreateNewCalendar: function() {

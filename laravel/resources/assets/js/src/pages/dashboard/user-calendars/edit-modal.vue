@@ -3,6 +3,7 @@
         blackScreenColor="rgba(10,10,10,0.45)"
         :onClose="onClose"
         :isActive="isActive"
+        :isLoading="isDeleteLoading"
         :deleteResult.sync="deleteResult"
         @onDeleteOK="clickDeleteOK()"
     >
@@ -15,7 +16,7 @@
                 :minTextLength="1"
                 :maxTextLength="30"
                 :height="110"
-                placeholder="Calendar name"
+                :placeholder="placeHolder.editModal.userCalendarName"
                 @blurValue="blurName"
                 :disabled="false"
             ></text-input>
@@ -26,7 +27,7 @@
                 :minTextLength="0"
                 :maxTextLength="200"
                 :height="110"
-                placeholder="Description"
+                :placeholder="placeHolder.editModal.description"
                 @blurValue="blurDescription"
                 :disabled="false"
             ></text-input>
@@ -58,12 +59,15 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import core from '../../../mixins/core.js';
 import textInput from '../../../components/form/text-input.vue';
 import checkboxInput from '../../../components/form/checkbox.vue';
 import deleteConfirmModal from '../../../components/modal/delete-confirm-modal.vue';
 
 export default {
     components: { textInput, checkboxInput, deleteConfirmModal },
+
+    mixins: [core],
 
     props: {
         isActive: { type: Boolean, required: true },
@@ -88,12 +92,17 @@ export default {
         }),
 
         ...mapState('userCalendar', {
-            userCalendar: state => state.update.editingUserCalendar
+            userCalendar: state => state.update.editingUserCalendar,
+            isDeleteLoading: state => state.remove.isLoading,
         }),
 
         ...mapState('userCalendarMember', {
             userCalendarMembers: state => state.data.userCalendarMembers
-        })
+        }),
+
+        placeHolder: function() {
+            return this.t('dashboard.userCalendarPane')
+        }
     },
 
     methods: {

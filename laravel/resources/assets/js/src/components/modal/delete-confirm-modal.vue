@@ -12,6 +12,9 @@
                 :isActive="showDeleteConfirm"
                 :height="slideHeight"
                 :isLoading="isLoading"
+                :message="t('deleteConfirmModal.deleteConfirmMessage')"
+                :okButtonLabel="t('deleteConfirmModal.okButtonLabel')"
+                :cancelButtonLabel="t('deleteConfirmModal.cancelButtonLabel')"
                 @cancel="clickDeleteCancel()"
                 @ok="clickDeleteOK()"
             ></delete-confirm-slide-panel>
@@ -30,7 +33,7 @@
                     <button id="delete-button" class="button strip thin"
                         @click="clickDeleteButton"
                         :disabled="isLoading"
-                    >Delete</button>
+                    >{{ t('deleteConfirmModal.deleteButtonLabel') }}</button>
                 </div>
             </div>
 
@@ -39,12 +42,15 @@
 </template>
 
 <script>
+import core from '../../mixins/core.js';
 import simpleModal from './simple-modal.vue';
 import deleteConfirmSlidePanel from '../slide-panel/delete-confirm-slide-panel.vue';
 import notificationSlidePanel from '../slide-panel/notification-slide-panel.vue';
 
 export default {
     components: { simpleModal, deleteConfirmSlidePanel, notificationSlidePanel },
+
+    mixins: [core],
 
     props: {
         slideHeight: { type: String, default: '150px' },
@@ -59,8 +65,7 @@ export default {
         return {
             modalHeight: '',
             modalHeightWhenSlideOpened: '160px',
-            showDeleteConfirm: false,
-//            isLoading: false,
+            showDeleteConfirm: false
         }
     },
 

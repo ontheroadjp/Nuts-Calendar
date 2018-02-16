@@ -66,9 +66,27 @@ export default {
             newPasswordConfirmation: '新規パスワード（確認）',
             changePassword: 'パスワード変更'
         },
+        deleteConfirmModal: {
+            deleteButtonLabel: '削除',
+            deleteConfirmMessage: '削除してもよろしいですか？',
+            okButtonLabel: 'OK',
+            cancelButtonLabel: 'キャンセル'
+        },
         dashboard: {
             createNewCalendar: '新しいカレンダーを作成',
-            createNewMember: '新しいメンバー/役割を作成'
+            createNewMember: '新しいメンバー/役割を作成',
+            userCalendarPane: {
+                newModal: {
+                    userCalendarName: 'カレンダーの名前',
+                    description: '説明',
+                    createButtonLabel: '作成',
+                    cancelButtonLabel: 'キャンセル'
+                },
+                editModal: {
+                    userCalendarName: 'カレンダーの名前',
+                    description: '説明'
+                }
+            }
         },
         dashboardMenu: {
             calendars: 'カレンダー',

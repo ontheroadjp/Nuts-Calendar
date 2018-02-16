@@ -15,18 +15,18 @@
             :showError="false"
             :minTextLength="1"
             :height="110"
-            placeholder="Calendar name"
+            :placeholder="placeHolder.newModal.userCalendarName"
             @changeValue="changeName"
-            :disabled="false"
+            :disabled="isLoading"
         ></text-input>
         <text-input
             :id="textInputId.description"
             :showError="false"
             :minTextLength="1"
             :height="110"
-            placeholder="Description"
+            :placeholder="placeHolder.newModal.description"
             @changeValue="changeDescription"
-            :disabled="false"
+            :disabled="isLoading"
         ></text-input>
     </div>
 
@@ -38,23 +38,32 @@
             class="button strip thin"
             @click="close()"
             :disabled="isLoading"
-        >Cancel</button>
+        >{{ placeHolder.newModal.cancelButtonLabel }}</button>
         <button
+            v-if="!isLoading"
             class="button strip thin"
             @click="clickCreate()"
             :disabled="!isReady"
-        >Create</button>
+        >{{ placeHolder.newModal.createButtonLabel }}</button>
+        <button
+            v-else
+            class="button strip thin"
+            :disabled="true"
+        ><i class="fa fa-refresh fa-spin"></i></button>
     </div>
 </notification-modal>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import core from '../../../mixins/core.js';
 import notificationModal from '../../../components/modal/notification-modal.vue';
 import textInput from '../../../components/form/text-input.vue';
 
 export default {
     components: { notificationModal, textInput },
+
+    mixins: [ core ],
 
     props: {
         onClose: { type: Function, required: true },
@@ -64,7 +73,6 @@ export default {
     data() {
         return {
             insertResult: '',
-            isLoading: false,
 
             textInputId: {
                 name: 'create-new-calendar-name-input',
@@ -79,6 +87,14 @@ export default {
     },
 
     computed: {
+        ...mapState('userCalendar/insert', {
+            isLoading: state => state.isLoading
+        }),
+
+        placeHolder: function() {
+            return this.t('dashboard.userCalendarPane')
+        },
+
         isReady: function() {
             return this.input.name.length;
         }

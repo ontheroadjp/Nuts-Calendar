@@ -64,9 +64,27 @@ export const en = {
             newPasswordConfirmation: 'New Password (confirmation)',
             changePassword: 'Change Password'
         },
+        deleteConfirmModal: {
+            deleteButtonLabel: 'Delete',
+            deleteConfirmMessage: 'Are you sure to delete ?',
+            okButtonLabel: 'OK',
+            cancelButtonLabel: 'Cancel'
+        },
         dashboard: {
             createNewCalendar: 'Create New Calendar',
-            createNewMember: 'Create New Member / Role'
+            createNewMember: 'Create New Member / Role',
+            userCalendarPane: {
+                newModal: {
+                    userCalendarName: 'Calendar Name',
+                    description: 'Description',
+                    createButtonLabel: 'Create',
+                    cancelButtonLabel: 'Cancel'
+                },
+                editModal: {
+                    userCalendarName: 'Calendar Name',
+                    description: 'Description'
+                }
+            }
         },
         dashboardMenu: {
             calendars: 'Calendars',
