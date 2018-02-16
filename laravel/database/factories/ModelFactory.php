@@ -15,6 +15,15 @@ use Faker\Factory as FakerFactory;
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
+        'name' => 'free',
+        'email' => $faker->unique()->safeEmail,
+        'password' => bcrypt(str_random(10)),
+        'remember_token' => str_random(10),
+    ];
+});
+
+$factory->define(App\User::class, function (Faker\Generator $faker) {
+    return [
         'id' => 'u_'.md5( uniqid(mt_rand(), true) ),
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,

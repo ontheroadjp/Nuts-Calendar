@@ -9,19 +9,15 @@ const user = {
         data: {
             user: {},
             name: '',
-            maxCalendars: 0,
-            maxMembers: 0,
-            maxSharedMembers: 0
+            userPlan: {}
         }
     },
 
     mutations: {
-        init( state, user ) {
+        init( state, {user, userPlan} ) {
             state.data.user = user;
             state.data.name = user.name;
-            state.data.maxCalendars = user.max_calendars;
-            state.data.maxMembers = user.max_members;
-            state.data.maxSharedMembers = user.max_shared_members;
+            state.data.userPlan = userPlan[user.userplan_id];
         }
     },
 

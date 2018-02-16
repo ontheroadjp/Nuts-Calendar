@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Nuts\Calendar\Models\Userplan;
 use Nuts\Calendar\Models\UserCalendar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'userplan_id'
     ];
 
     /**
@@ -26,6 +27,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected function userplan()
+    {
+//        return $this->belongsTo('Nuts\Calendar\Models\Userplan');
+        return $this->belongsTo(Userplan::class);
+    }
 
     protected function userCalendars()
     {

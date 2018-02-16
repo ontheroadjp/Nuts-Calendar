@@ -14,7 +14,6 @@ export default {
     actions: {
         remove( { commit, state }, { id, notify, successCb, failedCb } ) {
             u.clog('remove()');
-//            commit('isLoading', true);
             commit(IS_LOADING, true);
 
             const url = '/api/v1/calendar/' + id;
@@ -38,7 +37,6 @@ export default {
                         successCb();
                     }
 
-//                    commit('isLoading', false);
                     commit(IS_LOADING, false);
                 })
 
@@ -56,14 +54,12 @@ export default {
                         failedCb();
                     }
 
-//                    commit('isLoading', false);
                     commit(IS_LOADING, false);
                 });
         }
     },
 
     mutations: {
-//        isLoading( state, value ) {
         [IS_LOADING]( state, value ) {
             state.isLoading = value
         }

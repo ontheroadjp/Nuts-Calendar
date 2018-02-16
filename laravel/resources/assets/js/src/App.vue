@@ -74,7 +74,11 @@
 
             successInit(response) {
                 u.clog('success')
-                this.$store.commit('user/init', response.data.user);
+                this.$store.commit('user/init', {
+                    user: response.data.user,
+                    userPlan: response.data.userplan
+                });
+                this.$store.commit('userplan/init', response.data.userplan);
                 this.$store.commit('userCalendar/init', response.data.usercalendar );
                 this.$store.commit('userCalendarMember/init', response.data.usercalendar_members );
                 this.$store.commit('member/init', response.data.members );

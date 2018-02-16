@@ -18,6 +18,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'hoge',
             'email' => 'hoge@hoge.com',
             'password' => bcrypt('hogehoge'),
+            'userplan_id' => 1
         ]);
     }
 }

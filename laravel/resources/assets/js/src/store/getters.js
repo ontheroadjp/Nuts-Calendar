@@ -6,6 +6,11 @@ export default {
         return state.i18n[state.app.lang][g][k];
     },
 
+    getUserplan: (state, getters) => {
+        const userplanId = state.user.data.user.userplan_id;
+        return state.userplan.data.userplans[userplanId];
+    },
+
     filteredMembers: (state, getters) => {
         const currentCalendarId = state.calendar.currentId;
         const ids = [];

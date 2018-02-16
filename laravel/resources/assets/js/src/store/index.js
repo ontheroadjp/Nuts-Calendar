@@ -12,6 +12,7 @@ import getters      from './getters.js';
 //import app                  from './modules/app/index.js';
 import i18n                 from './modules/i18n/index.js';
 import user                 from './modules/user/index.js';
+import userplan             from './modules/userplan/index.js';
 import dashboard            from './modules/dashboard/index.js';
 import userCalendar         from './modules/userCalendar/index.js';
 import userCalendarMember   from './modules/userCalendarMember/index.js';
@@ -31,6 +32,7 @@ export default new Vuex.Store({
 //        app,
         i18n,
         user,
+        userplan,
         dashboard,
         userCalendar,
         userCalendarMember,
