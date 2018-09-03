@@ -51,7 +51,7 @@ export default {
             this.onOpen();
         }
     }
-}
+};
 </script>
 
 <style lang="scss" scoped>

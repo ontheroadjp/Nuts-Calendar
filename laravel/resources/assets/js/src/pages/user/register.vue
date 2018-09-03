@@ -127,10 +127,21 @@ export default {
                 'password': this.input.password,
                 'password_confirmation': this.input.passwordConfirmation
             },
-                this.successLogin(this),
-                this.failedLogin(this)
+                this.successLogin(),
+                this.failedLogin()
             );
         },
+
+        successLogin: () => {
+            console.log('success!!!!!!!!!!!!!');
+            return response => {
+                eventBus.fire('nuts.login.success', {
+                    response: response,
+                    rememberMe: jwtToken.rememberMe
+                }, 'user.js');
+            };
+        },
+
 
     }
 }

@@ -96,21 +96,28 @@ export default {
         tabs: function() {
             return {
                 '/dashboard': {
-                    label: `${this.t('dashboardMenu.calendars')}(${this.count.userCalendars}/${this.maxCalendars})`,
+                    label: `${this.t('dashboardMenu.calendars')}
+                                (${this.count.userCalendars}/${this.maxCalendars})`,
                     icon: 'fa-calendar'
                 },
+
                 '/dashboard/members': {
-                    label: `${this.t('dashboardMenu.members')}(${this.count.members}/${this.maxMembers})`,
+                    label: `${this.t('dashboardMenu.members')}
+                                (${this.count.members}/${this.maxMembers})`,
                     icon: 'fa-user'
                 },
+
                 '/dashboard/groups': {
-                    label: `${this.t('dashboardMenu.groups')}(${this.count.groups}/${this.maxSharedMembers})`,
+                    label: `${this.t('dashboardMenu.groups')}
+                                (${this.count.groups}/${this.maxSharedMembers})`,
                     icon: 'fa-users'
                 },
+
                 '/dashboard/applications': {
                     label: this.t('dashboardMenu.applications'),
                     icon: 'fa-paw'
                 },
+
                 '/dashboard/settings': {
                     label: this.t('dashboardMenu.settings'),
                     icon: 'fa-wrench'
