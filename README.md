@@ -8,14 +8,27 @@
 # clone repository
 git clone https://github.com/ontheroadjp/Nuts-Calendar.git
 
-# start server (Docker container)
-cd Nuts-Calendar
-docker-compose up -d
+# setup Javascript environment
+cd Nuts-Calendar/laravel/resources/assets/js
+npm install
 
 # install packages
 cd Nuts-Calendar/laravel
 composer update
 npm install
+
+# compile Javascript files
+npm run watch
+
+# .env (see below for more details)
+edit .env file
+
+# generate APP Key
+php artisan key:generate
+
+# start server
+cd Nuts-Calendar
+docker-compose up -d
 
 # DB migration
 # enter laravel container
