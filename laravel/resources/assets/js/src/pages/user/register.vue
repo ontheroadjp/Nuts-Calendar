@@ -10,7 +10,7 @@
         <div class="control is-horizontal">
             <p class="control has-icon">
                 <input
-                    class="nuts-input-textbox"
+                    class="nuts-input-textbox-with-icon"
                     type="text"
                     :placeholder="nameHasError ? errors.name : t('register.name')"
                     style="margin-bottom: 25px;"
@@ -26,7 +26,7 @@
         <div class="control is-horizontal">
             <p class="control has-icon">
                 <input
-                    class="nuts-input-textbox"
+                    class="nuts-input-textbox-with-icon"
                     type="email"
                     :placeholder="emailHasError ? errors.email : t('register.email')"
                     style="margin-bottom: 25px;"
@@ -41,7 +41,7 @@
         <div class="control is-horizontal">
             <p class="control has-icon">
                 <input
-                    class="nuts-input-textbox"
+                    class="nuts-input-textbox-with-icon"
                     type="password"
                     :placeholder="passwordHasError ? errors.password : t('register.password')"
                     style="margin-bottom: 20px;"
@@ -56,7 +56,7 @@
         <div class="control is-horizontal">
             <p class="control has-icon">
                 <input
-                    class="nuts-input-textbox"
+                    class="nuts-input-textbox-with-icon"
                     type="password"
                     :placeholder="passwordConfirmationHasError ? errors.passwordConfirmation : t('register.passwordConfirmation')"
                     style="margin-bottom: 20px;"

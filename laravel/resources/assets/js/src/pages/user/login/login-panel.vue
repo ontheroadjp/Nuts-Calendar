@@ -10,7 +10,7 @@
             <div class="control is-horizontal">
                 <p class="control has-icon">
                     <input
-                        class="nuts-input-textbox"
+                        class="nuts-input-textbox-with-icon"
                         type="email"
                         :placeholder="emailHasError ? error.email : t('login.email')"
                         style="margin-bottom: 2rem;"
@@ -26,7 +26,7 @@
             <div class="control is-horizontal">
                 <p class="control has-icon">
                     <input
-                        class="nuts-input-textbox"
+                        class="nuts-input-textbox-with-icon"
                         type="password"
                         :placeholder="passwordHasError ? error.password : t('login.password')"
                         style="margin-bottom: 3rem;"
