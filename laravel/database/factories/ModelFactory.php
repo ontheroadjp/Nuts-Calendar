@@ -64,7 +64,7 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
 
     $year = [
 //        '2015', '2016', '2017'
-        '2017'
+        '2017', '2018', '2019'
     ];
 
     $month = [
