@@ -46,6 +46,18 @@
     padding-left: 2.5rem;
 }
 
+.input:focus,
+.input.is-focused,
+.input:active,
+.input.is-active,
+.textarea:focus,
+.textarea.is-focused,
+.textarea:active,
+.textarea.is-active {
+    border-color: #4caf50;
+    box-shadow: none;
+}
+
 //.input:focus, .input.is-focused, .input:active, .input.is-active, .textarea:focus, .textarea.is-focused, .textarea:active, .textarea.is-active {
 //    border-color: #00d1b2;
 //}
