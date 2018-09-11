@@ -32,9 +32,6 @@
     .is-medium {
         font-size: 1.25rem;
     }
-    .has-icon {
-        padding-left: 2.5em;
-    }
     outline: none;
 
     &:focus {
@@ -42,6 +39,11 @@
         border-color: rgba(84, 110, 122, 0.5);
     }
 
+}
+
+.nuts-input-textbox-with-icon {
+    @extend .nuts-input-textbox;
+    padding-left: 2.5rem;
 }
 
 //.input:focus, .input.is-focused, .input:active, .input.is-active, .textarea:focus, .textarea.is-focused, .textarea:active, .textarea.is-active {
