@@ -194,7 +194,7 @@
                     <div class="column is-6">
                         <div style="text-align: center;">
                             <h3 class="thin-500" style="font-size: 2rem;">複数のカレンダー</h3>
-                            <img class="circle-image" src="images/root/macbook_pro.png" />
+                            <img class="circle-image" src="images/root/future01.png" />
                         </div>
                         <p class="thin" style="padding: 0 40px; line-height: 2rem;">
                             用途に合わせて複数のカレンダーを作成することができます。
@@ -205,7 +205,7 @@
                     <div class="column is-6">
                         <div style="text-align: center;">
                             <h3 class="thin-500" style="font-size: 2rem;">メンバーを登録</h3>
-                            <img class="circle-image" src="images/root/macbook_pro.png" />
+                            <img class="circle-image" src="images/root/future01.png" />
                         </div>
                         <p class="thin" style="padding: 0 40px; line-height: 2rem;">
                             作成したメンバーをカレンダーに追加することによって、
@@ -251,7 +251,7 @@
                             <h3 class="thin-500" style="font-size: 2rem; text-align: center;">
                                 セクション３
                             </h3>
-                            <img class="circle-image" src="images/root/macbook_pro.png" />
+                            <img class="circle-image" src="images/root/future01.png" />
                         </div>
                         <p>
                             ダミー　ダミー　ダミー　ダミー　ダミー　ダミー　ダミー　ダミー　
@@ -266,7 +266,7 @@
                             <h3 class="thin-500" style="font-size: 2rem; text-align: center;">
                                 メンバーを登録
                             </h3>
-                            <img class="circle-image" src="images/root/macbook_pro.png" />
+                            <img class="circle-image" src="images/root/future01.png" />
                         </div>
                         <p>
                             ダミー　ダミー　ダミー　ダミー　ダミー　ダミー　ダミー　ダミー　
