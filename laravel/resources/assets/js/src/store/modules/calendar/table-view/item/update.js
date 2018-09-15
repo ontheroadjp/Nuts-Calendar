@@ -76,10 +76,10 @@ export default {
                         state.cellItems, { root: true }
                     );
 
-                    commit(NOTIFY_SUCCESS, {
-                        content: 'success update task',
-                        isImportant: false
-                    }, { root: true });
+//                    commit(NOTIFY_SUCCESS, {
+//                        content: 'success update task',
+//                        isImportant: false
+//                    }, { root: true });
 
                     commit(IS_LOADING, false);
                 })

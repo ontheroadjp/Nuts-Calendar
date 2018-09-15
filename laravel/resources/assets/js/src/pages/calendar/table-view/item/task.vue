@@ -12,8 +12,8 @@
             <span :style="searchHighlightStyle">{{ item.content }}</span>
 
             <span class="icon is-small"
-                v-show="(dragItem.isLoading || deleteItem.isLoading)
-                            && dragItem.draggingItem === item"
+                v-show="((dragItem.isLoading || deleteItem.isLoading ) && dragItem.draggingItem === item)
+                        || (updateItem.isLoading && updateItem.editingItem === item)"
                 ><i class="fa fa-refresh fa-spin"></i>
             </span>
         </span>
@@ -30,6 +30,7 @@ export default {
     computed: {
         ...mapState('calendar/tableView/item', {
             dragItem: state => state.dnd,
+            updateItem: state => state.update,
             deleteItem: state => state.remove
         }),
 
