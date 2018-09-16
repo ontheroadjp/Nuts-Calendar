@@ -1,10 +1,10 @@
 <template>
     <div id="calendar">
-        <signboard 
+        <signboard
             :calendar-is-loading="isLoading"
         ></signboard>
-    
-        <router-view 
+
+        <router-view
             :calendar-is-loading="isLoading"
         ></router-view>
     </div>

@@ -43,21 +43,21 @@
                 this.initToken();
             },
 
-            setLang() {
-                const lang = localStorage.getItem('lang');
-                if(lang) {
-                    this.$store.commit('setLang', lang);
-                } else {
-                    this.$store.commit('setLang', 'en');
-                }
-            },
-
             setTheme() {
                 const theme = localStorage.getItem('theme');
                 if(theme) {
                     this.$store.commit('setTheme', theme);
                 } else {
                     this.$store.commit('setTheme', 'ruri');
+                }
+            },
+
+            setLang() {
+                const lang = localStorage.getItem('lang');
+                if(lang) {
+                    this.$store.commit('setLang', lang);
+                } else {
+                    this.$store.commit('setLang', 'en');
                 }
             },
 
@@ -111,7 +111,7 @@
     }
 </script>
 
-<style>
+<style lang="scss">
 a {
     color: rgb(25, 96, 183);
 }
