@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
     props: {
@@ -80,12 +80,18 @@ export default {
     },
 
     methods: {
+        ...mapActions('calendar', {
+            fetchCalendar: 'fetchCalendar'
+        }),
+
         clickUserCalendar: function(id) {
             u.clog('changeCalendar(' + id + ')');
             this.$store.commit('calendar/SET_VALUE', {
-                key: 'currentId', id,
+                key: 'currentId',
                 value: id
             });
+
+            this.fetchCalendar(id);
         }
     }
 };
