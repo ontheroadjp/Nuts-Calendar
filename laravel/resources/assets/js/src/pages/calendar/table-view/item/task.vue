@@ -1,22 +1,29 @@
 <template>
-    <span class="item is-task"
-        @click.stop="clickItem($event)">
+    <span class="item is-task" @click.stop="clickItem($event)">
+
+        <span class="icon is-small"
+            v-show="item.memo"
+            style="margin-right: 5px"
+            ><i class="fa fa-file-text-o"></i>
+        </span>
+
+        <input id="item.id"
+            type="checkbox"
+            style="margin-right: 8px; margin-top: 3px"
+            @click.stop="clickDone()"
+            :checked="item.is_done">
 
         <span :class="{'task-done': item.is_done}">
-            <input id="item.id"
-                type="checkbox"
-                style="margin-right: 8px"
-                @click.stop="clickDone()"
-                :checked="item.is_done">
-
             <span :style="searchHighlightStyle">{{ item.content }}</span>
-
-            <span class="icon is-small"
-                v-show="((dragItem.isLoading || deleteItem.isLoading ) && dragItem.draggingItem === item)
-                        || (updateItem.isLoading && updateItem.editingItem === item)"
-                ><i class="fa fa-refresh fa-spin"></i>
-            </span>
         </span>
+
+        <span class="icon is-small"
+            v-show="((dragItem.isLoading || deleteItem.isLoading )
+                        && dragItem.draggingItem === item)
+                    || (updateItem.isLoading && updateItem.editingItem === item)"
+            ><i class="fa fa-refresh fa-spin"></i>
+        </span>
+
     </span>
 </template>
 

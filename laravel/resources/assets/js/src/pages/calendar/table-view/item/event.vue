@@ -2,8 +2,13 @@
     <span class="item is-event"
         @click.stop="clickItem($event)">
 
-        <span
-            v-if="!item.is_all_day"
+        <span class="icon is-small"
+            v-show="item.memo"
+            style="margin-right: 5px"
+            ><i class="fa fa-file-text-o"></i>
+        </span>
+
+        <span v-if="!item.is_all_day"
             :class="[{'vertial': displayVertically}, 'thin-400']"
             style="margin-right: 8px;"
         >
@@ -26,8 +31,9 @@
         <span :style="searchHighlightStyle">{{ item.content }}</span>
 
         <span class="icon is-small"
-            v-show="(dragItem.isLoading || deleteItem.isLoading)
-                        && dragItem.draggingItem == item"
+            v-show="((dragItem.isLoading || deleteItem.isLoading )
+                        && dragItem.draggingItem === item)
+                    || (updateItem.isLoading && updateItem.editingItem === item)"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>
     </span>
@@ -52,6 +58,7 @@ export default {
     computed: {
         ...mapState('calendar/tableView/item', {
             dragItem: state => state.dnd,
+            updateItem: state => state.update,
             deleteItem: state => state.remove
         }),
 
