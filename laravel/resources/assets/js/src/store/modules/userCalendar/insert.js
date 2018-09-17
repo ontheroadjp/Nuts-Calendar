@@ -39,7 +39,7 @@ export default {
 
                     const data = response.data;
 
-                    commit('userCalendar/add', {
+                    commit('userCalendar/ADD', {
                         id: data.id,
                         userCalendar: data
                     }, { root: true } );

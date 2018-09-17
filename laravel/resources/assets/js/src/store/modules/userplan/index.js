@@ -1,4 +1,7 @@
 import { SET_VALUE } from '../../mutation-types.js';
+import {
+    INIT,
+} from '../../mutation-types.js';
 
 export default {
     namespaced: true,
@@ -10,7 +13,7 @@ export default {
     },
 
     mutations: {
-        init( state, userplans ) {
+        [INIT]( state, userplans ) {
             state.data.userplans = userplans;
         },
     }

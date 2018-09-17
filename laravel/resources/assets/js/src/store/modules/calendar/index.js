@@ -6,6 +6,7 @@ import remove       from './table-view/item/remove.js';
 import dnd          from './table-view/item/dnd.js';
 import {
     INIT,
+    INIT_MCALENDARS,
     SET_VALUE,
     IS_LOADING,
     SORT_CELL_ITEMS,
@@ -23,11 +24,16 @@ const calendar = {
         currentYear: now.getFullYear(),
         currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
         data: {
+            mCalendars: [],
             calendars: []
         }
     },
 
     actions: {
+//        initMCalendars(mCalendars) {
+//            commit(INIT_MCALENDARS, mCalendars);
+//        },
+
         fetchCalendar( { state, commit, dispatch }, calendarId) {
             u.clog('fetchCalendar(' + calendarId + ')');
             if(calendarId === 'dashboard') return;
@@ -69,6 +75,10 @@ const calendar = {
     mutations: {
         [INIT]( state, calendars ) {
             state.data.calendars = calendars;
+        },
+
+        [INIT_MCALENDARS](state, mCalendars) {
+            state.data.mCalendars = mCalendars;
         },
 
         [SET_VALUE]( state, { key, value } ) {

@@ -7,6 +7,8 @@ import {
     NOTIFY_DANGER,
     SET_NOTIFICATION,
     RESET_NOTIFICATION,
+    READY,
+    SET_LANG
 } from './mutation-types.js' ;
 
 export default {
@@ -14,11 +16,11 @@ export default {
     // ---------------------------------------------
     // app
 
-    ready( state, val ) {
+    [READY]( state, val ) {
         state.app.ready = val;
     },
 
-    setLang( state, val ) {
+    [SET_LANG]( state, val ) {
         state.app.lang = val;
     },
 

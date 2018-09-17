@@ -1,5 +1,6 @@
 import {
     PREPARE,
+    SET_VALUE,
     SET_UPDATE_VALUE,
     IS_LOADING,
     NOTIFY_SUCCESS,
@@ -50,13 +51,13 @@ export default {
                     const name = response.data.name;
                     const description = response.data.description;
 
-                    commit('userCalendar/setValue', {
+                    commit('userCalendar/SET_VALUE', {
                         id: id,
                         key: 'name',
                         value: name
                     }, { root: true });
 
-                    commit('userCalendar/setValue', {
+                    commit('userCalendar/SET_VALUE', {
                         id: id,
                         key: 'description',
                         value: description

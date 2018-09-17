@@ -55,9 +55,9 @@
             setLang() {
                 const lang = localStorage.getItem('lang');
                 if(lang) {
-                    this.$store.commit('setLang', lang);
+                    this.$store.commit('SET_LANG', lang);
                 } else {
-                    this.$store.commit('setLang', 'en');
+                    this.$store.commit('SET_LANG', 'en');
                 }
             },
 
@@ -78,11 +78,12 @@
                     user: response.data.user,
                     userPlan: response.data.userplan
                 });
-                this.$store.commit('userplan/init', response.data.userplan);
-                this.$store.commit('userCalendar/init', response.data.usercalendar );
-                this.$store.commit('userCalendarMember/init', response.data.usercalendar_members );
-                this.$store.commit('member/init', response.data.members );
-                this.$store.commit('ready', true);
+                this.$store.commit('userplan/INIT', response.data.userplan);
+                this.$store.commit('calendar/INIT_MCALENDARS', response.data.mcalendar );
+                this.$store.commit('userCalendar/INIT', response.data.usercalendar );
+                this.$store.commit('userCalendarMember/INIT', response.data.usercalendar_members );
+                this.$store.commit('member/INIT', response.data.members );
+                this.$store.commit('READY', true);
                 eventBus.fire('nuts.app.ready', null, 'App.vue');
             },
 

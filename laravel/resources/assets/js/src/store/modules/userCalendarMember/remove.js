@@ -27,7 +27,7 @@ export default {
 //                        obj: response.data
 //                    });
 
-                    commit('userCalendarMember/remove', {
+                    commit('userCalendarMember/REMOVE', {
                         obj: response.data
                     }, { root: true });
 

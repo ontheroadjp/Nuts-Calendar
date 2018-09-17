@@ -42,7 +42,7 @@ export default {
                     const data = response.data;
                     data.isShow = true;
 
-                    commit('member/add', {
+                    commit('member/ADD', {
                         id: data.id,
                         member: data
                     }, { root: true } );

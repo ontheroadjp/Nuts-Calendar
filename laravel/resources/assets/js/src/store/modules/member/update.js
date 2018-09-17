@@ -51,13 +51,13 @@ export default {
                 .then( response => {
                     u.clog('success');
 
-                    commit('member/setValue', {
+                    commit('member/SET_VALUE', {
                         id: response.data.id,
                         key: 'name',
                         value: response.data.name
                     }, { root: true });
 
-                    commit('member/setValue', {
+                    commit('member/SET_VALUE', {
                         id: response.data.id,
                         key: 'description',
                         value: response.data.description

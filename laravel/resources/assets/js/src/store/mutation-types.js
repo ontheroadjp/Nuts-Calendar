@@ -10,12 +10,16 @@ export const SET_NOTIFICATION = 'SET_NOTIFICATION';
 export const RESET_NOTIFICATION = 'RESET_NOTIFICATION';
 
 // --------------------------------------------
+// mutations
+// --------------------------------------------
+export const READY = 'READY';
+export const SET_LANG = 'SET_LANG';
+
+// --------------------------------------------
 // modules
 // --------------------------------------------
 // calendar
-//export const INIT = 'INIT';
-export const SET_VALUE = 'SET_VALUE';
-//export const IS_LOADING = 'IS_LOADING';
+export const INIT_MCALENDARS = 'INIT_MCALENDARS';
 
 // tableView
 export const SORT_CELL_ITEMS = 'SORT_CELL_ITEMS';
@@ -53,6 +57,7 @@ export const DRAG_END = 'DRAG_END';
 export const INIT = 'INIT';
 export const ADD = 'ADD';
 export const REMOVE = 'REMOVE';
+export const SET_VALUE = 'SET_VALUE';
 
 // insert, update, remove
 export const IS_LOADING = 'IS_LOADING';

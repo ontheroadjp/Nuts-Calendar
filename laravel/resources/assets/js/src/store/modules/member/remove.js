@@ -23,7 +23,7 @@ export default {
                 .then(response => {
                     u.clog('success');
 
-                    commit('member/remove', { id }, { root: true });
+                    commit('member/REMOVE', { id }, { root: true });
 
                     if(notify) {
                         commit(NOTIFY_SUCCESS, {

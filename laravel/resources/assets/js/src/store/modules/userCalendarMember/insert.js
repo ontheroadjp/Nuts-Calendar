@@ -24,7 +24,7 @@ export default {
                 .then( response => {
                     u.clog("success");
 
-                    commit('userCalendarMember/add', {
+                    commit('userCalendarMember/ADD', {
                         obj: response.data
                     }, { root: true });
 

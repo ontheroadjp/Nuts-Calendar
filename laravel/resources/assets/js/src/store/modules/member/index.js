@@ -2,6 +2,9 @@ import Vue from 'vue';
 import insert from './insert.js';
 import update from './update.js';
 import remove from './remove.js';
+import {
+    INIT, ADD, REMOVE, SET_VALUE
+} from '../../mutation-types.js';
 
 const member = {
     namespaced: true,
@@ -12,19 +15,19 @@ const member = {
     },
 
     mutations: {
-        init( state, members) {
+        [INIT]( state, members) {
             state.data.members = members;
         },
 
-        add( state, { id, member } ) {
+        [ADD]( state, { id, member } ) {
             Vue.set(state.data.members, id, member);
         },
 
-        remove( state, { id } ) {
+        [REMOVE]( state, { id } ) {
             Vue.delete(state.data.members, id);
         },
 
-        setValue( state, { id, key, value } ) {
+        [SET_VALUE]( state, { id, key, value } ) {
             const t = state.data.members[id];
             t[key] = value;
         }
