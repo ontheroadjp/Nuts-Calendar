@@ -19,12 +19,12 @@ class CreateCalendarTable extends Migration
             $table->integer('lunar_year');              // 农历年
             $table->integer('lunar_month');             // 农历月
             $table->integer('lunar_day');               // 农历日
-            $table->string('lunar_month_chinese');      // (汉字)农历月
-            $table->string('lunar_day_chinese');        // (汉字)农历日
-            $table->string('ganzhi_year');              // (干支)年
-            $table->string('ganzhi_month');             // (干支)月
-            $table->string('ganzhi_day');               // (干支)日
-            $table->string('animal');                   // 生肖: 十二宮
+            $table->string('lunar_month_chinese', 2);      // (汉字)农历月
+            $table->string('lunar_day_chinese', 2);        // (汉字)农历日
+            $table->string('ganzhi_year', 2);              // (干支)年
+            $table->string('ganzhi_month', 2);             // (干支)月
+            $table->string('ganzhi_day', 2);               // (干支)日
+            $table->string('animal', 1);                   // 生肖: 十二宮
             $table->string('term')->nullable(true);     // 节气
             $table->boolean('is_leap');                 // 是否为闰月
             $table->integer('gregorian_year');          // 公历年
