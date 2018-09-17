@@ -17,10 +17,13 @@ class MCalendarTableSeeder extends Seeder
 
         $chineseCalendar = new ChineseCalendar();
 
+        $row_index = 1;
+
         for( $y = 2016; $y < 2036; $y++ ) {
             for( $m = 1; $m < 13; $m++ ) {
                 $result = $chineseCalendar->solar($y, $m, 1);
                 MCalendar::create([
+                    'date' => 'x-x-'.$row_index++,
                     'lunar_year' => $result['lunar_year'],
                     'lunar_month' => $result['lunar_month'],
                     'lunar_month_chinese' => $result['lunar_month_chinese'],

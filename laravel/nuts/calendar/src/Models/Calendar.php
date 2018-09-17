@@ -46,14 +46,7 @@ class Calendar extends Model
                                     ->keys()
                                     ->toArray();
 
-//        var_dump($allMembers);
-
         $members = [];
-//        foreach( $allMembers as $val ) {
-//            if( in_array($val['id'], $userCalendarMemberIds) ) {
-//                $members += [$val['id'] => $val];
-//            }
-//        }
 
         foreach( $allMembers as $key => $val ) {
             if( in_array($key, $userCalendarMemberIds) ) {

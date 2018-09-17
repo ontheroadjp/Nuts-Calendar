@@ -23,6 +23,7 @@ class CreateMCalendarTable extends Migration
 //            $table->string('animal',1);                         // 生肖: 十二宮
 //            $table->integer('gregorian_year',4);    // 公历年
 //            $table->integer('gregorian_month',2);   // 公历月
+            $table->string('date',8);
             $table->integer('lunar_year');          // 农历年
             $table->integer('lunar_month');         // 农历月
             $table->string('lunar_month_chinese', 2);  // (汉字)农历月
