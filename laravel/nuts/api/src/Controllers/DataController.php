@@ -13,6 +13,7 @@ namespace Nuts\Api\Controllers;
 
 use Nuts\Calendar\Models\Member;
 use Nuts\Calendar\Models\Userplan;
+use Nuts\Calendar\Models\MCalendar;
 use Nuts\Calendar\Models\UserCalendar;
 use Nuts\Calendar\Models\UserCalendarMember;
 use Illuminate\Routing\Controller as BaseController;
@@ -23,6 +24,7 @@ class DataController extends BaseController
     {
         $user = auth()->user();
         $userplan = Userplan::all()->keyBy('id');
+        $mCalendar = MCalendar::all();
         $userCalendars = UserCalendar::where('user_id', $user->id)->get()->keyBy('id')->sort();
         $members = Member::with('groupMembers')->where('user_id', $user->id)->get()->keyBy('id')->sortBy('created_at');
         $userCalendarMembers = UserCalendarMember::where('user_id', $user->id)->get();
@@ -33,6 +35,7 @@ class DataController extends BaseController
             'message' => 'application data',
             'userplan' => $userplan,
             'user' => $user,
+            'mcalendar' => $mCalendar,
             'usercalendar' => $userCalendars,
             'members' => $members,
             'usercalendar_members' => $userCalendarMembers
