@@ -84,7 +84,7 @@ export default {
         clickMenuItem: function(value) {
             u.clog('changeLang: ' + value);
             localStorage.setItem('lang', value);
-            this.$store.commit('setLang', value);
+            this.$store.commit('SET_LANG', value);
         }
     }
 }

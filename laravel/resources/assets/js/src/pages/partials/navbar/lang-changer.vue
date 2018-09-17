@@ -2,11 +2,11 @@
 <div class="nav-item">
     <p class="control is-expanded">
         <span class="select is-fullwidth">
-            <select 
+            <select
                 class="thin"
                 style="border: none"
-                :style="selectStyle" 
-                v-model="selectedVal" 
+                :style="selectStyle"
+                v-model="selectedVal"
                 @change="setVal()"
                 >
                 <option v-for="lang in langs" :value="lang.value">
@@ -53,7 +53,7 @@ export default {
         setVal: function() {
             u.clog('changeLang: ' + this.selectedVal);
             localStorage.setItem('lang', this.selectedVal);
-            this.$store.commit('setLang', this.selectedVal);
+            this.$store.commit('SET_LANG', this.selectedVal);
         }
     },
 
