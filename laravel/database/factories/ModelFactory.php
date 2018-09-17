@@ -63,8 +63,7 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
     //$faker = FakerFactory::create('ja_JP');
 
     $year = [
-//        '2015', '2016', '2017'
-        '2017', '2018', '2019'
+        '2017', '2018', '2019', '2020'
     ];
 
     $month = [
