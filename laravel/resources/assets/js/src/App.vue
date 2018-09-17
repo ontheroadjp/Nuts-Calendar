@@ -79,7 +79,6 @@
                     userPlan: response.data.userplan
                 });
                 this.$store.commit('userplan/INIT', response.data.userplan);
-                this.$store.commit('calendar/INIT_MCALENDARS', response.data.mcalendar );
                 this.$store.commit('userCalendar/INIT', response.data.usercalendar );
                 this.$store.commit('userCalendarMember/INIT', response.data.usercalendar_members );
                 this.$store.commit('member/INIT', response.data.members );
