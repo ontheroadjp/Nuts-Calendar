@@ -29,7 +29,15 @@
                 <th class="header-styling thin"
                     style="padding: 0.4rem 1rem"
                     :style="[style.dayColumnWidth]"
-                ></th>
+                >
+                        <button
+                            v-show="viewMode === 'dayly'"
+                            @click="$store.commit('calendar/SET_VALUE', {
+                                key: 'viewMode',
+                                value: 'monthly'
+                            });
+                        ">Monthly</button>
+                </th>
 
                 <template v-for="(member, index) in filteredColumns">
                     <th v-show="!showColumns || showColumns.indexOf(index) > -1"
@@ -50,15 +58,23 @@
 
         <tbody v-if="filteredBody">
             <tr v-for="(day, dayIndex) in filteredBody"
-                :class="{ saturday: isSaturday(day.date),
-                            sunday: isSunday(day.date) || day.holidays.length > 0
+                :class="{ saturday: viewMode === 'dayly' && isSaturday(day.date),
+                            sunday: viewMode === 'dayly' && isSunday(day.date) || day.holidays.length > 0
                         }">
 
                 <dayColumn
+                    v-if="viewMode === 'dayly'"
                     :day="day"
                     :today="style.today"
                     :dayColumnWidth="style.dayColumnWidth"
                 ></dayColumn>
+
+                <monthColumn
+                    v-if="viewMode === 'monthly'"
+                    :day="day"
+                    :today="style.today"
+                    :dayColumnWidth="style.dayColumnWidth"
+                ></monthColumn>
 
                 <template v-for="(memberId, index) in showColumns">
                     <cell-items
@@ -71,11 +87,19 @@
                 </template>
 
                 <dayColumn
-                    v-if="showRightDay"
+                    v-if="viewMode === 'dayly' && showRightDay"
                     :day="day"
                     :today="style.today"
                     :dayColumnWidth="style.dayColumnWidth"
                 ></dayColumn>
+
+                <monthColumn
+                    v-if="viewMode === 'monthly' && showRightDay"
+                    :day="day"
+                    :today="style.today"
+                    :dayColumnWidth="style.dayColumnWidth"
+                ></monthColumn>
+
             </tr>
         </tbody>
     </table>
@@ -89,6 +113,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import dayColumn from './day-column.vue';
+import monthColumn from './month-column.vue';
 import cellItems from './cell-items.vue';
 import popupMenu from '../../../components/popup-menu.vue';
 import itemEditPopupContent from './item/edit-popup-content.vue';
@@ -99,7 +124,7 @@ export default {
     name: 'table-view-content',
 
     components: {
-        popupMenu, dayColumn, cellItems, itemEditPopupContent, miniCalBar
+        popupMenu, dayColumn, monthColumn, cellItems, itemEditPopupContent, miniCalBar
     },
 
     mixins: [ dateUtilities ],
@@ -126,6 +151,10 @@ export default {
         ...mapState({
             theme: state => state.app.theme,
             lang: state => state.app.lang
+        }),
+
+        ...mapState('calendar', {
+            viewMode: state => state.viewMode
         }),
 
         ...mapState('calendar/tableView/item', {

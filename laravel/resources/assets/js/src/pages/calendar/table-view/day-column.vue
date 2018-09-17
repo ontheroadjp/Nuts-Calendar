@@ -1,14 +1,13 @@
 <template>
-<!--
-    <td class="date-styling" :style="[style.dayColumnWidth]">
--->
     <td class="date-styling" :style="dayColumnWidth">
         <div style="margin-bottom: 5px;">
 <!--
             <span :style="[ day.is_today ? today : '' ]">
 -->
                 {{ getDateAndDay(day.date) }}
+<!--
             </span>
+-->
         </div>
 
         <div v-for="holiday in day.holidays"

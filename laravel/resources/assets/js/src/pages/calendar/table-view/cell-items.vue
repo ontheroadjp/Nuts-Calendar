@@ -98,6 +98,13 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
+        decidedRowIndex(day) {
+            if('date' in day) {
+                return this.getRowIndex(day.date);
+            }
+            return day.row_index;
+        },
+
         clickCell(dayIndex, memberId, cellItems) {
             this.insertPrepare( { dayIndex, memberId, cellItems } );
         },

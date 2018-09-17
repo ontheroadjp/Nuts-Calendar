@@ -20,6 +20,7 @@ const calendar = {
 
     state: {
         isLoading: false,
+        viewMode: 'monthly',
         currentId: 'dashboard',
         currentYear: now.getFullYear(),
         currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
@@ -34,10 +35,48 @@ const calendar = {
 //            commit(INIT_MCALENDARS, mCalendars);
 //        },
 
-        fetchCalendar( { state, commit, dispatch }, calendarId) {
-            u.clog('fetchCalendar(' + calendarId + ')');
+        fetchMCalendar( { state, commit, dispatch }, calendarId) {
             if(calendarId === 'dashboard') return;
+            u.clog('fetchMCalendar(' + calendarId + ')');
+            commit(IS_LOADING, true);
 
+            const id = calendarId;
+            const url = '/api/v1/mcalendar/' + id;
+
+            http.fetchGet(url)
+                .then( response => {
+                    u.clog('success');
+
+                    response.data.days.forEach((day)=> {
+                        Object.keys(day.items).forEach(memberId => {
+                            dispatch('tableView/updateCellItems', day.items[memberId]);
+                        });
+                    });
+
+                    commit(INIT_MCALENDARS, response.data.days );
+
+                    Object.keys(response.data.members).forEach(function(key) {
+                        const val = this[key];
+                        val.isShow = true;
+                    }, response.data.members);
+
+                    commit(IS_LOADING, false);
+                })
+
+                .catch( error => {
+                    u.clog('failed');
+                    commit(IS_LOADING, false);
+                });
+        },
+
+        fetchCalendar( { state, commit, dispatch }, calendarId) {
+            if(calendarId === 'dashboard') return;
+            if(state.viewMode === 'monthly') {
+                dispatch('fetchMCalendar', calendarId);
+                return;
+            }
+
+            u.clog('fetchCalendar(' + calendarId + ')');
             commit(IS_LOADING, true);
 
             const id = calendarId;

@@ -100,6 +100,10 @@
                 disabled: state => state.disabled
             }),
 
+            ...mapState('calendar', {
+                viewMode: state => state.viewMode
+            }),
+
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
                 isEventItemShow: state => state.isEventItemShow,
@@ -129,7 +133,13 @@
            filteredBody: {
                 cache: true,
                 get() {
-                    let data = this.$store.state.calendar.data.calendars;
+                    let data;
+
+                    data = this.$store.state.calendar.data.calendars;
+
+                    if( this.viewMode === 'monthly' ) {
+                        data = this.$store.state.calendar.data.mCalendars;
+                    }
 
                     // filter by search words
                     if(this.searchQuery) {
@@ -138,12 +148,18 @@
                         });
                     }
 
-                    // filter by a day of week
-                    if(this.internalQuery) {
-                        data = data.slice().filter( row => {
-                            return this.getDayIndex(row['date']) == this.internalQuery;
-                        });
+                    if( this.viewMode === 'dayly' ) {
+                        // filter by a day of week
+                        if(this.internalQuery) {
+                            data = data.slice().filter( row => {
+                                return this.getDayIndex(row['date']) == this.internalQuery;
+                            });
+                        }
                     }
+
+//                    if( this.viewMode === 'monthly' ) {
+//                        data = this.$store.state.calendar.data.mCalendars;
+//                    }
 
                     return data;
                 }
