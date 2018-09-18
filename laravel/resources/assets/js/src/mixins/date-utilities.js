@@ -11,21 +11,7 @@ export default {
     methods: {
         isToday(dateText) {
             return moment(dateText).isSame( moment(new Date()) );
-//            const now = new Date();
-//
-//            if( parseInt(dateText.substr(0,4)) != now.getFullYear() ) return false;
-//            if( parseInt(dateText.substr(5,2)) != now.getMonth() + 1) return false;
-//            if( parseInt(dateText.substr(-2)) != now.getDate() ) return false;
-//
-//            return true;
         },
-
-//        getDateObject(d) {
-//            const year = moment(d).year();
-//            const month = moment(d).month();
-//            const date = moment(d).date();
-//            return new Date(year + '/' + month + '/' + date);
-//        },
 
         getDateString(dateObj) {
             if( dateObj instanceof Date ) {

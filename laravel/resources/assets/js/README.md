@@ -10,7 +10,7 @@
 
 webpack / Lint / テスト(`mocha`, `chai` など) の関連ファイルは `vue-cli`（``vue init webpack``）で取得したものを配置。
 
-それに追加（または変更）したもの。
+`vue-cli` 生成の `package.json` に追加（または変更）したもの。
 
 ```json
   "dependencies": {
