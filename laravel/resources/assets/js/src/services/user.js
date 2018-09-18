@@ -232,7 +232,7 @@ export default {
             sessionStorage.removeItem('token');
             localStorage.removeItem('token');
 
-            this.$store.commit('logout');
+            this.$store.commit('LOGOUT');
             this.$router.push('/');
         },
 

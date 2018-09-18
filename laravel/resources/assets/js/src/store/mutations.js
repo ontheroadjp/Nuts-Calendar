@@ -8,7 +8,10 @@ import {
     SET_NOTIFICATION,
     RESET_NOTIFICATION,
     READY,
-    SET_LANG
+    SET_LANG,
+    SET_THEME,
+    LOGOUT,
+    USERNAME
 } from './mutation-types.js' ;
 
 export default {
@@ -85,7 +88,7 @@ export default {
     // ---------------------------------------------
     // theme
 
-    setTheme( state, name ) {
+    [SET_THEME]( state, name ) {
         localStorage.setItem('theme', name);
         state.app.theme.name = name;
         switch (name) {
@@ -170,14 +173,14 @@ export default {
         }
     },
 
-    logout( state ) {
+    [LOGOUT]( state ) {
         window.sessionStorage.clear();
         state.user.name = null;
         state.user.token = null;
         state.calendar.currentId = 'dashboard';
     },
 
-    username( state, name ) {
+    [USERNAME]( state, name ) {
         state.user.name = name;
     }
 };

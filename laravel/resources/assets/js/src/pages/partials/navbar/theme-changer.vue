@@ -56,7 +56,7 @@ export default {
         setTheme: function() {
             u.clog('changeTheme: ' + this.selectedTheme);
             localStorage.setItem('theme', this.selectedTheme);
-            this.$store.commit('setTheme', this.selectedTheme);
+            this.$store.commit('SET_THEME', this.selectedTheme);
         }
     },
 

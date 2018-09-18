@@ -116,7 +116,7 @@ export default {
         clickMenuItem: function(themeName) {
             u.clog('changeTheme: ' + themeName);
             localStorage.setItem('theme', themeName);
-            this.$store.commit('setTheme', themeName);
+            this.$store.commit('SET_THEME', themeName);
         }
     }
 }

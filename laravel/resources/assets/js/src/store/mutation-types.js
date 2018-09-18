@@ -14,6 +14,9 @@ export const RESET_NOTIFICATION = 'RESET_NOTIFICATION';
 // --------------------------------------------
 export const READY = 'READY';
 export const SET_LANG = 'SET_LANG';
+export const SET_THEME = 'SET_THEME';
+export const LOGOUT = 'LOGOUT';
+export const USERNAME = 'USERNAME';
 
 // --------------------------------------------
 // modules

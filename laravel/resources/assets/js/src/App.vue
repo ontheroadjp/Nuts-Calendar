@@ -46,9 +46,9 @@
             setTheme() {
                 const theme = localStorage.getItem('theme');
                 if(theme) {
-                    this.$store.commit('setTheme', theme);
+                    this.$store.commit('SET_THEME', theme);
                 } else {
-                    this.$store.commit('setTheme', 'ruri');
+                    this.$store.commit('SET_THEME', 'ruri');
                 }
             },
 
@@ -88,7 +88,7 @@
 
             failedInit(error) {
                 u.clog('failed' + error)
-                this.$store.commit('logout');
+                this.$store.commit('LOGOUT');
                 this.$router.push('/login');
             },
 

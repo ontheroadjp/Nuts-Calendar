@@ -23,7 +23,7 @@ export default {
 
     actions: {
         setTheme( { commit }, { name } ) {
-            commit('setTheme', { name });
+            commit('SET_THEME', { name });
         }
     },
 
