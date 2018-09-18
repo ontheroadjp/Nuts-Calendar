@@ -23,17 +23,30 @@ class DataController extends BaseController
     public function index()
     {
         $user = auth()->user();
-        $userplan = Userplan::all()->keyBy('id');
-        $userCalendars = UserCalendar::where('user_id', $user->id)->get()->keyBy('id')->sort();
-        $members = Member::with('groupMembers')->where('user_id', $user->id)->get()->keyBy('id')->sortBy('created_at');
-        $userCalendarMembers = UserCalendarMember::where('user_id', $user->id)->get();
+
+        $userplan = Userplan::all()
+                        ->keyBy('id');
+
+        $userCalendars = UserCalendar::where('user_id', $user->id)
+                        ->get()
+                        ->keyBy('id')
+                        ->sort();
+
+        $members = Member::with('groupMembers')
+                        ->where('user_id', $user->id)
+                        ->get()
+                        ->keyBy('id')
+                        ->sortBy('created_at');
+
+        $userCalendarMembers = UserCalendarMember::where('user_id', $user->id)
+                        ->get();
 
         return response()->json([
             'status' => 'success',
             'code' => 200,
             'message' => 'application data',
-            'userplan' => $userplan,
             'user' => $user,
+            'userplan' => $userplan,
             'usercalendar' => $userCalendars,
             'members' => $members,
             'usercalendar_members' => $userCalendarMembers
