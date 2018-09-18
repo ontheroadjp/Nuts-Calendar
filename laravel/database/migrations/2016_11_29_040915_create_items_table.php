@@ -21,9 +21,9 @@ class CreateItemsTable extends Migration
             $table->string('content')->nullable(false);
             $table->date('date')->nullable(false);
             $table->boolean('is_all_day')->default(false)->nullable(false);
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
-            $table->string('memo')->nullable();
+            $table->time('start_time')->nullable(true);
+            $table->time('end_time')->nullable(true);
+            $table->string('memo')->nullable(true);
             $table->boolean('is_done')->default(false)->nullable(false);
             $table->timestamps();
 
