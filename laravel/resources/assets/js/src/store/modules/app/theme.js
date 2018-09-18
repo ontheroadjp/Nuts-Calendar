@@ -33,7 +33,6 @@ export default {
             state.name = name;
             switch (name) {
                 case 'ruri':
-    //                state.background = '#f0f0f1';
                     state.primary.class = 'is-ruri';
                     state.primary.classInvert = 'is-ruri-invert';
                     state.primary.code = '#1e50a2';
@@ -48,7 +47,6 @@ export default {
                     break;
 
                 case 'koiai':
-    //                state.background = '#f0f0f1';
                     state.primary.class = 'is-koiai';
                     state.primary.classInvert = 'is-koiai-invert';
                     state.primary.code = '#002e4e';
@@ -63,7 +61,6 @@ export default {
                     break;
 
                 case 'nadeshiko':
-    //                state.background = '#f0f0f1';
                     state.primary.class = 'is-nadeshiko';
                     state.primary.classInvert = 'is-nadeshiko-invert';
                     state.primary.code = '#f6adc6';
@@ -78,7 +75,6 @@ export default {
                     break;
 
                 case 'mikan':
-    //                state.background = '#f0f0f1';
                     state.primary.class = 'is-mikan';
                     state.primary.classInvert = 'is-mikan-invert';
                     state.primary.code = '#f08300';
@@ -93,7 +89,6 @@ export default {
                     break;
 
                 case 'sumire':
-    //                state.background = '#f0f0f1';
                     state.app.theme.primary.class = 'is-sumire';
                     state.app.theme.primary.classInvert = 'is-sumire-invert';
                     state.app.theme.primary.code = '#7058a3';
@@ -108,7 +103,6 @@ export default {
                     break;
 
                 case 'moegi':
-    //                state.background = '#f0f0f1';
                     state.primary.class = 'is-moegi';
                     state.primary.classInvert = 'is-moegi-invert';
                     state.primary.code = '#aacf53';
