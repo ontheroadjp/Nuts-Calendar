@@ -1,6 +1,6 @@
 <template>
 <section id="signboard" class="hero" :class="theme.primary.class">
-    <div class="hero-body" style="padding: 20px;">
+    <div v-show="viewMode == 'dayly'" class="hero-body" style="padding: 20px;">
     <div class="container">
 
         <div id="mc_embed_signup" class="columns is-vcentered">
@@ -44,6 +44,10 @@
         computed: {
             ...mapState({
                 theme: state => state.app.theme
+            }),
+
+            ...mapState('calendar', {
+                viewMode: state => state.viewMode
             })
         }
     }
