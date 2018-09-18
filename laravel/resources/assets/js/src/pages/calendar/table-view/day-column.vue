@@ -1,28 +1,28 @@
 <template>
-    <td class="date-styling" :style="dayColumnWidth">
+    <td class="date-styling" :style="firstColumnWidth">
         <div style="margin-bottom: 5px;">
 <!--
-            <span :style="[ day.is_today ? today : '' ]">
+            <span :style="[ row.is_today ? today : '' ]">
 -->
-                {{ getDateAndDay(day.date) }}
+                {{ getDateAndDay(row.date) }}
 <!--
             </span>
 -->
         </div>
 
-        <div v-for="holiday in day.holidays"
+        <div v-for="holiday in row.holidays"
             class="date-label"
             style="background-color: red;"
         >{{ holiday.holiday_name }}</div>
 
         <div v-show="lang === 'ja'" class="date-label">
-            {{ rokuyou(day.lunar_month, day.lunar_day) }}
+            {{ rokuyou(row.lunar_month, row.lunar_day) }}
         </div>
 
-        <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.lunar_month_chinese }} {{ day.lunar_day_chinese }}</div> -->
-        <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.constellation }}</div> -->
-        <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.week_name }}</div> -->
-        <!-- <div v-show="lang === 'ja'" class="date-label">{{ day.animal }}</div> -->
+        <!-- <div v-show="lang === 'ja'" class="date-label">{{ row.lunar_month_chinese }} {{ row.lunar_day_chinese }}</div> -->
+        <!-- <div v-show="lang === 'ja'" class="date-label">{{ row.constellation }}</div> -->
+        <!-- <div v-show="lang === 'ja'" class="date-label">{{ row.week_name }}</div> -->
+        <!-- <div v-show="lang === 'ja'" class="date-label">{{ row.animal }}</div> -->
     </td>
 </template>
 
@@ -32,7 +32,7 @@ export default {
     mixins: [ dateUtilities ],
 
     props: {
-        day: {
+        row: {
 
         },
 
@@ -40,7 +40,7 @@ export default {
 
         },
 
-        dayColumnWidth: {
+        firstColumnWidth: {
         }
     },
 

@@ -1,8 +1,8 @@
 <template>
-    <td class="date-styling" :style="dayColumnWidth" style="padding: 0">
+    <td class="date-styling" :style="firstColumnWidth" style="padding: 0">
         <div style="margin-bottom: 5px;">
-            <template v-if="day.gregorian_month == 1">
-                <div :style="style.yearLabel" >{{ day.gregorian_year }}年</div>
+            <template v-if="row.gregorian_month == 1">
+                <div :style="style.yearLabel" >{{ row.gregorian_year }}年</div>
             </template>
 
             <div style="padding: 5px" >
@@ -10,8 +10,8 @@
                         to="/calendar/view"
                         class="thin-200"
                         style="font-size: 1.2rem;"
-                        @click.native="clickMonth(day.gregorian_year, day.gregorian_month)"
-                    >{{ day.gregorian_month }}月
+                        @click.native="clickMonth(row.gregorian_year, row.gregorian_month)"
+                    >{{ row.gregorian_month }}月
                     </router-link>
             </div>
 
@@ -26,9 +26,9 @@ export default {
     //mixins: [ dateUtilities ],
 
     props: {
-        day: { type: Object, required: true},
+        row: { type: Object, required: true},
         today: { },
-        dayColumnWidth: { type: Object, required: true }
+        firstColumnWidth: { type: Object, required: true }
     },
 
     computed: {

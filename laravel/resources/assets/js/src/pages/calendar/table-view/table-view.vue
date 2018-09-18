@@ -28,7 +28,7 @@
             <tr>
                 <th class="header-styling thin"
                     style="padding: 0.4rem 1rem"
-                    :style="[style.dayColumnWidth]"
+                    :style="[style.firstColumnWidth]"
                 >
                         <button
                             v-show="viewMode === 'dayly'"
@@ -51,36 +51,36 @@
                 <th v-if="showRightDay"
                     class="header-styling thin"
                     style="padding: 0.4rem 1rem"
-                    :style="[style.dayColumnWidth]"
+                    :style="[style.firstColumnWidth]"
                 ></th>
             </tr>
         </thead>
 
         <tbody v-if="filteredBody">
-            <tr v-for="(day, dayIndex) in filteredBody"
-                :class="{ saturday: viewMode === 'dayly' && isSaturday(day.date),
-                            sunday: viewMode === 'dayly' && isSunday(day.date) || day.holidays.length > 0
+            <tr v-for="(row, rowIndex) in filteredBody"
+                :class="{ saturday: viewMode === 'dayly' && isSaturday(row.date),
+                            sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0
                         }">
 
                 <dayColumn
                     v-if="viewMode === 'dayly'"
-                    :day="day"
+                    :row="row"
                     :today="style.today"
-                    :dayColumnWidth="style.dayColumnWidth"
+                    :firstColumnWidth="style.firstColumnWidth"
                 ></dayColumn>
 
                 <monthColumn
                     v-if="viewMode === 'monthly'"
-                    :day="day"
+                    :row="row"
                     :today="style.today"
-                    :dayColumnWidth="style.dayColumnWidth"
+                    :firstColumnWidth="style.firstColumnWidth"
                 ></monthColumn>
 
                 <template v-for="(memberId, index) in showColumns">
                     <cell-items
-                        :day="day"
-                        :dayIndex="dayIndex"
-                        :cellItems="day.items[memberId]"
+                        :row="row"
+                        :rowIndex="rowIndex"
+                        :cellItems="row.items[memberId]"
                         :memberId="memberId"
                         :columnWidth="columnWidth"
                     ></cell-items>
@@ -88,16 +88,16 @@
 
                 <dayColumn
                     v-if="viewMode === 'dayly' && showRightDay"
-                    :day="day"
+                    :row="row"
                     :today="style.today"
-                    :dayColumnWidth="style.dayColumnWidth"
+                    :firstColumnWidth="style.firstColumnWidth"
                 ></dayColumn>
 
                 <monthColumn
                     v-if="viewMode === 'monthly' && showRightDay"
-                    :day="day"
+                    :row="row"
                     :today="style.today"
-                    :dayColumnWidth="style.dayColumnWidth"
+                    :firstColumnWidth="style.firstColumnWidth"
                 ></monthColumn>
 
             </tr>
@@ -177,14 +177,14 @@ export default {
             }
 
             return {
-                width: (100 - parseInt(this.style.dayColumnWidth.width)) / length + '%',
+                width: (100 - parseInt(this.style.firstColumnWidth.width)) / length + '%',
                 minWidth: '206px'
             };
         },
 
         style: function() {
             return {
-                dayColumnWidth: {
+                firstColumnWidth: {
                     'width': '8%',
                     'min-width': '110px',
                     'max-width': '110px',

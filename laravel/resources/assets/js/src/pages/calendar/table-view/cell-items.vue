@@ -1,11 +1,11 @@
 <template>
     <td :style="[ columnWidth,
-            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(day.date), memberId)
+            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row.date), memberId)
                 ? dragEnterStyle
                 : ''
         ]"
-        @click="clickCell(dayIndex, memberId, cellItems)"
-        @dragenter="handleDragEnter(day.date, memberId, cellItems)"
+        @click="clickCell(rowIndex, memberId, cellItems)"
+        @dragenter="handleDragEnter(row.date, memberId, cellItems)"
         @dragover="handleDragOver($event)"
         @drop.stop="handleDrop()"
         >
@@ -28,7 +28,7 @@
         </div>
 
         <item-insert-field
-            v-if="addItem.enterCell.dayIndex === dayIndex
+            v-if="addItem.enterCell.rowIndex === rowIndex
                 && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
 
@@ -44,8 +44,8 @@ export default {
     components: { item, itemInsertField },
 
     props: {
-        day:         { type: Object, required: true },
-        dayIndex:    { type: Number, required: true },
+        row:         { type: Object, required: true },
+        rowIndex:    { type: Number, required: true },
         cellItems:   { type: Array, required: true },
 //        memberId:    { type: [Number, String], required: true },
         memberId:    { type: [String], required: true },
@@ -98,15 +98,15 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-        decidedRowIndex(day) {
-            if('date' in day) {
-                return this.getRowIndex(day.date);
+        decidedRowIndex(row) {
+            if('date' in row) {
+                return this.getRowIndex(row.date);
             }
-            return day.row_index;
+            return row.row_index;
         },
 
-        clickCell(dayIndex, memberId, cellItems) {
-            this.insertPrepare( { dayIndex, memberId, cellItems } );
+        clickCell(rowIndex, memberId, cellItems) {
+            this.insertPrepare( { rowIndex, memberId, cellItems } );
         },
 
         handleDragStart(cellItems, draggingItem) {
