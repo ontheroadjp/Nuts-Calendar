@@ -30,11 +30,5 @@ export default {
                 autoClose: 3000
             }
         }
-    },
-
-//    user: {
-//        name: null,
-//        token: null,
-//        rememberMe: false
-//    }
+    }
 };
