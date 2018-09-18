@@ -22,23 +22,16 @@ export default {
     },
 
     actions: {
-//        prepare( { commit }, { id, name, isShow } ) {
-//            commit('prepare', { id, name, isShow } );
-//        },
-
         prepare( { commit }, { editingMember, isShow } ) {
-//            commit('prepare', { editingMember, isShow } );
             commit(PREPARE, { editingMember, isShow } );
         },
 
         setUpdateValue( { commit }, { key, value } ) {
-//            commit('setUpdateValue', { key, value } );
             commit(SET_UPDATE_VALUE, { key, value } );
         },
 
         update( { state, commit, rootState } ) {
             u.clog('update()');
-//            commit('isLoading', true);
             commit(IS_LOADING, true);
 
             const url = '/api/v1/member/' + state.updateValues.id;
@@ -68,8 +61,6 @@ export default {
                         isImportant: false
                     }, { root: true});
 
-//                    commit('isLoading', false);
-//                    commit('reset');
                     commit(IS_LOADING, false);
                 })
 
@@ -81,31 +72,20 @@ export default {
                         isActive: true
                     }, { root: true});
 
-//                    commit('isLoading', false);
-//                    commit('reset');
                     commit(IS_LOADING, false);
                 });
         },
 
         reset({ commit }) {
-//            commit('reset');
             commit(RESET);
         }
     },
 
     mutations: {
-//        isLoading( state, value ) {
         [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
 
-//        prepare( state, { id, name, isShow } ) {
-//            state.updateValues.id = id;
-//            state.updateValues.name = name;
-//            state.updateValues.isShow = isShow;
-//        },
-
-//        prepare( state, { editingMember, isShow } ) {
         [PREPARE]( state, { editingMember, isShow } ) {
             state.editingMember = editingMember;
             state.updateValues.id = editingMember.id;
@@ -114,12 +94,10 @@ export default {
             state.updateValues.isShow = isShow;
         },
 
-//        setUpdateValue( state, { key, value } ) {
         [SET_UPDATE_VALUE]( state, { key, value } ) {
             state.updateValues[key] = value;
         },
 
-//        reset( state ) {
         [RESET]( state ) {
             state.editingMember = '';
             state.isLoading = false;

@@ -14,7 +14,6 @@ export default {
     state: {
         isLoading: false,
         isDropped: false,
-//        isInTrash: false,
         draggingItem: '',
         fromCell: {
             cellAddress: '',
@@ -47,7 +46,6 @@ export default {
                 dayIndex: dayIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
-//                cellItems: rootGetters.getCellItems(dayIndex, memberId),
                 cellItems: cellItems,
                 itemIndex: draggingItem.itemIndex,
                 draggingItem: draggingItem
@@ -60,7 +58,6 @@ export default {
                 dayIndex: dayIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
-//                cellItems: rootGetters.getCellItems(dayIndex, memberId)
                 cellItems: cellItems
             });
         },
@@ -69,8 +66,6 @@ export default {
             if (e.preventDefault) {
                 e.preventDefault();
             }
-
-//            e.dataTransfer.dropEffect = 'move'
 
             return false;
         },
@@ -124,17 +119,6 @@ export default {
 
                     commit(DRAG_END);
                 });
-        },
-
-        dropInTrash( { state } ) {
-//            this.deleteItem.isLoading = true;
-//            this.dragItem.isInTrash = true;
-//
-//            this.removeItem(
-//                this.dragItem.fromCell.cellItems,
-//                this.dragItem.fromCell.itemIndex,
-//                this.dragItem.draggingItem,
-//            );
         },
 
         setOnMiniCal( { commit }, { value } ) {
@@ -205,7 +189,6 @@ export default {
         [DRAG_END]( state ) {
             state.isLoading = false;
             state.isDropped = false;
-//            state.enterTrash = false;
             state.draggingItem = '';
             state.fromCell.cellAddress = '';
             state.fromCell.dayIndex = '';

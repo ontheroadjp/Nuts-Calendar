@@ -31,10 +31,6 @@ const calendar = {
     },
 
     actions: {
-//        initMCalendars(mCalendars) {
-//            commit(INIT_MCALENDARS, mCalendars);
-//        },
-
         fetchMCalendar( { state, commit, dispatch }, calendarId) {
             if(calendarId === 'dashboard') return;
             u.clog('fetchMCalendar(' + calendarId + ')');
@@ -205,8 +201,6 @@ const calendar = {
 
                         // first item
                         if(prev === '') {
-//                            u.clog('-----------------------------------');
-//                            u.clog('FIRST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
                             Vue.set(item, 'hasStartTimeError', false);
                             Vue.set(item, 'hasEndTimeError', false);
                             prev = item;
@@ -229,7 +223,6 @@ const calendar = {
 
                         // last item
                         if(index === (cellItemsLength -1)) {
-//                            u.clog('LAST: ' + item.content + '(' + (cellItemsLength - 1)+ ':' + index + ')');
                             Vue.set(item, 'hasEndTimeError', false);
                             return;
                         }

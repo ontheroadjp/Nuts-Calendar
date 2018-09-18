@@ -24,7 +24,6 @@ export default {
 
     actions: {
         prepare( { commit, rootGetters }, { dayIndex, memberId, cellItems } ) {
-//            const cellItems = rootGetters.getCellItems(dayIndex, memberId);
             commit(PREPARE, { dayIndex, memberId, cellItems });
         },
 
@@ -51,7 +50,6 @@ export default {
                 return;
             }
 
-//            commit('start');
             commit(IS_LOADING, true);
 
             const y = rootState.calendar.currentYear;
@@ -122,17 +120,12 @@ export default {
             state.newItem[key] = value;
         },
 
-//        start( state ) {
-//            state.isLoading = true;
-//        },
-
         [INSERT]( state, { item } ) {
             state.enterCell.cellItems.push(item);
         },
 
         [RESET]( state ) {
             state.isActive = false;
-//            state.isLoading = false;
             state.enterCell.dayIndex = '';
             state.enterCell.memberId = '';
             state.enterCell.cellItems = '';

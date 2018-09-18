@@ -23,18 +23,14 @@ export default {
 
     actions: {
         prepare( { commit }, { userCalendar } ) {
-//            commit('prepare',{ userCalendar });
             commit(PREPARE, { userCalendar });
         },
 
         setUpdateValue( { commit }, { key, value } ) {
-//            commit('setUpdateValue', { key, value } );
             commit(SET_UPDATE_VALUE, { key, value } );
         },
 
-//        update( { state, commit, rootState }, notify = true) {
         update( { state, commit }, notify = true) {
-//            commit('isLoading', true);
             commit(IS_LOADING, true);
 
             const url = '/api/v1/calendar/' + state.updateValues.id;
@@ -70,7 +66,6 @@ export default {
                         }, { root: true});
                     }
 
-//                    commit('isLoading', false);
                     commit(IS_LOADING, false);
                 })
 
@@ -82,19 +77,16 @@ export default {
                         isActive: true
                     }, { root: true});
 
-//                    commit('isLoading', false);
                     commit(IS_LOADING, false);
                 });
         },
 
         reset: function( { commit } ) {
-//            commit('reset');
             commit(RESET);
         }
     },
 
     mutations: {
-//        prepare( state, { userCalendar } ) {
         [PREPARE]( state, { userCalendar } ) {
             state.editingUserCalendar = userCalendar;
 
@@ -103,17 +95,14 @@ export default {
             }, state.updateValues );
         },
 
-//        isLoading( state, value ) {
         [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
 
-//        setUpdateValue( state, { key, value } ) {
         [SET_UPDATE_VALUE]( state, { key, value } ) {
             state.updateValues[key] = value;
         },
 
-//        reset( state ) {
         [RESET]( state ) {
             state.isLoading = false;
             state.editingUserCalendar = '';
