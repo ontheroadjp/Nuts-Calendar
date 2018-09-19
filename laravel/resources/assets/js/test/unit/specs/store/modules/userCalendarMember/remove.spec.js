@@ -7,7 +7,7 @@ import Promise from 'bluebird';
 describe('store/module/userCalendarMember/remove.js', () => {
     const { state } = removeModule;
     const { remove } = removeModule.actions;
-    const { IS_LOADING } = removeModule.mutations;
+    const { REMOVE, IS_LOADING } = removeModule.mutations;
 
     describe('actions', () => {
         it('remove', (done) => {
@@ -26,7 +26,7 @@ describe('store/module/userCalendarMember/remove.js', () => {
 
             testAction(remove, actionPayload, { state }, [
                 { type: 'IS_LOADING', payload: true },
-                { type: 'userCalendarMember/remove', payload: { obj: responseData.data } },
+                { type: 'userCalendarMember/REMOVE', payload: { obj: responseData.data } },
                 { type: 'IS_LOADING', payload: false },
             ], done);
 

@@ -7,7 +7,7 @@ import Promise from 'bluebird';
 describe('store/module/member/insert.js', () => {
     const { state } = vuexModule;
     const { setInsertValue, insert, reset } = vuexModule.actions;
-    const { IS_LOADING, RESET, SET_INSERT_VALUE, NOTIFY_SUCCESS, NOTIFY_DANGER } = vuexModule.mutations;
+    const { ADD, IS_LOADING, RESET, SET_INSERT_VALUE, NOTIFY_SUCCESS, NOTIFY_DANGER } = vuexModule.mutations;
 
     describe('actions', () => {
         it('setInsertValue', (done) => {
@@ -25,7 +25,7 @@ describe('store/module/member/insert.js', () => {
 
             testAction(insert, null, { state }, [
                 { type: 'IS_LOADING', payload: true },
-                { type: 'member/add', payload: { id: 123456, member: responseData.data } },
+                { type: 'member/ADD', payload: { id: 123456, member: responseData.data } },
                 { type: 'NOTIFY_SUCCESS', payload: {content: 'success add member', isImportant: false} },
                 { type: 'IS_LOADING', payload: false },
                 { type: 'RESET', payload: null }

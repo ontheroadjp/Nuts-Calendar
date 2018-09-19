@@ -68,7 +68,7 @@ describe('store/module/calendar/table-view/item/update.js', () => {
                 { type: 'IS_LOADING', payload: true },
                 { type: 'UPDATE', payload: data },
                 { type: 'calendar/tableView/updateCellItems', payload: [] },
-                { type: 'NOTIFY_SUCCESS', payload: { content: 'success update task', isImportant: false } },
+//                { type: 'NOTIFY_SUCCESS', payload: { content: 'success update task', isImportant: false } },
                 { type: 'IS_LOADING', payload: false }
             ], done);
 

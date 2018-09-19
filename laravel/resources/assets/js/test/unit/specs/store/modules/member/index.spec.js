@@ -4,7 +4,7 @@ import sinon from 'sinon';
 
 describe('store/module/member/index.js', () => {
     const { state } = memberModule;
-    const { init } = memberModule.mutations;
+    const { INIT } = memberModule.mutations;
     const members = {
         1: { id: 1, name: 'member 1' },
         2: { id: 2, name: 'member 2' },
@@ -12,8 +12,8 @@ describe('store/module/member/index.js', () => {
     };
 
     describe('mutations', () => {
-        it('init', () => {
-            init(state, members);
+        it('INIT', () => {
+            INIT(state, members);
             expect(Object.keys(state.data.members).length).is.eql(3);
         });
     });

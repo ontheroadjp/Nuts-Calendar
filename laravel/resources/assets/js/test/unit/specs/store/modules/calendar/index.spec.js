@@ -19,12 +19,14 @@ describe('store/modules/calendar/index.js', () => {
     };
 
     describe('actions', () => {
-        it('fetchCalendar', (done) => {
+        it('fetchCalendar(viewMode: dayly)', (done) => {
             const response = {
                 data: calendars
             };
             const resolved = new Promise.resolve(response);
             const httpStub = sinon.stub(http, 'fetchGet').returns(resolved);
+
+            SET_VALUE(state, {key: 'viewMode', value: 'dayly'});
 
             testAction(fetchCalendar, { calendarId: 8 }, { state }, [
                 { type: 'IS_LOADING', payload: true },
