@@ -47,7 +47,6 @@ export default {
         row:         { type: Object, required: true },
         rowIndex:    { type: Number, required: true },
         cellItems:   { type: Array, required: true },
-//        memberId:    { type: [Number, String], required: true },
         memberId:    { type: [String], required: true },
         columnWidth: { type: Object, required: true }
     },
