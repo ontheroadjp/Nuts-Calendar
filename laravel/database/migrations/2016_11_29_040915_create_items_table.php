@@ -21,6 +21,7 @@ class CreateItemsTable extends Migration
             $table->integer('type_id')->unsigned();
             $table->string('content')->nullable(false);
             $table->date('date')->nullable(true);
+            $table->boolean('is_monthly_event')->default(false)->nullable(false);
             $table->boolean('is_all_day')->default(false)->nullable(false);
             $table->time('start_time')->nullable(true);
             $table->time('end_time')->nullable(true);

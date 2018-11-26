@@ -22,6 +22,7 @@ class Item extends Model
         'start_time',
         'end_time',
         'is_done',
+        'is_monthly_event',
         'is_all_day',
         'memo'
     ];
