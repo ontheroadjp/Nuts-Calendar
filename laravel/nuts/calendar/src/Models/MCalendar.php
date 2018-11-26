@@ -32,7 +32,7 @@ class MCalendar extends Model
 
     public function items()
     {
-        return $this->hasMany(Item::class, 'date', 'date');
+        return $this->hasMany(Item::class, 'row_index', 'gregorian_yyyymm');
     }
 
     public function fetch($userId, $userCalendarId)
@@ -61,12 +61,12 @@ class MCalendar extends Model
         $mCalendar = MCalendar::with('items')->get();
         $mCalendar = $this->tidyItems($mCalendar, collect($members));
 
-        $item = new Item();
-        $items = $item->fetchSpecificMonth(2011, 3);
+//        $item = new Item();
+//        $items = $item->fetchSpecificMonth(2011, 3);
 
          return [
              "members" => $members,
-             "items" => $items,
+//             "items" => $items,
              "days" => $mCalendar
          ];
     }

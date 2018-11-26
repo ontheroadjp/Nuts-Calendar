@@ -133,8 +133,10 @@ const calendar = {
             namespaced: true,
 
             actions: {
-                updateCellItems( { commit }, cellItems ) {
-                    commit(SORT_CELL_ITEMS, cellItems);
+                updateCellItems( { commit, rootState }, cellItems ) {
+                    if( rootState.calendar.viewMode != 'monthly') {
+                        commit(SORT_CELL_ITEMS, cellItems);
+                    }
                     commit(CHECK_TIME, cellItems);
                 }
             },

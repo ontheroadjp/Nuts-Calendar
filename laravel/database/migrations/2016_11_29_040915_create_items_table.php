@@ -16,10 +16,11 @@ class CreateItemsTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->increments('id');
+            $table->integer('row_index')->unsigned();
             $table->string('member_id');
             $table->integer('type_id')->unsigned();
             $table->string('content')->nullable(false);
-            $table->date('date')->nullable(false);
+            $table->date('date')->nullable(true);
             $table->boolean('is_all_day')->default(false)->nullable(false);
             $table->time('start_time')->nullable(true);
             $table->time('end_time')->nullable(true);

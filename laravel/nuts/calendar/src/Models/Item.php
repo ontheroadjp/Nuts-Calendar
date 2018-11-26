@@ -15,6 +15,7 @@ class Item extends Model
      */
     protected $fillable = [
         'type_id',
+        'row_index',
         'member_id',
         'content',
         'date',

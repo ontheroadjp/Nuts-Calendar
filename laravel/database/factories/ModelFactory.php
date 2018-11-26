@@ -76,9 +76,11 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
         '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
     ];
 
-    $randomDate = $year[array_rand($year)]
-        ."-".$month[array_rand($month)]
-        ."-".$day[array_rand($day)];
+    $y = $year[array_rand($year)];
+    $m = $month[array_rand($month)];
+    $d = $day[array_rand($day)];
+    $randomDate = $y."-".$m."-".$d;
+    $rowIndex = $y.$m.$d;
 
     $hour = [
         '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11',
@@ -108,6 +110,7 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
     }
 
     return [
+        'row_index' => $rowIndex,
         'member_id' => $faker->randomElement($memberIds),
         'type_id' => $faker->randomElement($itemTypeIds),
         'content'=> $faker->word(),

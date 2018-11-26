@@ -52,12 +52,21 @@ export default {
             });
         },
 
-        dragEnter( { state, commit, rootGetters }, { dayString, memberId, cellItems } ) {
-            const dayIndex = rootGetters.getRowIndex(dayString);
+//        dragEnter( { state, commit, rootGetters }, { dayString, memberId, cellItems } ) {
+//            const dayIndex = rootGetters.getRowIndex(dayString);
+//            commit(DRAG_ENTER, {
+//                dayIndex: dayIndex,
+//                memberId: memberId,
+//                cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
+//                cellItems: cellItems
+//            });
+//        },
+
+        dragEnter( { state, commit, rootGetters }, { rowIndex, memberId, cellItems } ) {
             commit(DRAG_ENTER, {
-                dayIndex: dayIndex,
+                dayIndex: rowIndex,
                 memberId: memberId,
-                cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
+                cellAddress: rootGetters.getCellAddress(rowIndex, memberId),
                 cellItems: cellItems
             });
         },

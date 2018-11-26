@@ -1,4 +1,5 @@
 <template>
+    <!--
     <td :style="[ columnWidth,
             dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row.date), memberId)
                 ? dragEnterStyle
@@ -9,7 +10,17 @@
         @dragover="handleDragOver($event)"
         @drop.stop="handleDrop()"
         >
-
+    -->
+    <td :style="[ columnWidth,
+            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row), memberId)
+                ? dragEnterStyle
+                : ''
+        ]"
+        @click="clickCell(getRowIndex(row), memberId, cellItems)"
+        @dragenter="handleDragEnter(row.date, memberId, cellItems)"
+        @dragover="handleDragOver($event)"
+        @drop.stop="handleDrop()"
+        >
         <div v-for="(item, itemIndex) in cellItems"
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
@@ -28,7 +39,7 @@
         </div>
 
         <item-insert-field
-            v-if="addItem.enterCell.rowIndex === rowIndex
+            v-if="addItem.enterCell.dayIndex === getRowIndex(row)
                 && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
 
@@ -45,7 +56,7 @@ export default {
 
     props: {
         row:         { type: Object, required: true },
-        rowIndex:    { type: Number, required: true },
+//        rowIndex:    { type: Number, required: true },
         cellItems:   { type: Array, required: true },
         memberId:    { type: [String], required: true },
         columnWidth: { type: Object, required: true }
@@ -54,6 +65,10 @@ export default {
     computed: {
         ...mapState({
             theme: state => state.app.theme
+        }),
+
+        ...mapState('calendar', {
+            viewMode: state => state.viewMode
         }),
 
         ...mapState('calendar/tableView/toolPalette', {
@@ -73,7 +88,7 @@ export default {
         ...mapGetters({
             showColumns: 'getShowMembers',
             getCellAddress: 'getCellAddress',
-            getRowIndex: 'getRowIndex'
+//            getRowIndex: 'getRowIndex'
         }),
 
         dragEnterStyle: function() {
@@ -97,15 +112,23 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-        decidedRowIndex(row) {
-            if('date' in row) {
-                return this.getRowIndex(row.date);
+//        decidedRowIndex(row) {
+//            if('date' in row) {
+//                return this.getRowIndex(row.date);
+//            }
+//            return row.row_index;
+//        },
+
+        getRowIndex(row) {
+            if( this.viewMode === 'monthly' ) {
+                return row.gregorian_yyyymm;
+            } else if( this.viewMode === 'dayly' ) {
+                return row.gregorian_yyyymmdd;
             }
-            return row.row_index;
         },
 
-        clickCell(rowIndex, memberId, cellItems) {
-            this.insertPrepare( { rowIndex, memberId, cellItems } );
+        clickCell(dayIndex, memberId, cellItems) {
+            this.insertPrepare( { dayIndex, memberId, cellItems } );
         },
 
         handleDragStart(cellItems, draggingItem) {

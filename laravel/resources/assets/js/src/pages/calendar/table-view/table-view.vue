@@ -75,7 +75,7 @@
                     :today="style.today"
                     :firstColumnWidth="style.firstColumnWidth"
                 ></monthColumn>
-
+<!--
                 <template v-for="(memberId, index) in showColumns">
                     <cell-items
                         :row="row"
@@ -85,7 +85,15 @@
                         :columnWidth="columnWidth"
                     ></cell-items>
                 </template>
-
+-->
+                <template v-for="(memberId, index) in showColumns">
+                    <cell-items
+                        :row="row"
+                        :cellItems="row.items[memberId]"
+                        :memberId="memberId"
+                        :columnWidth="columnWidth"
+                    ></cell-items>
+                </template>
                 <dayColumn
                     v-if="viewMode === 'dayly' && showRightDay"
                     :row="row"
@@ -231,7 +239,25 @@ export default {
             this.$store.commit('dashboard/SET_VALUE', {
                 key: 'disabled', value: false
             });
-        }
+        },
+
+//        getRowIndex(row) {
+//            const rowIndex = '';
+//            if( this.viewMode === 'monthly' ) {
+//                rowIndex = parseInt(
+//                        ('20' + row.gregorian_year).slice(-4)
+//                        + ('00' + row.gregorian_month).slice(-2)
+//                );
+//            } else if( this.viewMode === 'dayly' ) {
+//                rowIndex = parseInt(
+//                        ('20' + row.gregorian_year).slice(-4)
+//                        + ('00' + row.gregorian_month).slice(-2)
+//                        + ('00' + row.gregorian_day).slice(-2)
+//                );
+//            }
+//
+//            row.rowIndex = rowIndex;
+//        }
     }
 };
 </script>
