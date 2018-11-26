@@ -52,14 +52,10 @@ export default {
 
             commit(IS_LOADING, true);
 
-            const y = rootState.calendar.currentYear;
-            const m = rootState.calendar.currentMonth;
-            const d = ("0" + (state.enterCell.dayIndex + 1)).slice(-2);
-
             const url = '/api/v1/item';
             const params = {
-                'date': y + '-' + m + '-' + d,
                 'type_id': typeId,
+                'row_index': state.enterCell.dayIndex,
                 'member_id': state.enterCell.memberId,
                 'content': state.newItem.content,
                 'start_time': '00:00:00',
@@ -67,6 +63,13 @@ export default {
                 'is_all_day': true,
                 'memo': ''
             };
+
+            if( rootState.calendar.viewMode === 'dayly' ) {
+                const y = rootState.calendar.currentYear;
+                const m = rootState.calendar.currentMonth;
+                const d = ("0" + (state.enterCell.dayIndex + 1)).slice(-2);
+                params.date = y + '-' + m + '-' + d;
+            }
 
             http.fetchPost(url, params)
                 .then(response => {

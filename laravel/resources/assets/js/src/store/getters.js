@@ -33,10 +33,27 @@ export default {
     },
 
     getRowIndex: (state) => (dayString) => {
+        u.clog('state: ' + state);
+        u.clog(state);
+        u.clog('state.rowIndex: ' + state.rowIndex);
+        u.clog('dayString: ' + dayString);
+        if(!dayString) {
+            return state.rowIndex;
+        }
         return parseInt((dayString.split('-'))[2]) - 1;
     },
 
+//    getRowIndex: (state) => (row) => {
+//        if(row.rowIndex) {
+//            return row.rowIndex;
+//        }
+//        return parseInt((row.date.split('-'))[2]) - 1;
+//    },
+
+//    getCellAddress: (state) => (dayIndex, memberId) => {
+//        return (dayIndex + 1) + '-' + memberId;
+//    }
     getCellAddress: (state) => (dayIndex, memberId) => {
-        return (dayIndex + 1) + '-' + memberId;
+        return dayIndex + '-' + memberId;
     }
 };
