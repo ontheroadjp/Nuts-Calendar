@@ -14,8 +14,10 @@ class CreateMCalendarTable extends Migration
     {
         Schema::create('m_calendar', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+//            $table->increments('id');
 //            $table->string('date',8);
             $table->integer('gregorian_yyyymm', 6)->unsigned();
+//            $table->integer('gregorian_yyyymm', 6);
             $table->integer('lunar_year')->unsigned();      // 农历年
             $table->integer('lunar_month')->unsigned();     // 农历月
             $table->string('lunar_month_chinese', 2);       // (汉字)农历月
@@ -24,7 +26,7 @@ class CreateMCalendarTable extends Migration
             $table->string('animal', 1);                    // 生肖: 十二宮
             $table->integer('gregorian_year')->unsigned();  // 公历年
             $table->integer('gregorian_month');             // 公历月
-//            $table->primary(['gregorian_year', 'gregorian_month']);
+//            $table->unique(['gregorian_year', 'gregorian_month']);
             $table->timestamps();
         });
     }

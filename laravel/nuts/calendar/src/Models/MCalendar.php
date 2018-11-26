@@ -9,6 +9,8 @@ class MCalendar extends Model
 {
     protected $table = 'm_calendar';
 
+//    protected $primaryKey = ['gregorian_year', 'gregorian_month'];
+
     protected $fillable = [
         ''
     ];

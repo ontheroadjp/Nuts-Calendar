@@ -42,11 +42,11 @@ class JwtAuthServiceProvider extends ServiceProvider
         ], function() {
             Route::group(['middleware' => 'nuts.api.jwtauth'], function() {
 
-                // mcalendar(months)
+                // mcalendar(monthly)
                 $url = 'mcalendar/{userCalendarId}';
                 Route::get($url, 'MCalendarController@index' );
 
-                // calendar(days)
+                // calendar(dayly)
                 $url = 'calendar/{userCalendarId}/{year}/{month}';
                 Route::get($url, 'CalendarController@index' );
 

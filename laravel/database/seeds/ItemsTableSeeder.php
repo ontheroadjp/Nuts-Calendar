@@ -12,6 +12,6 @@ class ItemsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Nuts\Calendar\Models\Item::class, 5000)->create();
+        factory(Nuts\Calendar\Models\Item::class, 500)->create();
     }
 }

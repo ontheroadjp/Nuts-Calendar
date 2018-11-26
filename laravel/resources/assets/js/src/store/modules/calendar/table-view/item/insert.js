@@ -9,7 +9,7 @@ export default {
         isActive: false,
         isLoading: false,
         enterCell: {
-            dayIndex: '',
+            rowIndex: '',
             memberId: '',
             cellItems: ''
         },
@@ -23,8 +23,8 @@ export default {
     },
 
     actions: {
-        prepare( { commit, rootGetters }, { dayIndex, memberId, cellItems } ) {
-            commit(PREPARE, { dayIndex, memberId, cellItems });
+        prepare( { commit, rootGetters }, { rowIndex, memberId, cellItems } ) {
+            commit(PREPARE, { rowIndex, memberId, cellItems });
         },
 
         setValue( { commit }, { key, value } ) {
@@ -60,7 +60,7 @@ export default {
             const url = '/api/v1/item';
             const params = {
                 'type_id': typeId,
-                'row_index': state.enterCell.dayIndex,
+                'row_index': state.enterCell.rowIndex,
                 'member_id': state.enterCell.memberId,
                 'content': state.newItem.content,
                 'start_time': '00:00:00',
@@ -73,7 +73,7 @@ export default {
             if( rootState.calendar.viewMode === 'dayly' ) {
                 const y = rootState.calendar.currentYear;
                 const m = rootState.calendar.currentMonth;
-                const d = ("0" + (state.enterCell.dayIndex + 1)).slice(-2);
+                const d = (state.enterCell.rowIndex).slice(-2);
                 params.date = y + '-' + m + '-' + d;
             }
 
@@ -114,8 +114,8 @@ export default {
     },
 
     mutations: {
-        [PREPARE]( state, { dayIndex, memberId, cellItems } ) {
-            state.enterCell.dayIndex = dayIndex;
+        [PREPARE]( state, { rowIndex, memberId, cellItems } ) {
+            state.enterCell.rowIndex = rowIndex;
             state.enterCell.memberId = memberId;
             state.enterCell.cellItems = cellItems;
             state.isActive = true;
@@ -135,7 +135,7 @@ export default {
 
         [RESET]( state ) {
             state.isActive = false;
-            state.enterCell.dayIndex = '';
+            state.enterCell.rowIndex = '';
             state.enterCell.memberId = '';
             state.enterCell.cellItems = '';
             state.newItem.content = '';

@@ -17,14 +17,14 @@ export default {
         draggingItem: '',
         fromCell: {
             cellAddress: '',
-            dayIndex: '',
+            rowIndex: '',
             memberId: '',
             cellItems: '',
             itemIndex: ''
         },
         enterCell: {
             cellAddress: '',
-            dayIndex: '',
+            rowIndex: '',
             memberId: '',
             cellItems: ''
         },
@@ -39,32 +39,22 @@ export default {
     actions: {
         dragStart( { commit, rootGetters }, { cellItems, draggingItem } ) {
 
-            const dayIndex = draggingItem.dayIndex;
+            const rowIndex = draggingItem.dayIndex;
             const memberId = draggingItem.member_id;
 
             commit(DRAG_START, {
-                dayIndex: dayIndex,
+                rowIndex: rowIndex,
                 memberId: memberId,
-                cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
+                cellAddress: rootGetters.getCellAddress(rowIndex, memberId),
                 cellItems: cellItems,
                 itemIndex: draggingItem.itemIndex,
                 draggingItem: draggingItem
             });
         },
 
-//        dragEnter( { state, commit, rootGetters }, { dayString, memberId, cellItems } ) {
-//            const dayIndex = rootGetters.getRowIndex(dayString);
-//            commit(DRAG_ENTER, {
-//                dayIndex: dayIndex,
-//                memberId: memberId,
-//                cellAddress: rootGetters.getCellAddress(dayIndex, memberId),
-//                cellItems: cellItems
-//            });
-//        },
-
         dragEnter( { state, commit, rootGetters }, { rowIndex, memberId, cellItems } ) {
             commit(DRAG_ENTER, {
-                dayIndex: rowIndex,
+                rowIndex: rowIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(rowIndex, memberId),
                 cellItems: cellItems
@@ -85,7 +75,8 @@ export default {
 
             const y = rootState.calendar.currentYear;
             const m = rootState.calendar.currentMonth;
-            commit(DROP, { y, m });
+            const viewMode = rootState.calendar.viewMode;
+            commit(DROP, { y, m, viewMode });
 
             // update cellItems
             dispatch('calendar/tableView/updateCellItems',
@@ -96,6 +87,10 @@ export default {
                 state.fromCell.cellItems, { root: true }
             );
 
+//            if( rootState.calendar.viewMode === 'monthly' ) {
+//                state.draggingItem.date = null;
+//            }
+
             const url = '/api/v1/item/' + state.draggingItem.id;
             const params = {
                 'member_id': state.draggingItem.member_id,
@@ -104,6 +99,7 @@ export default {
                 'start_time': state.draggingItem.start_time,
                 'end_time': state.draggingItem.end_time,
                 'is_done': state.draggingItem.is_done,
+                'row_index': state.draggingItem.row_index,
                 'date': state.draggingItem.date
             };
 
@@ -144,7 +140,7 @@ export default {
     mutations: {
         [DRAG_START]( state, p ) {
             state.fromCell.cellAddress = p.cellAddress;
-            state.fromCell.dayIndex = p.dayIndex;
+            state.fromCell.rowIndex = p.rowIndex;
             state.fromCell.memberId = p.memberId;
             state.fromCell.cellItems = p.cellItems;
             state.fromCell.itemIndex = p.itemIndex;
@@ -153,19 +149,26 @@ export default {
 
         [DRAG_ENTER]( state, p ) {
             state.enterCell.cellAddress = p.cellAddress;
-            state.enterCell.dayIndex = p.dayIndex;
+            state.enterCell.rowIndex = p.rowIndex;
             state.enterCell.memberId = p.memberId;
             state.enterCell.cellItems = p.cellItems;
             state.onMiniCal = '';
         },
 
-        [DROP]( state, { y, m } ) {
+        [DROP]( state, { y, m, viewMode } ) {
             state.isLoading = true;
             state.isDropped = true;
 
             // update item
-            state.draggingItem.date = y + '-' + m + '-' + (state.enterCell.dayIndex + 1);
+            if( viewMode === 'dayly' ) {
+//                state.draggingItem.date = y + '-' + m + '-' + (state.enterCell.rowIndex + 1);
+                const d = (state.enterCell.rowIndex).slice(-2);
+                state.draggingItem.date = y + '-' + m + '-' + d;
+            } else if( viewMode === 'monthly' ) {
+                state.draggingItem.date = null;
+            }
             state.draggingItem.member_id = state.enterCell.memberId;
+            state.draggingItem.row_index = state.enterCell.rowIndex;
 
             // remove item
             state.fromCell.cellItems.splice(state.fromCell.itemIndex, 1);
@@ -176,7 +179,7 @@ export default {
 
         [REVERSE_ITEM]( state, { y, m } ) {
             // update item
-            state.draggingItem.date = y + '-' + m + '-' + (state.fromCell.dayIndex + 1);
+            state.draggingItem.date = y + '-' + m + '-' + (state.fromCell.rowIndex + 1);
             state.draggingItem.member_id = state.fromCell.memberId;
 
             // remove item
@@ -190,7 +193,7 @@ export default {
             u.clog('setOnMiniCal(' + value + ')');
             state.onMiniCal = value;
             state.enterCell.cellAddress = '';
-            state.enterCell.dayIndex = '';
+            state.enterCell.rowIndex = '';
             state.enterCell.memberId = '';
             state.enterCell.cellItems = [];
         },
@@ -200,12 +203,12 @@ export default {
             state.isDropped = false;
             state.draggingItem = '';
             state.fromCell.cellAddress = '';
-            state.fromCell.dayIndex = '';
+            state.fromCell.rowIndex = '';
             state.fromCell.memberId = '';
             state.fromCell.cellItems = [];
             state.fromCell.itemIndex = '';
             state.enterCell.cellAddress = '';
-            state.enterCell.dayIndex = '';
+            state.enterCell.rowIndex = '';
             state.enterCell.memberId = '';
             state.enterCell.cellItems = [];
             state.onMiniCal = '';

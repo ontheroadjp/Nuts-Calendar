@@ -19,7 +19,8 @@ class MCalendarTableSeeder extends Seeder
 
         $day = 1;
 
-        for( $y = 2016; $y < 2036; $y++ ) {
+//        for( $y = 2016; $y < 2036; $y++ ) {
+        for( $y = 2016; $y < 2020; $y++ ) {
             for( $m = 1; $m < 13; $m++ ) {
                 $result = $chineseCalendar->solar($y, $m, 1);
                 $yyyy = sprintf('%04d', $result['gregorian_year']);

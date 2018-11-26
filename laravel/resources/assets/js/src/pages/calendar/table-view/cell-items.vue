@@ -1,17 +1,6 @@
 <template>
     <!--
     <td :style="[ columnWidth,
-            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row.date), memberId)
-                ? dragEnterStyle
-                : ''
-        ]"
-        @click="clickCell(rowIndex, memberId, cellItems)"
-        @dragenter="handleDragEnter(row.date, memberId, cellItems)"
-        @dragover="handleDragOver($event)"
-        @drop.stop="handleDrop()"
-        >
-    -->
-    <td :style="[ columnWidth,
             dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row), memberId)
                 ? dragEnterStyle
                 : ''
@@ -37,9 +26,36 @@
             ></item>
 
         </div>
+            -->
+        <td :style="[ columnWidth,
+            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row), memberId)
+                ? dragEnterStyle
+                : ''
+        ]"
+        @click="clickCell(getRowIndex(row), memberId, cellItems)"
+        @dragenter="handleDragEnter(getRowIndex(row), memberId, cellItems)"
+        @dragover="handleDragOver($event)"
+        @drop.stop="handleDrop()"
+        >
+        <div v-for="(item, itemIndex) in cellItems"
+            style="cursor: move"
+            :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
+            :draggable="!dragItem.isLoading"
+            @dragstart="handleDragStart(cellItems, item)"
+            @dragend="handleDragEnd()"
+            >
+
+            <item
+                :cellItems="cellItems"
+                :isEventItem="isEventItem"
+                :isTaskItem="isTaskItem"
+                :item="item"
+            ></item>
+
+        </div>
 
         <item-insert-field
-            v-if="addItem.enterCell.dayIndex === getRowIndex(row)
+            v-if="addItem.enterCell.rowIndex === getRowIndex(row)
                 && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
 
@@ -56,7 +72,6 @@ export default {
 
     props: {
         row:         { type: Object, required: true },
-//        rowIndex:    { type: Number, required: true },
         cellItems:   { type: Array, required: true },
         memberId:    { type: [String], required: true },
         columnWidth: { type: Object, required: true }
@@ -88,7 +103,6 @@ export default {
         ...mapGetters({
             showColumns: 'getShowMembers',
             getCellAddress: 'getCellAddress',
-//            getRowIndex: 'getRowIndex'
         }),
 
         dragEnterStyle: function() {
@@ -112,23 +126,19 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-//        decidedRowIndex(row) {
-//            if('date' in row) {
-//                return this.getRowIndex(row.date);
-//            }
-//            return row.row_index;
-//        },
-
         getRowIndex(row) {
+            const y = ('0000' + row.gregorian_year).slice(-4);
+            const m = ('00' + row.gregorian_month).slice(-2);
             if( this.viewMode === 'monthly' ) {
-                return row.gregorian_yyyymm;
+                return y + m;
             } else if( this.viewMode === 'dayly' ) {
-                return row.gregorian_yyyymmdd;
+                const d = ('00' + row.gregorian_day).slice(-2);
+                return y + m + d;
             }
         },
 
-        clickCell(dayIndex, memberId, cellItems) {
-            this.insertPrepare( { dayIndex, memberId, cellItems } );
+        clickCell(rowIndex, memberId, cellItems) {
+            this.insertPrepare( { rowIndex, memberId, cellItems } );
         },
 
         handleDragStart(cellItems, draggingItem) {
@@ -136,8 +146,8 @@ export default {
             this.dragStart({ cellItems, draggingItem });
         },
 
-        handleDragEnter(dayString, memberId, cellItems) {
-            this.dragEnter({ dayString, memberId, cellItems });
+        handleDragEnter(rowIndex, memberId, cellItems) {
+            this.dragEnter({ rowIndex, memberId, cellItems });
         },
 
         handleDragOver(e) {
