@@ -77,13 +77,19 @@ class Calendar extends Model
     public function fetchCalendarWithHolidayAndItems($year,$month)
     {
         return Calendar::with('holidays', 'items')
-            ->where('date', 'LIKE', "%$year-$month%")
+            ->where('date', 'LIKE', "$year-$month-%")
             ->get();
+//        return Calendar::with('holidays', 'items')
+//            ->where('date', 'LIKE', "$year-$month-%")
+//            ->whereNotIn('gregorian_day', [0])
+//            ->get();
     }
 
     public function fetchMCalendarWithHolidayAndItems()
     {
+        $year = date('Y');
         return Calendar::with('holidays', 'items')
+            ->where('date', 'LIKE', "$year-%")
             ->where('gregorian_day', '=', "0")
             ->get();
     }

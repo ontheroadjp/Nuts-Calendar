@@ -1,10 +1,13 @@
 <template>
-    <td class="date-styling" :style="firstColumnWidth">
+<!--
+    <td class="date-styling" :style="[firstColumnWidth, row.date.slice(-2) == 0 ? {'background-color': '#b3a4a4'}]">
+-->
+    <td class="date-styling" :style="[firstColumnWidth]">
         <div style="margin-bottom: 5px;">
 <!--
             <span :style="[ row.is_today ? today : '' ]">
 -->
-                {{ getDateAndDay(row.date) }}
+                {{ row.date.slice(-2) != 0 ? getDateAndDay(row.date) : '' }}
 <!--
             </span>
 -->
@@ -16,7 +19,7 @@
         >{{ holiday.holiday_name }}</div>
 
         <div v-show="lang === 'ja'" class="date-label">
-            {{ rokuyou(row.lunar_month, row.lunar_day) }}
+            {{ row.date.slice(-2) != 0 ? rokuyou(row.lunar_month, row.lunar_day) : ''}}
         </div>
 
         <!-- <div v-show="lang === 'ja'" class="date-label">{{ row.lunar_month_chinese }} {{ row.lunar_day_chinese }}</div> -->

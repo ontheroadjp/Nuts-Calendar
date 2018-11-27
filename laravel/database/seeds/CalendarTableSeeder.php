@@ -16,9 +16,9 @@ class CalendarTableSeeder extends Seeder
         DB::table('calendar')->delete();
         //$faker = Faker::create('en_US');
 
-        $date = new DateTime("2011-01-01");
+        $date = new DateTime("2016-01-01");
 //        $days = 365 * 30 + 1;
-        $days = 365 * 3 + 1;
+        $days = 365 * 6 + 1;
 
         $chineseCalendar = new ChineseCalendar();
 

@@ -37,8 +37,10 @@
         @dragover="handleDragOver($event)"
         @drop.stop="handleDrop()"
         >
+<!--
         {{ getRowIndex(row) }}<br>
         <small>{{ memberId }}</small>
+-->
         <div v-for="(item, itemIndex) in cellItems"
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"

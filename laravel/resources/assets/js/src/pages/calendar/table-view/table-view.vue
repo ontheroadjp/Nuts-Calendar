@@ -27,16 +27,18 @@
         <thead v-if="filteredColumns">
             <tr>
                 <th class="header-styling thin"
-                    style="padding: 0.4rem 1rem"
+                    style="text-alien: center; vertical-align: middle;"
                     :style="[style.firstColumnWidth]"
                 >
-                        <button
+                        <a
                             v-show="viewMode === 'dayly'"
+                            class="button"
+                            style="height: 1.3rem"
                             @click="$store.commit('calendar/SET_VALUE', {
                                 key: 'viewMode',
                                 value: 'monthly'
                             });
-                        ">Monthly</button>
+                        ">Monthly</a>
                 </th>
 
                 <template v-for="(member, index) in filteredColumns">
@@ -60,7 +62,8 @@
             <tr v-for="(row, rowIndex) in filteredBody"
                 :class="{ saturday: viewMode === 'dayly' && isSaturday(row.date),
                             sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0
-                        }">
+                        }"
+                :style="rowIndex == 0 && viewMode === 'dayly' ? style.monthlyItemRow : ''">
 
                 <monthColumn
                     v-if="viewMode === 'monthly'"
@@ -183,6 +186,9 @@ export default {
 
         style: function() {
             return {
+                monthlyItemRow: {
+                    'background-color': '#f2f2f2'
+                },
                 firstColumnWidth: {
                     'width': '8%',
                     'min-width': '110px',

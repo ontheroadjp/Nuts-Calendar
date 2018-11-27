@@ -87,7 +87,6 @@
                     signboard: 0,
                     toolPalette: 0
                 },
-
                 elements: {
                     tableHeader: '',
                     tableBody: ''
@@ -101,6 +100,8 @@
             }),
 
             ...mapState('calendar', {
+                currentYear: state => state.currentYear,
+                currentMonth: state => state.currentMonth,
                 viewMode: state => state.viewMode
             }),
 
@@ -133,15 +134,28 @@
            filteredBody: {
                 cache: true,
                 get() {
-                    let data;
+                    let data = this.$store.state.calendar.data.calendars;
 
-                    data = this.$store.state.calendar.data.calendars;
+                    // filter data
+                    switch(this.viewMode) {
+                        case 'monthly':
+                            data = data.filter((value) => {
+                                return value.gregorian_day == 0;
+                            });
+                            break;
+                        case 'dayly':
+                            data = data.filter((value) => {
+                                return value.gregorian_year == this.currentYear
+                                    && value.gregorian_month == this.currentMonth;
+                            });
 
-                    if( this.viewMode === 'monthly' ) {
-                        data = data.filter( function (value) {
-                            return value.gregorian_day == 0;
-                        });
-//                        data = this.$store.state.calendar.data.mCalendars;
+                            // squeeze by day
+                            if(this.internalQuery) {
+                                data = data.slice().filter( row => {
+                                    return this.getDayIndex(row['date']) == this.internalQuery;
+                                });
+                            }
+                            break;
                     }
 
                     // filter by search words
@@ -150,19 +164,6 @@
                             return this.getItemContentsAsString(day).indexOf(this.searchQuery) > -1;
                         });
                     }
-
-                    if( this.viewMode === 'dayly' ) {
-                        // filter by a day of week
-                        if(this.internalQuery) {
-                            data = data.slice().filter( row => {
-                                return this.getDayIndex(row['date']) == this.internalQuery;
-                            });
-                        }
-                    }
-
-//                    if( this.viewMode === 'monthly' ) {
-//                        data = this.$store.state.calendar.data.mCalendars;
-//                    }
 
                     return data;
                 }

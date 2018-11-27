@@ -34,6 +34,6 @@ class CreateMCalendarTable extends Migration
      */
     public function down()
     {
-        Schema::drop('m_calendar');
+//        Schema::drop('m_calendar');
     }
 }

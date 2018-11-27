@@ -15,6 +15,30 @@ import {
 
 const now = new Date();
 
+function compareValues(key, order='asc') {
+    return function(a, b) {
+        if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+            // property doesn't exist on either object
+            return 0;
+        }
+
+        const varA = (typeof a[key] === 'string') ?
+            a[key].toUpperCase() : a[key];
+        const varB = (typeof b[key] === 'string') ?
+            b[key].toUpperCase() : b[key];
+
+        let comparison = 0;
+        if (varA > varB) {
+            comparison = 1;
+        } else if (varA < varB) {
+            comparison = -1;
+        }
+        return (
+            (order == 'desc') ? (comparison * -1) : comparison
+        );
+    };
+}
+
 const calendar = {
     namespaced: true,
 
@@ -25,13 +49,13 @@ const calendar = {
         currentYear: now.getFullYear(),
         currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
         data: {
-            mCalendars: [],
+//            mCalendars: [],
             calendars: []
         },
-        fetchedData: {
-            mCalendars: [],
-            calendars: []
-        }
+//        fetchedData: {
+//            mCalendars: [],
+//            calendars: []
+//        }
     },
 
     actions: {
@@ -85,6 +109,19 @@ const calendar = {
                 url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
             }
 
+            let alreadyExist = false;
+            state.data.calendars.forEach((value) => {
+                if( value.gregorian_year == state.currentYear
+                        && value.gregorian_month == state.currentMonth
+                        && value.gregorian_day != 0) {
+                    u.clog('already exists.' + calendarId + ')');
+                    commit(IS_LOADING, false);
+                    alreadyExist = true;
+                    return;
+                }
+            });
+            if(alreadyExist) return;
+
             http.fetchGet(url)
                 .then( response => {
                     u.clog('success');
@@ -100,6 +137,7 @@ const calendar = {
 //                    } else if(state.viewMode === 'dayly') {
 //                        commit(INIT, response.data.days );
 //                    }
+
                     commit(INIT, response.data.days );
 
                     Object.keys(response.data.members).forEach(function(key) {
@@ -111,7 +149,7 @@ const calendar = {
                 })
 
                 .catch( error => {
-                    u.clog('failed');
+                    u.clog('failed: fetchCalendar()');
                     commit(IS_LOADING, false);
                 });
             }
@@ -161,10 +199,27 @@ const calendar = {
     mutations: {
         [INIT]( state, calendars ) {
 //            state.data.calendars = calendars;
+//            state.data.calendars = [...new Set(state.data.calendars)];
+
+            // push new values
             calendars.forEach((value) => {
                 state.data.calendars.push(value);
             });
-//            state.data.calendars = [...new Set(state.data.calendars)];
+
+            // sort array
+            state.data.calendars.sort(compareValues('date'));
+
+            // remove duplicated elements
+            for( let n=0; n < state.data.calendars.length - 1; n++ ) {
+                const a = state.data.calendars[n];
+                const b = state.data.calendars[n+1];
+                if( a.date == b.date ) {
+                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date + ' DELETE!');
+                    state.data.calendars.splice(n, 1);
+                } else {
+                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date);
+                }
+            }
         },
 
         [INIT_MCALENDARS](state, mCalendars) {
