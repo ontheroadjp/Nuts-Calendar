@@ -62,19 +62,19 @@
                             sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0
                         }">
 
-                <dayColumn
-                    v-if="viewMode === 'dayly'"
-                    :row="row"
-                    :today="style.today"
-                    :firstColumnWidth="style.firstColumnWidth"
-                ></dayColumn>
-
                 <monthColumn
                     v-if="viewMode === 'monthly'"
                     :row="row"
                     :today="style.today"
                     :firstColumnWidth="style.firstColumnWidth"
                 ></monthColumn>
+
+                <dayColumn
+                    v-if="viewMode === 'dayly'"
+                    :row="row"
+                    :today="style.today"
+                    :firstColumnWidth="style.firstColumnWidth"
+                ></dayColumn>
 
                 <template v-for="(memberId, index) in showColumns">
                     <cell-items

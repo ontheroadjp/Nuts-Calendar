@@ -56,34 +56,34 @@
                 deep: true
             },
 
-            'currentCalendarId': {
-                handler: function(newVal, oldVal) {
-                    if( oldVal === '') return;
-                    u.clog('watch: currentCalendarId');
-                    if(this.$store.state.app.ready) {
-                        this.fetchCalendar(this.currentCalendarId);
-                    }
-                },
-                deep: true
-            },
+//            'currentCalendarId': {
+//                handler: function(newVal, oldVal) {
+//                    if( oldVal === '' || newVal == oldVal) return;
+//                    u.clog('watch: currentCalendarId');
+//                    if(this.$store.state.app.ready) {
+//                        this.fetchCalendar(this.currentCalendarId);
+//                    }
+//                },
+//                deep: true
+//            },
 
-            'currentYear': {
-                handler: function(newVal, oldVal) {
-                    if( oldVal === '') return;
-                    u.clog('watch: currentYear');
-                    this.fetchCalendar(this.currentCalendarId);
-                },
-                deep: true
-            },
+//            'currentYear': {
+//                handler: function(newVal, oldVal) {
+//                    if( oldVal === '' || newVal == oldVal) return;
+//                    u.clog('watch: currentYear');
+//                    this.fetchCalendar(this.currentCalendarId);
+//                },
+//                deep: true
+//            },
 
-            'currentMonth': {
-                handler: function(newVal, oldVal) {
-                    if( oldVal === '') return;
-                    u.clog('watch: currentMonth');
-                    this.fetchCalendar(this.currentCalendarId);
-                },
-                deep: true
-            }
+//            'currentMonth': {
+//                handler: function(newVal, oldVal) {
+//                    if( oldVal === '' || newVal == oldVal) return;
+//                    u.clog('watch: currentMonth');
+//                    this.fetchCalendar(this.currentCalendarId);
+//                },
+//                deep: true
+//            }
         }
     }
 </script>

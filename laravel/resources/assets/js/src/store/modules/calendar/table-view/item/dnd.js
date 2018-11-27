@@ -160,14 +160,16 @@ export default {
             state.isDropped = true;
 
             // update item
-            if( viewMode === 'dayly' ) {
-//                state.draggingItem.date = y + '-' + m + '-' + (state.enterCell.rowIndex + 1);
-                const d = (state.enterCell.rowIndex).slice(-2);
-                state.draggingItem.date = y + '-' + m + '-' + d;
-            } else if( viewMode === 'monthly' ) {
-                state.draggingItem.date = null;
-            }
+//            if( viewMode === 'dayly' ) {
+////                state.draggingItem.date = y + '-' + m + '-' + (state.enterCell.rowIndex + 1);
+//                const d = (state.enterCell.rowIndex).slice(-2);
+//                state.draggingItem.date = y + '-' + m + '-' + d;
+//            } else if( viewMode === 'monthly' ) {
+////                state.draggingItem.date = null;
+//                state.draggingItem.date = state.enterCell.rowIndex;
+//            }
             state.draggingItem.member_id = state.enterCell.memberId;
+            state.draggingItem.date = state.enterCell.rowIndex;
             state.draggingItem.row_index = state.enterCell.rowIndex;
 
             // remove item

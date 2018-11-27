@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Nuts\Calendar\Controllers;
 
 use Illuminate\Http\Request;
@@ -13,9 +14,14 @@ class CalendarController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, Calendar $calendar, $userCalendarId, $year, $month)
+    public function index(Request $request, Calendar $calendar, $userCalendarId, $year = '', $month = '')
     {
         $userId = $request->user()->id;
-        return $calendar->fetch($userId, $userCalendarId, $year,$month);
+        if($year != '')
+        {
+            return $calendar->fetch($userId, $userCalendarId, $year,$month);
+        } else {
+            return $calendar->fetch($userId, $userCalendarId);
+        }
     }
 }

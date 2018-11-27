@@ -27,58 +27,63 @@ const calendar = {
         data: {
             mCalendars: [],
             calendars: []
+        },
+        fetchedData: {
+            mCalendars: [],
+            calendars: []
         }
     },
 
     actions: {
-        fetchMCalendar( { state, commit, dispatch }, calendarId) {
-            if(calendarId === 'dashboard') return;
-            u.clog('fetchMCalendar(' + calendarId + ')');
-            commit(IS_LOADING, true);
-
-            const id = calendarId;
-            const url = '/api/v1/mcalendar/' + id;
-
-            http.fetchGet(url)
-                .then( response => {
-                    u.clog('success');
-
-                    response.data.days.forEach((day)=> {
-                        Object.keys(day.items).forEach(memberId => {
-                            dispatch('tableView/updateCellItems', day.items[memberId]);
-                        });
-                    });
-
-                    commit(INIT_MCALENDARS, response.data.days );
-
-                    Object.keys(response.data.members).forEach(function(key) {
-                        const val = this[key];
-                        val.isShow = true;
-                    }, response.data.members);
-
-                    commit(IS_LOADING, false);
-                })
-
-                .catch( error => {
-                    u.clog('failed');
-                    commit(IS_LOADING, false);
-                });
-        },
+//        fetchMCalendar( { state, commit, dispatch }, calendarId) {
+//            if(calendarId === 'dashboard') return;
+//            u.clog('fetchMCalendar(' + calendarId + ')');
+//            commit(IS_LOADING, true);
+//
+//            const id = calendarId;
+//            const url = '/api/v1/mcalendar/' + id;
+//
+//            http.fetchGet(url)
+//                .then( response => {
+//                    u.clog('success');
+//
+//                    response.data.days.forEach((day)=> {
+//                        Object.keys(day.items).forEach(memberId => {
+//                            dispatch('tableView/updateCellItems', day.items[memberId]);
+//                        });
+//                    });
+//
+//                    commit(INIT_MCALENDARS, response.data.days );
+//
+//                    Object.keys(response.data.members).forEach(function(key) {
+//                        const val = this[key];
+//                        val.isShow = true;
+//                    }, response.data.members);
+//
+//                    commit(IS_LOADING, false);
+//                })
+//
+//                .catch( error => {
+//                    u.clog('failed');
+//                    commit(IS_LOADING, false);
+//                });
+//        },
 
         fetchCalendar( { state, commit, dispatch }, calendarId) {
             if(calendarId === 'dashboard') return;
-            if(state.viewMode === 'monthly') {
-                dispatch('fetchMCalendar', calendarId);
-                return;
-            }
-
             u.clog('fetchCalendar(' + calendarId + ')');
             commit(IS_LOADING, true);
 
             const id = calendarId;
-            const y = state.currentYear;
-            const m = state.currentMonth;
-            const url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
+            let url = '';
+
+            if(state.viewMode === 'monthly') {
+                url = '/api/v1/mcalendar/' + id;
+            } else if(state.viewMode === 'dayly') {
+                const y = state.currentYear;
+                const m = state.currentMonth;
+                url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
+            }
 
             http.fetchGet(url)
                 .then( response => {
@@ -90,6 +95,11 @@ const calendar = {
                         });
                     });
 
+//                    if(state.viewMode === 'monthly') {
+//                        commit(INIT_MCALENDARS, response.data.days );
+//                    } else if(state.viewMode === 'dayly') {
+//                        commit(INIT, response.data.days );
+//                    }
                     commit(INIT, response.data.days );
 
                     Object.keys(response.data.members).forEach(function(key) {
@@ -105,11 +115,56 @@ const calendar = {
                     commit(IS_LOADING, false);
                 });
             }
+
+//        fetchCalendar( { state, commit, dispatch }, calendarId) {
+//            if(calendarId === 'dashboard') return;
+//            if(state.viewMode === 'monthly') {
+//                dispatch('fetchMCalendar', calendarId);
+//                return;
+//            }
+//
+//            u.clog('fetchCalendar(' + calendarId + ')');
+//            commit(IS_LOADING, true);
+//
+//            const id = calendarId;
+//            const y = state.currentYear;
+//            const m = state.currentMonth;
+//            const url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
+//
+//            http.fetchGet(url)
+//                .then( response => {
+//                    u.clog('success');
+//
+//                    response.data.days.forEach((day)=> {
+//                        Object.keys(day.items).forEach(memberId => {
+//                            dispatch('tableView/updateCellItems', day.items[memberId]);
+//                        });
+//                    });
+//
+//                    commit(INIT, response.data.days );
+//
+//                    Object.keys(response.data.members).forEach(function(key) {
+//                        const val = this[key];
+//                        val.isShow = true;
+//                    }, response.data.members);
+//
+//                    commit(IS_LOADING, false);
+//                })
+//
+//                .catch( error => {
+//                    u.clog('failed');
+//                    commit(IS_LOADING, false);
+//                });
+//            }
     },
 
     mutations: {
         [INIT]( state, calendars ) {
-            state.data.calendars = calendars;
+//            state.data.calendars = calendars;
+            calendars.forEach((value) => {
+                state.data.calendars.push(value);
+            });
+//            state.data.calendars = [...new Set(state.data.calendars)];
         },
 
         [INIT_MCALENDARS](state, mCalendars) {

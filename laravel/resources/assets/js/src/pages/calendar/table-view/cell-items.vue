@@ -37,6 +37,8 @@
         @dragover="handleDragOver($event)"
         @drop.stop="handleDrop()"
         >
+        {{ getRowIndex(row) }}<br>
+        <small>{{ memberId }}</small>
         <div v-for="(item, itemIndex) in cellItems"
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
@@ -130,7 +132,7 @@ export default {
             const y = ('0000' + row.gregorian_year).slice(-4);
             const m = ('00' + row.gregorian_month).slice(-2);
             if( this.viewMode === 'monthly' ) {
-                return y + m;
+                return y + m + '00';
             } else if( this.viewMode === 'dayly' ) {
                 const d = ('00' + row.gregorian_day).slice(-2);
                 return y + m + d;

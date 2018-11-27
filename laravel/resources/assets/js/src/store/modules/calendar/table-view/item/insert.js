@@ -70,12 +70,14 @@ export default {
                 'memo': ''
             };
 
-            if( rootState.calendar.viewMode === 'dayly' ) {
-                const y = rootState.calendar.currentYear;
-                const m = rootState.calendar.currentMonth;
-                const d = (state.enterCell.rowIndex).slice(-2);
-                params.date = y + '-' + m + '-' + d;
-            }
+//            if( rootState.calendar.viewMode === 'dayly' ) {
+//                const y = rootState.calendar.currentYear;
+//                const m = rootState.calendar.currentMonth;
+//                const d = (state.enterCell.rowIndex).slice(-2);
+//                params.date = y + '-' + m + '-' + d;
+//            }
+
+            params.date = state.enterCell.rowIndex;
 
             http.fetchPost(url, params)
                 .then(response => {

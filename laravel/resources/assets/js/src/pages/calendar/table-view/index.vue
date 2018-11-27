@@ -138,7 +138,10 @@
                     data = this.$store.state.calendar.data.calendars;
 
                     if( this.viewMode === 'monthly' ) {
-                        data = this.$store.state.calendar.data.mCalendars;
+                        data = data.filter( function (value) {
+                            return value.gregorian_day == 0;
+                        });
+//                        data = this.$store.state.calendar.data.mCalendars;
                     }
 
                     // filter by search words

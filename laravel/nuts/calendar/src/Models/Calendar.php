@@ -34,7 +34,7 @@ class Calendar extends Model
         return $this->hasMany(Holiday::class, 'date', 'date');
     }
 
-    public function fetch($userId, $userCalendarId, $year, $month)
+    public function fetch($userId, $userCalendarId, $year = '', $month = '')
     {
         if($userCalendarId === 'dashboard') return;
 
@@ -56,7 +56,12 @@ class Calendar extends Model
 
         array_multisort(array_column($members, 'created_at'), SORT_ASC, $members);
 
-        $calendar = $this->fetchCalendarWithHolidayAndItems($year,$month);
+        if($year != '')
+        {
+            $calendar = $this->fetchCalendarWithHolidayAndItems($year,$month);
+        } else {
+            $calendar = $this->fetchMCalendarWithHolidayAndItems();
+        }
         $calendar = $this->tidyItems($calendar, collect($members));
 
         $item = new Item();
@@ -73,6 +78,13 @@ class Calendar extends Model
     {
         return Calendar::with('holidays', 'items')
             ->where('date', 'LIKE', "%$year-$month%")
+            ->get();
+    }
+
+    public function fetchMCalendarWithHolidayAndItems()
+    {
+        return Calendar::with('holidays', 'items')
+            ->where('gregorian_day', '=', "0")
             ->get();
     }
 
