@@ -1,7 +1,8 @@
 <template>
 <div class="time-range-picker">
-    <div>
+    <div style="margin-bottom: 15px;" >
         <startTimePicker
+            ref="startTimePicker"
             format="HH:mm"
             :initialValue="initial.start"
             :minute-interval="minuteInterval"
@@ -16,6 +17,7 @@
         >to</span>
 
         <endTimePicker
+            ref="endTimePicker"
             format="HH:mm"
             :initialValue="initial.end"
             :minute-interval="minuteInterval"
@@ -26,6 +28,35 @@
             :disabled="disabled"
         ></endTimePicker>
     </div>
+
+    <div style="margin-bottom: 25px;" >
+        <button class="button"
+            style="font-size: 0.8rem; border-radius: 15px"
+            @click="clickEndTimeButton(15)"
+            :disabled="disabled"
+        >15min</button>
+        <button class="button"
+            style="font-size: 0.8rem; border-radius: 15px"
+            @click="clickEndTimeButton(30)"
+            :disabled="disabled"
+        >30min</button>
+        <button class="button"
+            style="font-size: 0.8rem; border-radius: 15px"
+            @click="clickEndTimeButton(60)"
+            :disabled="disabled"
+        >1hr</button>
+        <button class="button"
+            style="font-size: 0.8rem; border-radius: 15px"
+            @click="clickEndTimeButton(120)"
+            :disabled="disabled"
+        >2hr</button>
+        <button class="button"
+            style="font-size: 0.8rem; border-radius: 15px"
+            @click="clickEndTimeButton(240)"
+            :disabled="disabled"
+        >4hr</button>
+    </div>
+
 
     <div v-show="errorResult && !error.start && !error.end && !disabled"
         class="error-message"
@@ -93,13 +124,12 @@ export default {
 
         errorResult: function() {
             if( this.isDropdownOpen ) { return false; }
+            if(this.disabled) return false;
 
             const startHH = this.input.start.HH;
             const startMM = this.input.start.mm;
             const endHH = this.input.end.HH;
             const endMM = this.input.end.mm;
-
-            if(this.disabled) return false;
 
             if( (this.error.start || this.error.end) ||
                 (startHH == '' && endHH != '') ||
@@ -122,12 +152,57 @@ export default {
     },
 
     methods: {
+        clickEndTimeButton(value) {
+            const date = new Date(2018,1,1);
+            date.setHours(this.input.start.HH);
+            date.setMinutes(this.input.start.mm);
+            date.setMinutes(date.getMinutes() + value);
+            const endHH = date.getHours();
+            const endMM = date.getMinutes();
+            if(date.getDate() === 1) {
+                this.$refs.endTimePicker.setHour(("00" + date.getHours()).slice(-2));
+                this.$refs.endTimePicker.setMinutes(("00" + date.getMinutes()).slice(-2));
+            } else {
+                this.$refs.endTimePicker.setHour(23);
+                this.$refs.endTimePicker.setMinutes(55);
+            }
+        },
+
         onChangeStart(data) {
             this.input.start.HH = data.inputValue.HH;
             this.input.start.mm = data.inputValue.mm;
             this.error.start = data.error;
             this.isReady.start = data.isReady;
             this.isDropdownOpened = data.isDropdownOpened;
+//            u.clog('--------------- onChangeStart() -----------------');
+//            u.clog('data.inputValue.HH: ' + data.inputValue.HH);
+//            u.clog('data.inputValue.mm: ' + data.inputValue.mm);
+//            u.clog('this.input.start.HH' + this.input.start.HH);
+//            u.clog('this.input.start.mm' + this.input.start.mm);
+
+            // start.HH > end.HH
+            if(data.inputValue.HH > this.input.end.HH) {
+                this.$refs.endTimePicker.setHour(
+                    ("00" + (parseInt(data.inputValue.HH) + 1)).slice(-2)
+                );
+            }
+
+            // start.HH == end.HH && start.mm > end.mm
+            if( data.inputValue.HH == this.input.end.HH
+                        && data.inputValue.mm > this.input.end.mm) {
+                this.$refs.endTimePicker.setHour(
+                    ("00" + (parseInt(data.inputValue.HH) + 1)).slice(-2)
+                );
+            }
+
+            // start.HH == 23
+            if(data.inputValue.HH == 23) {
+                this.$refs.endTimePicker.setHour(23);
+                if( data.inputValue.mm > this.input.end.mm ) {
+                    this.$refs.endTimePicker.setMinutes(55);
+                }
+            }
+
             this.fireEvent();
         },
 
@@ -137,6 +212,29 @@ export default {
             this.error.end = data.error;
             this.isReady.end = data.isReady;
             this.isDropdownOpened = data.isDropdownOpened;
+
+            // start.HH > end.HH
+            if(data.inputValue.HH < this.input.start.HH) {
+                this.$refs.startTimePicker.setHour(
+                    ("00" + (parseInt(data.inputValue.HH) - 1)).slice(-2)
+                );
+            }
+
+            // start.HH == end.HH && start.mm > end.mm
+            if(data.inputValue.HH == this.input.end.HH
+                && data.inputValue.mm < this.input.end.mm) {
+                    this.$refs.startTimePicker.setHour(
+                        ("00" + (parseInt(data.inputValue.HH) - 1)).slice(-2)
+                    );
+            }
+
+            // start.HH == 23
+            if(data.inputValue.HH == 23
+                && this.input.start.HH == 23
+                && data.inputValue.mm < this.input.start.mm) {
+                    this.$refs.startTimePicker.setMinute("00");
+                }
+
             this.fireEvent();
         },
 

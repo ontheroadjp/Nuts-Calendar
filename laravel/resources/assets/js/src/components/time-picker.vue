@@ -126,9 +126,9 @@ export default {
     computed: {
         displayTime () {
             let formatString = String((this.format || 'HH:mm'))
-                if (this.hour) {
-                    formatString = formatString.replace(new RegExp(this.hourType, 'g'), this.hour)
-                }
+            if (this.hour) {
+                formatString = formatString.replace(new RegExp(this.hourType, 'g'), this.hour)
+            }
             if (this.minute) {
                 formatString = formatString.replace(new RegExp(this.minuteType, 'g'), this.minute)
             }
@@ -205,11 +205,30 @@ export default {
         },
 
 //        'value': 'readValues',
+
+//        'initialValue.HH': function (newValue, oldValue) {
+//            u.clog('watch: initialValue.HH @ time-picker.vue');
+//            this.select("hour", this.initialValue.HH);
+//        },
+//
+//        'initialValue.mm': function (newValue, oldValue) {
+//            u.clog('watch: initialValue.mm @ time-picker.vue');
+//            this.select("minute", this.initialValue.mm);
+//        },
+
         'inputValue': 'readValues',
         'displayTime': 'fillValues'
     },
 
     methods: {
+        setHour: function(value) {
+            this.hour = value;
+        },
+
+        setMinutes: function(value) {
+            this.minute = value;
+        },
+
         formatValue (type, i) {
             switch (type) {
                 case 'H':

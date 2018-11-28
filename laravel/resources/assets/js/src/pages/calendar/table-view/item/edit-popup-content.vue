@@ -13,25 +13,29 @@
             ></text-input>
         </div>
 
-        <div class="time-range">
-            <timeRangePicker
-                :minute-interval="5"
-                :initialStartTime="editingItem.start_time"
-                :initialEndTime="editingItem.end_time"
-                :inputWidth="80"
-                :dropdownHeight="280"
-                @changeValue="onChangeTimeRange"
-                :disabled="input.allDay || showDeleteConfirm || updateIsLoading"
-            ></timeRangePicker>
-        </div>
+        <div style="margin-bottom: 10px">
 
-        <div class="all-day">
-            <all-day-checkbox
-                label="allDay"
-                :initialValue="editingItem.is_all_day"
-                @changeValue="onChangeAllDay"
-                :disabled="showDeleteConfirm || updateIsLoading"
-            ></all-day-checkbox>
+            <span class="time-range" style="margin-right: 15px;" >
+                <timeRangePicker
+                    :minute-interval="5"
+                    :initialStartTime="editingItem.start_time"
+                    :initialEndTime="editingItem.end_time"
+                    :inputWidth="80"
+                    :dropdownHeight="280"
+                    @changeValue="onChangeTimeRange"
+                    :disabled="input.allDay || showDeleteConfirm || updateIsLoading"
+                ></timeRangePicker>
+            </span>
+
+            <span class="all-day">
+                <all-day-checkbox
+                    label="allDay"
+                    :initialValue="editingItem.is_all_day"
+                    @changeValue="onChangeAllDay"
+                    :disabled="showDeleteConfirm || updateIsLoading"
+                ></all-day-checkbox>
+            </span>
+
         </div>
 
         <div class="memo">

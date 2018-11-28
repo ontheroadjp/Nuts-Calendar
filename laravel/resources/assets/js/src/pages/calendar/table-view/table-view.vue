@@ -1,5 +1,6 @@
 <template id="calendar">
 <div>
+    <!-- original: 340 x 240 -->
     <popup-menu
         v-if="filteredBody && editItem.isActive"
         :clickX="editItem.clickX"
@@ -9,8 +10,8 @@
         :offsetY="topPosition"
         :scrollX="scrollPositionX"
         :scrollY="scrollPositionY"
-        :height="340"
-        :width="240"
+        :height="360"
+        :width="480"
         ><item-edit-popup-content
             :height="340"
             :width="240"
@@ -27,13 +28,13 @@
         <thead v-if="filteredColumns">
             <tr>
                 <th class="header-styling thin"
-                    style="text-alien: center; vertical-align: middle;"
+                    style="text-align: center; vertical-align: middle; padding: 0;"
                     :style="[style.firstColumnWidth]"
                 >
                         <a
                             v-show="viewMode === 'dayly'"
                             class="button"
-                            style="height: 1.3rem"
+                            style="font-size: 0.8rem; width: 90%; background-color:#8a7676; color: #fff;"
                             @click="$store.commit('calendar/SET_VALUE', {
                                 key: 'viewMode',
                                 value: 'monthly'
@@ -59,6 +60,7 @@
         </thead>
 
         <tbody v-if="filteredBody">
+
             <tr v-for="(row, rowIndex) in filteredBody"
                 :class="{ saturday: viewMode === 'dayly' && isSaturday(row.date),
                             sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0
@@ -261,18 +263,18 @@ $headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
 }
 
 .saturday {
-    background-color: rgb(228, 247, 255) !important;
+    background-color: rgba(228, 247, 255, 0.40) !important;
 
     & td:nth-child(1) {
-        color: blue;
+        color: #1919ff;
     }
 }
 
 .sunday {
-    background-color: rgb(253, 231, 231) !important;
+    background-color: rgba(253, 231, 231, 0.40) !important;
 
     & td:nth-child(1) {
-        color: red;
+        color: #ff2a1f;
     }
 }
 </style>

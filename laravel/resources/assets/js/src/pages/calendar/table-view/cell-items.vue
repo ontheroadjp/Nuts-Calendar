@@ -1,5 +1,5 @@
 <template>
-    <!--
+<!--
     <td :style="[ columnWidth,
             dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row), memberId)
                 ? dragEnterStyle
@@ -26,7 +26,7 @@
             ></item>
 
         </div>
-            -->
+-->
         <td :style="[ columnWidth,
             dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row), memberId)
                 ? dragEnterStyle
@@ -41,6 +41,9 @@
         {{ getRowIndex(row) }}<br>
         <small>{{ memberId }}</small>
 -->
+        <div v-show="viewMode === 'dayly' && getRowIndex(row).slice(-2) == 0"
+            style="font-size: 0.6rem;" >Monthly Items</div>
+
         <div v-for="(item, itemIndex) in cellItems"
             style="cursor: move"
             :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
@@ -100,6 +103,10 @@ export default {
             dragItem: state => state.dnd
         }),
 
+        ...mapState('calendar/tableView/item/insert', {
+            insertIsLoading: state => state.isLoading
+        }),
+
         ...mapState('calendar/tableView/item/dnd', {
             fromCellItems: state => state.fromCell.cellItems
         }),
@@ -142,7 +149,9 @@ export default {
         },
 
         clickCell(rowIndex, memberId, cellItems) {
-            this.insertPrepare( { rowIndex, memberId, cellItems } );
+            if(!this.insertIsLoading) {
+                this.insertPrepare( { rowIndex, memberId, cellItems } );
+            }
         },
 
         handleDragStart(cellItems, draggingItem) {

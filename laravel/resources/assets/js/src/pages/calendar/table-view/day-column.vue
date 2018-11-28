@@ -3,10 +3,12 @@
     <td class="date-styling" :style="[firstColumnWidth, row.date.slice(-2) == 0 ? {'background-color': '#b3a4a4'}]">
 -->
     <td class="date-styling" :style="[firstColumnWidth]">
-        <div style="margin-bottom: 5px;">
+        <div>
 <!--
+        <div style="margin-bottom: 5px;">
             <span :style="[ row.is_today ? today : '' ]">
 -->
+
                 {{ row.date.slice(-2) != 0 ? getDateAndDay(row.date) : '' }}
 <!--
             </span>
@@ -15,7 +17,7 @@
 
         <div v-for="holiday in row.holidays"
             class="date-label"
-            style="background-color: red;"
+            style="background-color: rgb(255, 218, 218); color: #4a4a4a"
         >{{ holiday.holiday_name }}</div>
 
         <div v-show="lang === 'ja'" class="date-label">

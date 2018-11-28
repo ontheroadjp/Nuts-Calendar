@@ -198,11 +198,14 @@ const calendar = {
 
     mutations: {
         [INIT]( state, calendars ) {
-//            state.data.calendars = calendars;
-//            state.data.calendars = [...new Set(state.data.calendars)];
-
-            // push new values
             calendars.forEach((value) => {
+
+                // add holidays property if it does not exist
+                if(!Object.keys(value).some((key) => key === 'holidays')) {
+                    value.holidays = [];
+                }
+
+                // push new value
                 state.data.calendars.push(value);
             });
 
@@ -217,7 +220,7 @@ const calendar = {
                     u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date + ' DELETE!');
                     state.data.calendars.splice(n, 1);
                 } else {
-                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date);
+//                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date);
                 }
             }
         },

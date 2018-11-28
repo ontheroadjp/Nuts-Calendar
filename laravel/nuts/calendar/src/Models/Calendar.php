@@ -40,36 +40,39 @@ class Calendar extends Model
 
         $allMembers = Member::where('user_id', $userId)->get()->keyBy('id')->toArray();
 
-        $userCalendarMemberIds = UserCalendarMember::where('user_calendar_id', $userCalendarId)
-                                    ->get(['member_id'])
-                                    ->keyBy('member_id')
-                                    ->keys()
-                                    ->toArray();
+//        $userCalendarMemberIds = UserCalendarMember::where('user_calendar_id', $userCalendarId)
+//                                    ->get(['member_id'])
+//                                    ->keyBy('member_id')
+//                                    ->keys()
+//                                    ->toArray();
+//
+//        $members = [];
+//
+//        foreach( $allMembers as $key => $val ) {
+//            if( in_array($key, $userCalendarMemberIds) ) {
+//                $members += [$key => $val];
+//            }
+//        }
+//
+//        array_multisort(array_column($members, 'created_at'), SORT_ASC, $members);
 
-        $members = [];
-
-        foreach( $allMembers as $key => $val ) {
-            if( in_array($key, $userCalendarMemberIds) ) {
-                $members += [$key => $val];
-            }
-        }
-
-        array_multisort(array_column($members, 'created_at'), SORT_ASC, $members);
-
-        if($year != '')
+        if($year != '' && $month != '')
         {
             $calendar = $this->fetchCalendarWithHolidayAndItems($year,$month);
         } else {
-            $calendar = $this->fetchMCalendarWithHolidayAndItems();
+            $calendar = $this->fetchMCalendarWithItems();
         }
-        $calendar = $this->tidyItems($calendar, collect($members));
 
-        $item = new Item();
-        $items = $item->fetchSpecificMonth($year, $month);
+//        $calendar = $this->tidyItems($calendar, collect($members));
+        $calendar = $this->tidyItems($calendar, collect($allMembers));
+
+//        $item = new Item();
+//        $items = $item->fetchSpecificMonth($year, $month);
 
          return [
-             "members" => $members,
-             "items" => $items,
+//             "members" => $members,
+            "members" => $allMembers,
+//             "items" => $items,
              "days" => $calendar
          ];
     }
@@ -85,10 +88,10 @@ class Calendar extends Model
 //            ->get();
     }
 
-    public function fetchMCalendarWithHolidayAndItems()
+    public function fetchMCalendarWithItems()
     {
         $year = date('Y');
-        return Calendar::with('holidays', 'items')
+        return Calendar::with('items')
             ->where('date', 'LIKE', "$year-%")
             ->where('gregorian_day', '=', "0")
             ->get();
