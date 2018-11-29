@@ -7,9 +7,6 @@
             @change="onChange"
             :disabled="disabled"
         />
-        <!--
-        <span class="input-checkbox-parts">{{ i18nLabel }}</span>
-        -->
         <span class="input-checkbox-parts">{{ t('item.' + label) }}</span>
     </label>
 </template>

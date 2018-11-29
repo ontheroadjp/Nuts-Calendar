@@ -58,13 +58,14 @@ export default {
             commit(IS_LOADING, true);
 
             const url = '/api/v1/item';
+            const now = new Date();
             const params = {
                 'type_id': typeId,
                 'row_index': state.enterCell.rowIndex,
                 'member_id': state.enterCell.memberId,
                 'content': state.newItem.content,
-                'start_time': '00:00:00',
-                'end_time': '00:00:00',
+                'start_time': now.getHours() + ':00:00',
+                'end_time': now.getHours() + ':30:00',
                 'is_monthly_event': is_monthly_event,
                 'is_all_day': true,
                 'memo': ''
