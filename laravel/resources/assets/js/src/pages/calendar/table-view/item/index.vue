@@ -26,14 +26,14 @@
             v-if="isEventItem && item.type_id === 1"
             :cellItems="cellItems"
             :item="item"
-            :isLoading="duplicateCellItems == cellItems && duplicateIsLoading"
+            :isLoading="(duplicatingItem == item) && duplicateIsLoading"
         ></event-item>
 
         <task-item
             v-if="isTaskItem && item.type_id === 2"
             :cellItems="cellItems"
             :item="item"
-            :isLoading="duplicateCellItems == cellItems && duplicateIsLoading"
+            :isLoading="(duplicatingItem == item) && duplicateIsLoading"
         ></task-item>
 
     </div>
@@ -58,8 +58,8 @@ export default {
 
     computed: {
         ...mapState('calendar/tableView/item/insert', {
-            duplicateIsLoading: state => state.isLoading,
-            duplicateCellItems: state => state.enterCell.cellItems
+            duplicatingItem: state => state.duplicatingItem,
+            duplicateIsLoading: state => state.isLoading
         }),
 
         ...mapState('calendar/tableView/item/dnd', {
@@ -70,7 +70,7 @@ export default {
     methods: {
         ...mapActions('calendar/tableView/item', {
             insertReset: 'insert/reset',
-            duplicateItem: 'insert/duplicateItem',
+            duplicate: 'insert/duplicate',
             updatePrepare: 'update/prepare',
             updatePrepareModal: 'update/prepareModal',
             removePrepare: 'remove/prepare'
@@ -90,7 +90,7 @@ export default {
         clickDuplicate: function() {
             u.clog('clickDuplicate(' + this.item.id + ')');
             this.tippyActive(false);
-            this.duplicateItem( {item: this.item, cellItems: this.cellItems} );
+            this.duplicate( {item: this.item, cellItems: this.cellItems} );
         },
 
         clickEdit: function(e) {
@@ -137,15 +137,19 @@ export default {
 
 <style lang="scss">
 .tippy-tooltip.honeybee-theme {
-    background-color: #b38d91;
+/*    background-color: #b38d91; */
     height: 30px;
 }
 
-.tippy-popper[x-placement^='top']
-.tippy-tooltip.honeybee-theme
-.tippy-arrow {
+/*
+.tippy-popper[x-placement^='top'] .tippy-tooltip.honeybee-theme .tippy-arrow {
     border-top-color: #b38d91;
 }
+
+.tippy-popper[x-placement^='bottom'] .tippy-tooltip.honeybee-theme .tippy-arrow {
+    border-top-color: #b38d91;
+}
+*/
 
 .item {
     display: inline-flex;

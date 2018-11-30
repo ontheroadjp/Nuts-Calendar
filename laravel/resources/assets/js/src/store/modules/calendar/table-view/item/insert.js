@@ -1,5 +1,12 @@
 import {
-    PREPARE, IS_LOADING, SET_VALUE, INSERT, DUPLICATE, RESET, NOTIFY_SUCCESS, NOTIFY_DANGER
+    PREPARE,
+    DUPLICATE_PREPARE,
+    IS_LOADING,
+    SET_VALUE,
+    INSERT,
+    RESET,
+    NOTIFY_SUCCESS,
+    NOTIFY_DANGER
 } from '../../../../mutation-types.js';
 
 export default {
@@ -16,6 +23,7 @@ export default {
         newItem: {
             content: ''
         },
+        duplicatingItem: '',
         error: {
             isError: false,
             message: ''
@@ -60,6 +68,7 @@ export default {
             const url = '/api/v1/item';
             const now = new Date();
             const params = {
+                'date': state.enterCell.rowIndex,
                 'type_id': typeId,
                 'row_index': state.enterCell.rowIndex,
                 'member_id': state.enterCell.memberId,
@@ -67,8 +76,8 @@ export default {
                 'start_time': now.getHours() + ':00:00',
                 'end_time': now.getHours() + ':30:00',
                 'is_monthly_event': is_monthly_event,
-                'is_done': false,
                 'is_all_day': true,
+                'is_done': false,
                 'memo': ''
             };
 
@@ -79,7 +88,7 @@ export default {
 //                params.date = y + '-' + m + '-' + d;
 //            }
 
-            params.date = state.enterCell.rowIndex;
+//            params.date = state.enterCell.rowIndex;
 
             http.fetchPost(url, params)
                 .then(response => {
@@ -110,12 +119,13 @@ export default {
                 });
         },
 
-        duplicateItem( { state, dispatch, commit, rootState }, { item, cellItems } ) {
-            u.clog('duplicateItem()');
-            dispatch('prepare', {
+        duplicate( { state, dispatch, commit, rootState }, { item, cellItems } ) {
+            u.clog('duplicate()');
+            commit(DUPLICATE_PREPARE, {
                 rowIndex: item.row_index,
                 memberId: item.member_id,
-                cellItems
+                cellItems: cellItems,
+                duplicatingItem: item
             });
 
             if( !item.row_index || !item.member_id || !item.content || !item.type_id ) {
@@ -186,6 +196,14 @@ export default {
             state.isActive = true;
         },
 
+        [DUPLICATE_PREPARE]( state, { rowIndex, memberId, cellItems, duplicatingItem } ) {
+            state.enterCell.rowIndex = rowIndex;
+            state.enterCell.memberId = memberId;
+            state.enterCell.cellItems = cellItems;
+            state.duplicatingItem = duplicatingItem;
+            state.isActive = true;
+        },
+
         [IS_LOADING]( state, value ) {
             state.isLoading = value;
         },
@@ -205,6 +223,7 @@ export default {
             state.enterCell.cellItems = '';
             state.newItem.content = '';
             state.error.isError = false;
+            state.duplicatingItem = '';
             state.error.message = '';
         }
     }

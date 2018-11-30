@@ -2,7 +2,9 @@
 <span>
     <button :class="[ 'button', { off: !isEventItemShow } ]"
             @click="clickEventItemButton()"
-            :disabled="disabled">
+            :disabled="disabled"
+            style="border: none; box-shadow: none;"
+    >
         <span class="icon">
             <i v-show="isEventItemShow" class="fa fa-bell-o"></i>
             <i v-show="!isEventItemShow" class="fa fa-bell-slash-o"></i>
@@ -12,7 +14,9 @@
 
     <button :class="['button', { off: !isTaskItemShow }]"
             :disabled="disabled"
-            @click="clickTaskItemButton()">
+            @click="clickTaskItemButton()"
+            style="border: none; box-shadow: none;"
+    >
         <span class="icon">
             <i v-show="isTaskItemShow" class="fa fa-bell-o"></i>
             <i v-show="!isTaskItemShow" class="fa fa-bell-slash-o"></i>
@@ -21,8 +25,10 @@
     </button>
 
     <button :class="['button', { off: !isEndTimeShow }]"
-        :disabled="disabled"
-        @click="clickEndTimeButton()">
+            :disabled="disabled"
+            @click="clickEndTimeButton()"
+            style="border: none; box-shadow: none; background-color: #f0f0f0;"
+    >
         <span class="icon">
             <i v-show="isEndTimeShow" class="fa fa-toggle-on"></i>
             <i v-show="!isEndTimeShow" class="fa fa-toggle-off"></i>

@@ -19,7 +19,8 @@
         <span class="icon is-small"
             v-show="((dragItem.isLoading || deleteItem.isLoading )
                         && dragItem.draggingItem === item)
-                    || (updateItem.isLoading && updateItem.editingItem === item)"
+                    || (updateItem.isLoading && updateItem.editingItem === item)
+                    || isLoading"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>
 
