@@ -39,7 +39,7 @@ export default {
     actions: {
         dragStart( { commit, rootGetters }, { cellItems, draggingItem } ) {
 
-            const rowIndex = draggingItem.dayIndex;
+            const rowIndex = draggingItem.row_index;
             const memberId = draggingItem.member_id;
 
             commit(DRAG_START, {
@@ -86,10 +86,6 @@ export default {
             dispatch('calendar/tableView/updateCellItems',
                 state.fromCell.cellItems, { root: true }
             );
-
-//            if( rootState.calendar.viewMode === 'monthly' ) {
-//                state.draggingItem.date = null;
-//            }
 
             const url = '/api/v1/item/' + state.draggingItem.id;
             const params = {
@@ -160,17 +156,12 @@ export default {
             state.isDropped = true;
 
             // update item
-//            if( viewMode === 'dayly' ) {
-////                state.draggingItem.date = y + '-' + m + '-' + (state.enterCell.rowIndex + 1);
-//                const d = (state.enterCell.rowIndex).slice(-2);
-//                state.draggingItem.date = y + '-' + m + '-' + d;
-//            } else if( viewMode === 'monthly' ) {
-////                state.draggingItem.date = null;
-//                state.draggingItem.date = state.enterCell.rowIndex;
-//            }
             state.draggingItem.member_id = state.enterCell.memberId;
             state.draggingItem.date = state.enterCell.rowIndex;
             state.draggingItem.row_index = state.enterCell.rowIndex;
+            if((state.draggingItem.row_index).slice(-2) == 0) {
+                state.draggingItem.is_all_day = true;
+            }
 
             // remove item
             state.fromCell.cellItems.splice(state.fromCell.itemIndex, 1);

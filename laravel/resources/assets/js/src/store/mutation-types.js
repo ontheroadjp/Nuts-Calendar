@@ -30,6 +30,7 @@ export const CHECK_TIME = 'CHECK_TIME';
 
 // tableView/item/insert
 export const INSERT = 'INSERT';
+export const DUPLICATE = 'INSERT';
 
 // tableView: toolPalette
 export const TOGGLE_TABLE_TOOL_PALETTE = 'TOGGLE_TABLE_TOOL_PALETTE';

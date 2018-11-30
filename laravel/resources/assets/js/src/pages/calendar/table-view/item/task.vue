@@ -1,6 +1,5 @@
 <template>
-    <span class="item is-task" @click.stop="clickItem($event)">
-
+    <span class="item is-task">
         <span class="icon is-small"
             v-show="item.memo"
             style="margin-right: 5px"
@@ -32,7 +31,7 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 
-    props: [ 'cellItems', 'item' ],
+    props: [ 'cellItems', 'item', 'isLoading' ],
 
     computed: {
         ...mapState('calendar/tableView/item', {
@@ -56,23 +55,9 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item', {
-            insertReset: 'insert/reset',
             updatePrepare: 'update/prepare',
-            updatePrepareModal: 'update/prepareModal',
-            removePrepare: 'remove/prepare',
             toggleTaskDone: 'update/toggleTaskDone'
         }),
-
-        clickItem(e) {
-            u.clog('clickItem()');
-            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
-            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
-            this.updatePrepareModal( { event: e } );
-            this.insertReset();
-            this.$store.commit('dashboard/SET_VALUE', {
-                key: 'disabled', value: true
-            });
-        },
 
         clickDone() {
             this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );

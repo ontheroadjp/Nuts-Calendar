@@ -13,8 +13,7 @@
             ></text-input>
         </div>
 
-        <div style="margin-bottom: 10px">
-
+        <div v-show="isEvent" style="margin-bottom: 10px">
             <span class="time-range" style="margin-right: 15px;" >
                 <timeRangePicker
                     :minute-interval="5"
@@ -23,19 +22,29 @@
                     :inputWidth="80"
                     :dropdownHeight="280"
                     @changeValue="onChangeTimeRange"
-                    :disabled="input.allDay || showDeleteConfirm || updateIsLoading"
+                    :disabled="input.allDay || showDeleteConfirm || updateIsLoading || isMonthlyItem"
                 ></timeRangePicker>
             </span>
 
-            <span class="all-day">
+            <span>
                 <all-day-checkbox
                     label="allDay"
                     :initialValue="editingItem.is_all_day"
                     @changeValue="onChangeAllDay"
-                    :disabled="showDeleteConfirm || updateIsLoading"
+                    :disabled="showDeleteConfirm || updateIsLoading || isMonthlyItem"
                 ></all-day-checkbox>
             </span>
+        </div>
 
+        <div v-show="isTask" style="margin-bottom: 10px">
+            <span>
+                <task-done-checkbox
+                    label="taskDone"
+                    :initialValue="editingItem.is_done"
+                    @changeValue="onChangeTaskDone"
+                    :disabled="showDeleteConfirm || updateIsLoading"
+                ></task-done-checkbox>
+            </span>
         </div>
 
         <div class="memo">
@@ -108,10 +117,11 @@ import core from '../../../../mixins/core.js';
 import textInput from '../../../../components/form/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
 import allDayCheckbox from './all-day-checkbox.vue';
+import taskDoneCheckbox from './task-done-checkbox.vue';
 import memoTextarea from './input-textarea.vue';
 
 export default {
-    components: { textInput, timeRangePicker, allDayCheckbox, memoTextarea },
+    components: { textInput, timeRangePicker, allDayCheckbox, taskDoneCheckbox, memoTextarea },
 
     mixins: [ core ],
 
@@ -127,6 +137,7 @@ export default {
                 startTime: '',
                 endTime: '',
                 allDay: '',
+                taskDone: '',
                 memo: ''
             },
 
@@ -134,6 +145,7 @@ export default {
                 content: false,
                 timeRange: false,
                 allDay: false,
+                taskDone: false,
                 memo: ''
             },
 
@@ -141,6 +153,7 @@ export default {
                 content: false,
                 timeRange: false,
                 allDay: false,
+                taskDone: false,
                 memo: false
             },
 
@@ -157,6 +170,18 @@ export default {
         ...mapState('calendar/tableView/item/remove', {
             removeIsLoading: 'isLoading'
         }),
+
+        isMonthlyItem: function() {
+            return (this.editingItem.date).slice(-2) == 0;
+        },
+
+        isEvent: function() {
+            return this.editingItem.type_id == 1;
+        },
+
+        isTask: function() {
+            return this.editingItem.type_id == 2;
+        },
 
         errorResult: function() {
             if(this.input.allDay) {
@@ -214,6 +239,18 @@ export default {
 //            u.clog('value: ' + this.input.allDay);
 //            u.clog('error: ' + this.error.allDay);
 //            u.clog('isReady: ' + this.isReady.allDay);
+        },
+
+        onChangeTaskDone(data) {
+            this.input.taskDone = data.value;
+            this.error.taskDone = data.error;
+            this.isReady.taskDone = data.isReady;
+            this.setInputValue({key: 'taskDone', value: data.value });
+            this.editingItem.is_done = data.value;
+//            u.clog('----------------------- task done ------------------------');
+//            u.clog('value: ' + this.input.taskDone);
+//            u.clog('error: ' + this.error.taskDone);
+//            u.clog('isReady: ' + this.isReady.taskDone);
         },
 
         onChangeMemo(data) {
@@ -302,9 +339,11 @@ export default {
     margin-bottom: 5px;
 }
 
+/*
 .all-day {
     margin-bottom: 18px;
 }
+*/
 
 .popup-footer {
     position: absolute;

@@ -131,6 +131,7 @@ export default {
         },
         item: {
             allDay: '終日',
+            taskDone: '完了',
             memo: 'メモ',
             delete: '削除',
             save: '保存',

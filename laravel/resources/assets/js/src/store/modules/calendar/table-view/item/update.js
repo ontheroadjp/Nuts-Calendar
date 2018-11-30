@@ -63,6 +63,7 @@ export default {
                 start_time: state.input.startTime,
                 end_time:   state.input.endTime,
                 is_all_day: state.input.allDay,
+//                is_done:    state.input.is_done,
                 memo:       state.input.memo
             };
 

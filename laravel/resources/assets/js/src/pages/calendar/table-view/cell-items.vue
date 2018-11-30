@@ -1,47 +1,19 @@
 <template>
-<!--
-    <td :style="[ columnWidth,
-            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row), memberId)
-                ? dragEnterStyle
-                : ''
-        ]"
-        @click="clickCell(getRowIndex(row), memberId, cellItems)"
-        @dragenter="handleDragEnter(row.date, memberId, cellItems)"
-        @dragover="handleDragOver($event)"
-        @drop.stop="handleDrop()"
-        >
-        <div v-for="(item, itemIndex) in cellItems"
-            style="cursor: move"
-            :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
-            :draggable="!dragItem.isLoading"
-            @dragstart="handleDragStart(cellItems, item)"
-            @dragend="handleDragEnd()"
-            >
-
-            <item
-                :cellItems="cellItems"
-                :isEventItem="isEventItem"
-                :isTaskItem="isTaskItem"
-                :item="item"
-            ></item>
-
-        </div>
--->
         <td :style="[ columnWidth,
-            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(row), memberId)
+            dragItem.enterCell.cellAddress == getCellAddress(getRowIndex(), memberId)
                 ? dragEnterStyle
                 : ''
         ]"
-        @click="clickCell(getRowIndex(row), memberId, cellItems)"
-        @dragenter="handleDragEnter(getRowIndex(row), memberId, cellItems)"
+        @dblclick="clickCell(getRowIndex(), memberId, cellItems)"
+        @dragenter="handleDragEnter(getRowIndex(), memberId, cellItems)"
         @dragover="handleDragOver($event)"
         @drop.stop="handleDrop()"
         >
 <!--
-        {{ getRowIndex(row) }}<br>
+        {{ getRowIndex() }}<br>
         <small>{{ memberId }}</small>
 -->
-        <div v-show="viewMode === 'dayly' && getRowIndex(row).slice(-2) == 0"
+        <div v-show="viewMode === 'dayly' && getRowIndex().slice(-2) == 0"
             style="font-size: 0.6rem;" >Monthly Items</div>
 
         <div v-for="(item, itemIndex) in cellItems"
@@ -62,7 +34,7 @@
         </div>
 
         <item-insert-field
-            v-if="addItem.enterCell.rowIndex === getRowIndex(row)
+            v-if="addItem.enterCell.rowIndex === getRowIndex()
                 && addItem.enterCell.memberId === memberId"
         ></item-insert-field>
 
@@ -107,9 +79,9 @@ export default {
             insertIsLoading: state => state.isLoading
         }),
 
-        ...mapState('calendar/tableView/item/dnd', {
-            fromCellItems: state => state.fromCell.cellItems
-        }),
+//        ...mapState('calendar/tableView/item/dnd', {
+//            fromCellItems: state => state.fromCell.cellItems
+//        }),
 
         ...mapGetters({
             showColumns: 'getShowMembers',
@@ -117,8 +89,12 @@ export default {
         }),
 
         dragEnterStyle: function() {
-            return {
-                border: '2px solid ' + this.theme.secondary.code
+            const a = this.dragItem.fromCell.cellAddress;
+            const b = this.dragItem.enterCell.cellAddress;
+            if(a === b) {
+                return { border: '2px dotted gray' }
+            } else {
+                return { border: '2px solid ' + this.theme.secondary.code }
             }
         }
     },
@@ -137,13 +113,13 @@ export default {
             dragEnd: 'dragEnd'
         }),
 
-        getRowIndex(row) {
-            const y = ('0000' + row.gregorian_year).slice(-4);
-            const m = ('00' + row.gregorian_month).slice(-2);
+        getRowIndex() {
+            const y = ('0000' + this.row.gregorian_year).slice(-4);
+            const m = ('00' + this.row.gregorian_month).slice(-2);
             if( this.viewMode === 'monthly' ) {
                 return y + m + '00';
             } else if( this.viewMode === 'dayly' ) {
-                const d = ('00' + row.gregorian_day).slice(-2);
+                const d = ('00' + this.row.gregorian_day).slice(-2);
                 return y + m + d;
             }
         },

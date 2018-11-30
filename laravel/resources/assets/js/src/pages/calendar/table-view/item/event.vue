@@ -1,7 +1,5 @@
 <template>
-    <span class="item is-event"
-        @click.stop="clickItem($event)">
-
+    <span class="item is-event">
         <span class="icon is-small"
             v-show="item.memo"
             style="margin-right: 5px"
@@ -20,6 +18,7 @@
                     <span>|</span>
                     <span :class="{ 'thin-500': !item.hasEndTimeError }" :style="endTimeStyle">
                         {{ item.end_time | timeFormatter }}
+                        {{ item.row_index }}
                     </span>
                 </span>
         </span>
@@ -31,7 +30,7 @@
         <span :style="searchHighlightStyle">{{ item.content }}</span>
 
         <span class="icon is-small"
-            v-show="((dragItem.isLoading || deleteItem.isLoading )
+            v-show="((dragItem.isLoading || deleteItem.isLoading)
                         && dragItem.draggingItem === item)
                     || (updateItem.isLoading && updateItem.editingItem === item)"
             ><i class="fa fa-refresh fa-spin"></i>
@@ -46,7 +45,7 @@ import timeFormatter from '../../../../filters/time-formatter.js';
 export default {
     mixins: [ timeFormatter ],
 
-    props: [ 'cellItems', 'item' ],
+    props: [ 'cellItems', 'item', 'isLoading' ],
 
     data() {
         return {
@@ -87,26 +86,6 @@ export default {
                 return { backgroundColor: '#FFEB3B' }
             }
             return {}
-        }
-    },
-
-    methods: {
-        ...mapActions('calendar/tableView/item', {
-            insertReset: 'insert/reset',
-            updatePrepare: 'update/prepare',
-            updatePrepareModal: 'update/prepareModal',
-            removePrepare: 'remove/prepare'
-        }),
-
-        clickItem(e) {
-            u.clog('clickItem()');
-            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
-            this.updatePrepareModal( { event: e } );
-            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
-            this.insertReset();
-            this.$store.commit('dashboard/SET_VALUE', {
-                key: 'disabled', value: true
-            });
         }
     }
 }

@@ -129,6 +129,7 @@ export const en = {
         },
         item: {
             allDay: 'All-day',
+            taskDone: 'Done',
             memo: 'Memo',
             delete: 'Delete',
             save: 'Save',

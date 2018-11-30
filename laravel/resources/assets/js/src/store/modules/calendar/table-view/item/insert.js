@@ -1,5 +1,5 @@
 import {
-    PREPARE, IS_LOADING, SET_VALUE, INSERT, RESET, NOTIFY_SUCCESS, NOTIFY_DANGER
+    PREPARE, IS_LOADING, SET_VALUE, INSERT, DUPLICATE, RESET, NOTIFY_SUCCESS, NOTIFY_DANGER
 } from '../../../../mutation-types.js';
 
 export default {
@@ -82,9 +82,7 @@ export default {
 
             http.fetchPost(url, params)
                 .then(response => {
-                    commit(INSERT, {
-                        item: response.data
-                    });
+                    commit(INSERT, { item: response.data });
 
                     dispatch('calendar/tableView/updateCellItems',
                         state.enterCell.cellItems, { root: true }
@@ -103,6 +101,68 @@ export default {
 
                     commit(NOTIFY_DANGER, {
                         content: 'failed add task',
+                        isImportant: false
+                    }, { root: true });
+
+                    commit(IS_LOADING, false);
+                    commit(RESET);
+                });
+        },
+
+        duplicateItem( { state, dispatch, commit, rootState }, { item, cellItems } ) {
+            u.clog('duplicateItem()');
+            dispatch('prepare', {
+                rowIndex: item.row_index,
+                memberId: item.member_id,
+                cellItems
+            });
+
+            if( !item.row_index || !item.member_id || !item.content || !item.type_id ) {
+                commit(NOTIFY_DANGER, {
+                    content: 'invalid item',
+                    isImportant: false
+                }, { root: true });
+                return;
+            }
+
+            commit(IS_LOADING, true);
+
+            const url = '/api/v1/item';
+            const now = new Date();
+            const params = {
+                'date': item.date,
+                'type_id': item.type_id,
+                'row_index': item.row_index,
+                'member_id': item.member_id,
+                'content': item.content + ' copy',
+                'start_time': item.start_time,
+                'end_time': item.end_time,
+                'is_monthly_event': item.is_monthly_event,
+                'is_all_day': item.is_all_day,
+                'memo': item.memo
+            };
+
+            http.fetchPost(url, params)
+                .then(response => {
+                    commit(INSERT, { item: response.data });
+
+//                    dispatch('calendar/tableView/updateCellItems',
+//                        cellItems, { root: true }
+//                    );
+
+                    commit(NOTIFY_SUCCESS, {
+                        content: 'success duplicate item',
+                        isImportant: false
+                    }, { root: true });
+
+                    commit(IS_LOADING, false);
+                    commit(RESET);
+                })
+                .catch(error => {
+                    u.clog('failed');
+
+                    commit(NOTIFY_DANGER, {
+                        content: 'failed duplicate item',
                         isImportant: false
                     }, { root: true });
 

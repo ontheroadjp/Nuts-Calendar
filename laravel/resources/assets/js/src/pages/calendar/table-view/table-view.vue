@@ -1,6 +1,7 @@
 <template id="calendar">
 <div>
     <!-- original: 340 x 240 -->
+
     <popup-menu
         v-if="filteredBody && editItem.isActive"
         :clickX="editItem.clickX"
