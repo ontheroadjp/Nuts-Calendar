@@ -247,9 +247,9 @@ const calendar = {
 
             actions: {
                 updateCellItems( { commit, rootState }, cellItems ) {
-                    if( rootState.calendar.viewMode != 'monthly') {
+//                    if( rootState.calendar.viewMode != 'monthly') {
                         commit(SORT_CELL_ITEMS, cellItems);
-                    }
+//                    }
                     commit(CHECK_TIME, cellItems);
                 }
             },
@@ -292,7 +292,7 @@ const calendar = {
 
                     // update index
                     cellItems.forEach(function(item, index) {
-                        item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
+//                        item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
                         item.itemIndex = index;
                     });
                 },

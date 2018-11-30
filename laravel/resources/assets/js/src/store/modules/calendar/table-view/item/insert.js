@@ -139,6 +139,7 @@ export default {
                 'end_time': item.end_time,
                 'is_monthly_event': item.is_monthly_event,
                 'is_all_day': item.is_all_day,
+                'is_done': 0,
                 'memo': item.memo
             };
 
