@@ -67,6 +67,7 @@ export default {
                 'start_time': now.getHours() + ':00:00',
                 'end_time': now.getHours() + ':30:00',
                 'is_monthly_event': is_monthly_event,
+                'is_done': false,
                 'is_all_day': true,
                 'memo': ''
             };
@@ -139,7 +140,7 @@ export default {
                 'end_time': item.end_time,
                 'is_monthly_event': item.is_monthly_event,
                 'is_all_day': item.is_all_day,
-                'is_done': 0,
+                'is_done': false,
                 'memo': item.memo
             };
 
