@@ -146,9 +146,9 @@ export default {
                 .then(response => {
                     commit(INSERT, { item: response.data });
 
-//                    dispatch('calendar/tableView/updateCellItems',
-//                        cellItems, { root: true }
-//                    );
+                    dispatch('calendar/tableView/updateCellItems',
+                        cellItems, { root: true }
+                    );
 
                     commit(NOTIFY_SUCCESS, {
                         content: 'success duplicate item',
