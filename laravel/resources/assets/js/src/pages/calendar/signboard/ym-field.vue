@@ -3,11 +3,12 @@
     <transition name="ym-picker">
 
         <!-- display value -->
-        <span v-if="!editing"
-            class="thin"
-            :style="displayStyle"
-            @click="togglePicker"
-        >{{ getYearAndMonth(currentYear + '-' + currentMonth + '-01') }}</span>
+        <span v-if="!editing" class="thin" :style="displayStyle" @click="togglePicker" >
+            {{ viewMode == 'dayly'
+                ? '月間スケジュール（' + getYearAndMonth(currentYear + '-' + currentMonth + '-01') + '）'
+                : '年間スケジュール（' + currentYear + '年）'
+            }}
+        </span>
 
         <!-- select bar -->
         <div v-else
@@ -23,8 +24,7 @@
             </div>
 
             <div class="row">
-
-                <div v-for="m in monthVals">
+                <div v-for="m in month">
                     <a class="item"
                         @mouseover="
                                 $event.target.style.border = '1px solid #e6e6e6';
@@ -43,8 +43,8 @@
                         @click="currentMonth = m; togglePicker()"
                     >{{ m }}月</a>
                 </div>
-
             </div>
+
         </div>
     </transition>
 </div>
@@ -62,7 +62,7 @@ export default {
     data() {
         return {
             editing: false,
-            monthVals: [
+            month: [
                 '01','02','03','04','05','06',
                 '07','08','09','10','11','12'
             ]
@@ -72,6 +72,10 @@ export default {
     computed: {
         ...mapState('dashboard', {
             disabled: state => state.disabled
+        }),
+
+        ...mapState('calendar', {
+            viewMode: state => state.viewMode
         }),
 
         currentYear: {

@@ -20,8 +20,7 @@ export default {
         id:           { type: String, default: '' },
         label:        { type: String, default: 'Check' },
         labelStyle:   { type: String, default: '' },
-//        initialValue: { type: [Boolean, Number], default: false },
-        initialValue: { type: Boolean, required: true },
+        initialValue: { type: [Boolean, Number], default: false },
         disabled:     { type: Boolean, default: false }
     },
 
@@ -67,7 +66,7 @@ export default {
     font-size: 0.8em;
 
     &::before {
-    /*
+/*
         content: "";
         display: block;
         position: absolute;
@@ -77,7 +76,7 @@ export default {
         height: 15px;
         border: 1px solid #999;
         border-radius: 4px;
-    */
+*/
         content: "";
         display: block;
         position: absolute;
@@ -117,6 +116,10 @@ export default {
     height: 0.8rem;
     background-color: #5bbdca;
     border-radius: 50%;
+}
+
+.input-checkbox[disabled]:checked + .input-checkbox-parts::after {
+    background-color: rgba(128, 128, 128, 0.3);
 }
 
 .input-checkbox.disabled + .input-checkbox-parts,

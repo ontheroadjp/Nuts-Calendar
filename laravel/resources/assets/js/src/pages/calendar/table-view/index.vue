@@ -23,6 +23,33 @@
                 <div>is Loading...</div>
             </div>
         </black-screen>
+<!--
+                    <div style="display: flex; align-items: center;" >
+                        <div>
+                            <a class="button" @click=""
+                               style="font-size: 0.6rem;
+                                       background-color: rgb(178, 153, 153);
+                                       border: none;
+                                       color: #fff;
+                            ">&lt;&lt;</a>
+                        </div>
+
+                        <div>
+                            <span style="margin: 0 20px; font-size: 1rem; line-height: 1.4rem">
+                                {{ viewMode == 'monthly' ? currentYear + '年' : currentYear + '年 ' + currentMonth + '月' }}
+                            </span>
+                        </div>
+
+                        <div>
+                            <a class="button" @click=""
+                               style="font-size: 0.6rem;
+                                       background-color: rgb(178, 153, 153);
+                                       border: none;
+                                       color: #fff;
+                            ">&gt;&gt;</a>
+                        </div>
+                    </div>
+-->
 
         <div :id="id.header"
             :class="['main-calendar-panel-header', {sticky: isFixed}]"

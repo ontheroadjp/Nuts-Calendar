@@ -44,7 +44,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 import item from './item/index.vue';
-import itemInsertField from './item-insert-field.vue';
+import itemInsertField from './item/insert-field.vue';
 
 export default {
     components: { item, itemInsertField },

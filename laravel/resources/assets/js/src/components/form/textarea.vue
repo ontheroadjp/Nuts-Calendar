@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import core from '../../../../mixins/core.js';
+import core from '../../mixins/core.js';
 
 export default {
     mixins: [ core ],

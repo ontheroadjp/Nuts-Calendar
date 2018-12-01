@@ -124,7 +124,7 @@ export default {
 
     methods: {
         ...mapActions('calendar/tableView/item/dnd', {
-            setOnMiniCal: 'SET_ON_MINI_CAL',
+            setOnMiniCal: 'setOnMiniCal',
             dragOver: 'dragOver'
         }),
 

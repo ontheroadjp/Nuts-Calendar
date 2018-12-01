@@ -83,7 +83,6 @@ export default {
     name: 'VueTimepicker',
 
     props: {
-//        value:              { type: Object },
         initialValue:       { type: Object, default: {} },
         hideClearButton:    { type: Boolean, default: false },
         format:             { type: String, default: 'HH:mm' },
@@ -99,7 +98,6 @@ export default {
 
     data() {
         return {
-//            value: {},
             inputValue: {},
             hours: [],
             minutes: [],
@@ -203,18 +201,6 @@ export default {
         secondInterval (newInteval) {
             this.renderList('second', newInteval)
         },
-
-//        'value': 'readValues',
-
-//        'initialValue.HH': function (newValue, oldValue) {
-//            u.clog('watch: initialValue.HH @ time-picker.vue');
-//            this.select("hour", this.initialValue.HH);
-//        },
-//
-//        'initialValue.mm': function (newValue, oldValue) {
-//            u.clog('watch: initialValue.mm @ time-picker.vue');
-//            this.select("minute", this.initialValue.mm);
-//        },
 
         'inputValue': 'readValues',
         'displayTime': 'fillValues'
@@ -342,10 +328,8 @@ export default {
         },
 
         readValues () {
-//            if (!this.value || this.muteWatch) { return }
             if (!this.inputValue || this.muteWatch) { return }
 
-//            const timeValue = JSON.parse(JSON.stringify(this.value || {}))
             const timeValue = JSON.parse(JSON.stringify(this.inputValue || {}))
 
             const values = Object.keys(timeValue);
@@ -487,13 +471,11 @@ export default {
 
             this.fullValues = fullValues
             this.updateTimeValue(fullValues)
-//            this.$emit('change', {data: fullValues})
         },
 
         updateTimeValue (fullValues) {
             this.muteWatch = true
             const self = this
-//            const baseTimeValue = JSON.parse(JSON.stringify(this.value || {}))
             const baseTimeValue = JSON.parse(JSON.stringify(this.inputValue || {}))
             let timeValue = {}
 
@@ -501,7 +483,6 @@ export default {
                 timeValue[key] = fullValues[key]
             })
 
-//            this.$emit('input', timeValue)
             this.fireEvents();
 
             this.$nextTick(() => {
@@ -611,7 +592,6 @@ export default {
     },
 
     mounted () {
-//        this.value = this.initialValue;
         this.inputValue = this.initialValue;
         this.renderFormat();
     }

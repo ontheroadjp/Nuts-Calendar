@@ -1,15 +1,17 @@
 <template>
 <section id="signboard" class="hero" :class="theme.primary.class">
+<!--
     <div v-show="viewMode == 'dayly'" class="hero-body" style="padding: 20px;">
+-->
+    <div class="hero-body" style="padding: 20px;">
     <div class="container">
 
         <div id="mc_embed_signup" class="columns is-vcentered">
-            <!--
+<!--
             <div class="column is-one-third is-left">
                 <hero-title></hero-title>
             </div>
-            -->
-
+-->
             <div class="column">
                 <span class="is-pulled-right">
                     <ym-field></ym-field>
@@ -30,12 +32,13 @@
 
 <script>
     import { mapState } from 'vuex';
-    import heroTitle from '../../partials/hero-title.vue';
+//    import heroTitle from '../../partials/hero-title.vue';
     import ymField from './ym-field.vue';
     import menuTabs from './menu-tabs.vue';
 
     export default {
-        components: { heroTitle, menuTabs, ymField },
+//        components: { heroTitle, menuTabs, ymField },
+        components: { menuTabs, ymField },
 
         props: {
             calendarIsLoading: { type: Boolean, default: false }

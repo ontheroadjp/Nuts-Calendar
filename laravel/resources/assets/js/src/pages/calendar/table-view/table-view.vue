@@ -61,7 +61,6 @@
         </thead>
 
         <tbody v-if="filteredBody">
-
             <tr v-for="(row, rowIndex) in filteredBody"
                 :class="{ saturday: viewMode === 'dayly' && isSaturday(row.date),
                             sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0
@@ -104,7 +103,6 @@
                     :today="style.today"
                     :firstColumnWidth="style.firstColumnWidth"
                 ></monthColumn>
-
             </tr>
         </tbody>
     </table>
@@ -159,6 +157,8 @@ export default {
         }),
 
         ...mapState('calendar', {
+            currentYear: state => state.currentYear,
+            currentMonth: state => state.currentMonth,
             viewMode: state => state.viewMode
         }),
 

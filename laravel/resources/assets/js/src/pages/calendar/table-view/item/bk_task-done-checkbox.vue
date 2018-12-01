@@ -99,6 +99,10 @@ export default {
     border-right: 3px solid #41b883;
 }
 
+.input-checkbox[disabled]:checked + .input-checkbox-parts::after {
+    background-color: rgba(128, 128, 128, 0.3);
+}
+
 .input-checkbox.disabled + .input-checkbox-parts,
 .input-checkbox.disabled + .input-checkbox-parts::before,
 .input-checkbox.disabled + .input-checkbox-parts::after {

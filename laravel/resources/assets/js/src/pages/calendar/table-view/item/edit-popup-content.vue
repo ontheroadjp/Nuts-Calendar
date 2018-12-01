@@ -116,9 +116,14 @@ import { mapState, mapActions } from 'vuex';
 import core from '../../../../mixins/core.js';
 import textInput from '../../../../components/form/text-input.vue';
 import timeRangePicker from '../../../../components/time-range-picker.vue';
-import allDayCheckbox from './all-day-checkbox.vue';
-import taskDoneCheckbox from './task-done-checkbox.vue';
-import memoTextarea from './input-textarea.vue';
+
+//import allDayCheckbox from './all-day-checkbox.vue';
+//import taskDoneCheckbox from './task-done-checkbox.vue';
+//import memoTextarea from './input-textarea.vue';
+
+import allDayCheckbox from '../../../../components/form/checkbox.vue';
+import taskDoneCheckbox from '../../../../components/form/checkbox.vue';
+import memoTextarea from '../../../../components/form/textarea.vue';
 
 export default {
     components: { textInput, timeRangePicker, allDayCheckbox, taskDoneCheckbox, memoTextarea },

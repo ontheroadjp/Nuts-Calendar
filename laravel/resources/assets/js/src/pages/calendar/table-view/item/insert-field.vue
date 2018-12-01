@@ -44,8 +44,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import { focus } from '../../../directives/focus.js';
-import core from '../../../mixins/core.js';
+import { focus } from '../../../../directives/focus.js';
+import core from '../../../../mixins/core.js';
 
 export default {
     name: 'add-item-field',

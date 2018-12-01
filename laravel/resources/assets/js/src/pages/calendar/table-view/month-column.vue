@@ -1,10 +1,11 @@
 <template>
     <td class="date-styling" :style="firstColumnWidth" style="padding: 0">
         <div style="margin-bottom: 5px;">
+<!--
             <template v-if="row.gregorian_month == 1">
                 <div :style="style.yearLabel" >{{ row.gregorian_year }}年</div>
             </template>
-
+-->
             <div style="padding: 5px" >
                     <router-link
                         to="/calendar/view"
