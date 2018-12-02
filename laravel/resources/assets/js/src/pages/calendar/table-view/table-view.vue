@@ -11,10 +11,10 @@
         :offsetY="topPosition"
         :scrollX="scrollPositionX"
         :scrollY="scrollPositionY"
-        :height="360"
+        :height="380"
         :width="480"
         ><item-edit-popup-content
-            :height="340"
+            :height="370"
             :width="240"
             @close="popupMenuClose"
         ></item-edit-popup-content>

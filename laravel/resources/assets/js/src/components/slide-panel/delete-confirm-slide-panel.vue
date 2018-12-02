@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div v-show="!isLoading" class="delete-confirm-buttons strip">
+            <div v-show="!isLoading" class="delete-confirm-buttons">
                 <button class="button strip"
                     style="color:#fff"
                     @click="clickCancel()"

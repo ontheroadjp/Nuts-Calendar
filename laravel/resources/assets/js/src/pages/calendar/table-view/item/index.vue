@@ -16,7 +16,24 @@
         </div>
     </div>
 
+    <div :id="'item-tippy-delete-confirm-contents-' + item.id">
+        <div style="display: flex;
+                    justify-content: space-between;
+                    margin: 0 auto;
+                    padding: 0 10px;
+                    height: 25px;
+                    width: 120px;
+                    color: #fff;
+                    border-radius: 5px;
+        ">
+            <div @click.stop="clickDeleteCancel">Cancel</div>
+            <div @click.stop="clickDeleteOK">OK</div>
+        </div>
+    </div>
+
+
     <div :data-template="'item-tippy-contents-' + item.id"
+         :delete-confirm-template="'item-tippy-delete-confirm-contents-' + item.id"
             class="item-tippy-contents"
             :class="'item-tippy-' + item.id"
             @click.stop="clickItem()"
@@ -56,14 +73,19 @@ export default {
         'cellItems', 'isEventItem', 'isTaskItem', 'item'
     ],
 
+    data() {
+        return {
+            tippy: '',
+            isTippyShown: false,
+            itemMenuTemplate: '',
+            itemDeleteConfirmTemplate: ''
+        }
+    },
+
     computed: {
         ...mapState('calendar/tableView/item/insert', {
             duplicatingItem: state => state.duplicatingItem,
             duplicateIsLoading: state => state.isLoading
-        }),
-
-        ...mapState('calendar/tableView/item/dnd', {
-            isDragging: state => state.fromCell.cellAddress
         })
     },
 
@@ -76,25 +98,23 @@ export default {
             removePrepare: 'remove/prepare'
         }),
 
-        tippyActive: function(value = true) {
-            const el = document.querySelector('.item-tippy-' + this.item.id)
-            const tip = el._tippy;
-            value ? tip.show() : tip.hide();
+        clickItem: function() {
+            this.showTippy();
+//            setTimeout(() => { this.showTippy(false); }, 2000)
         },
 
-        clickItem: function() {
-            this.tippyActive();
-//            setTimeout(() => { this.tippyActive(false); }, 2000)
+        showTippy: function(value = true) {
+            value && !this.isTippyShown ? this.tippy.show() : this.tippy.hide();
         },
 
         clickDuplicate: function() {
             u.clog('clickDuplicate(' + this.item.id + ')');
-            this.tippyActive(false);
+            this.showTippy(false);
             this.duplicate( {item: this.item, cellItems: this.cellItems} );
         },
 
         clickEdit: function(e) {
-            this.tippyActive(false);
+            this.showTippy(false);
             this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
             this.updatePrepareModal( { event: e } );
             this.insertReset();
@@ -105,32 +125,64 @@ export default {
         },
 
         clickDelete: function() {
-            this.tippyActive(false);
-            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
-        }
-    },
+            this.tippy.setContent(this.itemDeleteConfirmTemplate);
+        },
 
-    watch: {
-        isDragging: function() {
-            this.tippyActive(false);
+        clickDeleteCancel: function() {
+            u.clog('clickDeleteCancel();');
+            this.showTippy(false);
+            setTimeout(() => { this.tippy.setContent(this.itemMenuTemplate); }, 1000);
+        },
+
+        clickDeleteOK: function() {
+            u.clog('clickDeleteOK();');
+            this.showTippy(false);
+            setTimeout(() => { this.tippy.setContent(this.itemMenuTemplate); }, 1000);
+//            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
+        },
+
+        onCloseDeleteConfirmModal: function() {
+            this.isDeleteConfirmModalActive = false;
+        },
+
+        initTippy: function() {
+            const self = this;
+                this.tippy = tippy.one('.item-tippy-' + this.item.id, {
+                    content(reference) {
+                        const deleteConfirtTemplate = reference.getAttribute('delete-confirm-template');
+                        self.itemDeleteConfirmTemplate = document.getElementById(deleteConfirtTemplate);
+
+                        const menuTemplate = reference.getAttribute('data-template');
+                        self.itemMenuTemplate = document.getElementById(menuTemplate);
+
+                        return self.itemDeleteConfirmTemplate;
+                    },
+                    placement: 'top',
+                    trigger: 'manual',
+                    duration: 100,
+                    arrow: true,
+                    distance: 5,
+                    interactive: true,
+                    hideOnClick: true,
+                    theme: 'honeybee',
+                    onShown: () => {
+                        this.isTippyShown = true;
+                    },
+                    onHidden: () => {
+                        this.isTippyShown = false;
+                    }
+                });
+
+                this.tippy.setContent(self.itemMenuTemplate);
         }
     },
 
     mounted() {
-        tippy('.item-tippy-' + this.item.id, {
-            content(reference) {
-                const itemId = reference.getAttribute('data-template');
-                return document.getElementById(itemId);
-            },
-            placement: 'top',
-            trigger: 'manual',
-            duration: 100,
-            arrow: true,
-            distance: 5,
-            interactive: true,
-            hideOnClick: true,
-            theme: 'honeybee'
-        });
+        if( !this.tippy) {
+            this.$nextTick(() => {
+                this.initTippy();
+            });
+        }
     }
 }
 </script>
@@ -164,6 +216,25 @@ export default {
 .item-tippy-contents {
     &:focus {
         outline: none;
+    }
+}
+
+.delete-confirm {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.delete-confirm-buttons {
+    display: inline-flex;
+    justify-content: space-around;
+    width: 100%;
+    & button.strip:hover {
+        border: 1px solid #e6e6e6;
     }
 }
 </style>

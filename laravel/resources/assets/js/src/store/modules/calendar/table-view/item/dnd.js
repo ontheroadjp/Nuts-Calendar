@@ -8,6 +8,8 @@ import {
     DRAG_END
 } from '../../../../mutation-types.js'
 
+import tippy from 'tippy.js';
+
 export default {
     namespaced: true,
 
@@ -38,6 +40,8 @@ export default {
 
     actions: {
         dragStart( { commit, rootGetters }, { cellItems, draggingItem } ) {
+
+            tippy.hideAllPoppers();
 
             const rowIndex = draggingItem.row_index;
             const memberId = draggingItem.member_id;
@@ -78,15 +82,17 @@ export default {
             const viewMode = rootState.calendar.viewMode;
             commit(DROP, { y, m, viewMode });
 
-            // update cellItems
-            dispatch('calendar/tableView/updateCellItems',
-                state.enterCell.cellItems, { root: true }
-            );
-
+            // update cellItems( for fromCell )
             dispatch('calendar/tableView/updateCellItems',
                 state.fromCell.cellItems, { root: true }
             );
 
+            // update cellItems( for enterCell )
+            dispatch('calendar/tableView/updateCellItems',
+                state.enterCell.cellItems, { root: true }
+            );
+
+            // update DB
             const url = '/api/v1/item/' + state.draggingItem.id;
             const params = {
                 'member_id': state.draggingItem.member_id,
@@ -108,14 +114,14 @@ export default {
                     u.clog('failed');
                     commit(REVERSE_ITEM, { y, m });
 
-                    commit('calendar/tableView/SORT_CELL_ITEMS',
-                        state.enterCell.cellItems,
-                        { root: true }
+                    // update cellItems( for enterCell )
+                    dispatch('calendar/tableView/updateCellItems',
+                        state.enterCell.cellItems, { root: true }
                     );
 
-                    commit('calendar/tableView/SORT_CELL_ITEMS',
-                        state.fromCell.cellItems,
-                        { root: true }
+                    // update cellItems( for fromCell )
+                    dispatch('calendar/tableView/updateCellItems',
+                        state.fromCell.cellItems, { root: true }
                     );
 
                     commit(DRAG_END);
@@ -155,6 +161,9 @@ export default {
             state.isLoading = true;
             state.isDropped = true;
 
+            // remove item
+            state.fromCell.cellItems.splice(state.fromCell.itemIndex, 1);
+
             // update item
             state.draggingItem.member_id = state.enterCell.memberId;
             state.draggingItem.date = state.enterCell.rowIndex;
@@ -163,16 +172,15 @@ export default {
                 state.draggingItem.is_all_day = true;
             }
 
-            // remove item
-            state.fromCell.cellItems.splice(state.fromCell.itemIndex, 1);
-
             // add item
-            state.enterCell.cellItems.push(state.draggingItem);
+            u.clog('-------------------------------------------- add item(' + state.draggingItem.content + ')');
+//            state.enterCell.cellItems.push(state.draggingItem);
+            state.enterCell.cellItems.splice(0, 0, state.draggingItem);
         },
 
         [REVERSE_ITEM]( state, { y, m } ) {
             // update item
-            state.draggingItem.date = y + '-' + m + '-' + (state.fromCell.rowIndex + 1);
+            state.draggingItem.date = state.fromCell.date;
             state.draggingItem.member_id = state.fromCell.memberId;
 
             // remove item

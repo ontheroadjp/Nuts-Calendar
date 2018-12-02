@@ -33,19 +33,24 @@ class Item extends Model
      * @var mixed
      * @access protected
      */
-    protected $appends = [
-        'editing', 'is_hover',
-    ];
-
-    public function getEditingAttribute()
-    {
-        return false;
-    }
-
-    public function getIsHoverAttribute()
-    {
-        return false;
-    }
+//    protected $appends = [
+//        'editing', 'is_hover', 'itemIndex'
+//    ];
+//
+//    public function getEditingAttribute()
+//    {
+//        return false;
+//    }
+//
+//    public function getIsHoverAttribute()
+//    {
+//        return false;
+//    }
+//
+//    public function getItemIndexAttribute()
+//    {
+//        return 0;
+//    }
 
     /**
      * member

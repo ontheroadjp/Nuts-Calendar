@@ -130,7 +130,7 @@ a {
     background: none;
     outline: none;
     &:hover {
-        border: 1px solid #e6e6e6 !important;
+        border-bottom: 1px solid #e6e6e6 !important;
     }
 }
 </style>

@@ -262,15 +262,19 @@ const calendar = {
 
                         if(a.type_id === 1 && b.type_id === 2) return 1;
                         if(a.type_id === 2 && b.type_id === 1) return -1;
-                        if(a.type_id === 2 && b.type_id === 2) return 0;
+                        if(a.type_id === 2 && b.type_id === 2) {
+                            if( a.content.toUpperCase() < b.content.toUpperCase() ) return -1;
+                            if( a.content.toUpperCase() > b.content.toUpperCase() ) return 1;
+                            return 0
+                        }
 
-                        if( (a.is_all_day === 1 || a.is_all_day === true) &&
-                            (b.is_all_day !== 1 || b.is_all_day !== true)
-                        ) return -1;
-
-                        if( (a.is_all_day !== 1 || a.is_all_day !== true) &&
-                            (b.is_all_day === 1 || b.is_all_day === true)
-                        ) return 1;
+                        if( a.is_all_day && ! b.is_all_day ) return -1;
+                        if( ! a.is_all_day && b.is_all_day ) return 1;
+                        if( a.is_all_day && b.is_all_day ) {
+                            if( a.content.toUpperCase() < b.content.toUpperCase() ) { return -1; }
+                            if( a.content.toUpperCase() > b.content.toUpperCase() ) { return 1; }
+                            return 0;
+                        }
 
                         if( a.start_time === undefined || a.start_time === null ) return -1;
                         if( b.start_time === undefined || b.start_time === null ) return 1;
@@ -291,9 +295,8 @@ const calendar = {
                     });
 
                     // update index
-                    cellItems.forEach(function(item, index) {
-//                        item.dayIndex = parseInt((item.date.split('-'))[2]) - 1;
-                        item.itemIndex = index;
+                    cellItems.forEach((item, index) => {
+                        Vue.set(item, 'itemIndex', index);
                     });
                 },
 

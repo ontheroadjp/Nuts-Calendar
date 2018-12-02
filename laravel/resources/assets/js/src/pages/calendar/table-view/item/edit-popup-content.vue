@@ -373,7 +373,7 @@ export default {
     color: #fff;
     text-align: center;
     overflow: hidden;
-    height: 330px;
+    height: 370px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;

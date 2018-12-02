@@ -8,7 +8,7 @@
             :minute-interval="minuteInterval"
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
-            :hideClearButton="false"
+            :hideClearButton="true"
             @changeValue="onChangeStart"
             :disabled="disabled"
         ></startTimePicker>
@@ -25,7 +25,7 @@
             :inputWidth="inputWidth"
             :dropdownHeight="dropdownHeight"
             menuPosition="left"
-            :hideClearButton="false"
+            :hideClearButton="true"
             @changeValue="onChangeEnd"
             :disabled="disabled"
         ></endTimePicker>
