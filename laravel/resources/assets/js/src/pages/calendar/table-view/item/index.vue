@@ -10,27 +10,45 @@
                     color: #fff;
                     border-radius: 5px;
         ">
-            <div @click.stop="clickDuplicate($event)"><span class="fa fa-files-o"></span></div>
-            <div @click.stop="clickEdit($event)"><span class="fa fa-pencil"></span></div>
-            <div @click.stop="clickDelete($event)"><span class="fa fa-trash"></span></div>
+            <div @click.stop="clickDuplicate($event)" @dblclick="">
+                <span class="fa fa-files-o"></span></div>
+
+            <div @click.stop="clickEdit($event)" @dblclick="">
+                <span class="fa fa-pencil"></span></div>
+
+            <div @click.stop="clickDelete($event)" @dblclick="">
+                <span class="fa fa-trash"></span></div>
         </div>
     </div>
 
-    <div :id="'item-tippy-delete-confirm-contents-' + item.id">
-        <div style="display: flex;
-                    justify-content: space-between;
-                    margin: 0 auto;
-                    padding: 0 10px;
-                    height: 25px;
-                    width: 120px;
-                    color: #fff;
-                    border-radius: 5px;
-        ">
-            <div @click.stop="clickDeleteCancel">Cancel</div>
-            <div @click.stop="clickDeleteOK">OK</div>
+    <div :id="'item-tippy-delete-confirm-contents-' + item.id"
+        style="display: flex; flex-flow: column; width: 120px; color: #fff;">
+        <div style="
+            width: 25px;
+            margin: 15px auto;
+            border: 2px solid #fff;
+            border-radius: 50px;
+        " >
+            <i class="fa fa-exclamation"></i>
+        </div>
+
+        <!-- <div style="margin-bottom: 22px;" > {{ item.content }} </div> -->
+
+        <div style="display: flex; justify-content: space-around;" >
+            <button
+                class="button strip"
+                style="color: #fff"
+                @click.stop="clickDeleteOK"
+                :disabled="removeIsLoading"
+            >OK</button>
+            <button
+                class="button strip"
+                style="color: #fff"
+                @click.stop="clickDeleteCancel"
+                :disabled="removeIsLoading"
+            >Cancel</button>
         </div>
     </div>
-
 
     <div :data-template="'item-tippy-contents-' + item.id"
          :delete-confirm-template="'item-tippy-delete-confirm-contents-' + item.id"
@@ -44,14 +62,18 @@
             :cellItems="cellItems"
             :item="item"
             :isLoading="(duplicatingItem == item) && duplicateIsLoading"
-        ></event-item>
+        >
+            <span :style="searchHighlightStyle">{{ item.content }}</span>
+        </event-item>
 
         <task-item
             v-if="isTaskItem && item.type_id === 2"
             :cellItems="cellItems"
             :item="item"
             :isLoading="(duplicatingItem == item) && duplicateIsLoading"
-        ></task-item>
+        >
+            <span :style="searchHighlightStyle">{{ item.content }}</span>
+        </task-item>
 
     </div>
 </span>
@@ -83,10 +105,28 @@ export default {
     },
 
     computed: {
+        ...mapState('calendar/tableView', {
+            toolPalette: state => state.toolPalette,
+        }),
+
         ...mapState('calendar/tableView/item/insert', {
             duplicatingItem: state => state.duplicatingItem,
             duplicateIsLoading: state => state.isLoading
-        })
+        }),
+
+        ...mapState('calendar/tableView/item/remove', {
+            removeIsLoading: state => state.isLoading
+        }),
+
+        searchHighlightStyle: function() {
+            if( this.toolPalette.query.search != ''
+                    && this.item.content.toLowerCase().indexOf(
+                        (this.toolPalette.query.search).toLowerCase()
+                    ) != -1) {
+                return { backgroundColor: '#FFEB3B' }
+            }
+            return {}
+        }
     },
 
     methods: {
@@ -95,12 +135,12 @@ export default {
             duplicate: 'insert/duplicate',
             updatePrepare: 'update/prepare',
             updatePrepareModal: 'update/prepareModal',
-            removePrepare: 'remove/prepare'
+            removePrepare: 'remove/prepare',
+            remove: 'remove/remove'
         }),
 
         clickItem: function() {
             this.showTippy();
-//            setTimeout(() => { this.showTippy(false); }, 2000)
         },
 
         showTippy: function(value = true) {
@@ -125,55 +165,94 @@ export default {
         },
 
         clickDelete: function() {
-            this.tippy.setContent(this.itemDeleteConfirmTemplate);
+            const els = document.getElementsByClassName('tippy-tooltip honeybee-theme');
+            els[0].classList.add('delete-confirm-tippy-tooltip');
+            this.tippy.set({
+                content: this.itemDeleteConfirmTemplate,
+                arrow: false
+            })
         },
 
         clickDeleteCancel: function() {
             u.clog('clickDeleteCancel();');
+            const els = document.getElementsByClassName('tippy-tooltip honeybee-theme');
+            els[0].classList.remove('delete-confirm-tippy-tooltip');
             this.showTippy(false);
-            setTimeout(() => { this.tippy.setContent(this.itemMenuTemplate); }, 1000);
+
+            const self = this;
+            setTimeout(() => {
+                self.tippy.set({
+                    content: this.itemMenuTemplate,
+                    arrow: true
+                })
+            }, 1000);
         },
 
         clickDeleteOK: function() {
             u.clog('clickDeleteOK();');
+            const els = document.getElementsByClassName('tippy-tooltip honeybee-theme');
+            els[0].classList.remove('delete-confirm-tippy-tooltip');
+
             this.showTippy(false);
-            setTimeout(() => { this.tippy.setContent(this.itemMenuTemplate); }, 1000);
-//            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
+
+            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
+            this.remove();
+
+            const self = this;
+            setTimeout(() => {
+                self.tippy.set({
+                    content: this.itemMenuTemplate,
+                    arrow: true
+                })
+            }, 1000);
         },
 
-        onCloseDeleteConfirmModal: function() {
-            this.isDeleteConfirmModalActive = false;
-        },
+//        onCloseDeleteConfirmModal: function() {
+//            this.isDeleteConfirmModalActive = false;
+//        },
 
         initTippy: function() {
             const self = this;
-                this.tippy = tippy.one('.item-tippy-' + this.item.id, {
-                    content(reference) {
-                        const deleteConfirtTemplate = reference.getAttribute('delete-confirm-template');
-                        self.itemDeleteConfirmTemplate = document.getElementById(deleteConfirtTemplate);
+            this.tippy = tippy.one('.item-tippy-' + this.item.id, {
+                content(reference) {
 
-                        const menuTemplate = reference.getAttribute('data-template');
-                        self.itemMenuTemplate = document.getElementById(menuTemplate);
+                    // delete confirm tippy template
+                    const deleteConfirtTemplate = reference.getAttribute(
+                        'delete-confirm-template'
+                    );
 
-                        return self.itemDeleteConfirmTemplate;
-                    },
-                    placement: 'top',
-                    trigger: 'manual',
-                    duration: 100,
-                    arrow: true,
-                    distance: 5,
-                    interactive: true,
-                    hideOnClick: true,
-                    theme: 'honeybee',
-                    onShown: () => {
-                        this.isTippyShown = true;
-                    },
-                    onHidden: () => {
-                        this.isTippyShown = false;
-                    }
-                });
+                    self.itemDeleteConfirmTemplate = document.getElementById(
+                        deleteConfirtTemplate
+                    );
 
-                this.tippy.setContent(self.itemMenuTemplate);
+                    // item menu tippy template
+                    const menuTemplate = reference.getAttribute(
+                        'data-template'
+                    );
+
+                    self.itemMenuTemplate = document.getElementById(
+                        menuTemplate
+                    );
+
+                    return self.itemDeleteConfirmTemplate;
+                },
+                placement: 'top',
+                trigger: 'manual',
+                duration: 100,
+                arrow: true,
+                distance: 5,
+                interactive: true,
+                hideOnClick: true,
+                theme: 'honeybee',
+                onShown: () => {
+                    this.isTippyShown = true;
+                },
+                onHidden: () => {
+                    this.isTippyShown = false;
+                }
+            });
+
+            this.tippy.setContent(self.itemMenuTemplate);
         }
     },
 
@@ -191,6 +270,11 @@ export default {
 .tippy-tooltip.honeybee-theme {
 /*    background-color: #b38d91; */
     height: 30px;
+}
+
+.delete-confirm-tippy-tooltip {
+    background-color: red !important;
+    height: 100px !important;
 }
 
 /*

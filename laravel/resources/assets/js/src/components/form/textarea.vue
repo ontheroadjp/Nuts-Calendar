@@ -9,7 +9,7 @@
         :disabled="disabled"
     ></textarea>
     <span v-if="showError && errorResult" style="color:red">Error</span>
-    <span v-if="showCount">{{ textLength }}</span>
+    <span v-if="showCount"><small>({{ textLength }} / {{ maxTextLength }})</small></span>
 </span>
 </template>
 
@@ -37,7 +37,7 @@ export default {
 
     computed: {
         textLength: function() {
-            if( this.input == '' ) return '';
+            if( this.input == '' || this.input == null) return 0;
             return this.input.length;
         },
 

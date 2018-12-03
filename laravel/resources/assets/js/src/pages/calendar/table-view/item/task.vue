@@ -13,13 +13,13 @@
             :checked="item.is_done">
 
         <span :class="{'task-done': item.is_done}">
-            <span :style="searchHighlightStyle">{{ item.content }}</span>
+            <slot></slot>
         </span>
 
         <span class="icon is-small"
-            v-show="((dragItem.isLoading || deleteItem.isLoading )
-                        && dragItem.draggingItem === item)
-                    || (updateItem.isLoading && updateItem.editingItem === item)
+            v-show="(dnd.isLoading && dnd.draggingItem === item)
+                    || (update.isLoading && update.editingItem === item)
+                    || (remove.isLoading && remove.deletingItem === item)
                     || isLoading"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>
@@ -32,26 +32,20 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 
-    props: [ 'cellItems', 'item', 'isLoading' ],
+    props: [
+        'cellItems', 'item', 'isLoading'
+    ],
 
     computed: {
         ...mapState('calendar/tableView/item', {
-            dragItem: state => state.dnd,
-            updateItem: state => state.update,
-            deleteItem: state => state.remove
+            dnd: state => state.dnd,
+            update: state => state.update,
+            remove: state => state.remove
         }),
 
-        ...mapState('calendar/tableView/toolPalette', {
-            searchQuery: state => (state.query.search).toLowerCase()
-        }),
-
-        searchHighlightStyle: function() {
-            if( this.searchQuery != ''
-                    && this.item.content.toLowerCase().indexOf(this.searchQuery) != -1) {
-                return { backgroundColor: '#FFEB3B' }
-            }
-            return {}
-        }
+        ...mapState('calendar/tableView', {
+            toolPalette: state => state.toolPalette
+        })
     },
 
     methods: {
@@ -61,7 +55,10 @@ export default {
         }),
 
         clickDone() {
-            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
+            this.updatePrepare({
+                cellItems: this.cellItems, editingItem: this.item
+            });
+
             this.toggleTaskDone({ item: this.item });
         }
     }

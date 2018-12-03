@@ -13,7 +13,7 @@
             ></text-input>
         </div>
 
-        <div v-show="isEvent" style="margin-bottom: 10px">
+        <div v-show="viewMode === 'dayly' && isEvent" style="margin-bottom: 10px">
             <span class="time-range" style="margin-right: 15px;" >
                 <timeRangePicker
                     :minute-interval="5"
@@ -53,6 +53,7 @@
                 :minTextLength="0"
                 :maxTextLength="300"
                 :showError="true"
+                :showCount="true"
                 placeholder="memo"
                 @changeValue="onChangeMemo"
             ></memo-textarea>
@@ -167,6 +168,10 @@ export default {
     },
 
     computed: {
+        ...mapState('calendar', {
+            viewMode: state => state.viewMode
+        }),
+
         ...mapState('calendar/tableView/item/update', {
             editingItem: 'editingItem',
             updateIsLoading: 'isLoading'

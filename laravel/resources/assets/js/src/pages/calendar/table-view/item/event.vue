@@ -10,14 +10,18 @@
             :class="[{'vertial': displayVertically}, 'thin-400']"
             style="margin-right: 8px;"
         >
-                <span :class="{ 'thin-500': !item.hasStartTimeError }" :style="startTimeStyle">
-                    {{ item.start_time | timeFormatter }}
+                <span
+                    :class="{ 'thin-500': !item.hasStartTimeError }"
+                    :style="startTimeStyle"
+                >{{ item.start_time | timeFormatter }}
                 </span>
 
-                <span v-if="isEndTimeShow">
-                    <span>|</span>
-                    <span :class="{ 'thin-500': !item.hasEndTimeError }" :style="endTimeStyle">
-                        {{ item.end_time | timeFormatter }}
+                <span v-if="toolPalette.isEndTimeShow">
+                    <span>-</span>
+                    <span
+                        :class="{ 'thin-500': !item.hasEndTimeError }"
+                        :style="endTimeStyle"
+                    >{{ item.end_time | timeFormatter }}
                     </span>
                 </span>
         </span>
@@ -26,12 +30,12 @@
             <i class="fa fa-circle" style="color: #fb04a4;"></i>
         </span>
 
-        <span :style="searchHighlightStyle">{{ item.content }}</span>
+        <slot></slot>
 
         <span class="icon is-small"
-            v-show="((dragItem.isLoading || deleteItem.isLoading)
-                        && dragItem.draggingItem === item)
-                    || (updateItem.isLoading && updateItem.editingItem === item)
+            v-show="(dnd.isLoading && dnd.draggingItem === item)
+                    || (update.isLoading && update.editingItem === item)
+                    || (remove.isLoading && remove.deletingItem === item)
                     || isLoading"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>
@@ -43,9 +47,13 @@ import { mapState, mapActions } from 'vuex';
 import timeFormatter from '../../../../filters/time-formatter.js';
 
 export default {
-    mixins: [ timeFormatter ],
+    mixins: [
+        timeFormatter
+    ],
 
-    props: [ 'cellItems', 'item', 'isLoading' ],
+    props: [
+        'cellItems', 'item', 'isLoading'
+    ],
 
     data() {
         return {
@@ -55,15 +63,14 @@ export default {
     },
 
     computed: {
-        ...mapState('calendar/tableView/item', {
-            dragItem: state => state.dnd,
-            updateItem: state => state.update,
-            deleteItem: state => state.remove
+        ...mapState('calendar/tableView', {
+            toolPalette: state => state.toolPalette,
         }),
 
-        ...mapState('calendar/tableView/toolPalette', {
-            isEndTimeShow: state => state.isEndTimeShow,
-            searchQuery: state => (state.query.search).toLowerCase()
+        ...mapState('calendar/tableView/item', {
+            dnd: state => state.dnd,
+            update: state => state.update,
+            remove: state => state.remove
         }),
 
         startTimeStyle: function() {
@@ -78,14 +85,6 @@ export default {
                 return { color: this.timeErrorColor };
             }
             return {};
-        },
-
-        searchHighlightStyle: function() {
-            if( this.searchQuery != ''
-                    && this.item.content.toLowerCase().indexOf(this.searchQuery) != -1) {
-                return { backgroundColor: '#FFEB3B' }
-            }
-            return {}
         }
     }
 }

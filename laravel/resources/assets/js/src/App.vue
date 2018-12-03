@@ -133,4 +133,10 @@ a {
         border-bottom: 1px solid #e6e6e6 !important;
     }
 }
+
+button.strip {
+    &:hover {
+        border: 1px solid #e6e6e6 !important;
+    }
+}
 </style>
