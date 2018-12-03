@@ -129,14 +129,17 @@ a {
     box-shadow: none;
     background: none;
     outline: none;
+}
+
+.hover-border {
     &:hover {
-        border-bottom: 1px solid #e6e6e6 !important;
+        border: 1px solid #e6e6e6 !important;
     }
 }
 
-button.strip {
+.hover-underline {
     &:hover {
-        border: 1px solid #e6e6e6 !important;
+        text-decoration: underline !important;
     }
 }
 </style>

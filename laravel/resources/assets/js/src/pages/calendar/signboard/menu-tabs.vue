@@ -1,29 +1,57 @@
 <template>
-<div class="container">
-<nav class="tabs is-boxed">
+
+<nav class="tabs is-boxed" style="margin-left: 20px" >
 <ul class="thin">
+
+<!--
+    <span><img
+        src="/images/nuts-logo-white.png"
+        style="width: 90px; margin-right: 2rem;" alt="Nuts logo"
+    ></span>
+-->
 
     <!-- DASHBOARD -->
     <li :class="{ 'is-active': currentCalendarId === 'dashboard' }"
         @click="changeCalendar('dashboard')">
 
         <router-link to="/dashboard"
+            style="font-size: 0.9rem;"
             :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
-            @click="changeCalendar('dashboard')"
         >
             <span class="icon is-small">
                 <i class="fa fa-dashboard"></i>
             </span>
             <span>{{ t('calendarMenu.dashboard') }}</span>
         </router-link>
+    </li>
 
+    <!-- CALENDAR -->
+    <li :class="{ 'is-active': currentCalendarId !== 'dashboard' && !disabled }"
+        >
+
+        <router-link to="/calendar/view"
+            style="font-size: 0.9rem;"
+            :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
+        >
+            <span @click="clickCalendarTab()">
+                <span class="icon is-small">
+                    <i v-show="!calendarIsLoading" class="fa fa-calendar"></i>
+                    <i v-show="calendarIsLoading" class="fa fa-refresh fa-spin"></i>
+                </span>
+                <span @click="clickCalendarTab()">{{ t('calendarMenu.calendar') }}</span>
+            </span>
+            <span v-show="!calendarIsLoading"
+                class="icon is-small">
+                <i class="fa fa-navicon" @click="toggleToolPalet()"></i>
+            </span>
+        </router-link>
     </li>
 
     <!-- USER CALENDARS -->
+<!--
     <li v-for="uCalendar in userCalendars"
         :class="{'is-active': currentCalendarId == uCalendar.id && !disabled}"
         @click="changeCalendar(uCalendar.id)">
-
         <router-link to="/calendar/view"
             :style="{ 'color': linkColorStyle, 'pointer-events': pointerEventsStyle }"
         >
@@ -40,21 +68,11 @@
                 <i class="fa fa-navicon" @click="toggleToolPalet()"></i>
             </span>
         </router-link>
-
-    </li>
-<!--
-    <li :class="">
-        <router-link to="'/calendar/settings/' + currentCalendarId}">
-            <span class="icon is-small">
-                <i class="fa fa-plus"></i>
-            </span>
-            <span>{{ t('calendarMenu.createNewOne') }}</span>
-        </router-link>
     </li>
 -->
+
 </ul>
 </nav>
-</div><!-- // container -->
 </template>
 
 <script>
@@ -111,10 +129,13 @@ export default {
             toggleTableToolPalette: 'toggleTableToolPalette'
         }),
 
+        clickCalendarTab: function() {
+            this.changeCalendar(Object.keys(this.userCalendars)[0]);
+        },
+
         changeCalendar: function(id) {
             if( this.currentCalendarId == id ) return;
             u.clog('changeCalendar(' + id + ')');
-//            this.$store.commit('setCurrentCalendarId', id);
             this.$store.commit('calendar/SET_VALUE', {
                 key: 'currentId',
                 value: id

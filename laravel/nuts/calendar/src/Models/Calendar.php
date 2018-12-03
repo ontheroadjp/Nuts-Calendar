@@ -79,9 +79,12 @@ class Calendar extends Model
 
     public function fetchCalendarWithHolidayAndItems($year,$month)
     {
+//        ini_set('memory_limit', '512M');
+
         return Calendar::with('holidays', 'items')
             ->where('date', 'LIKE', "$year-$month-%")
             ->get();
+
 //        return Calendar::with('holidays', 'items')
 //            ->where('date', 'LIKE', "$year-$month-%")
 //            ->whereNotIn('gregorian_day', [0])

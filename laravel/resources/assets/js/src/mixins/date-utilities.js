@@ -2,6 +2,15 @@ import moment from 'moment';
 require('moment/locale/ja');
 
 export default {
+    data() {
+        return {
+            day: {
+                'ja': ['日', '月', '火', '水', '木', '金', '土'],
+                'en': ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            }
+        }
+    },
+
     computed: {
         lang: function() {
             return this.$store.state.app.lang;
@@ -11,6 +20,20 @@ export default {
     methods: {
         isToday(dateText) {
             return moment(dateText).isSame( moment(new Date()) );
+        },
+
+        dayColumnLabel(d) {
+            moment.locale(this.lang);
+            const date = moment(d).date();
+            const day = this.day[this.lang][moment(d).day()];
+
+            const out = '<span style="font-size: 2.2rem;">' + date + '</span>'
+
+            if(moment.locale() === 'ja')
+                return out + '<span style="display:flex; align-items: center;"><span>(' + day + ')</span></span>';
+
+            if(moment.locale() === 'en')
+                return out + '<span>&nbsp;' + day + '</span>';
         },
 
         getDateString(dateObj) {
@@ -30,6 +53,10 @@ export default {
 
         getDayIndex(d) {
             return moment(d).day();
+        },
+
+        isToday(d) {
+            return moment().format('YYYYMMDD') === moment(d).format('YYYYMMDD');
         },
 
         isSunday(d) {

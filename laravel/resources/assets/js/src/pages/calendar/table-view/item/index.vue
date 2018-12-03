@@ -22,30 +22,28 @@
     </div>
 
     <div :id="'item-tippy-delete-confirm-contents-' + item.id"
-        style="display: flex; flex-flow: column; width: 120px; color: #fff;">
-        <div style="
-            width: 25px;
-            margin: 15px auto;
-            border: 2px solid #fff;
-            border-radius: 50px;
-        " >
-            <i class="fa fa-exclamation"></i>
+        style="display: flex;
+                justify-content: center;
+                width: 120px;
+                color: #fff;
+                margin-top: -7px;
+    ">
+        <div style="margin: 5px 0;" >
+            <i class="fa fa-exclamation-circle" style="font-size: 1.4rem;" ></i>
         </div>
 
-        <!-- <div style="margin-bottom: 22px;" > {{ item.content }} </div> -->
-
-        <div style="display: flex; justify-content: space-around;" >
+        <div style="display: flex; justify-content: space-around; align-items: center" >
             <button
-                class="button strip"
-                style="color: #fff"
+                class="button strip hover-underline"
+                style="color: #fff; font-size: 0.9rem;"
                 @click.stop="clickDeleteOK"
-                :disabled="removeIsLoading"
+                :disabled="remove.isLoading"
             >OK</button>
             <button
-                class="button strip"
-                style="color: #fff"
+                class="button strip hover-underline"
+                style="color: #fff; width: 40%; font-size: 0.8rem"
                 @click.stop="clickDeleteCancel"
-                :disabled="removeIsLoading"
+                :disabled="remove.isLoading"
             >Cancel</button>
         </div>
     </div>
@@ -58,7 +56,7 @@
             @dblclick.stop=""
     >
         <event-item
-            v-if="isEventItem && item.type_id === 1"
+            v-if="item.type_id === 1 && toolPalette.isEventItemShow"
             :cellItems="cellItems"
             :item="item"
             :isLoading="(duplicatingItem == item) && duplicateIsLoading"
@@ -67,7 +65,7 @@
         </event-item>
 
         <task-item
-            v-if="isTaskItem && item.type_id === 2"
+            v-if="item.type_id === 2 && toolPalette.isTaskItemShow"
             :cellItems="cellItems"
             :item="item"
             :isLoading="(duplicatingItem == item) && duplicateIsLoading"
@@ -92,7 +90,7 @@ export default {
     },
 
     props: [
-        'cellItems', 'isEventItem', 'isTaskItem', 'item'
+        'cellItems', 'item'
     ],
 
     data() {
@@ -114,8 +112,8 @@ export default {
             duplicateIsLoading: state => state.isLoading
         }),
 
-        ...mapState('calendar/tableView/item/remove', {
-            removeIsLoading: state => state.isLoading
+        ...mapState('calendar/tableView/item', {
+            remove: state => state.remove
         }),
 
         searchHighlightStyle: function() {
@@ -136,7 +134,7 @@ export default {
             updatePrepare: 'update/prepare',
             updatePrepareModal: 'update/prepareModal',
             removePrepare: 'remove/prepare',
-            remove: 'remove/remove'
+            exRemove: 'remove/remove'
         }),
 
         clickItem: function() {
@@ -144,85 +142,80 @@ export default {
         },
 
         showTippy: function(value = true) {
-            value && !this.isTippyShown ? this.tippy.show() : this.tippy.hide();
+//            value && !this.isTippyShown ? this.tippy.show() : this.tippy.hide();
+            value ? this.tippy.show() : this.tippy.hide();
         },
 
         clickDuplicate: function() {
-            u.clog('clickDuplicate(' + this.item.id + ')');
             this.showTippy(false);
-            this.duplicate( {item: this.item, cellItems: this.cellItems} );
+            this.duplicate({
+                item: this.item,
+                cellItems: this.cellItems
+            });
         },
 
         clickEdit: function(e) {
             this.showTippy(false);
-            this.updatePrepare( { cellItems: this.cellItems, editingItem: this.item } );
+
+            this.updatePrepare({
+                cellItems: this.cellItems,
+                editingItem: this.item
+            });
+
             this.updatePrepareModal( { event: e } );
+
             this.insertReset();
-            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
+
+            this.removePrepare({
+                cellItems: this.cellItems,
+                removingItem: this.item
+            });
+
             this.$store.commit('dashboard/SET_VALUE', {
                 key: 'disabled', value: true
             });
         },
 
         clickDelete: function() {
-            const els = document.getElementsByClassName('tippy-tooltip honeybee-theme');
+            let els = document.getElementsByClassName(
+                'tippy-tooltip honeybee-theme'
+            );
             els[0].classList.add('delete-confirm-tippy-tooltip');
+
+            els = document.getElementsByClassName('tippy-arrow');
+            els[0].classList.add('delete-confirm-arrow');
+
             this.tippy.set({
                 content: this.itemDeleteConfirmTemplate,
-                arrow: false
+//                arrow: false
             })
         },
 
         clickDeleteCancel: function() {
-            u.clog('clickDeleteCancel();');
-            const els = document.getElementsByClassName('tippy-tooltip honeybee-theme');
-            els[0].classList.remove('delete-confirm-tippy-tooltip');
             this.showTippy(false);
-
-            const self = this;
-            setTimeout(() => {
-                self.tippy.set({
-                    content: this.itemMenuTemplate,
-                    arrow: true
-                })
-            }, 1000);
         },
 
         clickDeleteOK: function() {
-            u.clog('clickDeleteOK();');
-            const els = document.getElementsByClassName('tippy-tooltip honeybee-theme');
-            els[0].classList.remove('delete-confirm-tippy-tooltip');
-
             this.showTippy(false);
 
-            this.removePrepare( { cellItems: this.cellItems, deletingItem: this.item } );
-            this.remove();
-
-            const self = this;
-            setTimeout(() => {
-                self.tippy.set({
-                    content: this.itemMenuTemplate,
-                    arrow: true
-                })
-            }, 1000);
+            this.removePrepare({
+                cellItems: this.cellItems,
+                removingItem: this.item
+            });
+            this.exRemove();
         },
-
-//        onCloseDeleteConfirmModal: function() {
-//            this.isDeleteConfirmModalActive = false;
-//        },
 
         initTippy: function() {
             const self = this;
             this.tippy = tippy.one('.item-tippy-' + this.item.id, {
                 content(reference) {
-
                     // delete confirm tippy template
-                    const deleteConfirtTemplate = reference.getAttribute(
+                    const deleteConfirmTemplate = reference.getAttribute(
                         'delete-confirm-template'
                     );
 
                     self.itemDeleteConfirmTemplate = document.getElementById(
-                        deleteConfirtTemplate
+                        deleteConfirmTemplate
                     );
 
                     // item menu tippy template
@@ -246,6 +239,23 @@ export default {
                 theme: 'honeybee',
                 onShown: () => {
                     this.isTippyShown = true;
+                },
+                onHide: () => {
+                    let els = document.getElementsByClassName(
+                        'tippy-tooltip honeybee-theme'
+                    );
+                    els[0].classList.remove('delete-confirm-tippy-tooltip');
+
+                    els = document.getElementsByClassName('tippy-arrow');
+                    els[0].classList.remove('delete-confirm-arrow');
+
+                    const self = this;
+                    setTimeout(() => {
+                        self.tippy.set({
+                            content: this.itemMenuTemplate,
+                            arrow: true
+                        })
+                    }, 1000);
                 },
                 onHidden: () => {
                     this.isTippyShown = false;
@@ -274,7 +284,7 @@ export default {
 
 .delete-confirm-tippy-tooltip {
     background-color: red !important;
-    height: 100px !important;
+    /* height: 100px !important; */
 }
 
 /*
@@ -317,8 +327,9 @@ export default {
     display: inline-flex;
     justify-content: space-around;
     width: 100%;
-    & button.strip:hover {
-        border: 1px solid #e6e6e6;
-    }
+}
+
+.delete-confirm-arrow {
+    border-top-color: red !important;
 }
 </style>

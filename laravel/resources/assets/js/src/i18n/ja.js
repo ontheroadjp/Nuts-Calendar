@@ -106,6 +106,7 @@ export default {
         },
         calendarMenu: {
             dashboard: 'ダッシュボード',
+            calendar: 'カレンダー',
             createNewOne: '新規作成'
         },
         calendarToolPalette: {

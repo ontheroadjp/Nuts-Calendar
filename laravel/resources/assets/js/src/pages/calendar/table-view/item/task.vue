@@ -19,7 +19,7 @@
         <span class="icon is-small"
             v-show="(dnd.isLoading && dnd.draggingItem === item)
                     || (update.isLoading && update.editingItem === item)
-                    || (remove.isLoading && remove.deletingItem === item)
+                    || (remove.isLoading && remove.removingItem === item)
                     || isLoading"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>

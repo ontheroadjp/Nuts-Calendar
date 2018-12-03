@@ -104,6 +104,7 @@ export const en = {
         },
         calendarMenu: {
             dashboard: 'Dashboard',
+            calendar: 'Calendar',
             createNewOne: 'Create New one'
         },
         calendarToolPalette: {

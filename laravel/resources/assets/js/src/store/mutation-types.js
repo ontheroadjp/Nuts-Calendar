@@ -21,9 +21,6 @@ export const USERNAME = 'USERNAME';
 // --------------------------------------------
 // modules
 // --------------------------------------------
-// calendar
-export const INIT_MCALENDARS = 'INIT_MCALENDARS';
-
 // tableView
 export const SORT_CELL_ITEMS = 'SORT_CELL_ITEMS';
 export const CHECK_TIME = 'CHECK_TIME';

@@ -1,7 +1,5 @@
 <template id="calendar">
 <div>
-    <!-- original: 340 x 240 -->
-
     <popup-menu
         v-if="filteredBody && editItem.isActive"
         :clickX="editItem.clickX"
@@ -46,7 +44,7 @@
                 <template v-for="(member, index) in filteredColumns">
                     <th v-show="!showColumns || showColumns.indexOf(index) > -1"
                         class="header-styling thin"
-                        style="padding: 0.4rem 1rem"
+                        style="padding: 0.4rem 1rem; font-size: 0.9rem;"
                         :style="[columnWidth]"
                         ><span>{{ member.name }}</span>
                     </th>
@@ -62,10 +60,10 @@
 
         <tbody v-if="filteredBody">
             <tr v-for="(row, rowIndex) in filteredBody"
-                :class="{ saturday: viewMode === 'dayly' && isSaturday(row.date),
-                            sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0
-                        }"
-                :style="rowIndex == 0 && viewMode === 'dayly' ? style.monthlyItemRow : ''">
+                :class="[{ saturday: viewMode === 'dayly' && isSaturday(row.date),
+                            sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0,
+                        }, isToday(row.date) ? style.today.tr : '']"
+                :style="[rowIndex == 0 && viewMode === 'dayly' ? style.monthlyItemRow : '']">
 
                 <monthColumn
                     v-if="viewMode === 'monthly'"
@@ -198,11 +196,15 @@ export default {
                     'max-width': '110px',
                 },
                 today: {
-                    'border': '1px solid ' + this.theme.primary.code,
-                    'background-color': this.theme.secondary.code,
-                    'border-radius': '5px',
-                    'color': 'white',
-                    'padding': '5px'
+                    tr: {
+                        'border': '2px solid ' + this.theme.secondary.code
+                    },
+                    td: {
+                        'background-color': this.theme.secondary.code
+                    },
+                    span: {
+                        'color': '#fff'
+                    }
                 }
             };
         }
@@ -262,7 +264,6 @@ $headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
 .header-styling {
     background-color: $headerCellAndDayColumnCellColor;
 }
-
 .saturday {
     background-color: rgba(228, 247, 255, 0.40) !important;
 
@@ -270,7 +271,6 @@ $headerCellAndDayColumnCellColor: rgba(240, 240, 240, 0.85);
         color: #1919ff;
     }
 }
-
 .sunday {
     background-color: rgba(253, 231, 231, 0.40) !important;
 

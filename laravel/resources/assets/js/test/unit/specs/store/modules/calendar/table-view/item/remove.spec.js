@@ -12,10 +12,10 @@ describe('store/module/calendar/table-view/item/remove.js', () => {
     describe('actions', () => {
         it('prepare', (done) => {
             const cellItems = [];
-            const deletingItem = {};
+            const removingItem = {};
 
-            testAction(prepare, { cellItems, deletingItem }, { rootGetters: {} }, [
-                { type: 'PREPARE', payload: { cellItems, deletingItem } }
+            testAction(prepare, { cellItems, removingItem }, { rootGetters: {} }, [
+                { type: 'PREPARE', payload: { cellItems, removingItem } }
             ], done);
         });
 
@@ -37,9 +37,9 @@ describe('store/module/calendar/table-view/item/remove.js', () => {
 
     describe('mutations', () => {
         it('PREPARE', () => {
-            PREPARE(state, { cellItems: {}, deletingItem: {id: 12345} } );
+            PREPARE(state, { cellItems: {}, removingItem: {id: 12345} } );
             expect(state.cellItems).to.be.eql({});
-            expect(state.deletingItem).to.be.eql({id: 12345});
+            expect(state.removingItem).to.be.eql({id: 12345});
             expect(state.isActive).to.be.true;
         });
 
@@ -64,7 +64,7 @@ describe('store/module/calendar/table-view/item/remove.js', () => {
             expect(state.isActive).to.be.false;
             expect(state.isLoading).to.be.false;
             expect(state.cellItems).to.be.eql('');
-            expect(state.deletingItem).to.be.eql('');
+            expect(state.removingItem).to.be.eql('');
         });
     });
 });

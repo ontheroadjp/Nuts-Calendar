@@ -8,7 +8,7 @@
 
         <span v-if="!item.is_all_day"
             :class="[{'vertial': displayVertically}, 'thin-400']"
-            style="margin-right: 8px;"
+            style="margin-right: 8px; white-space: nowrap;"
         >
                 <span
                     :class="{ 'thin-500': !item.hasStartTimeError }"
@@ -30,12 +30,14 @@
             <i class="fa fa-circle" style="color: #fb04a4;"></i>
         </span>
 
-        <slot></slot>
+        <span style="word-break: break-all;" >
+            <slot></slot>
+        </span>
 
         <span class="icon is-small"
             v-show="(dnd.isLoading && dnd.draggingItem === item)
                     || (update.isLoading && update.editingItem === item)
-                    || (remove.isLoading && remove.deletingItem === item)
+                    || (remove.isLoading && remove.removingItem === item)
                     || isLoading"
             ><i class="fa fa-refresh fa-spin"></i>
         </span>

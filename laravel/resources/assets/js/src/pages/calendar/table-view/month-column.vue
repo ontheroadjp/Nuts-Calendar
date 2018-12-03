@@ -1,5 +1,5 @@
 <template>
-    <td class="date-styling" :style="firstColumnWidth" style="padding: 0">
+    <td @click="clickMonth(row.gregorian_year, row.gregorian_month)" class="month-column date-styling" :style="firstColumnWidth">
         <div style="margin-bottom: 5px;">
 <!--
             <template v-if="row.gregorian_month == 1">
@@ -7,13 +7,13 @@
             </template>
 -->
             <div style="padding: 5px" >
-                    <router-link
-                        to="/calendar/view"
-                        class="thin-200"
-                        style="font-size: 1.2rem;"
-                        @click.native="clickMonth(row.gregorian_year, row.gregorian_month)"
-                    >{{ row.gregorian_month }}月
-                    </router-link>
+                <router-link
+                    to="/calendar/view"
+                    class="thin-200"
+                    @click.native="clickMonth(row.gregorian_year, row.gregorian_month)"
+                    ><span style="font-size: 2.5rem;">{{ row.gregorian_month }}</span>
+                    <span style="font-size: 1rem">月</span>
+                </router-link>
             </div>
 
         </div>
@@ -88,6 +88,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.month-column {
+    &:hover {
+        background-color: #fff;
+        cursor: pointer;
+    }
+}
 .date-styling {
     font-size: 1em;
     background-color: rgba(240, 240, 240, 0.85);

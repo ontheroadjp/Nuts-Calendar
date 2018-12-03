@@ -1,10 +1,11 @@
 <template>
     <div class="control">
 
-        <div class="control has-icon has-addons">
+        <div class="control has-icon has-addons" style="font-size: 0.9rem;">
             <input class="input"
                 type="text"
                 v-model="query"
+                style="font-size: 0.9rem;"
                 :placeholder="t('calendarToolPalette.search')"
                 :disabled="disabled" />
 
@@ -12,9 +13,16 @@
                 <i class="fa fa-search"></i>
             </span>
 
+            <!--
             <a :class="['button', theme.secondary.class, 'is-outlined']"
                 @click="clearField"
             >Clear</a>
+            -->
+
+            <a style="position: absolute; top: 4px; right: 10px; font-size: 1rem;"
+                @click="clearField">
+                <i class="fa fa-times-circle"></i>
+            </a>
         </div>
 
     </div>

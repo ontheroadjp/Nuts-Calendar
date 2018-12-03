@@ -4,15 +4,12 @@
 -->
     <td class="date-styling" :style="[firstColumnWidth]">
         <div>
-<!--
-        <div style="margin-bottom: 5px;">
-            <span :style="[ row.is_today ? today : '' ]">
--->
-
-                {{ row.date.slice(-2) != 0 ? getDateAndDay(row.date) : '' }}
-<!--
-            </span>
--->
+            <!-- {{ row.date.slice(-2) != 0 ? getDateAndDay(row.date) : '' }} -->
+            <span
+                v-show="row.date.slice(-2) != 0"
+                v-html="dayColumnLabel(row.date)"
+                style="display: flex; justify-content: space-around;"
+            ></span>
         </div>
 
         <div v-for="holiday in row.holidays"
@@ -69,7 +66,7 @@ export default {
 }
 .date-label {
     margin-bottom: 2px;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     background-color: rgb(149, 182, 197);
     color: white;
     border-radius: 2px;

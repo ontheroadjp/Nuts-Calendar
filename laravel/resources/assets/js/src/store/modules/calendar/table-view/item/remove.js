@@ -7,20 +7,20 @@ export default {
         isActive: false,
         isLoading: false,
         cellItems: '',
-        deletingItem: ''
+        removingItem: ''
     },
 
     actions: {
-        prepare( { commit, dispatch, rootGetters }, { cellItems, deletingItem } ) {
+        prepare( { commit, dispatch, rootGetters }, { cellItems, removingItem } ) {
             u.clog('prepare()');
-            commit(PREPARE, { cellItems, deletingItem } );
+            commit(PREPARE, { cellItems, removingItem } );
         },
 
         remove( { state, commit, dispatch } ) {
             u.clog('removeItem()');
 
             commit(IS_LOADING, true);
-            const url = '/api/v1/item/' + state.deletingItem.id;
+            const url = '/api/v1/item/' + state.removingItem.id;
 
             http.fetchDelete(url)
                 .then(response => {
@@ -58,9 +58,9 @@ export default {
     },
 
     mutations: {
-        [PREPARE]( state, { cellItems, deletingItem } ) {
+        [PREPARE]( state, { cellItems, removingItem } ) {
             state.cellItems = cellItems;
-            state.deletingItem = deletingItem;
+            state.removingItem = removingItem;
             state.isActive = true;
         },
 
@@ -69,14 +69,14 @@ export default {
         },
 
         [REMOVE]( state ) {
-            state.cellItems.splice(state.deletingItem.itemIndex, 1);
+            state.cellItems.splice(state.removingItem.itemIndex, 1);
         },
 
         [RESET]( state ) {
             state.isActive = false,
             state.isLoading = false,
             state.cellItems = '';
-            state.deletingItem = '';
+            state.removingItem = '';
         }
     }
 }

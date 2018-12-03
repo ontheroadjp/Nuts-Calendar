@@ -1,5 +1,5 @@
 <template>
-<div class="main-calendar-panel-wrapper">
+<div class="main-calendar-panel-wrapper" style="height: 100vh">
 
     <transition name="tool-palette">
         <tool-palette v-show="isToolPaletteOpen"></tool-palette>
@@ -253,7 +253,8 @@
         user-select: none;
         overflow: hidden;
         position: relative;
-        height: 36px;
+        /* height: 36px; */
+        height: 34px;
 
         &.sticky {
             position: fixed;
@@ -271,7 +272,8 @@
         height: 100%;
 
         &.sticky-offset {
-            margin-top: 37px;
+            /* margin-top: 37px; */
+            margin-top: 32px;
         }
     }
 }

@@ -24,12 +24,7 @@
             @dragend="handleDragEnd()"
             >
 
-            <item
-                :cellItems="cellItems"
-                :isEventItem="isEventItem"
-                :isTaskItem="isTaskItem"
-                :item="item"
-            ></item>
+            <item :cellItems="cellItems" :item="item" ></item>
 
         </div>
 
@@ -65,11 +60,6 @@ export default {
             viewMode: state => state.viewMode
         }),
 
-        ...mapState('calendar/tableView/toolPalette', {
-            isEventItem: state => state.isEventItemShow,
-            isTaskItem: state => state.isTaskItemShow
-        }),
-
         ...mapState('calendar/tableView/item', {
             addItem: state => state.insert,
             dragItem: state => state.dnd
@@ -78,10 +68,6 @@ export default {
         ...mapState('calendar/tableView/item/insert', {
             insertIsLoading: state => state.isLoading
         }),
-
-//        ...mapState('calendar/tableView/item/dnd', {
-//            fromCellItems: state => state.fromCell.cellItems
-//        }),
 
         ...mapGetters({
             showColumns: 'getShowMembers',
