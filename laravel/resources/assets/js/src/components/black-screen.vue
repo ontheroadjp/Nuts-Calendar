@@ -1,6 +1,6 @@
 <template>
 <div class="black-screen" @click="onClick">
-    <slot></slot>
+        <slot></slot>
 </div>
 </template>
 
@@ -22,7 +22,8 @@ export default {
             headCssId: 'black-screen-css',
             headCss: `
                 .black-screen {
-                    position: absolute;
+                    position: fixed;
+                    top: 0px;
                     min-height: 100%;
                     min-width: 100%;
                     z-index: ${this.zIndex};

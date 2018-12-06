@@ -32,6 +32,7 @@ export default {
 
     actions: {
         prepare( { commit, rootGetters }, { rowIndex, memberId, cellItems } ) {
+            u.clog('prepare() @vuex item/insert');
             commit(PREPARE, { rowIndex, memberId, cellItems });
         },
 
@@ -58,10 +59,9 @@ export default {
                 return;
             }
 
-            let is_monthly_event = false;
-            if( rootState.calendar.viewMode == 'monthly' ) {
-                is_monthly_event = true;
-            }
+//            let is_monthly_event = false;
+//            if ((state.enterCell.rowIndex).slice(-2) == '00')
+//                is_monthly_event = true;
 
             commit(IS_LOADING, true);
 
@@ -69,13 +69,18 @@ export default {
             const now = new Date();
             const params = {
                 'date': state.enterCell.rowIndex,
+                'user_id': rootState.user.data.user.id,
                 'type_id': typeId,
                 'row_index': state.enterCell.rowIndex,
                 'member_id': state.enterCell.memberId,
                 'content': state.newItem.content,
-                'start_time': now.getHours() + ':00:00',
-                'end_time': now.getHours() + ':30:00',
-                'is_monthly_event': is_monthly_event,
+                'start_time': now.getHours() + ':00',
+                'end_time': now.getHours() + ':30',
+//                'is_monthly_event': is_monthly_event,
+//                'rrule_id': '',
+                'rrule_string': '',
+                'rrule_text': '',
+                'rrule_json': '',
                 'is_all_day': true,
                 'is_done': false,
                 'memo': ''

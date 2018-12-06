@@ -58,9 +58,9 @@ class Calendar extends Model
 
         if($year != '' && $month != '')
         {
-            $calendar = $this->fetchCalendarWithHolidayAndItems($year,$month);
+            $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year,$month);
         } else {
-            $calendar = $this->fetchMCalendarWithItems();
+            $calendar = $this->fetchMCalendarWithItems($userId, date('Y'));
         }
 
 //        $calendar = $this->tidyItems($calendar, collect($members));
@@ -77,25 +77,29 @@ class Calendar extends Model
          ];
     }
 
-    public function fetchCalendarWithHolidayAndItems($year,$month)
+    public function fetchCalendarWithHolidayAndItems($userId, $year,$month)
     {
 //        ini_set('memory_limit', '512M');
 
-        return Calendar::with('holidays', 'items')
-            ->where('date', 'LIKE', "$year-$month-%")
-            ->get();
-
-//        return Calendar::with('holidays', 'items')
+//        return Calendar::with('holidays', 'items.rrule')
 //            ->where('date', 'LIKE', "$year-$month-%")
-//            ->whereNotIn('gregorian_day', [0])
 //            ->get();
+
+        return Calendar::with([
+            'holidays', 'items' => function ($query) use ($userId)
+            {
+                $query->where('user_id', '=', $userId);
+            }])->where('date', 'LIKE', "$year-$month-%")->get();
+
     }
 
-    public function fetchMCalendarWithItems()
+    public function fetchMCalendarWithItems($userId, $year)
     {
-        $year = date('Y');
-        return Calendar::with('items')
-            ->where('date', 'LIKE', "$year-%")
+        return Calendar::with([
+            'items' => function($query) use ($userId)
+            {
+                $query->where('user_id', '=', $userId);
+            }])->where('date', 'LIKE', "$year-%")
             ->where('gregorian_day', '=', "0")
             ->get();
     }

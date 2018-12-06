@@ -15,8 +15,12 @@ class Item extends Model
      */
     protected $fillable = [
         'type_id',
+        'user_id',
         'row_index',
         'member_id',
+        'rrule_string',
+        'rrule_text',
+        'rrule_json',
         'content',
         'date',
         'start_time',
@@ -63,6 +67,11 @@ class Item extends Model
         return $this->belongsTo(Member::class,'member_id');
     }
 
+//    public function rrule()
+//    {
+//        return $this->hasOne(Rrule::class, 'id', 'rrule_id');
+//    }
+
     /**
      * fetch
      *
@@ -75,6 +84,7 @@ class Item extends Model
      */
     public function fetchSpecificMonth($year, $month)
     {
+//        return Item::with('member','rrule')
         return Item::with('member')
             ->where('date', 'LIKE', "%$year-$month%")
             ->orderBy('date', 'ASC')

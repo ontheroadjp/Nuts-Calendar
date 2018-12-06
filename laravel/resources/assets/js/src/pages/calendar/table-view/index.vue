@@ -207,10 +207,7 @@
             },
 
             clickToPageTop: function () {
-                for( let i = this.scrollPositionY; i > 0; i-- ) {
-                    //document.documentElement.scrollTop = i;
-                    document.body.scrollTop = i;
-                }
+                window.scroll(0, 0);
             }
         },
 
@@ -303,4 +300,16 @@
     padding: 0 10px;
     opacity: 0;
 }
+
+/*
+.item-edit-popup-enter-active,
+.item-edit-popup-leave-active {
+    transition: all 0.5s ease;
+}
+
+.item-edit-popup-enter,
+.item-edit-popup-leave-to {
+    opacity: 0;
+}
+*/
 </style>

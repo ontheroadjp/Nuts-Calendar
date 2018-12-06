@@ -87,7 +87,7 @@ export default {
                 id: this.id,
                 initialValue: this.initialValue,
                 inputValue: this.input.value,
-                error: this.errorResult,
+                hasError: this.errorResult,
                 isReady: isReady
             }
 

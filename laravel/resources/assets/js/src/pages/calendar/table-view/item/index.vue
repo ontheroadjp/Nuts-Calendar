@@ -154,17 +154,23 @@ export default {
             });
         },
 
+        fixScroll: function() {
+            const top = (window.scrollY * -1) + 'px';
+            document.body.style.position = 'fixed';
+            document.body.style.top = top;
+        },
+
         clickEdit: function(e) {
             this.showTippy(false);
+            this.insertReset();
+            this.fixScroll();
+
+            this.updatePrepareModal( { event: e } );
 
             this.updatePrepare({
                 cellItems: this.cellItems,
                 editingItem: this.item
             });
-
-            this.updatePrepareModal( { event: e } );
-
-            this.insertReset();
 
             this.removePrepare({
                 cellItems: this.cellItems,

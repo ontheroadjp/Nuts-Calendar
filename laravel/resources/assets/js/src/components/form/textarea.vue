@@ -59,7 +59,7 @@ export default {
         onKeyup: function() {
             const data = {
                 value: this.input,
-                error: this.errorResult,
+                hasError: this.errorResult,
                 isReady: this.isReadyResult
             }
 
@@ -75,7 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 .input-textarea {
-    height: 110px;
+    height: 270px;
     width: 100%;
     padding: .4rem;
     border: 1px solid #d2d2d2;

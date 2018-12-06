@@ -9,7 +9,7 @@
         :offsetY="topPosition"
         :scrollX="scrollPositionX"
         :scrollY="scrollPositionY"
-        :height="380"
+        :height="550"
         :width="480"
         ><item-edit-popup-content
             :height="370"
@@ -117,7 +117,7 @@ import dayColumn from './day-column.vue';
 import monthColumn from './month-column.vue';
 import cellItems from './cell-items.vue';
 import popupMenu from '../../../components/popup-menu.vue';
-import itemEditPopupContent from './item/edit-popup-content.vue';
+import itemEditPopupContent from './item/edit-popup/index.vue';
 import miniCalBar from './footer-bar/mini-cal-bar.vue';
 import dateUtilities from '../../../mixins/date-utilities.js';
 
@@ -236,6 +236,12 @@ export default {
         }),
 
         popupMenuClose() {
+            const top = document.body.style.top;
+            top.replace(/px/g, '');
+            u.clog('top: ' + parseInt(top));
+            document.body.style.position = '';
+            window.scroll(0, parseInt(top) * -1);
+
             this.updateReset();
             this.removeReset();
             this.$store.commit('dashboard/SET_VALUE', {

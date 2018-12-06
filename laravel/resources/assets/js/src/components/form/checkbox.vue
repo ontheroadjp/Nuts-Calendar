@@ -18,20 +18,20 @@
 export default {
     props: {
         id:           { type: String, default: '' },
-        label:        { type: String, default: 'Check' },
+        label:        { type: String, default: 'CheckBox' },
         labelStyle:   { type: String, default: '' },
-        initialValue: { type: [Boolean, Number], default: false },
+        initialValue: { type: Boolean, default: false },
         disabled:     { type: Boolean, default: false }
     },
 
     data() {
         return {
-            input: false
+            input: ''
         }
     },
 
     computed: {
-        isReadyResult: function() {
+        isReady: function() {
             return this.initialValue != this.input;
         }
     },
@@ -40,15 +40,15 @@ export default {
         onChange: function() {
             const data = {
                 value: this.input,
-                error: false,
-                isReady: this.isReadyResult
+                hasError: false,
+                isReady: this.isReady
             }
 
             this.$emit('changeValue', data);
         }
     },
 
-    mounted() {
+    created() {
         this.input = this.initialValue;
     }
 };

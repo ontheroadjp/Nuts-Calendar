@@ -12,12 +12,12 @@ export default {
 
     actions: {
         prepare( { commit, dispatch, rootGetters }, { cellItems, removingItem } ) {
-            u.clog('prepare()');
+            u.clog('prepare() @vuex item/remove');
             commit(PREPARE, { cellItems, removingItem } );
         },
 
         remove( { state, commit, dispatch } ) {
-            u.clog('removeItem()');
+            u.clog('removeItem() @vuex item/remove');
 
             commit(IS_LOADING, true);
             const url = '/api/v1/item/' + state.removingItem.id;
