@@ -67,11 +67,20 @@ class Item extends Model
         return $this->belongsTo(Member::class,'member_id');
     }
 
-//    public function rrule()
-//    {
-//        return $this->hasOne(Rrule::class, 'id', 'rrule_id');
-//    }
+    public function rrule()
+    {
+        return $this->hasOne(Rrule::class, 'id', 'rrule_id');
+    }
 
+    public function fetchSpecificYear($userId, $year)
+    {
+        return Item::with('member','rrule')
+//        return Item::with('member')
+            ->where('user_id', '=', $userId)
+            ->where('date', 'LIKE', "%$year-%")
+            ->orderBy('date', 'ASC')
+            ->get();
+    }
     /**
      * fetch
      *
@@ -82,11 +91,12 @@ class Item extends Model
      * @access public
      * @return void
      */
-    public function fetchSpecificMonth($year, $month)
+    public function fetchSpecificMonth($userId, $year, $month)
     {
-//        return Item::with('member','rrule')
-        return Item::with('member')
-            ->where('date', 'LIKE', "%$year-$month%")
+        return Item::with('member','rrule')
+//        return Item::with('member')
+            ->where('user_id', '=', $userId)
+            ->where('date', 'LIKE', "%$year-$month-%")
             ->orderBy('date', 'ASC')
             ->get();
     }

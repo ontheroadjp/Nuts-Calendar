@@ -105,6 +105,8 @@ const calendar = {
                         });
                     });
 
+                    commit('item/INIT', response.data.items, { root: true });
+
                     commit(INIT, response.data.days );
 
                     Object.keys(response.data.members).forEach(function(key) {
@@ -143,7 +145,7 @@ const calendar = {
                 const a = state.data.calendars[n];
                 const b = state.data.calendars[n+1];
                 if( a.date == b.date ) {
-                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date + ' DELETE!');
+                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date + ' DELETE! @fetchCalendar()');
                     state.data.calendars.splice(n, 1);
                 } else {
 //                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date);
