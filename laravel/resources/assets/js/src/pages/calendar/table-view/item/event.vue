@@ -67,9 +67,11 @@ export default {
         timeFormatter
     ],
 
-    props: [
-        'cellItems', 'item', 'isLoading'
-    ],
+    props: {
+        cellItems: { type: Array, required: true },
+        item: { type: Object, required: true },
+        isLoading: { type: Boolean, default: false }
+    },
 
     data() {
         return {
@@ -83,7 +85,8 @@ export default {
             toolPalette: state => state.toolPalette,
         }),
 
-        ...mapState('calendar/tableView/item', {
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             dnd: state => state.dnd,
             update: state => state.update,
             remove: state => state.remove

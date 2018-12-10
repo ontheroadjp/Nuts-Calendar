@@ -18,7 +18,7 @@ import userCalendar         from './modules/userCalendar/index.js';
 import userCalendarMember   from './modules/userCalendarMember/index.js';
 import calendar             from './modules/calendar/index.js';
 import member               from './modules/member/index.js';
-//import item                 from './modules/item/index.js';
+import item                 from './modules/item/index.js';
 
 export default new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
@@ -38,6 +38,6 @@ export default new Vuex.Store({
         userCalendarMember,
         calendar,
         member,
-//        item
+        item
     }
 })

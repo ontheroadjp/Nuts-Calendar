@@ -59,12 +59,18 @@
         </thead>
 
         <tbody v-if="filteredBody">
+<!--
             <tr v-for="(row, rowIndex) in filteredBody"
                 :class="[{ saturday: viewMode === 'dayly' && isSaturday(row.date),
                             sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0,
                         }, isToday(row.date) ? style.today.tr : '']"
                 :style="[rowIndex == 0 && viewMode === 'dayly' ? style.monthlyItemRow : '']">
-
+-->
+            <tr v-for="(row, rowIndex) in filteredBody"
+                :class="[{ saturday: viewMode === 'dayly' && isSaturday(row.date),
+                            sunday: viewMode === 'dayly' && isSunday(row.date)> 0,
+                        }, isToday(row.date) ? style.today.tr : '']"
+                :style="[rowIndex == 0 && viewMode === 'dayly' ? style.monthlyItemRow : '']">
                 <monthColumn
                     v-if="viewMode === 'monthly'"
                     :row="row"

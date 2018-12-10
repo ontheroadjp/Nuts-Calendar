@@ -89,9 +89,10 @@ export default {
         eventItem, taskItem
     },
 
-    props: [
-        'cellItems', 'item'
-    ],
+    props: {
+        cellItems: { type: Array, required: true },
+        item: { type: Object, required: true }
+    },
 
     data() {
         return {
@@ -107,12 +108,14 @@ export default {
             toolPalette: state => state.toolPalette,
         }),
 
-        ...mapState('calendar/tableView/item/insert', {
+//        ...mapState('calendar/tableView/item/insert', {
+        ...mapState('item/insert', {
             duplicatingItem: state => state.duplicatingItem,
             duplicateIsLoading: state => state.isLoading
         }),
 
-        ...mapState('calendar/tableView/item', {
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             remove: state => state.remove
         }),
 
@@ -128,7 +131,8 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item', {
+//        ...mapActions('calendar/tableView/item', {
+        ...mapActions('item', {
             insertReset: 'insert/reset',
             duplicate: 'insert/duplicate',
             updatePrepare: 'update/prepare',
@@ -142,7 +146,6 @@ export default {
         },
 
         showTippy: function(value = true) {
-//            value && !this.isTippyShown ? this.tippy.show() : this.tippy.hide();
             value ? this.tippy.show() : this.tippy.hide();
         },
 
@@ -273,7 +276,7 @@ export default {
     },
 
     mounted() {
-        if( !this.tippy) {
+        if( !this.tippy ) {
             this.$nextTick(() => {
                 this.initTippy();
             });
