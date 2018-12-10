@@ -148,7 +148,8 @@ export default {
             theme: state => state.app.theme,
         }),
 
-        ...mapState('calendar/tableView/item/update', {
+//        ...mapState('calendar/tableView/item/update', {
+        ...mapState('item/update', {
             editingItem: 'editingItem',
             updateIsLoading: 'isLoading'
         }),

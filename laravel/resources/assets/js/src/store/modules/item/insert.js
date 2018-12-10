@@ -73,10 +73,7 @@ export default {
                 'content': state.newItem.content,
                 'start_time': now.getHours() + ':00',
                 'end_time': now.getHours() + ':30',
-//                'rrule_id': '',
-                'rrule_string': '',
-                'rrule_text': '',
-                'rrule_json': '',
+                'rrule_id': '',
                 'is_all_day': true,
                 'is_done': false,
                 'memo': ''
@@ -155,10 +152,7 @@ export default {
                 'content': item.content + ' copy',
                 'start_time': item.start_time,
                 'end_time': item.end_time,
-//                'rrule_id': '',
-                'rrule_string': '',
-                'rrule_text': '',
-                'rrule_json': '',
+                'rrule_id': '',
                 'is_all_day': item.is_all_day,
                 'is_done': false,
                 'memo': item.memo

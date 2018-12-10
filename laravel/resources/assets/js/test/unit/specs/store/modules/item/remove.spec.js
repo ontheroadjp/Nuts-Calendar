@@ -1,10 +1,10 @@
-import testModule from '../../../../../../../../src/store/modules/calendar/table-view/item/remove.js';
-import { testAction } from '../../../../../helper.js';
+import testModule from '../../../../../../src/store/modules/calendar/table-view/item/remove.js';
+import { testAction } from '../../../helper.js';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
-describe('store/module/calendar/table-view/item/remove.js', () => {
+describe('store/module/item/remove.js', () => {
     const { state } = testModule;
     const { prepare, remove, reset } = testModule.actions;
     const { PREPARE, REMOVE, IS_LOADING, RESET, NOTIFY_SUCCESS, NOTIFY_DANGER } = testModule.mutations;

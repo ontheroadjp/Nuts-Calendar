@@ -43,11 +43,11 @@ class CreateItemsTable extends Migration
                 ->on('members')
                 ->onDelete('cascade');
 
-//            $table
-//                ->foreign('rrule_id')
-//                ->references('id')
-//                ->on('rrules')
-//                ->onDelete('cascade');
+            $table
+                ->foreign('rrule_id')
+                ->references('id')
+                ->on('rrules')
+                ->onDelete('cascade');
 
             $table
                 ->foreign('type_id')

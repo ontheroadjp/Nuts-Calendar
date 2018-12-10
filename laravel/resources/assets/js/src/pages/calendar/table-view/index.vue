@@ -11,7 +11,7 @@
             v-if="disabled"
             bgColor="rgba(40, 40, 40, .6)"
             :onActive="function() {
-                this.$store.commit('calendar/tableView/item/insert/RESET');
+                this.$store.commit('item/insert/RESET');
             }"
             :zIndex="1"
         ></black-screen>
@@ -113,7 +113,8 @@
                 searchQuery: state => (state.query.search).toLowerCase()
             }),
 
-            ...mapState('calendar/tableView/item/dnd', {
+//            ...mapState('calendar/tableView/item/dnd', {
+            ...mapState('item/dnd', {
                 draggingItem: state => state.draggingItem
             }),
 

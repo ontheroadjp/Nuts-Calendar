@@ -69,7 +69,8 @@ class Calendar extends Model
             "days" => $results['days'],
             "itemsInDaysFormat" => $results['items'],
 //            "items" => $this->keyByItemId($results['items'])
-            "items" => $results['items']
+            "items" => $results['items'],
+            "calendar" => $calendar
         ];
     }
 
@@ -84,7 +85,9 @@ class Calendar extends Model
         return Calendar::with([
             'holidays', 'items' => function ($query) use ($userId)
             {
-                $query->where('user_id', '=', $userId);
+//                $query->leftjoin('rrules', 'items.rrule_id', '=', 'rrules.id')
+//                        ->where('user_id', '=', $userId);
+//                $query->where('user_id', '=', $userId);
             }])->where('date', 'LIKE', "$year-$month-%")
             ->get();
 
@@ -93,6 +96,7 @@ class Calendar extends Model
     public function fetchMCalendarWithItems($userId, $year)
     {
         return Calendar::with([
+            'items.rrule',
             'items' => function($query) use ($userId)
             {
                 $query->where('user_id', '=', $userId);

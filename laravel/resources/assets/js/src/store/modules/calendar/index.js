@@ -1,13 +1,9 @@
 import Vue from 'vue';
 import toolPalette  from './table-view/tool-palette.js';
-//import insert       from './table-view/item/insert.js';
-//import update       from './table-view/item/update.js';
-//import remove       from './table-view/item/remove.js';
-//import dnd          from './table-view/item/dnd.js';
-import insert       from '../item/insert.js';
-import update       from '../item/update.js';
-import remove       from '../item/remove.js';
-import dnd          from '../item/dnd.js';
+//import insert       from '../item/insert.js';
+//import update       from '../item/update.js';
+//import remove       from '../item/remove.js';
+//import dnd          from '../item/dnd.js';
 import {
     INIT,
     SET_VALUE,
@@ -287,15 +283,15 @@ const calendar = {
             modules: {
                 toolPalette: toolPalette,
 
-                item: {
-                    namespaced: true,
-                    modules: {
-                        insert: insert,
-                        update: update,
-                        remove: remove,
-                        dnd: dnd
-                    }
-                }
+//                item: {
+//                    namespaced: true,
+//                    modules: {
+//                        insert: insert,
+//                        update: update,
+//                        remove: remove,
+//                        dnd: dnd
+//                    }
+//                }
             }
         }
     }
