@@ -2,6 +2,7 @@ import Vue from 'vue';
 import insert from './insert.js';
 import update from './update.js';
 import remove from './remove.js';
+import dnd from './dnd.js';
 import {
     INIT, ADD, REMOVE, SET_VALUE
 } from '../../mutation-types.js';
@@ -22,6 +23,8 @@ const item = {
         },
 
         [ADD]( state, { id, item } ) {
+            u.clog('id: ' + id);
+            u.clog('item: ' + item);
             Vue.set(state.data.items, id, item);
         },
 
@@ -33,7 +36,8 @@ const item = {
     modules: {
         insert: insert,
         update: update,
-        remove: remove
+        remove: remove,
+        dnd: dnd
     }
 }
 export default item;

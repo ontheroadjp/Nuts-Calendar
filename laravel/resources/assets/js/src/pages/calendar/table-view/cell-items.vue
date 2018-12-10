@@ -64,12 +64,14 @@ export default {
             items: state => state.item.data.items
         }),
 
-        ...mapState('calendar/tableView/item', {
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             addItem: state => state.insert,
             dragItem: state => state.dnd
         }),
 
-        ...mapState('calendar/tableView/item/insert', {
+//        ...mapState('calendar/tableView/item/insert', {
+        ...mapState('item/insert', {
             insertIsLoading: state => state.isLoading
         }),
 
@@ -90,12 +92,14 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item/insert', {
+//        ...mapActions('calendar/tableView/item/insert', {
+        ...mapActions('item/insert', {
             insertPrepare: 'prepare',
             insertReset: 'reset'
         }),
 
-        ...mapActions('calendar/tableView/item/dnd', {
+//        ...mapActions('calendar/tableView/item/dnd', {
+        ...mapActions('item/dnd', {
             dragStart: 'dragStart',
             dragEnter: 'dragEnter',
             dragOver: 'dragOver',

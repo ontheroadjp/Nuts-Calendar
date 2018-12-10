@@ -91,7 +91,7 @@ export default {
 
     props: {
         cellItems: { type: Array, required: true },
-        item: { type: Object, required: true, default: () => {id: 123} }
+        item: { type: Object, required: true }
     },
 
     data() {
@@ -274,7 +274,7 @@ export default {
     },
 
     mounted() {
-        if( !this.tippy) {
+        if( !this.tippy ) {
             this.$nextTick(() => {
                 this.initTippy();
             });

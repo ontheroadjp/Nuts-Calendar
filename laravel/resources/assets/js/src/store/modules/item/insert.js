@@ -6,7 +6,8 @@ import {
     INSERT,
     RESET,
     NOTIFY_SUCCESS,
-    NOTIFY_DANGER
+    NOTIFY_DANGER,
+    ADD
 } from '../../mutation-types.js';
 
 export default {
@@ -97,7 +98,12 @@ export default {
 
             http.fetchPost(url, params)
                 .then(response => {
-                    commit(INSERT, { item: response.data });
+                    commit('item/ADD',
+                        { id: response.data.id, item: response.data },
+                        { root: true }
+                    );
+
+                    commit(INSERT, { calItem: { id: response.data.id } });
 
                     dispatch('calendar/tableView/updateCellItems',
                         state.enterCell.cellItems, { root: true }
@@ -163,6 +169,10 @@ export default {
                 .then(response => {
                     commit(INSERT, { item: response.data });
 
+                    commit('calendar/tableView/item/insert/INSERT',
+                        { id: response.data.id }
+                    );
+
                     dispatch('calendar/tableView/updateCellItems',
                         cellItems, { root: true }
                     );
@@ -217,8 +227,8 @@ export default {
             state.newItem[key] = value;
         },
 
-        [INSERT]( state, { item } ) {
-            state.enterCell.cellItems.push(item);
+        [INSERT]( state, { calItem } ) {
+            state.enterCell.cellItems.push(calItem);
         },
 
         [RESET]( state ) {
