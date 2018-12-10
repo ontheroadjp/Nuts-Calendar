@@ -108,12 +108,14 @@ export default {
             toolPalette: state => state.toolPalette,
         }),
 
-        ...mapState('calendar/tableView/item/insert', {
+//        ...mapState('calendar/tableView/item/insert', {
+        ...mapState('item/insert', {
             duplicatingItem: state => state.duplicatingItem,
             duplicateIsLoading: state => state.isLoading
         }),
 
-        ...mapState('calendar/tableView/item', {
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             remove: state => state.remove
         }),
 
@@ -129,7 +131,8 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item', {
+//        ...mapActions('calendar/tableView/item', {
+        ...mapActions('item', {
             insertReset: 'insert/reset',
             duplicate: 'insert/duplicate',
             updatePrepare: 'update/prepare',

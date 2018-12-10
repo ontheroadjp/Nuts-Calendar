@@ -83,7 +83,8 @@ export default {
             toolPalette: state => state.toolPalette,
         }),
 
-        ...mapState('calendar/tableView/item', {
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             dnd: state => state.dnd,
             update: state => state.update,
             remove: state => state.remove
