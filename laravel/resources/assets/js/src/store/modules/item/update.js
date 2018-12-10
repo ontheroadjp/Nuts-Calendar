@@ -8,7 +8,7 @@ import {
     NOTIFY_SUCCESS,
     NOTIFY_DANGERR,
     RESET
-} from '../../../../mutation-types.js';
+} from '../../mutation-types.js';
 
 export default {
     namespaced: true,
@@ -22,22 +22,32 @@ export default {
         clickY: 0,
         input: {
             content: '',
+            isAllDay: '',
             startTime: '',
             endTime: '',
-            allDay: '',
+            rruleId: '',
+            prevItemDate: '',
+            prevItemId: '',
+            nextItemDate: '',
+            nextItemId: '',
             memo: ''
         }
     },
 
     actions: {
-        prepare( { commit }, { event, cellItems, editingItem } ) {
-            u.clog('prepare()');
-            commit(PREPARE, { event, cellItems, editingItem } );
+//        prepare( { commit }, { event, cellItems, editingItem } ) {
+//            u.clog('prepare() @vuex item/update');
+//            commit(PREPARE, { event, cellItems, editingItem } );
+//        },
+
+        prepare( { commit }, { cellItems, editingItem } ) {
+            u.clog('prepare() @vuex item/update');
+            commit(PREPARE, { cellItems, editingItem } );
         },
 
         prepareModal( { commit }, { event } ) {
-            u.clog('prepareModal()');
-            commit(PREPARE_MODAL, { event } );
+            u.clog('prepareModal() @vuex item/update');
+            commit(PREPARE_MODAL, { event, offsetX: 0, offsetY: 0 } );
         },
 
         toggleTaskDone( { dispatch, commit } ) {
@@ -50,8 +60,21 @@ export default {
         },
 
         update( { state, dispatch, commit } ) {
+            dispatch('updateRrule');
+            dispatch('updateItem');
+        },
+
+        insertRrule( { state, dispatch, commit } ) {
+
+        },
+
+        updateRrule( { state, dispatch, commit } ) {
+            const rruleId = '';
+        },
+
+        updateItem( { state, dispatch, commit } ) {
             commit(IS_LOADING, true);
-            u.clog('update()');
+            u.clog('update() @vuex item/update');
 
             const url = '/api/v1/item/' + state.editingItem.id;
             const data = {
@@ -60,10 +83,16 @@ export default {
                 is_done:    state.editingItem.is_done,
 
                 content:    state.input.content,
+                is_all_day: state.input.isAllDay,
                 start_time: state.input.startTime,
                 end_time:   state.input.endTime,
-                is_all_day: state.input.allDay,
-//                is_done:    state.input.is_done,
+
+//                rrule_id: state.input.rruleId,
+
+                rrule_string: state.input.rruleString,
+                rrule_text: state.input.rruleText,
+                rrule_json: state.input.rruleJson,
+
                 memo:       state.input.memo
             };
 
@@ -108,15 +137,16 @@ export default {
             state.cellItems = cellItems;
             state.editingItem = editingItem;
             state.input.content = editingItem.content;
+            state.input.isAllDay = editingItem.is_all_day;
             state.input.startTime = editingItem.start_time;
             state.input.endTime = editingItem.end_time;
-            state.input.allDay = editingItem.is_all_day;
+            state.input.rruleId = editingItem.rrule_id;
             state.input.memo = editingItem.memo;
         },
 
-        [PREPARE_MODAL]( state, { event } ) {
-            state.clickX = event.pageX;
-            state.clickY = event.pageY;
+        [PREPARE_MODAL]( state, { event, offsetX, offsetY } ) {
+            state.clickX = event.pageX + offsetX;
+            state.clickY = event.pageY + offsetY;
             state.isActive = true;
         },
 

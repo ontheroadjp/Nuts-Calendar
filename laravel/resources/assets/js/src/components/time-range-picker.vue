@@ -31,33 +31,52 @@
         ></endTimePicker>
     </div>
 
-    <div style="margin-bottom: 25px;" >
-        <button class="button"
-            style="font-size: 0.8rem; border-radius: 15px"
-            @click="clickEndTimeButton(15)"
+    <div style="margin-bottom: 15px;" >
+        <button @click="startOrEnd = 'start'"
+            class="button"
+            style="font-size: 0.8rem;"
+            :style="startOrEnd == 'start' ? style.primary : ''"
             :disabled="disabled"
-        >15min</button>
-        <button class="button"
-            style="font-size: 0.8rem; border-radius: 15px"
-            @click="clickEndTimeButton(30)"
+        >開始時刻</button>
+
+        <button @click="startOrEnd = 'end'"
+            class="button"
+            style="font-size: 0.8rem;"
+            :style="startOrEnd == 'end' ? style.primary : ''"
             :disabled="disabled"
-        >30min</button>
-        <button class="button"
+        >終了時刻</button>
+
+        <button v-show="startOrEnd === 'end'" v-for="val in endTimeButtonValues" class="button"
             style="font-size: 0.8rem; border-radius: 15px"
-            @click="clickEndTimeButton(60)"
+            @click="clickEndTimeButton(val)"
             :disabled="disabled"
-        >1hr</button>
-        <button class="button"
-            style="font-size: 0.8rem; border-radius: 15px"
-            @click="clickEndTimeButton(120)"
-            :disabled="disabled"
-        >2hr</button>
-        <button class="button"
-            style="font-size: 0.8rem; border-radius: 15px"
-            @click="clickEndTimeButton(240)"
-            :disabled="disabled"
-        >4hr</button>
+            >{{ val < 60 ? val + 'min' : (val / 60) + 'hr' }}
+        </button>
     </div>
+
+    <div><span style="font-size: 0.8rem;">時</span></div>
+    <div v-for="line in timeButtonLabels.HH" style="margin-bottom: 10px;" >
+        <button v-for="val in line" class="button"
+            style="font-size: 0.8rem; border-radius: 5px; width: 2rem; margin-right: 1px;"
+            :style="isActiveHH(val)"
+            @click="setHH(val)"
+            :disabled="disabled || isButtonDisabledHH(val)"
+            >{{ val }}
+        </button>
+    </div>
+
+    <div><span style="font-size: 0.8rem;">分</span></div>
+    <div v-for="line in timeButtonLabels.MM" style="margin-bottom: 10px;" >
+        <button v-for="val in line" class="button"
+            style="font-size: 0.8rem; border-radius: 5px; width: 2rem; margin-right: 1px;"
+            :style="isActiveMM(val)"
+            @click="setMM(val)"
+            :disabled="disabled || isButtonDisabledMM(val)"
+            >{{ val }}
+        </button>
+    </div>
+
+
 
 
     <div v-show="errorResult && !error.start && !error.end && !disabled"
@@ -67,6 +86,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import core from '../mixins/core.js';
 import startTimePicker from './time-picker.vue';
 import endTimePicker from './time-picker.vue';
@@ -87,6 +107,18 @@ export default {
 
     data() {
         return {
+            endTimeButtonValues: [ 15, 30, 60, 120, 240 ],
+            startOrEnd: 'start',
+            timeButtonLabels: {
+                HH: [
+                    [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ],
+                    [ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+                ],
+                MM: [
+                    [ '00', '05', 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 ]
+                ]
+            },
+
             initial: {
                 start: { HH: "", mm: "" },
                 end  : { HH: "", mm: "" }
@@ -112,6 +144,25 @@ export default {
     },
 
     computed: {
+        ...mapState({
+            theme: state => state.app.theme,
+        }),
+
+//        ...mapState('calendar/tableView/item/update', {
+        ...mapState('item/update', {
+            editingItem: 'editingItem',
+            updateIsLoading: 'isLoading'
+        }),
+
+        style: function() {
+            return {
+                primary: {
+                    'background-color': this.theme.primary.code,
+                    'color': '#fff'
+                }
+            }
+        },
+
         formattedStartTime: function() {
             if( this.error.start ) return '';
             if( this.input.start.HH == '' && this.input.start.mm == '' ) return '';
@@ -123,6 +174,8 @@ export default {
             if( this.input.end.HH == '' && this.input.end.mm == '' ) return '';
             return this.input.end.HH + ':' + this.input.end.mm;
         },
+
+        // --------------------------------------------------------------
 
         errorResult: function() {
             if( this.isDropdownOpen ) { return false; }
@@ -154,6 +207,62 @@ export default {
     },
 
     methods: {
+        isActiveHH: function(val) {
+            if( this.startOrEnd === 'start' ) {
+                return this.input.start.HH == val
+                    ? this.style.primary : '';
+            }
+            if( this.startOrEnd === 'end' ) {
+                return this.input.end.HH == val
+                    ? this.style.primary : '';
+            }
+        },
+
+        isActiveMM: function(val) {
+            if( this.startOrEnd === 'start' ) {
+                return this.input.start.mm == val
+                    ? this.style.primary : '';
+            }
+            if( this.startOrEnd === 'end' ) {
+                return this.input.end.mm == val
+                    ? this.style.primary : '';
+            }
+        },
+
+        isButtonDisabledHH: function(val) {
+            if( this.startOrEnd === 'end' ) {
+                return this.input.start.HH > val ? true : false;
+            }
+            return false;
+        },
+
+        isButtonDisabledMM: function(val) {
+            if( this.startOrEnd === 'end' ) {
+                const startHH = this.input.start.HH;
+                const endHH = this.input.end.HH;
+                return startHH === endHH && this.input.start.mm > val ? true : false;
+            }
+            return false;
+        },
+
+        setHH(val) {
+            if( this.startOrEnd === 'start' ) {
+                this.$refs.startTimePicker.setHour(("00" + val).slice(-2));
+            } else {
+                this.$refs.endTimePicker.setHour(("00" + val).slice(-2));
+            }
+        },
+
+        setMM(val) {
+            if( this.startOrEnd === 'start' ) {
+                this.$refs.startTimePicker.setMinutes(("00" + val).slice(-2));
+            } else {
+                this.$refs.endTimePicker.setMinutes(("00" + val).slice(-2));
+            }
+        },
+
+        // ------------------------------------------------------
+
         clickEndTimeButton(value) {
             const date = new Date(2018,1,1);
             date.setHours(this.input.start.HH);
@@ -162,8 +271,8 @@ export default {
             const endHH = date.getHours();
             const endMM = date.getMinutes();
             if(date.getDate() === 1) {
-                this.$refs.endTimePicker.setHour(("00" + date.getHours()).slice(-2));
-                this.$refs.endTimePicker.setMinutes(("00" + date.getMinutes()).slice(-2));
+                this.$refs.endTimePicker.setHour(("00" + endHH).slice(-2));
+                this.$refs.endTimePicker.setMinutes(("00" + endMM).slice(-2));
             } else {
                 this.$refs.endTimePicker.setHour(23);
                 this.$refs.endTimePicker.setMinutes(55);

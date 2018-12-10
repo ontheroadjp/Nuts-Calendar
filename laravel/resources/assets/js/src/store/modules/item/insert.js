@@ -6,8 +6,9 @@ import {
     INSERT,
     RESET,
     NOTIFY_SUCCESS,
-    NOTIFY_DANGER
-} from '../../../../mutation-types.js';
+    NOTIFY_DANGER,
+    ADD
+} from '../../mutation-types.js';
 
 export default {
     namespaced: true,
@@ -32,6 +33,7 @@ export default {
 
     actions: {
         prepare( { commit, rootGetters }, { rowIndex, memberId, cellItems } ) {
+            u.clog('prepare() @vuex item/insert');
             commit(PREPARE, { rowIndex, memberId, cellItems });
         },
 
@@ -58,24 +60,20 @@ export default {
                 return;
             }
 
-            let is_monthly_event = false;
-            if( rootState.calendar.viewMode == 'monthly' ) {
-                is_monthly_event = true;
-            }
-
             commit(IS_LOADING, true);
 
             const url = '/api/v1/item';
             const now = new Date();
             const params = {
                 'date': state.enterCell.rowIndex,
+                'user_id': rootState.user.data.user.id,
                 'type_id': typeId,
                 'row_index': state.enterCell.rowIndex,
                 'member_id': state.enterCell.memberId,
                 'content': state.newItem.content,
-                'start_time': now.getHours() + ':00:00',
-                'end_time': now.getHours() + ':30:00',
-                'is_monthly_event': is_monthly_event,
+                'start_time': now.getHours() + ':00',
+                'end_time': now.getHours() + ':30',
+                'rrule_id': '',
                 'is_all_day': true,
                 'is_done': false,
                 'memo': ''
@@ -92,7 +90,12 @@ export default {
 
             http.fetchPost(url, params)
                 .then(response => {
-                    commit(INSERT, { item: response.data });
+                    commit('item/ADD',
+                        { id: response.data.id, item: response.data },
+                        { root: true }
+                    );
+
+                    commit(INSERT, { calItem: { id: response.data.id } });
 
                     dispatch('calendar/tableView/updateCellItems',
                         state.enterCell.cellItems, { root: true }
@@ -142,13 +145,14 @@ export default {
             const now = new Date();
             const params = {
                 'date': item.date,
+                'user_id': rootState.user.data.user.id,
                 'type_id': item.type_id,
                 'row_index': item.row_index,
                 'member_id': item.member_id,
                 'content': item.content + ' copy',
                 'start_time': item.start_time,
                 'end_time': item.end_time,
-                'is_monthly_event': item.is_monthly_event,
+                'rrule_id': '',
                 'is_all_day': item.is_all_day,
                 'is_done': false,
                 'memo': item.memo
@@ -156,10 +160,15 @@ export default {
 
             http.fetchPost(url, params)
                 .then(response => {
-                    commit(INSERT, { item: response.data });
+                    commit('item/ADD',
+                        { id: response.data.id, item: response.data },
+                        { root: true }
+                    );
+
+                    commit(INSERT, { calItem: { id: response.data.id } });
 
                     dispatch('calendar/tableView/updateCellItems',
-                        cellItems, { root: true }
+                        state.enterCell.cellItems, { root: true }
                     );
 
                     commit(NOTIFY_SUCCESS, {
@@ -212,8 +221,8 @@ export default {
             state.newItem[key] = value;
         },
 
-        [INSERT]( state, { item } ) {
-            state.enterCell.cellItems.push(item);
+        [INSERT]( state, { calItem } ) {
+            state.enterCell.cellItems.push(calItem);
         },
 
         [RESET]( state ) {

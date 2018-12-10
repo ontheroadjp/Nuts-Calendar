@@ -45,7 +45,6 @@ class Calendar extends Model
 //                                    ->keyBy('member_id')
 //                                    ->keys()
 //                                    ->toArray();
-//
 //        $members = [];
 //
 //        foreach( $allMembers as $key => $val ) {
@@ -58,83 +57,127 @@ class Calendar extends Model
 
         if($year != '' && $month != '')
         {
-            $calendar = $this->fetchCalendarWithHolidayAndItems($year,$month);
+            $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year,$month);
         } else {
-            $calendar = $this->fetchMCalendarWithItems();
+            $calendar = $this->fetchMCalendarWithItems($userId, date('Y'));
         }
 
-//        $calendar = $this->tidyItems($calendar, collect($members));
-        $calendar = $this->tidyItems($calendar, collect($allMembers));
+        $results = $this->tidyItems($calendar, collect($allMembers));
 
-//        $item = new Item();
-//        $items = $item->fetchSpecificMonth($year, $month);
-
-         return [
-//             "members" => $members,
+        return [
             "members" => $allMembers,
-//             "items" => $items,
-             "days" => $calendar
-         ];
+            "days" => $results['days'],
+            "itemsInDaysFormat" => $results['items'],
+//            "items" => $this->keyByItemId($results['items'])
+            "items" => $results['items'],
+            "calendar" => $calendar
+        ];
     }
 
-    public function fetchCalendarWithHolidayAndItems($year,$month)
+    public function fetchCalendarWithHolidayAndItems($userId, $year,$month)
     {
 //        ini_set('memory_limit', '512M');
 
-        return Calendar::with('holidays', 'items')
-            ->where('date', 'LIKE', "$year-$month-%")
+//        return Calendar::with('holidays', 'items.rrule')
+//            ->where('date', 'LIKE', "$year-$month-%")
+//            ->get();
+
+        return Calendar::with([
+            'holidays', 'items' => function ($query) use ($userId)
+            {
+//                $query->leftjoin('rrules', 'items.rrule_id', '=', 'rrules.id')
+//                        ->where('user_id', '=', $userId);
+//                $query->where('user_id', '=', $userId);
+            }])->where('date', 'LIKE', "$year-$month-%")
             ->get();
 
-//        return Calendar::with('holidays', 'items')
-//            ->where('date', 'LIKE', "$year-$month-%")
-//            ->whereNotIn('gregorian_day', [0])
-//            ->get();
     }
 
-    public function fetchMCalendarWithItems()
+    public function fetchMCalendarWithItems($userId, $year)
     {
-        $year = date('Y');
-        return Calendar::with('items')
-            ->where('date', 'LIKE', "$year-%")
+        return Calendar::with([
+            'items.rrule',
+            'items' => function($query) use ($userId)
+            {
+                $query->where('user_id', '=', $userId);
+            }])->where('date', 'LIKE', "$year-%")
             ->where('gregorian_day', '=', "0")
             ->get();
     }
 
+//    private function keyByItemId($items)
+//    {
+//        $newItems = [];
+//        for( $n=0; $n < count($items); $n++ )
+//        {
+//            foreach($items[$n] as $key => $val) {
+//                for( $i=0; $i < count($val); $i++){
+//                    $newItems += array($val[$i]['id'] => $val[$i]);
+//                }
+//            }
+//        }
+//        return $newItems;
+//    }
+
     private function tidyItems(Collection $calendar, Collection $members)
     {
         $days = [];
+        $items = [];
+        $standaloneItems = '';
 
-        for( $n=0; $n < count($calendar); $n++ ) {
+        for( $n=0; $n < count($calendar); $n++ )
+        {
 
             // gather items into array key by member_id
             $items_group_by = $calendar[$n]['items']
                 ->groupBy('member_id');
 
 
-            // remove items(key = member_id) which doesn't exist in $members
-            $items_group_by = collect(
-                array_intersect_key(
-                    $items_group_by->toArray(),
-                    $members->toArray()
-                )
-            );
+//            // remove items(key = member_id) which doesn't exist in $members
+//            $items_group_by = collect(
+//                array_intersect_key(
+//                    $items_group_by->toArray(),
+//                    $members->toArray()
+//                )
+//            );
 
             $diff = $members
                 ->keys()
                 ->diff($items_group_by->keys())
                 ->flatten();
 
-            // add empty item
-            for( $i=0; $i < count($diff); $i++ ) {
+            // add empty item (cellItems)
+            for( $i=0; $i < count($diff); $i++ )
+            {
                 $items_group_by->put($diff[$i], []);
             }
+
+            // restracturing: cellitems = [id, id, id...]
+            // and $standaloneItems = [id:{...}, id:{...}, ...] for items
+            foreach($items_group_by as $memberId => $cellItems)
+            {
+                for($i=0; $i<count($cellItems); $i++)
+                {
+                    $standaloneItems[$cellItems[$i]->id] = $cellItems[$i];
+
+                    // object [{id: xxx}, ...]
+                    $cellItems[$i] = array('id' => $cellItems[$i]->id);
+
+//                    // array [id, id, id, ...]
+//                    $cellItems[$i] = $cellItems[$i]->id;
+                }
+            }
+
 
             // replace items to new one
             $days[] = collect($calendar[$n])
                 ->forget('items')
                 ->put('items', $items_group_by);
+
+//            $items[] = $items_group_by;
         }
 
-        return $days;
+//        return array('days' => $days, 'items' => $items);
+        return array('days' => $days, 'items' => $standaloneItems);
     }
 }

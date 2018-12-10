@@ -2,6 +2,7 @@ export default {
     app: {
         ready: false,
         lang: 'en',
+        asynchronous: true,
         theme: {
             name: '',
             background: '',

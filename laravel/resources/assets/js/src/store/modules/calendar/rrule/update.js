@@ -34,46 +34,46 @@ export default {
             u.clog('update()');
             commit(IS_LOADING, true);
 
-//            const url = '/api/v1/member/' + state.updateValues.id;
-//            const data = {
-//                'name': state.updateValues.name,
-//                'description': state.updateValues.description,
-//            };
-//
-//            http.fetchPut(url, data)
-//                .then( response => {
-//                    u.clog('success');
-//
-//                    commit('member/SET_VALUE', {
-//                        id: response.data.id,
-//                        key: 'name',
-//                        value: response.data.name
-//                    }, { root: true });
-//
-//                    commit('member/SET_VALUE', {
-//                        id: response.data.id,
-//                        key: 'description',
-//                        value: response.data.description
-//                    }, { root: true });
-//
-//                    commit(NOTIFY_SUCCESS, {
-//                        content: 'success update member',
-//                        isImportant: false
-//                    }, { root: true});
-//
-//                    commit(IS_LOADING, false);
-//                })
-//
-//                .catch( error => {
-//                    u.clog('failed');
-//
-//                    commit(NOTIFY_DANGER, {
-//                        content: 'failed update member',
-//                        isActive: true
-//                    }, { root: true});
-//
-//                    commit(IS_LOADING, false);
-//                });
+            const url = '/api/v1/member/' + state.updateValues.id;
+            const data = {
+                'name': state.updateValues.name,
+                'description': state.updateValues.description,
+            };
+
+            http.fetchPut(url, data)
+                .then( response => {
+                    u.clog('success');
+
+                    commit('member/SET_VALUE', {
+                        id: response.data.id,
+                        key: 'name',
+                        value: response.data.name
+                    }, { root: true });
+
+                    commit('member/SET_VALUE', {
+                        id: response.data.id,
+                        key: 'description',
+                        value: response.data.description
+                    }, { root: true });
+
+                    commit(NOTIFY_SUCCESS, {
+                        content: 'success update member',
+                        isImportant: false
+                    }, { root: true});
+
+                    commit(IS_LOADING, false);
+                })
+
+                .catch( error => {
+                    u.clog('failed');
+
+                    commit(NOTIFY_DANGER, {
+                        content: 'failed update member',
+                        isActive: true
+                    }, { root: true});
+
+                    commit(IS_LOADING, false);
+                });
         },
 
         reset({ commit }) {

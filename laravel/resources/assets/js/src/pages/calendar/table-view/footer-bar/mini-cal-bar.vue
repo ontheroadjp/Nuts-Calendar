@@ -56,7 +56,7 @@ export default {
             theme: state => state.app.theme
         }),
 
-        ...mapState('calendar/tableView/item/dnd', {
+        ...mapState('item/dnd', {
             draggingItem: state => state.draggingItem,
             isDropped: state => state.isDropped,
             onMiniCal: state => state.onMiniCal
@@ -123,7 +123,7 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item/dnd', {
+        ...mapActions('item/dnd', {
             setOnMiniCal: 'setOnMiniCal',
             dragOver: 'dragOver'
         }),

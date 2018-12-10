@@ -16,15 +16,15 @@
         <div v-show="viewMode === 'dayly' && getRowIndex().slice(-2) == 0"
             style="font-size: 0.6rem;" >Monthly Items</div>
 
-        <div v-for="(item, itemIndex) in cellItems"
+        <div v-for="(minItem, itemIndex) in cellItems"
             style="cursor: move"
-            :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
+            :style="[dragItem.draggingItem == items[minItem.id] ? dragItem.style.dragStart : '']"
             :draggable="!dragItem.isLoading"
-            @dragstart="handleDragStart(cellItems, item)"
+            @dragstart="handleDragStart(cellItems, items[minItem.id])"
             @dragend="handleDragEnd()"
             >
 
-            <item :cellItems="cellItems" :item="item" ></item>
+            <item :cellItems="cellItems" :item="items[minItem.id]"></item>
 
         </div>
 
@@ -60,12 +60,18 @@ export default {
             viewMode: state => state.viewMode
         }),
 
-        ...mapState('calendar/tableView/item', {
+        ...mapState({
+            items: state => state.item.data.items
+        }),
+
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             addItem: state => state.insert,
             dragItem: state => state.dnd
         }),
 
-        ...mapState('calendar/tableView/item/insert', {
+//        ...mapState('calendar/tableView/item/insert', {
+        ...mapState('item/insert', {
             insertIsLoading: state => state.isLoading
         }),
 
@@ -86,12 +92,14 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item/insert', {
+//        ...mapActions('calendar/tableView/item/insert', {
+        ...mapActions('item/insert', {
             insertPrepare: 'prepare',
             insertReset: 'reset'
         }),
 
-        ...mapActions('calendar/tableView/item/dnd', {
+//        ...mapActions('calendar/tableView/item/dnd', {
+        ...mapActions('item/dnd', {
             dragStart: 'dragStart',
             dragEnter: 'dragEnter',
             dragOver: 'dragOver',

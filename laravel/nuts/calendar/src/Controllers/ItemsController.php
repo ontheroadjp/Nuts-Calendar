@@ -57,10 +57,11 @@ class ItemsController extends Controller
     public function update($id, Request $request)
     {
         $item = Item::findOrAbort($id);
-        $item->fill($request->only(
-            //Item::getFillable()
-            ['member_id','content','date','row_index','is_done', 'start_time', 'end_time', 'is_all_day', 'memo']
-        ));
+        //Item::getFillable()
+        $item->fill($request->only([
+            'member_id','content','date','row_index','is_done',
+            'start_time','end_time','is_all_day','memo'
+        ]));
         $item->save();
         return $item;
     }

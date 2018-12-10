@@ -138,7 +138,10 @@ export default {
             save: '保存',
             confirmation: '削除しますか？',
             cancel: 'キャンセル',
-            ok: 'OK'
+            ok: 'OK',
+            editModal: {
+
+            }
         },
         timePicker: {
             hh: '時',

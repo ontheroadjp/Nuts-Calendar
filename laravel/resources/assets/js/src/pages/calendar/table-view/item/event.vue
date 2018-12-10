@@ -1,47 +1,61 @@
 <template>
-    <span class="item is-event">
-        <span class="icon is-small"
-            v-show="item.memo"
-            style="margin-right: 5px"
-            ><i class="fa fa-file-text-o"></i>
-        </span>
+    <div class="item is-event" style="display: flex; flex-wrap: wrap;" >
+        <div>
+            <span class="icon is-small"
+                v-if="item.rrule_string !== ''"
+                ><i class="fa fa-history"></i>
+            </span>
 
-        <span v-if="!item.is_all_day"
-            :class="[{'vertial': displayVertically}, 'thin-400']"
-            style="margin-right: 8px; white-space: nowrap;"
-        >
-                <span
-                    :class="{ 'thin-500': !item.hasStartTimeError }"
-                    :style="startTimeStyle"
-                >{{ item.start_time | timeFormatter }}
-                </span>
+            <span class="icon is-small"
+                v-if="item.memo"
+                ><i class="fa fa-file-text-o"></i>
+            </span>
 
-                <span v-if="toolPalette.isEndTimeShow">
-                    <span>-</span>
+            <!--
+            <span v-if="!item.is_all_day"
+                :class="[{'vertial': displayVertically}, 'thin-400']"
+                style="margin-right: 8px; white-space: nowrap;"
+            >
+            -->
+            <span v-if="!item.is_all_day"
+                :class="[{'vertial': displayVertically}, 'thin-400']"
+                style="margin-right: 8px;"
+            >
                     <span
-                        :class="{ 'thin-500': !item.hasEndTimeError }"
-                        :style="endTimeStyle"
-                    >{{ item.end_time | timeFormatter }}
+                        :class="{ 'thin-500': !item.hasStartTimeError }"
+                        :style="startTimeStyle"
+                    >{{ item.start_time | timeFormatter }}
                     </span>
-                </span>
-        </span>
 
-        <span v-else class="all-day" style="margin-right:8px">
-            <i class="fa fa-circle" style="color: #fb04a4;"></i>
-        </span>
+                    <span v-if="toolPalette.isEndTimeShow">
+                        <span>-</span>
+                        <span
+                            :class="{ 'thin-500': !item.hasEndTimeError }"
+                            :style="endTimeStyle"
+                        >{{ item.end_time | timeFormatter }}
+                        </span>
+                    </span>
+            </span>
 
-        <span style="word-break: break-all;" >
-            <slot></slot>
-        </span>
+            <span v-else class="all-day" style="margin-right:8px">
+                <i class="fa fa-circle" style="color: #fb04a4;"></i>
+            </span>
+        </div>
 
-        <span class="icon is-small"
-            v-show="(dnd.isLoading && dnd.draggingItem === item)
-                    || (update.isLoading && update.editingItem === item)
-                    || (remove.isLoading && remove.removingItem === item)
-                    || isLoading"
-            ><i class="fa fa-refresh fa-spin"></i>
-        </span>
-    </span>
+        <div>
+            <span style="word-break: break-all;">
+                <slot></slot>
+            </span>
+
+            <span class="icon is-small"
+                v-show="(dnd.isLoading && dnd.draggingItem === item)
+                        || (update.isLoading && update.editingItem === item)
+                        || (remove.isLoading && remove.removingItem === item)
+                        || isLoading"
+                ><i class="fa fa-refresh fa-spin"></i>
+            </span>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -53,9 +67,11 @@ export default {
         timeFormatter
     ],
 
-    props: [
-        'cellItems', 'item', 'isLoading'
-    ],
+    props: {
+        cellItems: { type: Array, required: true },
+        item: { type: Object, required: true },
+        isLoading: { type: Boolean, default: false }
+    },
 
     data() {
         return {
@@ -69,7 +85,8 @@ export default {
             toolPalette: state => state.toolPalette,
         }),
 
-        ...mapState('calendar/tableView/item', {
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             dnd: state => state.dnd,
             update: state => state.update,
             remove: state => state.remove

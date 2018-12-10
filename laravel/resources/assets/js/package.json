@@ -24,6 +24,7 @@
     "css-toggle-switch": "^4.0.2",
     "font-awesome": "^4.7.0",
     "moment": "^2.18.1",
+    "rrule": "^2.5.6",
     "tippy.js": "^3.2.0",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",

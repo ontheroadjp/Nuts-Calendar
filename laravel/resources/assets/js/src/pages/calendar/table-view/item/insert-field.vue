@@ -55,7 +55,9 @@ export default {
     directives: { focus },
 
     computed: {
-        ...mapState('calendar/tableView/item', {
+
+//        ...mapState('calendar/tableView/item', {
+        ...mapState('item', {
             addItem: state => state.insert
         }),
 
@@ -71,7 +73,8 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item/insert', {
+//        ...mapActions('calendar/tableView/item/insert', {
+        ...mapActions('item/insert', {
             setValue: 'setValue',
             insertEvent: 'insertEvent',
             insertTask: 'insertTask',

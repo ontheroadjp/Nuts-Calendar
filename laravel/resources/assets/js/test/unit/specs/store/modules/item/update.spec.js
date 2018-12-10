@@ -1,10 +1,10 @@
-import testModule from '../../../../../../../../src/store/modules/calendar/table-view/item/update.js';
-import { testAction } from '../../../../../helper.js';
+import testModule from '../../../../../../src/store/modules/calendar/table-view/item/update.js';
+import { testAction } from '../../../helper.js';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
-describe('store/module/calendar/table-view/item/update.js', () => {
+describe('store/module/item/update.js', () => {
     const { state } = testModule;
     const { prepare, prepareModal, toggleTaskDone, setInputValue, update, reset } = testModule.actions;
     const { PREPARE, PREPARE_MODAL, IS_LOADING, TOGGLE_TASK_DONE, SET_INPUT_VALUE, RESET, NOTIFY_SUCCESS, NOTIFY_DANGER } = testModule.mutations;

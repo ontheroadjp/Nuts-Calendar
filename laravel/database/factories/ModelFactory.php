@@ -13,24 +13,24 @@ use Faker\Factory as FakerFactory;
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
-    return [
-        'name' => 'free',
-        'email' => $faker->unique()->safeEmail,
-        'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
-    ];
-});
+//$factory->define(App\User::class, function (Faker\Generator $faker) {
+//    return [
+//        'name' => 'free',
+//        'email' => $faker->unique()->safeEmail,
+//        'password' => bcrypt(str_random(10)),
+//        'remember_token' => str_random(10),
+//    ];
+//});
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
-    return [
-        'id' => 'u_'.md5( uniqid(mt_rand(), true) ),
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
-    ];
-});
+//$factory->define(App\User::class, function (Faker\Generator $faker) {
+//    return [
+//        'id' => 'u_'.md5( uniqid(mt_rand(), true) ),
+//        'name' => $faker->name,
+//        'email' => $faker->unique()->safeEmail,
+//        'password' => bcrypt(str_random(10)),
+//        'remember_token' => str_random(10),
+//    ];
+//});
 
 $factory->define(Nuts\Calendar\Models\UserCalendar::class, function (Faker\Generator $faker) {
     foreach( App\User::all(['id']) as $val ) {
@@ -59,6 +59,9 @@ $factory->define(Nuts\Calendar\Models\Member::class, function (Faker\Generator $
 });
 
 $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $faker) {
+    foreach( App\User::all(['id']) as $val ) {
+        $userIds[] = $val->id;
+    }
 
     //$faker = FakerFactory::create('ja_JP');
 
@@ -110,6 +113,7 @@ $factory->define(Nuts\Calendar\Models\Item::class, function (Faker\Generator $fa
     }
 
     return [
+        'user_id' => $faker->randomElement($userIds),
         'row_index' => $rowIndex,
         'member_id' => $faker->randomElement($memberIds),
         'type_id' => $faker->randomElement($itemTypeIds),

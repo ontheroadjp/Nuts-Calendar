@@ -1,10 +1,10 @@
-import testModule from '../../../../../../../../src/store/modules/calendar/table-view/item/dnd.js';
-import { testAction } from '../../../../../helper.js';
+import testModule from '../../../../../../src/store/modules/calendar/table-view/item/dnd.js';
+import { testAction } from '../../../helper.js';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import Promise from 'bluebird';
 
-describe('store/module/calendar/table-view/item/dnd.js', () => {
+describe('store/module/item/dnd.js', () => {
     const { state } = testModule;
     const { dragStart, dragEnter, dragOver, drop, setOnMiniCal, dragEnd } = testModule.actions;
     const { DRAG_START, DRAG_ENTER, DROP, REVERSE_ITEM, SET_ON_MINI_CAL, DRAG_END } = testModule.mutations;

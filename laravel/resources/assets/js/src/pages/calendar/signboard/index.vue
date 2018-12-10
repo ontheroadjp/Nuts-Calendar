@@ -2,27 +2,28 @@
 <section id="signboard" class="hero" :class="theme.primary.class">
     <div class="thin"
         style="position: absolute;
-                top: 0;
+                top: 5px;
                 right: 30px;
                 display: flex;
                 align-items: center
             ">
 
-        <a @click="setCurrentYear(currentYear - 1)" style="font-size: 1.8rem;">
+        <a @click="setCurrentYear(currentYear - 1)" style="font-size: 1.4rem;">
             <span>
                 <i class="fa fa-chevron-circle-left"></i>
             </span>
         </a>
 
-        <span style="font-size: 3.5rem; margin: 0 15px">{{ display }}</span>
+        <span style="font-size: 3rem; margin: 0 35px">{{ display }}</span>
 
-        <a @click="setCurrentYear(currentYear + 1)" style="font-size: 1.8rem;">
+        <a @click="setCurrentYear(currentYear + 1)" style="font-size: 1.4rem;">
             <span>
                 <i class="fa fa-chevron-circle-right"></i>
             </span>
         </a>
 
     </div>
+
 <!--
     <div v-show="viewMode == 'dayly'" class="hero-body" style="padding: 20px;">
 

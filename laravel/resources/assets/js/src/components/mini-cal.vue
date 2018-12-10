@@ -8,10 +8,10 @@
         </thead>
         <tbody>
             <tr v-for="(day, k1) in days">
-                <td 
-                    v-for="(child, k2) in day" 
+                <td
+                    v-for="(child, k2) in day"
                     :class="{ 'selected': child.selected, 'disabled': child.disabled }"
-                    @click="select(k1, k2, $event)" 
+                    @click="select(k1, k2, $event)"
                     @touchstart="select(k1, k2, $event)"
                     @drop.stop="handleDrop(child)"
                 >
@@ -82,13 +82,13 @@ export default {
     },
 
     methods: {
-        ...mapActions('calendar/tableView/item/dnd', {
+//        ...mapActions('calendar/tableView/item/dnd', {
+        ...mapActions('item/dnd', {
             setOnMiniCal: 'setOnMiniCal',
-            dragOver: 'dragOver'
         }),
 
         handleDragOver: function(e) {
-            this.dragOver({e});
+            this.$emit('dragOver', e);
         },
 
         handleDrop(child) {

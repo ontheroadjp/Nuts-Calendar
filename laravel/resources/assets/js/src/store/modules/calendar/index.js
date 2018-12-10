@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import toolPalette  from './table-view/tool-palette.js';
-import insert       from './table-view/item/insert.js';
-import update       from './table-view/item/update.js';
-import remove       from './table-view/item/remove.js';
-import dnd          from './table-view/item/dnd.js';
+//import insert       from '../item/insert.js';
+//import update       from '../item/update.js';
+//import remove       from '../item/remove.js';
+//import dnd          from '../item/dnd.js';
 import {
     INIT,
     SET_VALUE,
@@ -60,12 +60,12 @@ const calendar = {
     actions: {
         setCurrentYear( { state, commit, dispatch }, value ) {
             commit(SET_VALUE, { key: 'currentYear', value });
-            dispatch('fetchCalendar', state.currentId);
+//            dispatch('fetchCalendar', state.currentId);
         },
 
         setCurrentMonth({ state, commit, dispatch }, value ) {
             commit(SET_VALUE, { key: 'currentMonth', value });
-            dispatch('fetchCalendar', state.currentId);
+//            dispatch('fetchCalendar', state.currentId);
         },
 
         fetchCalendar( { state, commit, dispatch }, calendarId) {
@@ -99,13 +99,16 @@ const calendar = {
                 .then( response => {
                     u.clog('success');
 
+                    commit('item/INIT', response.data.items, { root: true });
+
+                    commit('INIT', response.data.days );
+
                     response.data.days.forEach((day)=> {
                         Object.keys(day.items).forEach(memberId => {
-                            dispatch('tableView/updateCellItems', day.items[memberId]);
+                            const cellItems = day.items[memberId];
+                            dispatch('tableView/updateCellItems', cellItems);
                         });
                     });
-
-                    commit(INIT, response.data.days );
 
                     Object.keys(response.data.members).forEach(function(key) {
                         const val = this[key];
@@ -124,6 +127,7 @@ const calendar = {
 
     mutations: {
         [INIT]( state, calendars ) {
+
             calendars.forEach((value) => {
 
                 // add holidays property if it does not exist
@@ -143,7 +147,7 @@ const calendar = {
                 const a = state.data.calendars[n];
                 const b = state.data.calendars[n+1];
                 if( a.date == b.date ) {
-                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date + ' DELETE!');
+                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date + ' DELETE! @fetchCalendar()');
                     state.data.calendars.splice(n, 1);
                 } else {
 //                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date);
@@ -170,17 +174,21 @@ const calendar = {
             actions: {
                 updateCellItems( { commit, rootState }, cellItems ) {
 //                    if( rootState.calendar.viewMode != 'monthly') {
-                        commit(SORT_CELL_ITEMS, cellItems);
+                        commit(SORT_CELL_ITEMS, {rootState, cellItems});
 //                    }
                     commit(CHECK_TIME, cellItems);
                 }
             },
 
             mutations: {
-                [SORT_CELL_ITEMS]( state, cellItems ) {
+                [SORT_CELL_ITEMS]( state, { cellItems, rootState } ) {
                     u.clog('>> sortCellItems()');
-                    if(cellItems.length < 1) return;
-                    cellItems.sort((a, b) => {
+                    if(cellItems.length < 2) return;
+
+                    cellItems.sort((aa, bb) => {
+
+                        let a = rootState.item.data.items[aa.id];
+                        let b = rootState.item.data.items[bb.id];
 
                         if(a.type_id === 1 && b.type_id === 2) return 1;
                         if(a.type_id === 2 && b.type_id === 1) return -1;
@@ -275,15 +283,15 @@ const calendar = {
             modules: {
                 toolPalette: toolPalette,
 
-                item: {
-                    namespaced: true,
-                    modules: {
-                        insert: insert,
-                        update: update,
-                        remove: remove,
-                        dnd: dnd
-                    }
-                }
+//                item: {
+//                    namespaced: true,
+//                    modules: {
+//                        insert: insert,
+//                        update: update,
+//                        remove: remove,
+//                        dnd: dnd
+//                    }
+//                }
             }
         }
     }

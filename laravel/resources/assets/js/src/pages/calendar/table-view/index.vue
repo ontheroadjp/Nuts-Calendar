@@ -11,7 +11,7 @@
             v-if="disabled"
             bgColor="rgba(40, 40, 40, .6)"
             :onActive="function() {
-                this.$store.commit('calendar/tableView/item/insert/RESET');
+                this.$store.commit('item/insert/RESET');
             }"
             :zIndex="1"
         ></black-screen>
@@ -113,7 +113,8 @@
                 searchQuery: state => (state.query.search).toLowerCase()
             }),
 
-            ...mapState('calendar/tableView/item/dnd', {
+//            ...mapState('calendar/tableView/item/dnd', {
+            ...mapState('item/dnd', {
                 draggingItem: state => state.draggingItem
             }),
 
@@ -207,10 +208,7 @@
             },
 
             clickToPageTop: function () {
-                for( let i = this.scrollPositionY; i > 0; i-- ) {
-                    //document.documentElement.scrollTop = i;
-                    document.body.scrollTop = i;
-                }
+                window.scroll(0, 0);
             }
         },
 
@@ -303,4 +301,16 @@
     padding: 0 10px;
     opacity: 0;
 }
+
+/*
+.item-edit-popup-enter-active,
+.item-edit-popup-leave-active {
+    transition: all 0.5s ease;
+}
+
+.item-edit-popup-enter,
+.item-edit-popup-leave-to {
+    opacity: 0;
+}
+*/
 </style>
