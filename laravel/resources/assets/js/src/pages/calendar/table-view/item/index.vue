@@ -146,7 +146,6 @@ export default {
         },
 
         showTippy: function(value = true) {
-//            value && !this.isTippyShown ? this.tippy.show() : this.tippy.hide();
             value ? this.tippy.show() : this.tippy.hide();
         },
 

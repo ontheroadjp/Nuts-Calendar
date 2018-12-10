@@ -32,9 +32,11 @@ import { mapState, mapActions } from 'vuex';
 
 export default {
 
-    props: [
-        'cellItems', 'item', 'isLoading'
-    ],
+    props: {
+        cellItems: { type: Array, required: true },
+        item: { type: Object, required: true },
+        isLoading: { type: Boolean, default: false }
+    },
 
     computed: {
 //        ...mapState('calendar/tableView/item', {

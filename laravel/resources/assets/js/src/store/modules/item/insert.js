@@ -60,10 +60,6 @@ export default {
                 return;
             }
 
-//            let is_monthly_event = false;
-//            if ((state.enterCell.rowIndex).slice(-2) == '00')
-//                is_monthly_event = true;
-
             commit(IS_LOADING, true);
 
             const url = '/api/v1/item';
@@ -77,8 +73,7 @@ export default {
                 'content': state.newItem.content,
                 'start_time': now.getHours() + ':00',
                 'end_time': now.getHours() + ':30',
-//                'is_monthly_event': is_monthly_event,
-                'rrule_id': '',
+//                'rrule_id': '',
                 'rrule_string': '',
                 'rrule_text': '',
                 'rrule_json': '',
@@ -160,8 +155,7 @@ export default {
                 'content': item.content + ' copy',
                 'start_time': item.start_time,
                 'end_time': item.end_time,
-//                'is_monthly_event': item.is_monthly_event,
-                'rrule_id': '',
+//                'rrule_id': '',
                 'rrule_string': '',
                 'rrule_text': '',
                 'rrule_json': '',

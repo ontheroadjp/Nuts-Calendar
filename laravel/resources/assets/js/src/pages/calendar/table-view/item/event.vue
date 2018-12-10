@@ -67,9 +67,11 @@ export default {
         timeFormatter
     ],
 
-    props: [
-        'cellItems', 'item', 'isLoading'
-    ],
+    props: {
+        cellItems: { type: Array, required: true },
+        item: { type: Object, required: true },
+        isLoading: { type: Boolean, default: false }
+    },
 
     data() {
         return {
