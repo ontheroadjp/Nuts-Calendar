@@ -89,9 +89,10 @@ export default {
         eventItem, taskItem
     },
 
-    props: [
-        'cellItems', 'item'
-    ],
+    props: {
+        cellItems: { type: Array, required: true },
+        item: { type: Object, required: true, default: () => {id: 123} }
+    },
 
     data() {
         return {

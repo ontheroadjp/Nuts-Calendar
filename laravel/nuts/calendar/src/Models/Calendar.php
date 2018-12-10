@@ -45,7 +45,6 @@ class Calendar extends Model
 //                                    ->keyBy('member_id')
 //                                    ->keys()
 //                                    ->toArray();
-//
 //        $members = [];
 //
 //        foreach( $allMembers as $key => $val ) {
@@ -58,24 +57,19 @@ class Calendar extends Model
 
         if($year != '' && $month != '')
         {
-//            $item = new Item();
-//            $items = $item->fetchSpecificMonth($userId, $year, $month);
             $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year,$month);
         } else {
-//            $item = new Item();
-//            $items = $item->fetchSpecificYear($userId, date('Y'));
             $calendar = $this->fetchMCalendarWithItems($userId, date('Y'));
         }
 
-//        $results = $this->tidyItems($calendar, collect($members));
         $results = $this->tidyItems($calendar, collect($allMembers));
 
         return [
-//             "members" => $members,
             "members" => $allMembers,
             "days" => $results['days'],
             "itemsInDaysFormat" => $results['items'],
-            "items" => $this->keyByItemId($results['items'])
+//            "items" => $this->keyByItemId($results['items'])
+            "items" => $results['items']
         ];
     }
 
@@ -91,7 +85,8 @@ class Calendar extends Model
             'holidays', 'items' => function ($query) use ($userId)
             {
                 $query->where('user_id', '=', $userId);
-            }])->where('date', 'LIKE', "$year-$month-%")->get();
+            }])->where('date', 'LIKE', "$year-$month-%")
+            ->get();
 
     }
 
@@ -106,24 +101,25 @@ class Calendar extends Model
             ->get();
     }
 
-    private function keyByItemId($items)
-    {
-        $newItems = [];
-        for( $n=0; $n < count($items); $n++ )
-        {
-            foreach($items[$n] as $key => $val) {
-                for( $i=0; $i < count($val); $i++){
-                    $newItems += array($val[$i]['id'] => $val[$i]);
-                }
-            }
-        }
-        return $newItems;
-    }
+//    private function keyByItemId($items)
+//    {
+//        $newItems = [];
+//        for( $n=0; $n < count($items); $n++ )
+//        {
+//            foreach($items[$n] as $key => $val) {
+//                for( $i=0; $i < count($val); $i++){
+//                    $newItems += array($val[$i]['id'] => $val[$i]);
+//                }
+//            }
+//        }
+//        return $newItems;
+//    }
 
     private function tidyItems(Collection $calendar, Collection $members)
     {
         $days = [];
         $items = [];
+        $standaloneItems = '';
 
         for( $n=0; $n < count($calendar); $n++ )
         {
@@ -152,14 +148,32 @@ class Calendar extends Model
                 $items_group_by->put($diff[$i], []);
             }
 
+            // restracturing: cellitems = [id, id, id...]
+            // and $standaloneItems = [id:{...}, id:{...}, ...] for items
+            foreach($items_group_by as $memberId => $cellItems)
+            {
+                for($i=0; $i<count($cellItems); $i++)
+                {
+                    $standaloneItems[$cellItems[$i]->id] = $cellItems[$i];
+
+                    // object [{id: xxx}, ...]
+                    $cellItems[$i] = array('id' => $cellItems[$i]->id);
+
+//                    // array [id, id, id, ...]
+//                    $cellItems[$i] = $cellItems[$i]->id;
+                }
+            }
+
+
             // replace items to new one
             $days[] = collect($calendar[$n])
                 ->forget('items')
                 ->put('items', $items_group_by);
 
-            $items[] = $items_group_by;
+//            $items[] = $items_group_by;
         }
 
-        return array('days' => $days, 'items' => $items);
+//        return array('days' => $days, 'items' => $items);
+        return array('days' => $days, 'items' => $standaloneItems);
     }
 }

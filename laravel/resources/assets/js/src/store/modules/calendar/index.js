@@ -126,6 +126,7 @@ const calendar = {
 
     mutations: {
         [INIT]( state, calendars ) {
+            state.data.calendars = calendars;
             calendars.forEach((value) => {
 
                 // add holidays property if it does not exist
@@ -172,17 +173,21 @@ const calendar = {
             actions: {
                 updateCellItems( { commit, rootState }, cellItems ) {
 //                    if( rootState.calendar.viewMode != 'monthly') {
-                        commit(SORT_CELL_ITEMS, cellItems);
+                        commit(SORT_CELL_ITEMS, {rootState, cellItems});
 //                    }
                     commit(CHECK_TIME, cellItems);
                 }
             },
 
             mutations: {
-                [SORT_CELL_ITEMS]( state, cellItems ) {
+                [SORT_CELL_ITEMS]( state, {rootState, cellItems} ) {
                     u.clog('>> sortCellItems()');
                     if(cellItems.length < 1) return;
+
                     cellItems.sort((a, b) => {
+
+                        a = rootState.item.data.items[a.id];
+                        b = rootState.item.data.items[b.id];
 
                         if(a.type_id === 1 && b.type_id === 2) return 1;
                         if(a.type_id === 2 && b.type_id === 1) return -1;

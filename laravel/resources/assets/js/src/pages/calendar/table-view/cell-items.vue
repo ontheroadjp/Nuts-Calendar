@@ -16,15 +16,15 @@
         <div v-show="viewMode === 'dayly' && getRowIndex().slice(-2) == 0"
             style="font-size: 0.6rem;" >Monthly Items</div>
 
-        <div v-for="(item, itemIndex) in cellItems"
+        <div v-for="(minItem, itemIndex) in cellItems"
             style="cursor: move"
-            :style="[dragItem.draggingItem == item ? dragItem.style.dragStart : '']"
+            :style="[dragItem.draggingItem == items[minItem.id] ? dragItem.style.dragStart : '']"
             :draggable="!dragItem.isLoading"
-            @dragstart="handleDragStart(cellItems, item)"
+            @dragstart="handleDragStart(cellItems, items[minItem.id])"
             @dragend="handleDragEnd()"
             >
 
-            <item :cellItems="cellItems" :item="item" ></item>
+            <item :cellItems="cellItems" :item="items[minItem.id]"></item>
 
         </div>
 
@@ -58,6 +58,10 @@ export default {
 
         ...mapState('calendar', {
             viewMode: state => state.viewMode
+        }),
+
+        ...mapState({
+            items: state => state.item.data.items
         }),
 
         ...mapState('calendar/tableView/item', {
