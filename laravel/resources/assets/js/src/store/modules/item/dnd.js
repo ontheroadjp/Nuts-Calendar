@@ -46,12 +46,21 @@ export default {
             const rowIndex = draggingItem.row_index;
             const memberId = draggingItem.member_id;
 
+            let itemIndex = '';
+            for( let $n=0; $n<cellItems.length; $n++) {
+                if( cellItems[$n].id == draggingItem.id ) {
+                    itemIndex = cellItems[$n].itemIndex;
+                    break;
+                }
+            }
+
             commit(DRAG_START, {
                 rowIndex: rowIndex,
                 memberId: memberId,
                 cellAddress: rootGetters.getCellAddress(rowIndex, memberId),
                 cellItems: cellItems,
-                itemIndex: draggingItem.itemIndex,
+//                itemIndex: draggingItem.itemIndex,
+                itemIndex: itemIndex,
                 draggingItem: draggingItem
             });
         },
@@ -175,7 +184,8 @@ export default {
             // add item
             u.clog('-------------------------------------------- add item(' + state.draggingItem.content + ')');
 //            state.enterCell.cellItems.push(state.draggingItem);
-            state.enterCell.cellItems.splice(0, 0, state.draggingItem);
+//            state.enterCell.cellItems.splice(0, 0, state.draggingItem);
+            state.enterCell.cellItems.splice(0, 0, { id: state.draggingItem.id });
         },
 
         [REVERSE_ITEM]( state, { y, m } ) {
