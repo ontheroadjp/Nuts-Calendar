@@ -68,7 +68,7 @@ export default {
             u.clog('changeCalendar(' + this.currentUserCalendarId + ')');
             this.$store.commit('calendar/SET_VALUE', {
                 key: 'viewMode',
-                value: 'dayly'
+                value: 'daily'
             });
 
             this.$store.commit('calendar/SET_VALUE', {
@@ -78,10 +78,11 @@ export default {
 
             this.$store.commit('calendar/SET_VALUE', {
                 key: 'currentMonth',
-                value: ('00' + month).slice(-2)
+                value: month
             });
 
-            this.fetchCalendar(this.currentUserCalendarId);
+//            this.fetchCalendar(this.currentUserCalendarId);
+            this.fetchCalendar();
         }
     }
 };

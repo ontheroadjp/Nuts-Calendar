@@ -79,7 +79,7 @@ export default {
                 'memo': ''
             };
 
-//            if( rootState.calendar.viewMode === 'dayly' ) {
+//            if( rootState.calendar.viewMode === 'daily' ) {
 //                const y = rootState.calendar.currentYear;
 //                const m = rootState.calendar.currentMonth;
 //                const d = (state.enterCell.rowIndex).slice(-2);

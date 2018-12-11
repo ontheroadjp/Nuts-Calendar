@@ -19,16 +19,17 @@ describe('store/modules/calendar/index.js', () => {
     };
 
     describe('actions', () => {
-        it('fetchCalendar(viewMode: dayly)', (done) => {
+        it('fetchCalendar(viewMode: daily)', (done) => {
             const response = {
                 data: calendars
             };
             const resolved = new Promise.resolve(response);
             const httpStub = sinon.stub(http, 'fetchGet').returns(resolved);
 
-            SET_VALUE(state, {key: 'viewMode', value: 'dayly'});
+            SET_VALUE(state, {key: 'viewMode', value: 'daily'});
 
-            testAction(fetchCalendar, { calendarId: 8 }, { state }, [
+//            testAction(fetchCalendar, { calendarId: 8 }, { state }, [
+            testAction(fetchCalendar, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'tableView/updateCellItems', payload: calendars.days[0].items.memberId },
                 { type: 'tableView/updateCellItems', payload: calendars.days[1].items.memberId },

@@ -31,7 +31,7 @@
                     :style="[style.firstColumnWidth]"
                 >
                         <a
-                            v-show="viewMode === 'dayly'"
+                            v-show="viewMode === 'daily'"
                             class="button"
                             style="font-size: 0.8rem; width: 90%; background-color:#8a7676; color: #fff;"
                             @click="$store.commit('calendar/SET_VALUE', {
@@ -61,16 +61,16 @@
         <tbody v-if="filteredBody">
 <!--
             <tr v-for="(row, rowIndex) in filteredBody"
-                :class="[{ saturday: viewMode === 'dayly' && isSaturday(row.date),
-                            sunday: viewMode === 'dayly' && isSunday(row.date) || row.holidays.length > 0,
+                :class="[{ saturday: viewMode === 'daily' && isSaturday(row.date),
+                            sunday: viewMode === 'daily' && isSunday(row.date) || row.holidays.length > 0,
                         }, isToday(row.date) ? style.today.tr : '']"
-                :style="[rowIndex == 0 && viewMode === 'dayly' ? style.monthlyItemRow : '']">
+                :style="[rowIndex == 0 && viewMode === 'daily' ? style.monthlyItemRow : '']">
 -->
             <tr v-for="(row, rowIndex) in filteredBody"
-                :class="[{ saturday: viewMode === 'dayly' && isSaturday(row.date),
-                            sunday: viewMode === 'dayly' && isSunday(row.date)> 0,
+                :class="[{ saturday: viewMode === 'daily' && isSaturday(row.date),
+                            sunday: viewMode === 'daily' && isSunday(row.date)> 0,
                         }, isToday(row.date) ? style.today.tr : '']"
-                :style="[rowIndex == 0 && viewMode === 'dayly' ? style.monthlyItemRow : '']">
+                :style="[rowIndex == 0 && viewMode === 'daily' ? style.monthlyItemRow : '']">
                 <monthColumn
                     v-if="viewMode === 'monthly'"
                     :row="row"
@@ -79,7 +79,7 @@
                 ></monthColumn>
 
                 <dayColumn
-                    v-if="viewMode === 'dayly'"
+                    v-if="viewMode === 'daily'"
                     :row="row"
                     :today="style.today"
                     :firstColumnWidth="style.firstColumnWidth"
@@ -95,7 +95,7 @@
                 </template>
 
                 <dayColumn
-                    v-if="viewMode === 'dayly' && showRightDay"
+                    v-if="viewMode === 'daily' && showRightDay"
                     :row="row"
                     :today="style.today"
                     :firstColumnWidth="style.firstColumnWidth"

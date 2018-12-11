@@ -50,7 +50,8 @@
                 handler: function(newVal, oldVal) {
                     if(!oldVal && newVal) {
                         u.clog('watch: appReady');
-                        this.fetchCalendar(this.currentCalendarId);
+//                        this.fetchCalendar(this.currentCalendarId);
+                        this.fetchCalendar();
                     }
                 },
                 deep: true

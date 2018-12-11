@@ -81,17 +81,21 @@ export default {
 
     methods: {
         ...mapActions('calendar', {
-            fetchCalendar: 'fetchCalendar'
+            fetchCalendar: 'fetchCalendar',
+            setCurrentCalendarId: 'setCurrentCalendarId'
         }),
 
+//        clickUserCalendar: function(id) {
         clickUserCalendar: function(id) {
-            u.clog('changeCalendar(' + id + ')');
-            this.$store.commit('calendar/SET_VALUE', {
-                key: 'currentId',
-                value: id
-            });
+//            u.clog('changeCalendar(' + id + ')');
+//            this.$store.commit('calendar/SET_VALUE', {
+//                key: 'currentId',
+//                value: id
+//            });
+//            this.fetchCalendar(id);
 
-            this.fetchCalendar(id);
+            this.setCurrentCalendarId(id);
+            this.fetchCalendar();
         }
     }
 };

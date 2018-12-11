@@ -4,7 +4,7 @@
 
         <!-- display value -->
         <span v-if="!editing" class="thin" :style="displayStyle" @click="togglePicker" >
-            {{ viewMode == 'dayly'
+            {{ viewMode == 'daily'
                 ? '月間スケジュール（' + getYearAndMonth(currentYear + '-' + currentMonth + '-01') + '）'
                 : '年間スケジュール（' + currentYear + '年）'
             }}
