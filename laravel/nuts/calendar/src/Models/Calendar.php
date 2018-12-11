@@ -60,8 +60,12 @@ class Calendar extends Model
         if($year != '' && $month != '')
         {
             $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year, $month);
+        } else if($year !== '') {
+            $calendar = $this->fetchMCalendarWithItems($userId, $year);
         } else {
-            $calendar = $this->fetchMCalendarWithItems($userId, date('Y'));
+            return [
+                'status' => 'Error'
+            ];
         }
 
         $results = $this->tidyItems($calendar, collect($allMembers));

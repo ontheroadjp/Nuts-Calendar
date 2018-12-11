@@ -18,13 +18,13 @@ class CalendarController extends Controller
     public function index(Request $request, Calendar $calendar, $year = '', $month = '')
     {
         $userId = $request->user()->id;
-        if($year != '')
+        if($year != '' && $month != '')
         {
 //            return $calendar->fetch($userId, $userCalendarId, $year,$month);
             return $calendar->fetch($userId, $year,$month);
         } else {
 //            return $calendar->fetch($userId, $userCalendarId);
-            return $calendar->fetch($userId);
+            return $calendar->fetch($userId, $year);
         }
     }
 }

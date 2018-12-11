@@ -97,12 +97,12 @@ const calendar = {
 //            u.clog('fetchCalendar(' + calendarId + ')');
             u.clog('fetchCalendar()');
 //            const id = calendarId;
-            const id = 'hogehoge';
             let url = '';
 
             if(state.viewMode === 'monthly') {
+                const y = state.currentYear ? state.currentYear : date().getYear();
 //                url = '/api/v1/mcalendar/' + id;
-                url = '/api/v1/mcalendar';
+                url = '/api/v1/mcalendar/' + y;
             } else if(state.viewMode === 'dayly') {
                 const y = state.currentYear;
                 const m = state.currentMonth;

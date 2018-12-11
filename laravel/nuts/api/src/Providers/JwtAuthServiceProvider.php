@@ -45,7 +45,7 @@ class JwtAuthServiceProvider extends ServiceProvider
                 // mcalendar(monthly)
 //                $url = 'mcalendar/{userCalendarId}';
 //                Route::get($url, 'MCalendarController@index' );
-                $url = 'mcalendar';
+                $url = 'mcalendar/{year}';
                 Route::get($url, 'CalendarController@index' );
 
                 // calendar(dayly)

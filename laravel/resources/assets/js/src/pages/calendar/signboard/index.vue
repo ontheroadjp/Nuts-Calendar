@@ -8,18 +8,14 @@
                 align-items: center
             ">
 
-        <a @click="setCurrentYear(currentYear - 1)" style="font-size: 1.4rem;">
-            <span>
-                <i class="fa fa-chevron-circle-left"></i>
-            </span>
+        <a @click="clickPrev()" style="font-size: 1.4rem; cursor: 'pointer'">
+            <span><i class="fa fa-chevron-circle-left"></i></span>
         </a>
 
         <span style="font-size: 3rem; margin: 0 35px">{{ display }}</span>
 
-        <a @click="setCurrentYear(currentYear + 1)" style="font-size: 1.4rem;">
-            <span>
-                <i class="fa fa-chevron-circle-right"></i>
-            </span>
+        <a @click="clickNext()" style="font-size: 1.4rem;">
+            <span><i class="fa fa-chevron-circle-right"></i></span>
         </a>
 
     </div>
@@ -105,8 +101,33 @@
         methods: {
             ...mapActions('calendar', {
                 setCurrentYear: 'setCurrentYear',
-                setCurrentMonth: 'setCurrentMonth'
-            })
+                setCurrentMonth: 'setCurrentMonth',
+                fetchCalendar: 'fetchCalendar'
+            }),
+
+            clickPrev() {
+                switch( this.viewMode ) {
+                    case 'monthly':
+                        this.setCurrentYear(this.currentYear -1);
+                        break;
+                    case 'dayly':
+                        this.setCurrentMonth(this.setCurrentMonth -1);
+                        break;
+                }
+                this.fetchCalendar();
+            },
+
+            clickNext() {
+                switch( this.viewMode ) {
+                    case 'monthly':
+                        this.setCurrentYear(this.currentYear +1);
+                        break;
+                    case 'dayly':
+                        this.setCurrentMonth(this.setCurrentMonth +1);
+                        break;
+                }
+                this.fetchCalendar();
+            }
         }
     }
 </script>

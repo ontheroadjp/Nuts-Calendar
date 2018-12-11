@@ -141,7 +141,8 @@
                     switch(this.viewMode) {
                         case 'monthly':
                             data = data.filter((value) => {
-                                return value.gregorian_day == 0;
+                                return value.gregorian_year == this.currentYear
+                                    && value.gregorian_day == 0;
                             });
                             break;
                         case 'dayly':
