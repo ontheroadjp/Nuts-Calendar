@@ -78,7 +78,7 @@ export default {
 
             this.$store.commit('calendar/SET_VALUE', {
                 key: 'currentMonth',
-                value: ('00' + month).slice(-2)
+                value: month
             });
 
 //            this.fetchCalendar(this.currentUserCalendarId);

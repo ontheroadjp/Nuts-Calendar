@@ -108,7 +108,7 @@ export default {
         }),
 
         getRowIndex() {
-            const y = ('0000' + this.row.gregorian_year).slice(-4);
+            const y = ('20' + this.row.gregorian_year).slice(-4);
             const m = ('00' + this.row.gregorian_month).slice(-2);
             if( this.viewMode === 'monthly' ) {
                 return y + m + '00';

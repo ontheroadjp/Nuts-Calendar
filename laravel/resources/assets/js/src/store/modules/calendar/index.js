@@ -45,8 +45,9 @@ const calendar = {
         isLoading: false,
         viewMode: 'monthly',
         currentId: 'dashboard',
-        currentYear: now.getFullYear(),
-        currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
+        currentYear: parseInt(now.getFullYear()),
+//        currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
+        currentMonth: parseInt(now.getMonth() + 1),
         data: {
 //            mCalendars: [],
             calendars: []
@@ -68,6 +69,7 @@ const calendar = {
 //            dispatch('fetchCalendar', state.currentId);
         },
 
+
 //        fetchCalendar( { state, commit, dispatch }, calendarId) {
         fetchCalendar( { state, commit, dispatch } ) {
 //            if(calendarId === 'dashboard') return;
@@ -82,39 +84,63 @@ const calendar = {
 
             commit(IS_LOADING, true);
 
-            for( let n=0; n < state.data.calendars.length; n++ ) {
-                let value = state.data.calendars[n];
-                if( value.gregorian_year == state.currentYear
-                        && value.gregorian_month == state.currentMonth
-                        && value.gregorian_day != 0) {
-//                    u.clog('already exists. (' + calendarId + ')');
-                    u.clog('already exists.');
-                    commit(IS_LOADING, false);
-                    return;
-                }
-            };
-
 //            u.clog('fetchCalendar(' + calendarId + ')');
             u.clog('fetchCalendar()');
 //            const id = calendarId;
+
+            const y = state.currentYear
+                    ? ('00' + parseInt(state.currentYear)).slice(-4)
+                    : date().getFullYear();
+
+            const m = state.currentMonth
+                    ? ('00' + parseInt(state.currentMonth)).slice(-2)
+                    : date().getMonth() + 1;
+
             let url = '';
 
             if(state.viewMode === 'monthly') {
-                const y = state.currentYear ? state.currentYear : date().getYear();
-//                url = '/api/v1/mcalendar/' + id;
+//                const y = state.currentYear ? state.currentYear : date().getFullYear();
+                let target = 0;
+                for( let n=0; n < state.data.calendars.length; n++ ) {
+                    let value = state.data.calendars[n];
+                    if( value.gregorian_year == state.currentYear
+                            && value.gregorian_day == 0) {
+                        target++;
+                    }
+                    if( target == 12 ) {
+                        u.clog('already exists.');
+                        commit(IS_LOADING, false);
+                        return;
+                    }
+                };
+
                 url = '/api/v1/mcalendar/' + y;
+
             } else if(state.viewMode === 'dayly') {
-                const y = state.currentYear;
-                const m = state.currentMonth;
-//                url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
+//                const y = state.currentYear;
+//                const m = state.currentMonth ? state.currentMonth : date().getMonth() + 1;
+                for( let n=0; n < state.data.calendars.length; n++ ) {
+                    let value = state.data.calendars[n];
+                    if( value.gregorian_year == state.currentYear
+                            && value.gregorian_month == state.currentMonth
+                            && value.gregorian_day != 0) {
+                        u.clog('already exists.');
+                        commit(IS_LOADING, false);
+                        return;
+                    }
+                };
+
                 url = '/api/v1/calendar/' + y + '/' + m;
+
             }
 
             http.fetchGet(url)
                 .then( response => {
                     u.clog('success');
 
-                    commit('item/INIT', response.data.items, { root: true });
+                    commit('item/INIT', response.data.items, {
+                        root: true
+                    });
 
                     commit('INIT', response.data.days );
 

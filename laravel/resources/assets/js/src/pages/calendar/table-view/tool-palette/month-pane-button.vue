@@ -53,7 +53,7 @@ export default {
         }),
 
         clickButton(value) {
-            this.setCurrentMonth(('00' + value).slice(-2));
+            this.setCurrentMonth(value);
             this.fetchCalendar();
         }
     }
