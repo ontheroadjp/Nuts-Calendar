@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const http = {
     request (method, url, data, successCb = null, errorCb = null) {
-        u.clog('http.request()');
+//        u.clog('http.request()');
 
         axios.request({
             url,
@@ -86,7 +86,7 @@ export const http = {
         //axios.defaults.baseURL = '/api/v1'
 
         axios.interceptors.request.use( config => {
-            u.clog('axios.before - request');
+//            u.clog('axios.before - request');
             const token = jwtToken.getLocalToken();
             if(token) {
                 config.headers.Authorization = 'Bearer ' + token;
@@ -96,7 +96,7 @@ export const http = {
 
         axios.interceptors.response.use(
             response => {
-                u.clog('axios.before - response');
+//                u.clog('axios.before - response');
 
                 const jwtToken = response.headers['authorization'] || response.data['token'];
                 if (jwtToken) {

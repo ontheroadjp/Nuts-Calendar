@@ -62,7 +62,8 @@
                 :class="[{ saturday: viewMode === 'daily' && isSaturday(row.date),
                             sunday: viewMode === 'daily' && isSunday(row.date)> 0,
                         }, isToday(row.date) ? style.today.tr : '']"
-                :style="[rowIndex == 0 && viewMode === 'daily' ? style.monthlyItemRow : '']">
+                :style="[ rowIndex == 0 && viewMode === 'daily' && searchWords == ''
+                            ? style.monthlyItemRow : '']">
                 <monthColumn
                     v-if="viewMode === 'monthly'"
                     :row="row"
@@ -156,6 +157,10 @@ export default {
             currentYear: state => state.currentYear,
             currentMonth: state => state.currentMonth,
             viewMode: state => state.viewMode
+        }),
+
+        ...mapState('calendar/tableView/toolPalette', {
+            searchWords: state => state.query.search
         }),
 
         ...mapState('item', {

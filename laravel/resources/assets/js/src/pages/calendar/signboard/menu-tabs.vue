@@ -135,7 +135,7 @@ export default {
 
         changeCalendar: function(id) {
             if( this.currentCalendarId == id ) return;
-            u.clog('changeCalendar(' + id + ')');
+//            u.clog('changeCalendar(' + id + ')');
             this.$store.commit('calendar/SET_VALUE', {
                 key: 'currentId',
                 value: id

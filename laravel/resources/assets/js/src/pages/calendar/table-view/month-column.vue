@@ -60,7 +60,7 @@ export default {
         }),
 
         clickMonth: function(year, month) {
-            u.clog('changeCalendar(' + this.currentUserCalendarId + ')');
+//            u.clog('changeCalendar(' + this.currentUserCalendarId + ')');
             this.$store.commit('calendar/SET_VALUE', {
                 key: 'viewMode',
                 value: 'daily'

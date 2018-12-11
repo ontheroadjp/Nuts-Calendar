@@ -8,19 +8,19 @@
                 align-items: center
             ">
 
-        <button class="button thin"
+        <button class="button thin" :class="theme.primary.class"
             @click="clickPrev()"
-            style="font-size: 1.4rem;"
         ><div class="icon">
-            <i class="fa fa-chevron-circle-left"></i>
+            <i class="fa fa-2x fa-caret-left"></i>
         </div></button>
 
         <span style="font-size: 3rem; margin: 0 35px">{{ display }}</span>
 
-        <button class="button thin"
+        <button class="button thin" :class="theme.primary.class"
             @click="clickNext()"
-            style="font-size: 1.4rem;"
-        ><i class="fa fa-chevron-circle-right"></i></button>
+        ><div class="icon">
+            <i class="fa fa-2x fa-caret-right"></i>
+        </div></button>
 
     </div>
 

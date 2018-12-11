@@ -183,12 +183,10 @@
             getItemContentsAsString: function(row) {
                 let result = '';
 
-                u.clog('-----------------------------------------');
                 let columns = this.userCalendarMembers;
                 columns.forEach( column => {
                     const cellItems = row.items[column.member_id];
                     cellItems.forEach( calItem => {
-                        u.clog('item id: ' + calItem.id);
                         let item = this.items[calItem.id];
                         if( item.type_id === 1 && this.isEventItemShow ) {
                             result += item.content.toLowerCase() + ' ';
@@ -198,18 +196,6 @@
                     });
                 });
 
-//                let columns = row.items;
-//                const memberIds = Object.keys(columns);
-//                memberIds.forEach( id => {
-//                    const cellItems = columns[id];
-//                    cellItems.forEach( item => {
-//                        if( item.type_id === 1 && this.isEventItemShow ) {
-//                            result += item.content.toLowerCase() + ' ';
-//                        } else if( item.type_id === 2 && this.isTaskItemShow ) {
-//                            result += item.content.toLowerCase() + ' ';
-//                        }
-//                    });
-//                });
                 return result;
             },
 
