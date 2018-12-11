@@ -6,8 +6,8 @@
         <span class="level-item select">
             <select v-model="selected" class="thin" style="font-size: 0.9rem;" :disabled="disabled">
                 <option value="calendar">カレンダー</option>
-                <option v-show="viewMode === 'dayly'" value="month">月</option>
-                <option v-show="viewMode === 'dayly'" value="date">{{ t('calendarToolPalette.date') }}</option>
+                <option v-show="viewMode === 'daily'" value="month">月</option>
+                <option v-show="viewMode === 'daily'" value="date">{{ t('calendarToolPalette.date') }}</option>
                 <option value="item">{{ t('calendarToolPalette.item') }}</option>
             </select>
         </span>
@@ -20,7 +20,7 @@
             <month-pane :disabled="disabled"></month-pane>
         </span>
 
-        <span v-show="selected === 'date' && viewMode === 'dayly'" class="level-item">
+        <span v-show="selected === 'date' && viewMode === 'daily'" class="level-item">
             <date-pane :disabled="disabled"></date-pane>
         </span>
 <!--

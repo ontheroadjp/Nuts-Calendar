@@ -116,7 +116,7 @@ const calendar = {
 
                 url = '/api/v1/mcalendar/' + y;
 
-            } else if(state.viewMode === 'dayly') {
+            } else if(state.viewMode === 'daily') {
 //                const y = state.currentYear;
 //                const m = state.currentMonth ? state.currentMonth : date().getMonth() + 1;
                 for( let n=0; n < state.data.calendars.length; n++ ) {

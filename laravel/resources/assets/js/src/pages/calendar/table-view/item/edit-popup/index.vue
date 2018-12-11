@@ -66,9 +66,9 @@
             v-if="selectedTab === 'date' && isMonthlyItem"
         ></monthly-date-pane>
 
-        <dayly-date-pane
+        <daily-date-pane
             v-if="selectedTab === 'date' && !isMonthlyItem"
-        ></dayly-date-pane>
+        ></daily-date-pane>
 
         <time-pane
             v-if="selectedTab === 'time' && !isMonthlyItem"
@@ -79,11 +79,11 @@
             :disabled="showDeleteConfirm || updateIsLoading || isMonthlyItem"
         ></time-pane>
 
-        <dayly-repeat-pane
+        <daily-repeat-pane
             v-if="selectedTab === 'repeat'"
             :item = editingItem
             @changeValue="onChangeRepeat"
-        > </dayly-repeat-pane>
+        > </daily-repeat-pane>
 
         <!-- task-pane -->
         <div v-if="isTask" style="margin-bottom: 10px">
@@ -175,14 +175,14 @@ import core from '../../../../../mixins/core.js';
 import textInput from '../../../../../components/form/text-input.vue';
 import timePane from './time-pane.vue';
 import monthlyDatePane from './monthly-date-pane.vue';
-import daylyDatePane from './dayly-date-pane.vue';
-import daylyRepeatPane from './dayly-repeat-pane.vue';
+import dailyDatePane from './daily-date-pane.vue';
+import dailyRepeatPane from './daily-repeat-pane.vue';
 import taskDoneCheckbox from '../../../../../components/form/checkbox.vue';
 import memoTextarea from '../../../../../components/form/textarea.vue';
 
 export default {
     components: {
-        daylyDatePane, monthlyDatePane, timePane, daylyRepeatPane,
+        dailyDatePane, monthlyDatePane, timePane, dailyRepeatPane,
         textInput, taskDoneCheckbox, memoTextarea
     },
 

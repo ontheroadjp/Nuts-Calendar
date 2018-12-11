@@ -25,7 +25,7 @@
     </div>
 
 <!--
-    <div v-show="viewMode == 'dayly'" class="hero-body" style="padding: 20px;">
+    <div v-show="viewMode == 'daily'" class="hero-body" style="padding: 20px;">
 
     <div class="hero-body" style="padding: 20px;">
     <div class="container">
@@ -91,7 +91,7 @@
                         if( this.lang ==='en' ) {
                             return this.currentYear;
                         }
-                    case 'dayly':
+                    case 'daily':
                         if( this.lang === 'ja' ) {
                             return this.currentYear + '年 ' + this.currentMonth + '月';
                         }
@@ -114,7 +114,7 @@
                     case 'monthly':
                         this.setCurrentYear(this.currentYear-1);
                         break;
-                    case 'dayly':
+                    case 'daily':
                         if(this.currentMonth === 1) {
                             this.setCurrentYear(this.currentYear-1);
                             this.setCurrentMonth(12);
@@ -131,7 +131,7 @@
                     case 'monthly':
                         this.setCurrentYear(this.currentYear+1);
                         break;
-                    case 'dayly':
+                    case 'daily':
                         if(this.currentMonth === 12) {
                             this.setCurrentYear(this.currentYear+1);
                             this.setCurrentMonth(1);

@@ -10,7 +10,7 @@
         </select>
     </span>
 
-    <span class="level-item select" v-show="viewMode === 'dayly'">
+    <span class="level-item select" v-show="viewMode === 'daily'">
         <select @change="setCurrentYear(selectedMonth)" v-model="selectedMonth" class="thin" :disabled="disabled">
             <option value="01">1月</option>
             <option value="02">2月</option>
