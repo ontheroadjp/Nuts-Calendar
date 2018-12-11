@@ -129,6 +129,13 @@ class Calendar extends Model
 
                     //// array [id, id, id, ...]
                     //$cellItems[$i] = $cellItems[$i]->id;
+
+                    // add holidays property if it does not exist
+                    if( array_key_exists('holidays', $cellItems[$i]))
+                    {
+                        $cellItems[$i]->concat(['holidays' => '']);;
+                    }
+
                 }
             }
 

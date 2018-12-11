@@ -63,9 +63,8 @@ const calendar = {
 
 
         fetchCalendar( { state, commit, dispatch } ) {
-            commit(IS_LOADING, true);
-
             u.clog('fetchCalendar()');
+            commit(IS_LOADING, true);
 
             const y = state.currentYear
                     ? ('00' + parseInt(state.currentYear)).slice(-4)
@@ -145,16 +144,18 @@ const calendar = {
     mutations: {
         [INIT]( state, calendars ) {
 
-            calendars.forEach((value) => {
+//            calendars.forEach((value) => {
+//
+//                // add holidays property if it does not exist
+//                if(!Object.keys(value).some((key) => key === 'holidays')) {
+//                    value.holidays = [];
+//                }
+//
+//                // push new value
+//                state.data.calendars.push(value);
+//            });
 
-                // add holidays property if it does not exist
-                if(!Object.keys(value).some((key) => key === 'holidays')) {
-                    value.holidays = [];
-                }
-
-                // push new value
-                state.data.calendars.push(value);
-            });
+            state.data.calendars = calendars;
 
             // sort array
             state.data.calendars.sort(compareValues('date'));
