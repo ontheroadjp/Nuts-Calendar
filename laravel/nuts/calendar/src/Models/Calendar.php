@@ -34,9 +34,10 @@ class Calendar extends Model
         return $this->hasMany(Holiday::class, 'date', 'date');
     }
 
-    public function fetch($userId, $userCalendarId, $year = '', $month = '')
+//    public function fetch($userId, $userCalendarId, $year = '', $month = '')
+    public function fetch($userId, $year = '', $month = '')
     {
-        if($userCalendarId === 'dashboard') return;
+//        if($userCalendarId === 'dashboard') return;
 
         $allMembers = Member::where('user_id', $userId)->get()->keyBy('id')->toArray();
 
@@ -55,42 +56,39 @@ class Calendar extends Model
 //
 //        array_multisort(array_column($members, 'created_at'), SORT_ASC, $members);
 
+//        ini_set('memory_limit', '512M');
         if($year != '' && $month != '')
         {
-            $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year,$month);
+            $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year, $month);
+        } else if($year !== '') {
+            $calendar = $this->fetchMCalendarWithItems($userId, $year);
         } else {
-            $calendar = $this->fetchMCalendarWithItems($userId, date('Y'));
+            return [
+                'status' => 'Error'
+            ];
         }
 
         $results = $this->tidyItems($calendar, collect($allMembers));
 
         return [
-            "members" => $allMembers,
             "days" => $results['days'],
-            "itemsInDaysFormat" => $results['items'],
+            "members" => $allMembers,
+//            "itemsInDaysFormat" => $results['items'],
 //            "items" => $this->keyByItemId($results['items'])
             "items" => $results['items'],
-            "calendar" => $calendar
         ];
     }
 
-    public function fetchCalendarWithHolidayAndItems($userId, $year,$month)
+    public function fetchCalendarWithHolidayAndItems($userId, $year, $month)
     {
-//        ini_set('memory_limit', '512M');
-
-//        return Calendar::with('holidays', 'items.rrule')
-//            ->where('date', 'LIKE', "$year-$month-%")
-//            ->get();
-
         return Calendar::with([
-            'holidays', 'items' => function ($query) use ($userId)
+            'holidays',
+//            'items.rrule',
+            'items' => function ($query) use ($userId)
             {
-//                $query->leftjoin('rrules', 'items.rrule_id', '=', 'rrules.id')
-//                        ->where('user_id', '=', $userId);
-//                $query->where('user_id', '=', $userId);
+                $query->where('user_id', '=', $userId);
             }])->where('date', 'LIKE', "$year-$month-%")
             ->get();
-
     }
 
     public function fetchMCalendarWithItems($userId, $year)
@@ -127,11 +125,9 @@ class Calendar extends Model
 
         for( $n=0; $n < count($calendar); $n++ )
         {
-
             // gather items into array key by member_id
             $items_group_by = $calendar[$n]['items']
                 ->groupBy('member_id');
-
 
 //            // remove items(key = member_id) which doesn't exist in $members
 //            $items_group_by = collect(

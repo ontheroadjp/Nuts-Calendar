@@ -8,24 +8,24 @@
                 align-items: center
             ">
 
-        <a @click="setCurrentYear(currentYear - 1)" style="font-size: 1.4rem;">
-            <span>
-                <i class="fa fa-chevron-circle-left"></i>
-            </span>
-        </a>
+        <button class="button thin"
+            @click="clickPrev()"
+            style="font-size: 1.4rem;"
+        ><div class="icon">
+            <i class="fa fa-chevron-circle-left"></i>
+        </div></button>
 
         <span style="font-size: 3rem; margin: 0 35px">{{ display }}</span>
 
-        <a @click="setCurrentYear(currentYear + 1)" style="font-size: 1.4rem;">
-            <span>
-                <i class="fa fa-chevron-circle-right"></i>
-            </span>
-        </a>
+        <button class="button thin"
+            @click="clickNext()"
+            style="font-size: 1.4rem;"
+        ><i class="fa fa-chevron-circle-right"></i></button>
 
     </div>
 
 <!--
-    <div v-show="viewMode == 'dayly'" class="hero-body" style="padding: 20px;">
+    <div v-show="viewMode == 'daily'" class="hero-body" style="padding: 20px;">
 
     <div class="hero-body" style="padding: 20px;">
     <div class="container">
@@ -91,12 +91,12 @@
                         if( this.lang ==='en' ) {
                             return this.currentYear;
                         }
-                    case 'dayly':
+                    case 'daily':
                         if( this.lang === 'ja' ) {
-                            return this.currentYear + '年 ' + parseInt(this.currentMonth) + '月';
+                            return this.currentYear + '年 ' + this.currentMonth + '月';
                         }
                         if( this.lang ==='en' ) {
-                            return this.currentMonth + this.currentYear;
+                            return this.currentMonth + ' ' + this.currentYear;
                         }
                 }
             }
@@ -105,8 +105,43 @@
         methods: {
             ...mapActions('calendar', {
                 setCurrentYear: 'setCurrentYear',
-                setCurrentMonth: 'setCurrentMonth'
-            })
+                setCurrentMonth: 'setCurrentMonth',
+                fetchCalendar: 'fetchCalendar'
+            }),
+
+            clickPrev() {
+                switch( this.viewMode ) {
+                    case 'monthly':
+                        this.setCurrentYear(this.currentYear-1);
+                        break;
+                    case 'daily':
+                        if(this.currentMonth === 1) {
+                            this.setCurrentYear(this.currentYear-1);
+                            this.setCurrentMonth(12);
+                        } else {
+                            this.setCurrentMonth(this.currentMonth-1);
+                        }
+                        break;
+                }
+                this.fetchCalendar();
+            },
+
+            clickNext() {
+                switch( this.viewMode ) {
+                    case 'monthly':
+                        this.setCurrentYear(this.currentYear+1);
+                        break;
+                    case 'daily':
+                        if(this.currentMonth === 12) {
+                            this.setCurrentYear(this.currentYear+1);
+                            this.setCurrentMonth(1);
+                        } else {
+                            this.setCurrentMonth(this.currentMonth+1);
+                        }
+                        break;
+                }
+                this.fetchCalendar();
+            }
         }
     }
 </script>

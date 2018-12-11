@@ -13,7 +13,7 @@
         {{ getRowIndex() }}<br>
         <small>{{ memberId }}</small>
 -->
-        <div v-show="viewMode === 'dayly' && getRowIndex().slice(-2) == 0"
+        <div v-show="viewMode === 'daily' && getRowIndex().slice(-2) == 0"
             style="font-size: 0.6rem;" >Monthly Items</div>
 
         <div v-for="(minItem, itemIndex) in cellItems"
@@ -108,11 +108,11 @@ export default {
         }),
 
         getRowIndex() {
-            const y = ('0000' + this.row.gregorian_year).slice(-4);
+            const y = ('20' + this.row.gregorian_year).slice(-4);
             const m = ('00' + this.row.gregorian_month).slice(-2);
             if( this.viewMode === 'monthly' ) {
                 return y + m + '00';
-            } else if( this.viewMode === 'dayly' ) {
+            } else if( this.viewMode === 'daily' ) {
                 const d = ('00' + this.row.gregorian_day).slice(-2);
                 return y + m + d;
             }
