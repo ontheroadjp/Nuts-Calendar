@@ -1,7 +1,7 @@
 <template>
 <span class="level" style="font-size: 0.9rem;" >
     <span class="level-item select">
-        <select :style="style.yearSelector" :disabled="disabled">
+        <select v-model="selectedYear" :style="style.yearSelector" :disabled="disabled">
             <option value="2017" :selected="currentYear == 2017">2017年</option>
             <option value="2018" :selected="currentYear == 2018">2018年</option>
             <option value="2019" :selected="currentYear == 2019">2019年</option>
@@ -31,7 +31,8 @@ export default {
 
     data() {
         return {
-            months: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+            selectedYear: '',
+            months: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
         }
     },
 
@@ -66,12 +67,25 @@ export default {
     methods: {
         ...mapActions('calendar', {
             setCurrentYear: 'setCurrentYear',
+            fetchCalendar: 'fetchCalendar'
         }),
 
         ...mapActions('calendar/tableView/toolPalette', {
             setInternalQuery: 'setInternalQuery'
         })
+    },
+
+    watch: {
+        selectedYear: function() {
+            this.setCurrentYear(this.selectedYear);
+            this.fetchCalendar();
+        }
+    },
+
+    mounted: function() {
+        this.selectedYear = this.currentYear;
     }
+
 }
 </script>
 
