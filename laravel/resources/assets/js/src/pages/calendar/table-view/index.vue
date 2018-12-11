@@ -105,12 +105,20 @@
                 viewMode: state => state.viewMode
             }),
 
+            ...mapState('userCalendarMember', {
+                userCalendarMembers: state => state.data.userCalendarMembers
+            }),
+
             ...mapState('calendar/tableView/toolPalette', {
                 isToolPaletteOpen: state => state.toolPalette.isActive,
                 isEventItemShow: state => state.isEventItemShow,
                 isTaskItemShow: state => state.isTaskItemShow,
                 internalQuery: state => state.query.internal,
                 searchQuery: state => (state.query.search).toLowerCase()
+            }),
+
+            ...mapState('item', {
+                items: state => state.data.items
             }),
 
             ...mapState('item/dnd', {
@@ -161,8 +169,8 @@
 
                     // filter by search words
                     if(this.searchQuery) {
-                        data = data.slice().filter( day => {
-                            return this.getItemContentsAsString(day).indexOf(this.searchQuery) > -1;
+                        data = data.slice().filter( row => {
+                            return this.getItemContentsAsString(row).indexOf(this.searchQuery) > -1;
                         });
                     }
 
@@ -172,14 +180,16 @@
         },
 
         methods: {
-            getItemContentsAsString: function(day) {
+            getItemContentsAsString: function(row) {
                 let result = '';
-                let columns = day.items;
-                const memberIds = Object.keys(columns);
 
-                memberIds.forEach((id) => {
-                    const cellItems = columns[id];
-                    cellItems.forEach((item) => {
+                u.clog('-----------------------------------------');
+                let columns = this.userCalendarMembers;
+                columns.forEach( column => {
+                    const cellItems = row.items[column.member_id];
+                    cellItems.forEach( calItem => {
+                        u.clog('item id: ' + calItem.id);
+                        let item = this.items[calItem.id];
                         if( item.type_id === 1 && this.isEventItemShow ) {
                             result += item.content.toLowerCase() + ' ';
                         } else if( item.type_id === 2 && this.isTaskItemShow ) {
@@ -187,6 +197,19 @@
                         }
                     });
                 });
+
+//                let columns = row.items;
+//                const memberIds = Object.keys(columns);
+//                memberIds.forEach( id => {
+//                    const cellItems = columns[id];
+//                    cellItems.forEach( item => {
+//                        if( item.type_id === 1 && this.isEventItemShow ) {
+//                            result += item.content.toLowerCase() + ' ';
+//                        } else if( item.type_id === 2 && this.isTaskItemShow ) {
+//                            result += item.content.toLowerCase() + ' ';
+//                        }
+//                    });
+//                });
                 return result;
             },
 
