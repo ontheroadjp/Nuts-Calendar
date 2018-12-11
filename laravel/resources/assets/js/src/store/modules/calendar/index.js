@@ -59,12 +59,18 @@ const calendar = {
     },
 
     actions: {
-        setCurrentYear( { state, commit, dispatch }, value ) {
+        setCurrentCalendarId( { commit }, value ) {
+            commit(SET_VALUE, { key: 'currentId', value });
+        },
+
+//        setCurrentYear( { state, commit, dispatch }, value ) {
+        setCurrentYear( { commit }, value ) {
             commit(SET_VALUE, { key: 'currentYear', value });
 //            dispatch('fetchCalendar', state.currentId);
         },
 
-        setCurrentMonth({ state, commit, dispatch }, value ) {
+//        setCurrentMonth({ state, commit, dispatch }, value ) {
+        setCurrentMonth({ commit }, value ) {
             commit(SET_VALUE, { key: 'currentMonth', value });
 //            dispatch('fetchCalendar', state.currentId);
         },
