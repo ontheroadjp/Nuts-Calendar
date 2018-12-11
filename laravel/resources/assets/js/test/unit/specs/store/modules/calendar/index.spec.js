@@ -28,7 +28,8 @@ describe('store/modules/calendar/index.js', () => {
 
             SET_VALUE(state, {key: 'viewMode', value: 'dayly'});
 
-            testAction(fetchCalendar, { calendarId: 8 }, { state }, [
+//            testAction(fetchCalendar, { calendarId: 8 }, { state }, [
+            testAction(fetchCalendar, { state }, [
                 { type: 'IS_LOADING', payload: true },
                 { type: 'tableView/updateCellItems', payload: calendars.days[0].items.memberId },
                 { type: 'tableView/updateCellItems', payload: calendars.days[1].items.memberId },

@@ -81,7 +81,8 @@ export default {
                 value: ('00' + month).slice(-2)
             });
 
-            this.fetchCalendar(this.currentUserCalendarId);
+//            this.fetchCalendar(this.currentUserCalendarId);
+            this.fetchCalendar();
         }
     }
 };

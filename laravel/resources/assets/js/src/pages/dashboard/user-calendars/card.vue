@@ -84,14 +84,16 @@ export default {
             fetchCalendar: 'fetchCalendar'
         }),
 
-        clickUserCalendar: function(id) {
-            u.clog('changeCalendar(' + id + ')');
+//        clickUserCalendar: function(id) {
+        clickUserCalendar: function() {
+//            u.clog('changeCalendar(' + id + ')');
             this.$store.commit('calendar/SET_VALUE', {
                 key: 'currentId',
                 value: id
             });
 
-            this.fetchCalendar(id);
+//            this.fetchCalendar(id);
+            this.fetchCalendar();
         }
     }
 };

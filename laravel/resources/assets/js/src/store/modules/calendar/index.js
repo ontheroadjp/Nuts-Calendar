@@ -68,8 +68,18 @@ const calendar = {
 //            dispatch('fetchCalendar', state.currentId);
         },
 
-        fetchCalendar( { state, commit, dispatch }, calendarId) {
-            if(calendarId === 'dashboard') return;
+//        fetchCalendar( { state, commit, dispatch }, calendarId) {
+        fetchCalendar( { state, commit, dispatch } ) {
+//            if(calendarId === 'dashboard') return;
+
+//            if(String(state.currentYear).length !== 4)
+//                u.clog('Error: state.currentYear is not set correctry');
+//                return;
+//
+//            if(String(state.currentYear).length !== 4)
+//                u.clog('Error: state.currentYear is not set correctry');
+//                return;
+
             commit(IS_LOADING, true);
 
             for( let n=0; n < state.data.calendars.length; n++ ) {
@@ -77,22 +87,27 @@ const calendar = {
                 if( value.gregorian_year == state.currentYear
                         && value.gregorian_month == state.currentMonth
                         && value.gregorian_day != 0) {
-                    u.clog('already exists. (' + calendarId + ')');
+//                    u.clog('already exists. (' + calendarId + ')');
+                    u.clog('already exists.');
                     commit(IS_LOADING, false);
                     return;
                 }
             };
 
-            u.clog('fetchCalendar(' + calendarId + ')');
-            const id = calendarId;
+//            u.clog('fetchCalendar(' + calendarId + ')');
+            u.clog('fetchCalendar()');
+//            const id = calendarId;
+            const id = 'hogehoge';
             let url = '';
 
             if(state.viewMode === 'monthly') {
-                url = '/api/v1/mcalendar/' + id;
+//                url = '/api/v1/mcalendar/' + id;
+                url = '/api/v1/mcalendar';
             } else if(state.viewMode === 'dayly') {
                 const y = state.currentYear;
                 const m = state.currentMonth;
-                url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
+//                url = '/api/v1/calendar/' + id + '/' + y + '/' + m;
+                url = '/api/v1/calendar/' + y + '/' + m;
             }
 
             http.fetchGet(url)
