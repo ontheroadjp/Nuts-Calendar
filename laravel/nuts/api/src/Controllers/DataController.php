@@ -13,7 +13,6 @@ namespace Nuts\Api\Controllers;
 
 use Nuts\Calendar\Models\Member;
 use Nuts\Calendar\Models\Userplan;
-use Nuts\Calendar\Models\MCalendar;
 use Nuts\Calendar\Models\UserCalendar;
 use Nuts\Calendar\Models\UserCalendarMember;
 use Illuminate\Routing\Controller as BaseController;

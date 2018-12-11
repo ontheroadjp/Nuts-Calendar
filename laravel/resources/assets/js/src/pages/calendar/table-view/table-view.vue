@@ -30,8 +30,7 @@
                     style="text-align: center; vertical-align: middle; padding: 0;"
                     :style="[style.firstColumnWidth]"
                 >
-                        <a
-                            v-show="viewMode === 'daily'"
+                        <a v-show="viewMode === 'daily'"
                             class="button"
                             style="font-size: 0.8rem; width: 90%; background-color:#8a7676; color: #fff;"
                             @click="$store.commit('calendar/SET_VALUE', {
@@ -59,13 +58,6 @@
         </thead>
 
         <tbody v-if="filteredBody">
-<!--
-            <tr v-for="(row, rowIndex) in filteredBody"
-                :class="[{ saturday: viewMode === 'daily' && isSaturday(row.date),
-                            sunday: viewMode === 'daily' && isSunday(row.date) || row.holidays.length > 0,
-                        }, isToday(row.date) ? style.today.tr : '']"
-                :style="[rowIndex == 0 && viewMode === 'daily' ? style.monthlyItemRow : '']">
--->
             <tr v-for="(row, rowIndex) in filteredBody"
                 :class="[{ saturday: viewMode === 'daily' && isSaturday(row.date),
                             sunday: viewMode === 'daily' && isSunday(row.date)> 0,
@@ -166,7 +158,6 @@ export default {
             viewMode: state => state.viewMode
         }),
 
-//        ...mapState('calendar/tableView/item', {
         ...mapState('item', {
             editItem: state => state.update
         }),
@@ -234,12 +225,10 @@ export default {
     },
 
     methods: {
-//        ...mapActions('calendar/tableView/item/update', {
         ...mapActions('item/update', {
             updateReset: 'reset'
         }),
 
-//        ...mapActions('calendar/tableView/item/remove', {
         ...mapActions('item/remove', {
             removeReset: 'reset'
         }),

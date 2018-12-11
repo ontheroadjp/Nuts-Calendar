@@ -11,12 +11,6 @@
                 ><i class="fa fa-file-text-o"></i>
             </span>
 
-            <!--
-            <span v-if="!item.is_all_day"
-                :class="[{'vertial': displayVertically}, 'thin-400']"
-                style="margin-right: 8px; white-space: nowrap;"
-            >
-            -->
             <span v-if="!item.is_all_day"
                 :class="[{'vertial': displayVertically}, 'thin-400']"
                 style="margin-right: 8px;"
@@ -85,7 +79,6 @@ export default {
             toolPalette: state => state.toolPalette,
         }),
 
-//        ...mapState('calendar/tableView/item', {
         ...mapState('item', {
             dnd: state => state.dnd,
             update: state => state.update,

@@ -34,38 +34,22 @@ class Calendar extends Model
         return $this->hasMany(Holiday::class, 'date', 'date');
     }
 
-//    public function fetch($userId, $userCalendarId, $year = '', $month = '')
     public function fetch($userId, $year = '', $month = '')
     {
-//        if($userCalendarId === 'dashboard') return;
+        $allMembers = Member::where('user_id', $userId)
+                        ->get()
+                        ->keyBy('id')
+                        ->toArray();
 
-        $allMembers = Member::where('user_id', $userId)->get()->keyBy('id')->toArray();
+        // ini_set('memory_limit', '512M');
 
-//        $userCalendarMemberIds = UserCalendarMember::where('user_calendar_id', $userCalendarId)
-//                                    ->get(['member_id'])
-//                                    ->keyBy('member_id')
-//                                    ->keys()
-//                                    ->toArray();
-//        $members = [];
-//
-//        foreach( $allMembers as $key => $val ) {
-//            if( in_array($key, $userCalendarMemberIds) ) {
-//                $members += [$key => $val];
-//            }
-//        }
-//
-//        array_multisort(array_column($members, 'created_at'), SORT_ASC, $members);
-
-//        ini_set('memory_limit', '512M');
         if($year != '' && $month != '')
         {
             $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year, $month);
         } else if($year !== '') {
             $calendar = $this->fetchMCalendarWithItems($userId, $year);
         } else {
-            return [
-                'status' => 'Error'
-            ];
+            return [ 'status' => 'Error' ];
         }
 
         $results = $this->tidyItems($calendar, collect($allMembers));
@@ -73,8 +57,6 @@ class Calendar extends Model
         return [
             "days" => $results['days'],
             "members" => $allMembers,
-//            "itemsInDaysFormat" => $results['items'],
-//            "items" => $this->keyByItemId($results['items'])
             "items" => $results['items'],
         ];
     }
@@ -83,7 +65,7 @@ class Calendar extends Model
     {
         return Calendar::with([
             'holidays',
-//            'items.rrule',
+            'items.rrule',
             'items' => function ($query) use ($userId)
             {
                 $query->where('user_id', '=', $userId);
@@ -103,20 +85,6 @@ class Calendar extends Model
             ->get();
     }
 
-//    private function keyByItemId($items)
-//    {
-//        $newItems = [];
-//        for( $n=0; $n < count($items); $n++ )
-//        {
-//            foreach($items[$n] as $key => $val) {
-//                for( $i=0; $i < count($val); $i++){
-//                    $newItems += array($val[$i]['id'] => $val[$i]);
-//                }
-//            }
-//        }
-//        return $newItems;
-//    }
-
     private function tidyItems(Collection $calendar, Collection $members)
     {
         $days = [];
@@ -129,13 +97,13 @@ class Calendar extends Model
             $items_group_by = $calendar[$n]['items']
                 ->groupBy('member_id');
 
-//            // remove items(key = member_id) which doesn't exist in $members
-//            $items_group_by = collect(
-//                array_intersect_key(
-//                    $items_group_by->toArray(),
-//                    $members->toArray()
-//                )
-//            );
+            //// remove items(key = member_id) which doesn't exist in $members
+            //$items_group_by = collect(
+            //    array_intersect_key(
+            //        $items_group_by->toArray(),
+            //        $members->toArray()
+            //    )
+            //);
 
             $diff = $members
                 ->keys()
@@ -159,8 +127,8 @@ class Calendar extends Model
                     // object [{id: xxx}, ...]
                     $cellItems[$i] = array('id' => $cellItems[$i]->id);
 
-//                    // array [id, id, id, ...]
-//                    $cellItems[$i] = $cellItems[$i]->id;
+                    //// array [id, id, id, ...]
+                    //$cellItems[$i] = $cellItems[$i]->id;
                 }
             }
 
@@ -169,11 +137,8 @@ class Calendar extends Model
             $days[] = collect($calendar[$n])
                 ->forget('items')
                 ->put('items', $items_group_by);
-
-//            $items[] = $items_group_by;
         }
 
-//        return array('days' => $days, 'items' => $items);
         return array('days' => $days, 'items' => $standaloneItems);
     }
 }

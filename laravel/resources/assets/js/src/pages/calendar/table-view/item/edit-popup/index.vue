@@ -236,13 +236,11 @@ export default {
             viewMode: state => state.viewMode
         }),
 
-//        ...mapState('calendar/tableView/item/update', {
         ...mapState('item/update', {
             editingItem: 'editingItem',
             updateIsLoading: 'isLoading'
         }),
 
-//        ...mapState('calendar/tableView/item/remove', {
         ...mapState('item/remove', {
             removeIsLoading: 'isLoading'
         }),
@@ -305,13 +303,11 @@ export default {
     },
 
     methods: {
-//        ...mapActions('calendar/tableView/item/update', {
         ...mapActions('item/update', {
             setInputValue: 'setInputValue',
             update: 'update'
         }),
 
-//        ...mapActions('calendar/tableView/item/remove', {
         ...mapActions('item/remove', {
             remove: 'remove'
         }),

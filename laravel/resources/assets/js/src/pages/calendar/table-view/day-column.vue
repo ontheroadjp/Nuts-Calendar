@@ -1,10 +1,6 @@
 <template>
-<!--
-    <td class="date-styling" :style="[firstColumnWidth, row.date.slice(-2) == 0 ? {'background-color': '#b3a4a4'}]">
--->
     <td class="date-styling" :style="[firstColumnWidth]">
         <div>
-            <!-- {{ row.date.slice(-2) != 0 ? getDateAndDay(row.date) : '' }} -->
             <span
                 v-show="row.date.slice(-2) != 0"
                 v-html="dayColumnLabel(row.date)"
@@ -51,8 +47,6 @@ export default {
             const data = [
                 '大安', '赤口',	'先勝',	'友引',	'先負',	'仏滅'
             ];
-//            return data[Math.round((month + day) % 6)];
-//            return data[Math.ceil((month + day) % 6)];
             return data[Math.floor((month + day) % 6)];
         }
     }

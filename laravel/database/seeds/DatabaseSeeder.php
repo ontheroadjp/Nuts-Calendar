@@ -39,9 +39,6 @@ class DatabaseSeeder extends Seeder
         // holiday
         $this->call(HolidaysTableSeeder::class);
 
-        // m_calendar(date)
-//        $this->call(MCalendarTableSeeder::class);
-
         // calendar(date)
         $this->call(CalendarTableSeeder::class);
 

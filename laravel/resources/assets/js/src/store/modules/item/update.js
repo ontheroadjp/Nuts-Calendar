@@ -35,11 +35,6 @@ export default {
     },
 
     actions: {
-//        prepare( { commit }, { event, cellItems, editingItem } ) {
-//            u.clog('prepare() @vuex item/update');
-//            commit(PREPARE, { event, cellItems, editingItem } );
-//        },
-
         prepare( { commit }, { cellItems, editingItem } ) {
             u.clog('prepare() @vuex item/update');
             commit(PREPARE, { cellItems, editingItem } );
@@ -81,18 +76,11 @@ export default {
                 member_id:  state.editingItem.member_id,
                 date:       state.editingItem.date,
                 is_done:    state.editingItem.is_done,
-
                 content:    state.input.content,
                 is_all_day: state.input.isAllDay,
                 start_time: state.input.startTime,
                 end_time:   state.input.endTime,
-
-//                rrule_id: state.input.rruleId,
-
-                rrule_string: state.input.rruleString,
-                rrule_text: state.input.rruleText,
-                rrule_json: state.input.rruleJson,
-
+                rrule_id: state.input.rruleId,
                 memo:       state.input.memo
             };
 

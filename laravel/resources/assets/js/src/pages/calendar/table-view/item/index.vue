@@ -108,13 +108,11 @@ export default {
             toolPalette: state => state.toolPalette,
         }),
 
-//        ...mapState('calendar/tableView/item/insert', {
         ...mapState('item/insert', {
             duplicatingItem: state => state.duplicatingItem,
             duplicateIsLoading: state => state.isLoading
         }),
 
-//        ...mapState('calendar/tableView/item', {
         ...mapState('item', {
             remove: state => state.remove
         }),
@@ -131,7 +129,6 @@ export default {
     },
 
     methods: {
-//        ...mapActions('calendar/tableView/item', {
         ...mapActions('item', {
             insertReset: 'insert/reset',
             duplicate: 'insert/duplicate',
@@ -287,7 +284,6 @@ export default {
 
 <style lang="scss">
 .tippy-tooltip.honeybee-theme {
-/*    background-color: #b38d91; */
     height: 30px;
 }
 

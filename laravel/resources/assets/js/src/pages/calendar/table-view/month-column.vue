@@ -1,11 +1,9 @@
 <template>
-    <td @click="clickMonth(row.gregorian_year, row.gregorian_month)" class="month-column date-styling" :style="firstColumnWidth">
+<td @click="clickMonth(row.gregorian_year, row.gregorian_month)"
+    class="month-column date-styling"
+    :style="firstColumnWidth"
+>
         <div style="margin-bottom: 5px;">
-<!--
-            <template v-if="row.gregorian_month == 1">
-                <div :style="style.yearLabel" >{{ row.gregorian_year }}年</div>
-            </template>
--->
             <div style="padding: 5px" >
                 <router-link
                     to="/calendar/view"
@@ -15,17 +13,14 @@
                     <span style="font-size: 1rem">月</span>
                 </router-link>
             </div>
-
         </div>
-    </td>
+
+</td>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-//import dateUtilities from '../../../mixins/date-utilities.js';
 export default {
-    //mixins: [ dateUtilities ],
-
     props: {
         row: { type: Object, required: true},
         today: { },
@@ -81,7 +76,6 @@ export default {
                 value: month
             });
 
-//            this.fetchCalendar(this.currentUserCalendarId);
             this.fetchCalendar();
         }
     }

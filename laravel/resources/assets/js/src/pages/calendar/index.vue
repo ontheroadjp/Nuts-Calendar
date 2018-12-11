@@ -13,7 +13,6 @@
 <script>
     import { mapState, mapActions } from 'vuex';
     import signboard from './signboard/index.vue';
-//    import calendarService from '../../services/calendar.js';
 
     export default {
         name: 'calendar-root',
@@ -21,10 +20,6 @@
         components: {
             'signboard': signboard
         },
-
-//        mixins: [
-//            calendarService,
-//        ],
 
         computed: {
             ...mapState({
@@ -50,41 +45,11 @@
                 handler: function(newVal, oldVal) {
                     if(!oldVal && newVal) {
                         u.clog('watch: appReady');
-//                        this.fetchCalendar(this.currentCalendarId);
                         this.fetchCalendar();
                     }
                 },
                 deep: true
-            },
-
-//            'currentCalendarId': {
-//                handler: function(newVal, oldVal) {
-//                    if( oldVal === '' || newVal == oldVal) return;
-//                    u.clog('watch: currentCalendarId');
-//                    if(this.$store.state.app.ready) {
-//                        this.fetchCalendar(this.currentCalendarId);
-//                    }
-//                },
-//                deep: true
-//            },
-
-//            'currentYear': {
-//                handler: function(newVal, oldVal) {
-//                    if( oldVal === '' || newVal == oldVal) return;
-//                    u.clog('watch: currentYear');
-//                    this.fetchCalendar(this.currentCalendarId);
-//                },
-//                deep: true
-//            },
-
-//            'currentMonth': {
-//                handler: function(newVal, oldVal) {
-//                    if( oldVal === '' || newVal == oldVal) return;
-//                    u.clog('watch: currentMonth');
-//                    this.fetchCalendar(this.currentCalendarId);
-//                },
-//                deep: true
-//            }
+            }
         }
     }
 </script>

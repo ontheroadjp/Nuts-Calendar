@@ -113,7 +113,6 @@
                 searchQuery: state => (state.query.search).toLowerCase()
             }),
 
-//            ...mapState('calendar/tableView/item/dnd', {
             ...mapState('item/dnd', {
                 draggingItem: state => state.draggingItem
             }),

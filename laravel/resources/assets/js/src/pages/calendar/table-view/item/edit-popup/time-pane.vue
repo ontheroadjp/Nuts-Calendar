@@ -111,11 +111,6 @@ export default {
             theme: state => state.app.theme,
         }),
 
-//        ...mapState('calendar/tableView/item/update', {
-//            editingItem: 'editingItem',
-//            updateIsLoading: 'isLoading'
-//        }),
-
         style: function() {
             return {
                 primary: {

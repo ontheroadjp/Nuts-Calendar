@@ -1,9 +1,5 @@
 import Vue from 'vue';
 import toolPalette  from './table-view/tool-palette.js';
-//import insert       from '../item/insert.js';
-//import update       from '../item/update.js';
-//import remove       from '../item/remove.js';
-//import dnd          from '../item/dnd.js';
 import {
     INIT,
     SET_VALUE,
@@ -46,16 +42,10 @@ const calendar = {
         viewMode: 'monthly',
         currentId: 'dashboard',
         currentYear: parseInt(now.getFullYear()),
-//        currentMonth: ('0' + (now.getMonth() + 1)).slice(-2),
         currentMonth: parseInt(now.getMonth() + 1),
         data: {
-//            mCalendars: [],
             calendars: []
         },
-//        fetchedData: {
-//            mCalendars: [],
-//            calendars: []
-//        }
     },
 
     actions: {
@@ -63,36 +53,19 @@ const calendar = {
             commit(SET_VALUE, { key: 'currentId', value });
         },
 
-//        setCurrentYear( { state, commit, dispatch }, value ) {
         setCurrentYear( { commit }, value ) {
             commit(SET_VALUE, { key: 'currentYear', value });
-//            dispatch('fetchCalendar', state.currentId);
         },
 
-//        setCurrentMonth({ state, commit, dispatch }, value ) {
         setCurrentMonth({ commit }, value ) {
             commit(SET_VALUE, { key: 'currentMonth', value });
-//            dispatch('fetchCalendar', state.currentId);
         },
 
 
-//        fetchCalendar( { state, commit, dispatch }, calendarId) {
         fetchCalendar( { state, commit, dispatch } ) {
-//            if(calendarId === 'dashboard') return;
-
-//            if(String(state.currentYear).length !== 4)
-//                u.clog('Error: state.currentYear is not set correctry');
-//                return;
-//
-//            if(String(state.currentYear).length !== 4)
-//                u.clog('Error: state.currentYear is not set correctry');
-//                return;
-
             commit(IS_LOADING, true);
 
-//            u.clog('fetchCalendar(' + calendarId + ')');
             u.clog('fetchCalendar()');
-//            const id = calendarId;
 
             const y = state.currentYear
                     ? ('00' + parseInt(state.currentYear)).slice(-4)
@@ -105,7 +78,6 @@ const calendar = {
             let url = '';
 
             if(state.viewMode === 'monthly') {
-//                const y = state.currentYear ? state.currentYear : date().getFullYear();
                 let target = 0;
                 for( let n=0; n < state.data.calendars.length; n++ ) {
                     let value = state.data.calendars[n];
@@ -123,8 +95,6 @@ const calendar = {
                 url = '/api/v1/mcalendar/' + y;
 
             } else if(state.viewMode === 'daily') {
-//                const y = state.currentYear;
-//                const m = state.currentMonth ? state.currentMonth : date().getMonth() + 1;
                 for( let n=0; n < state.data.calendars.length; n++ ) {
                     let value = state.data.calendars[n];
                     if( value.gregorian_year == state.currentYear
@@ -220,9 +190,7 @@ const calendar = {
 
             actions: {
                 updateCellItems( { commit, rootState }, cellItems ) {
-//                    if( rootState.calendar.viewMode != 'monthly') {
-                        commit(SORT_CELL_ITEMS, {rootState, cellItems});
-//                    }
+                    commit(SORT_CELL_ITEMS, {rootState, cellItems});
                     commit(CHECK_TIME, cellItems);
                 }
             },
@@ -329,16 +297,6 @@ const calendar = {
 
             modules: {
                 toolPalette: toolPalette,
-
-//                item: {
-//                    namespaced: true,
-//                    modules: {
-//                        insert: insert,
-//                        update: update,
-//                        remove: remove,
-//                        dnd: dnd
-//                    }
-//                }
             }
         }
     }
