@@ -23,8 +23,6 @@ const item = {
         },
 
         [ADD]( state, { id, item } ) {
-            u.clog('id: ' + id);
-            u.clog('item: ' + item);
             Vue.set(state.data.items, id, item);
         },
 

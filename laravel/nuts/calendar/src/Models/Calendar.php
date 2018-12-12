@@ -52,11 +52,35 @@ class Calendar extends Model
             return [ 'status' => 'Error' ];
         }
 
+        return [
+            "calendar" => $calendar,
+            "members" => $allMembers
+        ];
+    }
+
+    public function fetchAndTidyItems($userId, $year = '', $month = '')
+    {
+        $allMembers = Member::where('user_id', $userId)
+                        ->get(['id'])
+                        ->keyBy('id')
+                        ->toArray();
+
+        // ini_set('memory_limit', '512M');
+
+        if($year != '' && $month != '')
+        {
+            $calendar = $this->fetchCalendar($userId, $year, $month);
+        } else if($year !== '') {
+            $calendar = $this->fetchMonthlyCalendar($userId, $year);
+        } else {
+            return [ 'status' => 'Error' ];
+        }
+
         $results = $this->tidyItems($calendar, collect($allMembers));
 
         return [
             "days" => $results['days'],
-//            "members" => $allMembers,
+            "members" => $allMembers,
             "items" => $results['items'],
         ];
     }
