@@ -21,7 +21,6 @@
 
         <hamburger-menu></hamburger-menu>
 
-<!--
         <div class="nav-right nav-menu" style="overflow:visible">
 
             <router-link to="/"
@@ -70,9 +69,8 @@
                     <span>Tweet</span>
                 </a>
             </span>
--->
 
-        <!-- </div> --><!-- // .nav-right .nav-menu -->
+        </div><!-- // .nav-right .nav-menu -->
 
     </template>
 
