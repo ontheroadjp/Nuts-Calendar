@@ -37,7 +37,7 @@ class Calendar extends Model
     public function fetch($userId, $year = '', $month = '')
     {
         $allMembers = Member::where('user_id', $userId)
-                        ->get()
+                        ->get(['id'])
                         ->keyBy('id')
                         ->toArray();
 
@@ -45,9 +45,9 @@ class Calendar extends Model
 
         if($year != '' && $month != '')
         {
-            $calendar = $this->fetchCalendarWithHolidayAndItems($userId, $year, $month);
+            $calendar = $this->fetchCalendar($userId, $year, $month);
         } else if($year !== '') {
-            $calendar = $this->fetchMCalendarWithItems($userId, $year);
+            $calendar = $this->fetchMonthlyCalendar($userId, $year);
         } else {
             return [ 'status' => 'Error' ];
         }
@@ -56,12 +56,12 @@ class Calendar extends Model
 
         return [
             "days" => $results['days'],
-            "members" => $allMembers,
+//            "members" => $allMembers,
             "items" => $results['items'],
         ];
     }
 
-    public function fetchCalendarWithHolidayAndItems($userId, $year, $month)
+    public function fetchCalendar($userId, $year, $month)
     {
         return Calendar::with([
             'holidays',
@@ -73,7 +73,7 @@ class Calendar extends Model
             ->get();
     }
 
-    public function fetchMCalendarWithItems($userId, $year)
+    public function fetchMonthlyCalendar($userId, $year)
     {
         return Calendar::with([
             'items.rrule',
@@ -124,14 +124,20 @@ class Calendar extends Model
                 {
                     $standaloneItems[$cellItems[$i]->id] = $cellItems[$i];
 
-                    // object [{id: xxx}, ...]
+                    // as an object [{id: xxx}, {id: xxx}, ...]
                     $cellItems[$i] = array('id' => $cellItems[$i]->id);
 
-                    //// array [id, id, id, ...]
+                    //// as an array [id, id, id, ...]
                     //$cellItems[$i] = $cellItems[$i]->id;
+
+                    // add holidays property if it does not exist
+                    if( array_key_exists('holidays', $cellItems[$i]))
+                    {
+                        $cellItems[$i]->concat(['holidays' => '']);;
+                    }
+
                 }
             }
-
 
             // replace items to new one
             $days[] = collect($calendar[$n])
