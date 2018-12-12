@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import toolPalette  from './table-view/tool-palette.js';
 import {
-    INIT,
+    PUSH_CALENDAR_DAY,
+    REMOVE_DUPLICATED_CALENDAR_DAY,
     SET_VALUE,
     IS_LOADING,
     SORT_CELL_ITEMS,
@@ -17,10 +18,11 @@ function compareValues(key, order='asc') {
             return 0;
         }
 
-        const varA = (typeof a[key] === 'string') ?
-            a[key].toUpperCase() : a[key];
-        const varB = (typeof b[key] === 'string') ?
-            b[key].toUpperCase() : b[key];
+        const varA = (typeof a[key] === 'string')
+            ?  a[key].toUpperCase() : a[key];
+
+        const varB = (typeof b[key] === 'string')
+            ?  b[key].toUpperCase() : b[key];
 
         let comparison = 0;
         if (varA > varB) {
@@ -117,19 +119,22 @@ const calendar = {
                         root: true
                     });
 
-                    commit('INIT', response.data.days );
-
                     response.data.days.forEach((day)=> {
                         Object.keys(day.items).forEach(memberId => {
                             const cellItems = day.items[memberId];
-                            dispatch('tableView/updateCellItems', cellItems);
+                            if(1 < cellItems.length)
+                                dispatch('tableView/updateCellItems', cellItems);
                         });
+
+                        commit('PUSH_CALENDAR_DAY', day );
                     });
 
-                    Object.keys(response.data.members).forEach(function(key) {
-                        const val = this[key];
-                        val.isShow = true;
-                    }, response.data.members);
+                    commit('REMOVE_DUPLICATED_CALENDAR_DAY', response.data.days );
+
+//                    Object.keys(response.data.members).forEach(function(key) {
+//                        const val = this[key];
+//                        val.isShow = true;
+//                    }, response.data.members);
 
                     commit(IS_LOADING, false);
                 })
@@ -142,8 +147,7 @@ const calendar = {
     },
 
     mutations: {
-        [INIT]( state, calendars ) {
-
+        [REMOVE_DUPLICATED_CALENDAR_DAY]( state, calendars ) {
 //            calendars.forEach((value) => {
 //
 //                // add holidays property if it does not exist
@@ -155,8 +159,6 @@ const calendar = {
 //                state.data.calendars.push(value);
 //            });
 
-            state.data.calendars = calendars;
-
             // sort array
             state.data.calendars.sort(compareValues('date'));
 
@@ -165,12 +167,16 @@ const calendar = {
                 const a = state.data.calendars[n];
                 const b = state.data.calendars[n+1];
                 if( a.date == b.date ) {
-                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date + ' DELETE! @fetchCalendar()');
+                    u.clog(`${n}) a.date: ${a.date} --- b.date: ${b.date} DELETE! @fetchCalendar()`);
                     state.data.calendars.splice(n, 1);
                 } else {
-//                    u.clog(n +') a.date: ' + a.date + ' --- ' + 'b.date: ' + b.date);
+//                    u.clog(`$n) a.date: ${a.date} --- b.date: ${b.date}`);
                 }
             }
+        },
+
+        [PUSH_CALENDAR_DAY]( state, value ) {
+            state.data.calendars.push(value);
         },
 
         [SET_VALUE]( state, { key, value } ) {

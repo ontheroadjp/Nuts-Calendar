@@ -22,6 +22,8 @@ export const USERNAME = 'USERNAME';
 // modules
 // --------------------------------------------
 // tableView
+export const REMOVE_DUPLICATED_CALENDAR_DAY = 'REMOVE_DUPLICATED_CALENDAR_DAY';
+export const PUSH_CALENDAR_DAY = 'PUSH_CALENDAR_DAY';
 export const SORT_CELL_ITEMS = 'SORT_CELL_ITEMS';
 export const CHECK_TIME = 'CHECK_TIME';
 
