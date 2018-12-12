@@ -252,7 +252,7 @@
         justify-content: center;
         flex-flow: column wrap;
         align-items: center;
-        margin-top: 10%;
+        margin-top: 40%;
         color: #546e7a;
     }
 
