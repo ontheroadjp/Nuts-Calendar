@@ -14,6 +14,7 @@
     import pageFooter from './pages/partials/footer/index.vue';
     import store from './store/index.js';
 
+
     export default {
 
         store,

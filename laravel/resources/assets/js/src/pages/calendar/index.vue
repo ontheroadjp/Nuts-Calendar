@@ -22,9 +22,9 @@
         },
 
         computed: {
-//            ...mapState({
-//                appReady: state => state.app.ready
-//            }),
+            ...mapState({
+                appReady: state => state.app.ready
+            }),
 
             ...mapState('calendar', {
                 currentCalendarId: state => state.currentId,
@@ -40,16 +40,16 @@
             })
         },
 
-//        watch: {
-//            'appReady': {
-//                handler: function(newVal, oldVal) {
-//                    if(!oldVal && newVal) {
-//                        u.clog('watch: appReady');
-//                        this.fetchCalendar();
-//                    }
-//                },
-//                deep: true
-//            }
-//        }
+        watch: {
+            'appReady': {
+                handler: function(newVal, oldVal) {
+                    if(!oldVal && newVal) {
+                        u.clog('watch: appReady');
+                        this.fetchCalendar();
+                    }
+                },
+                deep: true
+            }
+        }
     }
 </script>

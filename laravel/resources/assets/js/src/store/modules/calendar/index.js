@@ -64,7 +64,7 @@ const calendar = {
         },
 
 
-        fetchCalendar( { state, commit, dispatch } ) {
+        fetchCalendar( { state, commit, dispatch, rootState } ) {
             u.clog('fetchCalendar()');
             commit(IS_LOADING, true);
 
@@ -113,23 +113,68 @@ const calendar = {
 
             http.fetchGet(url)
                 .then( response => {
-                    u.clog('success');
+                    u.clog('success @fetchCalendar()');
 
-                    commit('item/INIT', response.data.items, {
-                        root: true
-                    });
+                    response.data.calendar.forEach( day => {
+                        const newItems = {};
 
-                    response.data.days.forEach((day)=> {
-                        Object.keys(day.items).forEach(memberId => {
-                            const cellItems = day.items[memberId];
+                        if( (day.date).split('-')[2] != '00' ) {
+
+                            const yyyy = (day.date).split('-')[0];
+                            const mm = (day.date).split('-')[1];
+                            const dd = (day.date).split('-')[2];
+
+                            if( yyyy != y && mm != m ) {
+                                return;
+                            }
+                        }
+
+                        // create cellItems
+//                        Object.keys(rootState.member.data.members).forEach( member => {
+                        Object.keys(response.data.members).forEach( member => {
+                            newItems[member] = [];
+                        });
+
+                        // push an item to cellItems
+                        // and push an item to the vuex
+                        day.items.forEach( item => {
+                            newItems[item.member_id].push( {'id': item.id } );
+                            commit('item/ADD', {'id': item.id, 'item': item },
+                                {root: true} );
+                        });
+
+                        // update cellItems
+                        Object.values(newItems).forEach( cellItems => {
                             if(1 < cellItems.length)
                                 dispatch('tableView/updateCellItems', cellItems);
                         });
 
+                        // replace items property
+                        day.items = newItems;
+
+                        // push data to the vuex
                         commit('PUSH_CALENDAR_DAY', day );
                     });
 
-                    commit('REMOVE_DUPLICATED_CALENDAR_DAY', response.data.days );
+
+
+//                    commit('item/INIT', response.data.items, {
+//                        root: true
+//                    });
+//
+//                    response.data.days.forEach((day)=> {
+//                        Object.keys(day.items).forEach(memberId => {
+//                            const cellItems = day.items[memberId];
+//                            if(1 < cellItems.length)
+//                                dispatch('tableView/updateCellItems', cellItems);
+//                        });
+//
+//                        commit('PUSH_CALENDAR_DAY', day );
+//                    });
+
+
+                    commit('REMOVE_DUPLICATED_CALENDAR_DAY' );
+
 
 //                    Object.keys(response.data.members).forEach(function(key) {
 //                        const val = this[key];
@@ -147,7 +192,8 @@ const calendar = {
     },
 
     mutations: {
-        [REMOVE_DUPLICATED_CALENDAR_DAY]( state, calendars ) {
+        [REMOVE_DUPLICATED_CALENDAR_DAY]( state ) {
+//        [REMOVE_DUPLICATED_CALENDAR_DAY]( state, calendars ) {
 //            calendars.forEach((value) => {
 //
 //                // add holidays property if it does not exist

@@ -2,6 +2,7 @@
 
 namespace Nuts\Calendar\Models;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -52,25 +53,53 @@ class Calendar extends Model
             return [ 'status' => 'Error' ];
         }
 
+        return [
+            "calendar" => $calendar,
+            "members" => $allMembers
+        ];
+    }
+
+    public function fetchAndTidyItems($userId, $year = '', $month = '')
+    {
+        $allMembers = Member::where('user_id', $userId)
+                        ->get(['id'])
+                        ->keyBy('id')
+                        ->toArray();
+
+        // ini_set('memory_limit', '512M');
+
+        if($year != '' && $month != '')
+        {
+            $calendar = $this->fetchCalendar($userId, $year, $month);
+        } else if($year !== '') {
+            $calendar = $this->fetchMonthlyCalendar($userId, $year);
+        } else {
+            return [ 'status' => 'Error' ];
+        }
+
         $results = $this->tidyItems($calendar, collect($allMembers));
 
         return [
             "days" => $results['days'],
-//            "members" => $allMembers,
+            "members" => $allMembers,
             "items" => $results['items'],
         ];
     }
 
     public function fetchCalendar($userId, $year, $month)
     {
+        $dt = new Carbon($year.'-'.$month.'-01 00:00:00');
+
         return Calendar::with([
             'holidays',
             'items.rrule',
             'items' => function ($query) use ($userId)
             {
                 $query->where('user_id', '=', $userId);
-            }])->where('date', 'LIKE', "$year-$month-%")
-            ->get();
+            }])->whereBetween( 'date', array(
+                $dt->toDateTimeString(),
+                $dt->addMonths(7)->subDay()->toDateTimeString()
+            ))->get();
     }
 
     public function fetchMonthlyCalendar($userId, $year)
