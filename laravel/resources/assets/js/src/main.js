@@ -1,7 +1,19 @@
 // vue
 import Vue from 'vue';
-//Vue.config.silent = true;
+Vue.config.silent = false;
 Vue.config.productionTip = false;
+
+Vue.config.errorHandler = function (err, vm, info) {
+  // エラー処理
+  // `info` は Vue 固有のエラー情報です（例： どのライフサイクルフックでエラーが起きたかなど）。
+  // 2.2.0 以降で使用できます。
+}
+
+Vue.config.warnHandler = function (msg, vm, trace) {
+  // `トレース`はコンポーネント階層のトレースです
+}
+
+Vue.config.performance = true;
 
 // vue-router
 import VueRouter from 'vue-router';

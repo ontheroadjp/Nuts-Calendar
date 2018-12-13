@@ -118,6 +118,17 @@ const calendar = {
                     response.data.calendar.forEach( day => {
                         const newItems = {};
 
+                        if( (day.date).split('-')[2] != '00' ) {
+
+                            const yyyy = (day.date).split('-')[0];
+                            const mm = (day.date).split('-')[1];
+                            const dd = (day.date).split('-')[2];
+
+                            if( yyyy != y && mm != m ) {
+                                return;
+                            }
+                        }
+
                         // create cellItems
 //                        Object.keys(rootState.member.data.members).forEach( member => {
                         Object.keys(response.data.members).forEach( member => {

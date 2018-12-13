@@ -2,6 +2,7 @@
 
 namespace Nuts\Calendar\Models;
 
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -87,14 +88,18 @@ class Calendar extends Model
 
     public function fetchCalendar($userId, $year, $month)
     {
+        $dt = new Carbon($year.'-'.$month.'-01 00:00:00');
+
         return Calendar::with([
             'holidays',
             'items.rrule',
             'items' => function ($query) use ($userId)
             {
                 $query->where('user_id', '=', $userId);
-            }])->where('date', 'LIKE', "$year-$month-%")
-            ->get();
+            }])->whereBetween( 'date', array(
+                $dt->toDateTimeString(),
+                $dt->addMonths(7)->subDay()->toDateTimeString()
+            ))->get();
     }
 
     public function fetchMonthlyCalendar($userId, $year)
