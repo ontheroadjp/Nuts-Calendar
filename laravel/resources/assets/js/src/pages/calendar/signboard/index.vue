@@ -1,22 +1,45 @@
 <template>
 <section id="signboard" class="hero" :class="theme.primary.class">
-    <div style="display: flex; justify-content: center;">
-        <div class="thin"
-            style="display: flex; align-items: center">
+    <div class="thin"
+        style="position: absolute;
+                top: 5px;
+                right: 30px;
+                display: flex;
+                align-items: center
+            ">
 
-            <button class="button thin" :class="theme.primary.class"
-                @click="clickPrev()"
-            ><div class="icon">
-                <i class="fa fa-2x fa-caret-left"></i>
-            </div></button>
+        <button class="button thin" :class="theme.primary.class"
+            @click="clickPrev()"
+        ><div class="icon">
+            <i class="fa fa-2x fa-caret-left"></i>
+        </div></button>
 
-            <span style="font-size: 2rem; margin: 0 35px">{{ display }}</span>
+        <span style="font-size: 3rem; margin: 0 35px">{{ display }}</span>
 
-            <button class="button thin" :class="theme.primary.class"
-                @click="clickNext()"
-            ><div class="icon">
-                <i class="fa fa-2x fa-caret-right"></i>
-            </div></button>
+        <button class="button thin" :class="theme.primary.class"
+            @click="clickNext()"
+        ><div class="icon">
+            <i class="fa fa-2x fa-caret-right"></i>
+        </div></button>
+
+    </div>
+
+<!--
+    <div v-show="viewMode == 'daily'" class="hero-body" style="padding: 20px;">
+
+    <div class="hero-body" style="padding: 20px;">
+    <div class="container">
+
+        <div id="mc_embed_signup" class="columns is-vcentered">
+            <div class="column is-one-third is-left">
+                <hero-title></hero-title>
+            </div>
+
+            <div class="column">
+                <span class="is-pulled-right">
+                    <ym-field></ym-field>
+                </span>
+            </div>
         </div>
     </div>
 
